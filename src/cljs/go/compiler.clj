@@ -474,7 +474,7 @@
   (emit-wrap env
     (emits "(func " (munge name) "(")
     (emit-fn-params params)
-    (emits "){")
+    (emits " interface{}){")
     (when type
       (emitln "var self__ = this"))
     (when recurs (emitln "for {"))
@@ -495,7 +495,7 @@
                (doseq [param params]
                  (emit param)
                  (when-not (= param (last params)) (emits ",")))
-               (emits "){")
+               (emits " interface{}){")
                (when recurs (emitln "for {"))
                (emits expr)
                (when recurs
@@ -505,18 +505,18 @@
 
                (emitln "var " mname " = func (" (comma-sep
                                                  (if variadic
-                                                   (concat (butlast params) ['var_args])
-                                                   params)) "){")
+                                                   (butlast params)
+                                                   params)) " interface{}," (when variadic ", arguments ...interface{}") "){")
                (when type
                  (emitln "var self__ = this"))
                (when variadic
                  (emits "var ")
                  (emit (last params))
                  (emits " = nil")
-                 (emitln "if (len(arguments) > " (dec (count params)) ") {")
+                 (emitln "if (len(arguments) > 0) {")
                  (emits "  ")
                  (emit (last params))
-                 (emits " = cljs.core.array_seq(arguments[: " (dec (count params)) "],0);")
+                 (emits " = cljs.core.array_seq(arguments,0)")
                  (emitln "} "))
                (emits "return " delegate-name "(this,")
                (doseq [param params]
@@ -544,7 +544,7 @@
       (when loop-locals
         (when (= :return (:context env))
             (emits "return "))
-        (emitln "((func (" (comma-sep (map munge loop-locals)) "){")
+        (emitln "((func (" (comma-sep (map munge loop-locals)) " interface{}){")
         (when-not (= :return (:context env))
             (emits "return ")))
       (if (= 1 (count methods))
@@ -571,9 +571,10 @@
               (emit-variadic-fn-method meth)
               (emit-fn-method meth))
             (emitln))
-            (emitln mname " = func(" (comma-sep (if variadic
-                                                  (concat (butlast maxparams) ['var_args])
-                                                  maxparams)) "){")
+            (emitln mname " = func(" (comma-sep
+                                      (if variadic
+                                        (butlast params)
+                                        params)) " interface{}," (when variadic ", arguments ...interface{}") "){")
           (when variadic
             (emits "var ")
             (emit (last maxparams))
