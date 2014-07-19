@@ -360,7 +360,7 @@
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))]
     (if (= :expr context)
-      (emits "(" (when checked "cljs.core.truth_") "(" test ")?" then ":" else ")")
+      (emits "(func() { if " (when checked "cljs.core.truth_") "(" test ") { return " then "} else { return " else "} )()")
       (do
         (if checked
           (emitln "if(cljs.core.truth_(" test "))")
