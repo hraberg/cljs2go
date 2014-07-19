@@ -279,9 +279,9 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "cljs.core.PersistentArrayMap{null, " (count keys) ", ["
+          (emits "cljs.core.PersistentArrayMap{nil, " (count keys) ", ["
             (comma-sep (interleave keys vals))
-            "], null}")
+            "], nil}")
           (emits "cljs.core.PersistentArrayMap.fromArray(["
             (comma-sep (interleave keys vals))
             "], true, false)"))
@@ -307,8 +307,8 @@
       (emits "cljs.core.PersistentVector.EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "cljs.core.PersistentVector{null, " cnt
-            ", 5, cljs.core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], null}")
+          (emits "cljs.core.PersistentVector{nil, " cnt
+            ", 5, cljs.core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], nil}")
           (emits "cljs.core.PersistentVector.fromArray([" (comma-sep items) "], true)"))))))
 
 (defn distinct-constants? [items]
@@ -323,8 +323,8 @@
       (emits "cljs.core.PersistentHashSet.EMPTY")
 
       (distinct-constants? items)
-      (emits "cljs.core.PersistentHashSet{null, cljs.core.PersistentArrayMap{null, " (count items) ", ["
-        (comma-sep (interleave items (repeat "null"))) "], null}, null}")
+      (emits "cljs.core.PersistentHashSet{nil, cljs.core.PersistentArrayMap{nil, " (count items) ", ["
+        (comma-sep (interleave items (repeat "nil"))) "], nil}, nil}")
 
       :else (emits "cljs.core.PersistentHashSet.fromArray([" (comma-sep items) "], true)"))))
 
@@ -761,8 +761,8 @@
        :else
        (if (and ana/*cljs-static-fns* (= (:op f) :var))
          (let [fprop (str ".cljs$core$IFn$_invoke$arity$" (count args))]
-           (emits "(func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f ".(" (comma-sep (cons "null" args)) ")}})()"))
-         (emits f ".(" (comma-sep (cons "null" args)) ")"))))))
+           (emits "(func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f ".(" (comma-sep (cons "nil" args)) ")}})()"))
+         (emits f ".(" (comma-sep (cons "nil" args)) ")"))))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]
@@ -794,7 +794,8 @@
     (emitln "/**")
     (emitln "* @constructor")
     (emitln "*/")
-    (emitln (munge t) " = (func (" (comma-sep fields) "){")
+    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) "}")
+    (emitln (munge t) " = (func (" (comma-sep fields) "  interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
@@ -804,7 +805,7 @@
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
-  (let [fields (concat (map munge fields) '[__meta __extmap])]
+  (let [fields (map munge fields)]
     (emitln "")
     (emitln "/**")
     (emitln "* @constructor")
@@ -813,22 +814,21 @@
     (emitln "* @param {*=} __meta ")
     (emitln "* @param {*=} __extmap")
     (emitln "*/")
-    (emitln (munge t) " = (func (" (comma-sep fields) "){")
+    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) "}"
+    (emitln (munge t) " = (func (" (comma-sep fields) " interface{}, arguments ...interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld ";"))
     (doseq [[pno pmask] pmasks]
       (emitln "this.cljs$lang$protocol_mask$partition" pno "$ = " pmask))
-    (emitln "if(len(arguments)>" (- (count fields) 2) "){")
-    (emitln "this.__meta = __meta")
-    (emitln "this.__extmap = __extmap")
-    (emitln "} else {")
-    (emits "this.__meta=")
-    (emit-constant nil)
-    (emitln)
-    (emits "this.__extmap=")
-    (emit-constant nil)
-    (emitln)
+    (emitln "switch len(arguments) {" )
+    (emitln "case 1:")
+    (emitln "this.__meta = arguments[0]")
+    (emitln "break")
+    (emitln "case 2:")
+    (emitln "this.__meta = arguments[0]")
+    (emitln "this.__extmap = arguments[1]")
+    (emitln "}")
     (emitln "}")
     (emitln "})")))
 
