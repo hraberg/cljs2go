@@ -610,7 +610,7 @@
 (defmethod emit* :do
   [{:keys [statements ret env]}]
   (let [context (:context env)]
-    (when (and statements (= :expr context)) (emits "(function (){"))
+    (when (and statements (= :expr context)) (emits "(func (){"))
     (when statements
       (emits statements))
     (emit ret)
@@ -621,16 +621,14 @@
   (let [context (:context env)]
     (if (or name finally)
       (do
-        (when (= :expr context)
-          (emits "(function (){"))
-        (emits "try{" try "}")
+        (emits "(func (){")
         (when name
-          (emits "catch (" (munge name) "){" catch "}"))
+          (emits "defer func() { if " (munge name) " := recover(); " (munge name) " != nil {" catch "}}()"))
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
-          (emits "finally {" finally "}"))
-        (when (= :expr context)
-          (emits "})()")))
+          (emits "defer func() {" finally "}()"))
+        (emits "{" try "}")
+        (emits "})()"))
       (emits try))))
 
 (defn emit-let
