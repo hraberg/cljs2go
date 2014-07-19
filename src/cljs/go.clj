@@ -23,6 +23,13 @@
        go->str
        println)
 
+  (->> '[(ns hello)
+         (defn ^:export greet [n]
+           (str "Hello " n))]
+       cljs->go
+       go->str
+       println)
+
   (cljs.closure/build '[(ns hello.core)
                         (defn ^{:export greet} greet [n] (str "Hola " n))
                         (defn ^:export sum [xs] 42)]

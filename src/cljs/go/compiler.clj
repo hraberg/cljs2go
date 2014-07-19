@@ -395,8 +395,8 @@
 (defmethod emit* :throw
   [{:keys [throw env]}]
   (if (= :expr (:context env))
-    (emits "(function(){throw " throw "})()")
-    (emitln "throw " throw ";")))
+    (emits "(func(){panic(" throw ")})()")
+    (emitln "panic(" throw ")")))
 
 (defn emit-comment
   "Emit a nicely formatted comment string."
@@ -591,7 +591,7 @@
                 (emitln "return " n ".call(this" (if (zero? pcnt) nil
                                                      (list "," (comma-sep (take pcnt maxparams)))) ");"))))
           (emitln "}")
-          (emitln "throw(new js.Error('Invalid arity: ' + arguments.length));")
+          (emitln "panic(new js.Error('Invalid arity: ' + arguments.length));")
           (emitln "};")
           (when variadic
             (emitln mname ".cljs$lang$maxFixedArity = " max-fixed-arity ";")
