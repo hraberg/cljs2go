@@ -185,7 +185,7 @@
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
-    (emits "(new RegExp(\"\"))")
+    (emits "(new js.RegExp(\"\"))")
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
       (emits \/ (.replaceAll (re-matcher #"/" pattern) "\\\\/") \/ flags))))
 
@@ -228,7 +228,7 @@
 ;; tagged literal support
 
 (defmethod emit-constant java.util.Date [^java.util.Date date]
-  (emits "new Date(" (.getTime date) ")"))
+  (emits "new js.Date(" (.getTime date) ")"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
   (emits "new cljs.core.UUID(\"" (.toString uuid) "\")"))
@@ -591,7 +591,7 @@
                 (emitln "return " n ".call(this" (if (zero? pcnt) nil
                                                      (list "," (comma-sep (take pcnt maxparams)))) ");"))))
           (emitln "}")
-          (emitln "throw(new Error('Invalid arity: ' + arguments.length));")
+          (emitln "throw(new js.Error('Invalid arity: ' + arguments.length));")
           (emitln "};")
           (when variadic
             (emitln mname ".cljs$lang$maxFixedArity = " max-fixed-arity ";")
