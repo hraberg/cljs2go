@@ -185,9 +185,9 @@
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
-    (emits "(new js.RegExp(\"\"))")
+    (emits "(js.RegExp{\"\"})")
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
-      (emits \/ (.replaceAll (re-matcher #"/" pattern) "\\\\/") \/ flags))))
+      (emits "(js.RegExp{\"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") ", " flags "\"}"))))
 
 (defmethod emit-constant clojure.lang.Keyword [x]
   (if (-> @env/*compiler* :opts :emit-constants)
@@ -195,7 +195,7 @@
       (emits "cljs.core." value))
     (let [ns   (namespace x)
           name (name x)]
-      (emits "new cljs.core.Keyword(")
+      (emits "cljs.core.Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
@@ -205,7 +205,7 @@
                        name))
       (emits ",")
       (emit-constant (hash x))
-      (emits ")"))))
+      (emits "}"))))
 
 (defmethod emit-constant clojure.lang.Symbol [x]
   (let [ns     (namespace x)
@@ -213,7 +213,7 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "new cljs.core.Symbol(")
+    (emits "cljs.core.Symbol{")
     (emit-constant ns)
     (emits ",")
     (emit-constant name)
@@ -223,15 +223,15 @@
     (emit-constant (hash x))
     (emits ",")
     (emit-constant nil)
-    (emits ")")))
+    (emits "}")))
 
 ;; tagged literal support
 
 (defmethod emit-constant java.util.Date [^java.util.Date date]
-  (emits "new js.Date(" (.getTime date) ")"))
+  (emits "js.Date{" (.getTime date) "}"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "new cljs.core.UUID(\"" (.toString uuid) "\")"))
+  (emits "cljs.core.UUID{\"" (.toString uuid) "\"}"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
@@ -279,10 +279,10 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "new cljs.core.PersistentArrayMap(null, " (count keys) ", ["
+          (emits "cljs.core.PersistentArrayMap{null, " (count keys) ", ["
             (comma-sep (interleave keys vals))
-            "], null)")
-          (emits "new cljs.core.PersistentArrayMap.fromArray(["
+            "], null}")
+          (emits "cljs.core.PersistentArrayMap.fromArray(["
             (comma-sep (interleave keys vals))
             "], true, false)"))
 
@@ -307,8 +307,8 @@
       (emits "cljs.core.PersistentVector.EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "new cljs.core.PersistentVector(null, " cnt
-            ", 5, cljs.core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], null)")
+          (emits "cljs.core.PersistentVector{null, " cnt
+            ", 5, cljs.core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], null}")
           (emits "cljs.core.PersistentVector.fromArray([" (comma-sep items) "], true)"))))))
 
 (defn distinct-constants? [items]
@@ -323,8 +323,8 @@
       (emits "cljs.core.PersistentHashSet.EMPTY")
 
       (distinct-constants? items)
-      (emits "new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, " (count items) ", ["
-        (comma-sep (interleave items (repeat "null"))) "], null), null)")
+      (emits "cljs.core.PersistentHashSet{null, cljs.core.PersistentArrayMap{null, " (count items) ", ["
+        (comma-sep (interleave items (repeat "null"))) "], null}, null}")
 
       :else (emits "cljs.core.PersistentHashSet.fromArray([" (comma-sep items) "], true)"))))
 
@@ -591,7 +591,7 @@
                 (emitln "return " n ".call(this" (if (zero? pcnt) nil
                                                      (list "," (comma-sep (take pcnt maxparams)))) ");"))))
           (emitln "}")
-          (emitln "panic(new js.Error('Invalid arity: ' + arguments.length));")
+          (emitln "panic(js.Error{'Invalid arity: ' + arguments.length});")
           (emitln "};")
           (when variadic
             (emitln mname ".cljs$lang$maxFixedArity = " max-fixed-arity ";")
@@ -767,9 +767,9 @@
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-             (emits "(new " ctor "("
+             (emits "(" ctor "{"
                     (comma-sep args)
-                    "))")))
+                    "})")))
 
 (defmethod emit* :set!
   [{:keys [target val env]}]
@@ -1073,7 +1073,7 @@
   (doseq [[keyword value] table]
     (let [ns   (namespace keyword)
           name (name keyword)]
-      (emits "cljs.core." value " = new cljs.core.Keyword(")
+      (emits "cljs.core." value " = cljs.core.Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
@@ -1081,7 +1081,7 @@
       (emit-constant (if ns
                        (str ns "/" name)
                        name))
-      (emits ");\n"))))
+      (emits "};\n"))))
 
 (defn emit-constants-table-to-file [table dest]
   (with-open [out ^java.io.Writer (io/make-writer dest {})]
