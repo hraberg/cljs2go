@@ -333,14 +333,14 @@
   (emit-wrap env
     (if (= js-type :object)
       (do
-        (emits "{")
+        (emits "map[string]interface{}{")
         (when-let [items (seq items)]
           (let [[[k v] & r] items]
             (emits "\"" (name k) "\": " v)
             (doseq [[k v] r]
               (emits ", \"" (name k) "\": " v))))
         (emits "}"))
-      (emits "[" (comma-sep items) "]"))))
+      (emits "[]interface{}{" (comma-sep items) "}"))))
 
 (defmethod emit* :constant
   [{:keys [form env]}]
