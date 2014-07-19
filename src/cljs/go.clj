@@ -22,22 +22,10 @@
        go->str
        println)
 
-  (println
-   (cljs.closure/build '[(ns hello.core)
-                         (defn ^{:export greet} greet [n] (str "Hola " n))
-                         (defn ^:export sum [xs] 42)]
-                       {:optimizations :none :output-to "hello.js"}))
+  (cljs.closure/build '[(ns hello.core)
+                        (defn ^{:export greet} greet [n] (str "Hola " n))
+                        (defn ^:export sum [xs] 42)]
+                      {:optimizations :none}))
 
-  (cljs.closure/build "samples/hello/src"
-                      {:optimizations :none})
-
-  (->> (str "checkouts/clojurescript/" "samples/hello/src/hello/core.cljs")
-       cljs->go
-       go->str
-       println)
-
-  (->> (str "checkouts/clojurescript/" "samples/hello/src")
-       cljs->go
-       go->str
-       println)
-)
+(cljs.closure/build "samples/hello/src"
+                    {:optimizations :none})
