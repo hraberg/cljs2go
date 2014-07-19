@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	fmt.Printf("ClojureScript to Go\n")
+	fmt.Printf("ClojureScript to Go [go]\n")
 }

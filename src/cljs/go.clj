@@ -2,4 +2,5 @@
   (:require [cljs.analyzer :as ca]
             [cljs.closure :as cc]))
 
-(defn -main [& args])
+(defn -main [& args]
+  (println "ClojureScript to Go [clojure]"))
