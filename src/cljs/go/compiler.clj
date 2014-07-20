@@ -790,7 +790,7 @@
 
 (defmethod emit* :ns
   [{:keys [name requires uses require-macros env]}]
-  (emitln "//" name)
+  (emitln "// " name)
   (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
   (emitln "import (")
