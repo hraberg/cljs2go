@@ -29,7 +29,7 @@
 
 
   (->> '[(ns hello)
-         (defn world [world]
+         (defn world []
            "World")
          (defn ^:export greet [n]
            (str "Hello " n (world)))]
