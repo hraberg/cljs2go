@@ -195,10 +195,10 @@
 (defmethod emit-constant clojure.lang.Keyword [x]
   (if (-> @env/*compiler* :opts :emit-constants)
     (let [value (-> @env/*compiler* ::ana/constant-table x)]
-      (emits "cljs.core." value))
+      (emits "cljs_core." value))
     (let [ns   (namespace x)
           name (name x)]
-      (emits "cljs.core.Keyword{")
+      (emits "cljs_core.Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
@@ -216,7 +216,7 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "cljs.core.Symbol{")
+    (emits "cljs_core.Symbol{")
     (emit-constant ns)
     (emits ",")
     (emit-constant name)
@@ -234,7 +234,7 @@
   (emits "js.Date{" (.getTime date) "}"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "cljs.core.UUID{\"" (.toString uuid) "\"}"))
+  (emits "cljs_core.UUID{\"" (.toString uuid) "\"}"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
@@ -260,7 +260,7 @@
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
-    (emits "cljs.core.with_meta(" expr "," meta ")")))
+    (emits "cljs_core.with_meta(" expr "," meta ")")))
 
 (def ^:private array-map-threshold 8)
 (def ^:private obj-map-threshold 8)
@@ -275,19 +275,19 @@
     (emit-wrap env
       (cond
         (zero? (count keys))
-        (emits "cljs.core.PersistentArrayMap.EMPTY")
+        (emits "cljs_core.PersistentArrayMap.EMPTY")
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "cljs.core.PersistentArrayMap{nil, " (count keys) ", ["
+          (emits "cljs_core.PersistentArrayMap{nil, " (count keys) ", ["
             (comma-sep (interleave keys vals))
             "], nil}")
-          (emits "cljs.core.PersistentArrayMap.fromArray(["
+          (emits "cljs_core.PersistentArrayMap.fromArray(["
             (comma-sep (interleave keys vals))
             "], true, false)"))
 
         :else
-        (emits "cljs.core.PersistentHashMap.fromArrays(["
+        (emits "cljs_core.PersistentHashMap.fromArrays(["
                (comma-sep keys)
                "],["
                (comma-sep vals)
@@ -297,19 +297,19 @@
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "cljs.core.List.EMPTY")
-      (emits "cljs.core.list(" (comma-sep items) ")"))))
+      (emits "cljs_core.List.EMPTY")
+      (emits "cljs_core.list(" (comma-sep items) ")"))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "cljs.core.PersistentVector.EMPTY")
+      (emits "cljs_core.PersistentVector.EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "cljs.core.PersistentVector{nil, " cnt
-            ", 5, cljs.core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], nil}")
-          (emits "cljs.core.PersistentVector.fromArray([" (comma-sep items) "], true)"))))))
+          (emits "cljs_core.PersistentVector{nil, " cnt
+            ", 5, cljs_core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], nil}")
+          (emits "cljs_core.PersistentVector.fromArray([" (comma-sep items) "], true)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -320,13 +320,13 @@
   (emit-wrap env
     (cond
       (empty? items)
-      (emits "cljs.core.PersistentHashSet.EMPTY")
+      (emits "cljs_core.PersistentHashSet.EMPTY")
 
       (distinct-constants? items)
-      (emits "cljs.core.PersistentHashSet{nil, cljs.core.PersistentArrayMap{nil, " (count items) ", ["
+      (emits "cljs_core.PersistentHashSet{nil, cljs_core.PersistentArrayMap{nil, " (count items) ", ["
         (comma-sep (interleave items (repeat "nil"))) "], nil}, nil}")
 
-      :else (emits "cljs.core.PersistentHashSet.fromArray([" (comma-sep items) "], true)"))))
+      :else (emits "cljs_core.PersistentHashSet.fromArray([" (comma-sep items) "], true)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
@@ -360,10 +360,10 @@
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))]
     (if (= :expr context)
-      (emits "(func() { if " (when checked "cljs.core.truth_") "(" test ") { return " then "} else { return " else "} )()")
+      (emits "(func() { if " (when checked "cljs_core.truth_") "(" test ") { return " then "} else { return " else "} )()")
       (do
         (if checked
-          (emitln "if(cljs.core.truth_(" test "))")
+          (emitln "if(cljs_core.truth_(" test "))")
           (emitln "if(" test ")"))
         (emitln "{" then "} else")
         (emitln "{" else "}")))))
@@ -440,17 +440,17 @@
     (doseq [[i param] (map-indexed vector (drop-last 2 params))]
       (emits "var ")
       (emit param)
-      (emits " = cljs.core.first(")
+      (emits " = cljs_core.first(")
       (emitln arglist ")")
-      (emitln arglist " = cljs.core.next(" arglist ")"))
+      (emitln arglist " = cljs_core.next(" arglist ")"))
     (if (< 1 (count params))
       (do
         (emits "var ")
         (emit (last (butlast params)))
-        (emitln " = cljs.core.first(" arglist ")")
+        (emitln " = cljs_core.first(" arglist ")")
         (emits "var ")
         (emit (last params))
-        (emitln " = cljs.core.rest(" arglist ")")
+        (emitln " = cljs_core.rest(" arglist ")")
         (emits "return " delegate-name "(")
         (doseq [param params]
           (emit param)
@@ -459,7 +459,7 @@
       (do
         (emits "var ")
         (emit (last params))
-        (emitln " = cljs.core.seq(" arglist ")")
+        (emitln " = cljs_core.seq(" arglist ")")
         (emits "return " delegate-name "(")
         (doseq [param params]
           (emit param)
@@ -525,7 +525,7 @@
                  (emitln "if (len(arguments) > 0) {")
                  (emits "  ")
                  (emit (last params))
-                 (emits " = cljs.core.array_seq(arguments,0)")
+                 (emits " = cljs_core.array_seq(arguments,0)")
                  (emitln "} "))
                (emits "return " delegate-name "(this,")
                (doseq [param params]
@@ -599,7 +599,7 @@
                   (emitln "return " n ".cljs__core__IFn___invoke__arity__variadic("
                           (comma-sep (butlast maxparams))
                           (when (> (count maxparams) 1) ", ")
-                          "cljs.core.array_seq(arguments, " max-fixed-arity "))"))
+                          "cljs_core.array_seq(arguments, " max-fixed-arity "))"))
               (let [pcnt (count (:params meth))]
                 (emitln "case " pcnt ":")
                 (emitln "return " n "(this" (if (zero? pcnt) nil
@@ -766,7 +766,7 @@
        (let [mfa (:max-fixed-arity variadic-invoke)]
         (emits f "(" (comma-sep (take mfa args))
                (when-not (zero? mfa) ",")
-               "cljs.core.array_seq([" (comma-sep (drop mfa args)) "], 0))"))
+               "cljs_core.array_seq([" (comma-sep (drop mfa args)) "], 0))"))
 
        (or fn? js? goog?)
        (emits f "(" (comma-sep args)  ")")
@@ -873,9 +873,9 @@
                                     (concat
                                      (cond
                                       numeric
-                                      (map #(str "cljs.core.double(" (emit-str %) ")") args)
+                                      (map #(str "cljs_core.double(" (emit-str %) ")") args)
                                       bitwise
-                                      (map #(str "cljs.core.long(" (emit-str %) ")") args)
+                                      (map #(str "cljs_core.long(" (emit-str %) ")") args)
                                       :else
                                       args) [nil])))))))
 
@@ -1105,7 +1105,7 @@
   (doseq [[keyword value] table]
     (let [ns   (namespace keyword)
           name (name keyword)]
-      (emits "cljs.core." value " = cljs.core.Keyword{")
+      (emits "cljs_core." value " = cljs_core.Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
