@@ -87,7 +87,10 @@
       (let [ss (string/replace (str s) #"\/(.)" ".$1") ; Division is special
             ss (apply str (map #(if (reserved %) (str % "_") %)
                                (string/split ss #"(?<=\.)|(?=\.)")))
-            ms (clojure.lang.Compiler/munge ss)]
+            ms (string/split (clojure.lang.Compiler/munge ss) #"\.")
+            ms (if (butlast ms)
+                 (str (string/join "_"(butlast ms)) "." (last ms))
+                 (str (last ms)))]
         (if (symbol? s)
           (symbol ms)
           ms)))))
@@ -792,9 +795,9 @@
   (emitln "import (")
   (emitln "\t" (wrap-in-double-quotes "js"))
   (when-not (= name 'cljs.core)
-    (emitln "\t" (wrap-in-double-quotes "cljs.core")))
+    (emitln "\t" (wrap-in-double-quotes "cljs_core") " " (wrap-in-double-quotes "cljs/core")))
   (doseq [lib (distinct (into (vals requires) (vals uses)))]
-    (emitln "\t" (wrap-in-double-quotes (munge lib))))
+    (emitln "\t" (wrap-in-double-quotes (string/replace (munge lib) "." "_")) " " (wrap-in-double-quotes (string/replace (munge lib) "." "/"))))
   (emitln ")"))
 
 (defmethod emit* :deftype*
