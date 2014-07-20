@@ -29,8 +29,10 @@
 
 
   (->> '[(ns hello)
+         (defn world [world]
+           "World")
          (defn ^:export greet [n]
-           (str "Hello " n))]
+           (str "Hello " n (world)))]
        cljs->go
        go->str
        println)

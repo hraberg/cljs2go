@@ -255,7 +255,7 @@
       ; (prevents duplicate fn-param-names)
       (emits (munge arg))
       (when-not (= :statement (:context env))
-        (emit-wrap env (emits (munge info)))))))
+        (emit-wrap env (emits (munge (if (= ana/*cljs-ns* (:ns info)) (update-in info [:name] name) info))))))))
 
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
