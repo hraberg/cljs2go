@@ -9,6 +9,8 @@
 ;; Go emitter. Forked from f0dcc75573a42758f8c39b57d1747a2b4967327e
 ;; References to js in the public API are retained.
 
+(require 'cljs.compiler)
+
 (ns cljs.compiler
   (:refer-clojure :exclude [munge macroexpand-1])
   (:require [clojure.java.io :as io]
@@ -20,6 +22,9 @@
             [cljs.source-map :as sm])
   (:import java.lang.StringBuilder
            java.io.File))
+
+;; js* overlays, loaded by core.analyzer at the first run.
+(alter-var-root #'ana/*cljs-macros-path* (constantly "/cljs/go/core"))
 
 (def js-reserved
   #{"break" "case" "chan" "const" "continue" "default"
