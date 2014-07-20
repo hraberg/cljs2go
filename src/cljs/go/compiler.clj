@@ -279,19 +279,19 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "cljs_core.PersistentArrayMap{nil, " (count keys) ", ["
+          (emits "cljs_core.PersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
-            "], nil}")
-          (emits "cljs_core.PersistentArrayMap.fromArray(["
+            "}, nil}")
+          (emits "cljs_core.PersistentArrayMap.fromArray([]interface{}{"
             (comma-sep (interleave keys vals))
-            "], true, false)"))
+            "}, true, false)"))
 
         :else
-        (emits "cljs_core.PersistentHashMap.fromArrays(["
+        (emits "cljs_core.PersistentHashMap.fromArrays([]interface{}{"
                (comma-sep keys)
-               "],["
+               "},[]interface{}{"
                (comma-sep vals)
-               "])")))))
+               "})")))))
 
 (defmethod emit* :list
   [{:keys [items env]}]
@@ -308,8 +308,8 @@
       (let [cnt (count items)]
         (if (< cnt 32)
           (emits "cljs_core.PersistentVector{nil, " cnt
-            ", 5, cljs_core.PersistentVector.EMPTY_NODE, ["  (comma-sep items) "], nil}")
-          (emits "cljs_core.PersistentVector.fromArray([" (comma-sep items) "], true)"))))))
+            ", 5, cljs_core.PersistentVector.EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
+          (emits "cljs_core.PersistentVector.fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -323,10 +323,10 @@
       (emits "cljs_core.PersistentHashSet.EMPTY")
 
       (distinct-constants? items)
-      (emits "cljs_core.PersistentHashSet{nil, cljs_core.PersistentArrayMap{nil, " (count items) ", ["
-        (comma-sep (interleave items (repeat "nil"))) "], nil}, nil}")
+      (emits "cljs_core.PersistentHashSet{nil, cljs_core.PersistentArrayMap{nil, " (count items) ", []interface{}{"
+        (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "cljs_core.PersistentHashSet.fromArray([" (comma-sep items) "], true)"))))
+      :else (emits "cljs_core.PersistentHashSet.fromArray([]interface{}{" (comma-sep items) "}, true)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
@@ -766,7 +766,7 @@
        (let [mfa (:max-fixed-arity variadic-invoke)]
         (emits f "(" (comma-sep (take mfa args))
                (when-not (zero? mfa) ",")
-               "cljs_core.array_seq([" (comma-sep (drop mfa args)) "], 0))"))
+               "cljs_core.array_seq([]interface{}{" (comma-sep (drop mfa args)) "}, 0))"))
 
        (or fn? js? goog?)
        (emits f "(" (comma-sep args)  ")")
