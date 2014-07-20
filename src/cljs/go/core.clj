@@ -8,6 +8,8 @@
 
 ;; Go emitter. Forked from 5ca535759f8e2490b42dfa25df0458a6c3376d8c
 ;; This file only overlays cljs.core macros that use js*
+;; Functions which use the internal representation of IFn, related to get-apply-to and protocols probabaly also needs to be here.
+;; Some of this leaks out into cljs/core.cljs
 
 (require 'cljs.core)
 
