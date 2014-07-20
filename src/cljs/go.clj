@@ -40,5 +40,5 @@
                         (defn ^:export sum [xs] 42)]
                       {:optimizations :none})
 
-  (cljs.closure/build "samples/hello/src"
+  (cljs.closure/build (str "checkouts/clojurescript/" "samples/hello/src")
                       {:optimizations :none}))

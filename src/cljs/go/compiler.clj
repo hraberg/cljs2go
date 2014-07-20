@@ -82,10 +82,10 @@
                                reserved)]
         (if (or field (zero? depth))
           munged-name
-          (symbol (str munged-name "__$" depth))))
+          (symbol (str munged-name "___" depth))))
       ; String munging
       (let [ss (string/replace (str s) #"\/(.)" ".$1") ; Division is special
-            ss (apply str (map #(if (reserved %) (str % "$") %)
+            ss (apply str (map #(if (reserved %) (str % "_") %)
                                (string/split ss #"(?<=\.)|(?=\.)")))
             ms (clojure.lang.Compiler/munge ss)]
         (if (symbol? s)
@@ -243,10 +243,7 @@
 
 (defmethod emit* :var
   [{:keys [info env] :as arg}]
-  (let [var-name (:name info)
-        info (if (= (namespace var-name) "js")
-               (name var-name)
-               info)]
+  (let [var-name (:name info)]
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
     ; e.g. (function greet(return x, return y) {}).
@@ -421,14 +418,16 @@
       (if (= :fn (:op init))
         (emits init)
         (do
-          (emits (last (string/split (str mname) #"\.")))
-          (emits " = " init)))
+          (emits "var " (last (string/split (str mname) #"\.")))
+          (emitln " = " init)))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
       (when-not (= :expr (:context env)) (emitln))
+
       (when export
-        (emitln "goog.exportSymbol('" (munge export) "', " mname ")")))))
+        (let [export (last (string/split (str (munge export)) #"\."))]
+          (emitln "var "(str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)) " = " (last (string/split (str mname) #"\."))))))))
 
 (defn emit-apply-to
   [{:keys [name params env]}]
@@ -509,13 +508,17 @@
                (emitln "var " mname " = func (" (comma-sep
                                                  (if variadic
                                                    (butlast params)
-                                                   params)) " interface{}," (when variadic ", arguments ...interface{}") ") interface{} {")
+                                                   params))
+                       (when (seq (if variadic
+                                    (butlast params)
+                                    params)) " interface{},")
+                       (when variadic " arguments ...interface{}") ") interface{} {")
                (when type
                  (emitln "var self__ = this"))
                (when variadic
                  (emits "var ")
                  (emit (last params))
-                 (emits " = nil")
+                 (emitln " = nil")
                  (emitln "if (len(arguments) > 0) {")
                  (emits "  ")
                  (emit (last params))
@@ -528,11 +531,11 @@
                (emits ")")
                (emitln "}")
 
-               (emitln mname ".cljs$lang$maxFixedArity = " max-fixed-arity)
-               (emits mname ".cljs$lang$applyTo = ")
+               (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
+               (emits mname ".cljs__lang__applyTo = ")
                (emit-apply-to (assoc f :name name))
                (emitln)
-               (emitln mname ".cljs$core$IFn$_invoke$arity$variadic = " delegate-name)
+               (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " delegate-name)
                (emitln "return " mname)
                (emitln "})()"))))
 
@@ -577,7 +580,11 @@
             (emitln mname " = func(" (comma-sep
                                       (if variadic
                                         (butlast maxparams)
-                                        maxparams)) " interface{}," (when variadic ", arguments ...interface{}") ") interface{} {")
+                                        maxparams))
+                    (when (seq (if variadic
+                                 (butlast maxparams)
+                                 maxparams)) " interface{},")
+                    (when variadic " arguments ...interface{}") ") interface{} {")
           (when variadic
             (emits "var ")
             (emit (last maxparams))
@@ -586,7 +593,7 @@
           (doseq [[n meth] ms]
             (if (:variadic meth)
               (do (emitln "default:")
-                  (emitln "return " n ".cljs$core$IFn$_invoke$arity$variadic("
+                  (emitln "return " n ".cljs__core__IFn___invoke__arity__variadic("
                           (comma-sep (butlast maxparams))
                           (when (> (count maxparams) 1) ", ")
                           "cljs.core.array_seq(arguments, " max-fixed-arity "))"))
@@ -595,17 +602,17 @@
                 (emitln "return " n "(this" (if (zero? pcnt) nil
                                                 (list "," (comma-sep (take pcnt maxparams)))) ")"))))
           (emitln "}")
-          (emitln "panic(js.Error{'Invalid arity: ' + len(arguments)})")
+          (emitln "panic(js.Error{\"Invalid arity: \" + len(arguments)})")
           (emitln "}")
           (when variadic
-            (emitln mname ".cljs$lang$maxFixedArity = " max-fixed-arity)
-            (emitln mname ".cljs$lang$applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) ".cljs$lang$applyTo"))
+            (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
+            (emitln mname ".cljs__lang__applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) ".cljs__lang__applyTo"))
           (when has-name?
             (doseq [[n meth] ms]
               (let [c (count (:params meth))]
                 (if (:variadic meth)
-                  (emitln mname ".cljs$core$IFn$_invoke$arity$variadic = " n ".cljs$core$IFn$_invoke$arity$variadic")
-                  (emitln mname ".cljs$core$IFn$_invoke$arity$" c " = " n)))))
+                  (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " n ".cljs__core__IFn___invoke__arity__variadic")
+                  (emitln mname ".cljs__core__IFn___invoke__arity__" c " = " n)))))
           (emitln "return " mname)
           (emitln "})()")))
       (when loop-locals
@@ -647,7 +654,7 @@
       (doseq [{:keys [init] :as binding} bindings]
         (emits "var ")
         (emit binding) ; Binding will be treated as a var
-        (emits " = " init))
+        (emitln " = " init))
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop
@@ -683,7 +690,7 @@
     (when (= :expr context) (emits "})()"))))
 
 (defn protocol-prefix [psym]
-  (symbol (str (-> (str psym) (.replace \. \$) (.replace \/ \$)) "$")))
+  (symbol (str (-> (str psym) (.replace "." "__") (.replace "/" "__")) "__")))
 
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
@@ -729,7 +736,7 @@
              ;; direct dispatch to variadic case
              (and variadic? (> arity mfa))
              [(update-in f [:info :name]
-                             (fn [name] (symbol (str (munge info) ".cljs$core$IFn$_invoke$arity$variadic"))))
+                             (fn [name] (symbol (str (munge info) ".cljs__core__IFn___invoke__arity__variadic"))))
               {:max-fixed-arity mfa}]
 
              ;; direct dispatch to specific arity case
@@ -737,7 +744,7 @@
              (let [arities (map count mps)]
                (if (some #{arity} arities)
                  [(update-in f [:info :name]
-                             (fn [name] (symbol (str (munge info) ".cljs$core$IFn$_invoke$arity$" arity)))) nil]
+                             (fn [name] (symbol (str (munge info) ".cljs__core__IFn___invoke__arity__" arity)))) nil]
                  [f nil]))))
           [f nil])]
     (emit-wrap env
@@ -746,11 +753,11 @@
        (emits "!(" (first args) ")")
        proto?
        (let [pimpl (str (munge (protocol-prefix protocol))
-                        (munge (name (:name info))) "$arity$" (count args))]
+                        (munge (name (:name info))) "__arity__" (count args))]
          (emits (first args) "." pimpl "(" (comma-sep (cons "nil" (rest args))) ")"))
 
        keyword?
-       (emits f ".cljs$core$IFn$_invoke$arity$" (count args) "(" (comma-sep args) ")")
+       (emits f ".cljs__core__IFn___invoke__arity__" (count args) "(" (comma-sep args) ")")
 
        variadic-invoke
        (let [mfa (:max-fixed-arity variadic-invoke)]
@@ -763,9 +770,9 @@
 
        :else
        (if (and ana/*cljs-static-fns* (= (:op f) :var))
-         (let [fprop (str ".cljs$core$IFn$_invoke$arity$" (count args))]
-           (emits "(func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f ".(" (comma-sep (cons "nil" args)) ")}})()"))
-         (emits f ".(" (comma-sep (cons "nil" args)) ")"))))))
+         (let [fprop (str ".cljs__core__IFn___invoke__arity__" (count args))]
+           (emits "(func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep (cons "nil" args)) ")}})()"))
+         (emits f "(" (comma-sep (cons "nil" args)) ")"))))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]
@@ -780,7 +787,7 @@
 
 (defmethod emit* :ns
   [{:keys [name requires uses require-macros env]}]
-  (emitln "package " (munge name))
+  (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
   (emitln "import (")
   (emitln "\t" (wrap-in-double-quotes "js"))
@@ -797,14 +804,14 @@
     (emitln "/**")
     (emitln "* @constructor")
     (emitln "*/")
-    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) (munge t) "{")
+    (emitln "type " (munge t) " struct {" (interleave fields (repeat  " interface{};")) "}")
     (emitln (munge t) " = (func (" (comma-sep fields) "  interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
     (doseq [[pno pmask] pmasks]
-      (emitln "this.cljs$lang$protocol_mask$partition" pno "$ = " pmask))
-    (emitln "})"))
+      (emitln "this.cljs__lang__protocol_mask__partition" pno "__ = " pmask))
+    (emitln "})")))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
@@ -817,13 +824,13 @@
     (emitln "* @param {*=} __meta ")
     (emitln "* @param {*=} __extmap")
     (emitln "*/")
-    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) "}"
-    (emitln (munge t) " = (func (" (comma-sep fields) " interface{}, arguments ...interface{}) " (munge t) "{")
+    (emitln "type " (munge t) " struct {" (interleave fields (repeat  " interface{};")) "}")
+    (emitln (munge t) " = (func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
     (doseq [[pno pmask] pmasks]
-      (emitln "this.cljs$lang$protocol_mask$partition" pno "$ = " pmask))
+      (emitln "this.cljs__lang__protocol_mask__partition" pno "__ = " pmask))
     (emitln "switch len(arguments) {" )
     (emitln "case 1:")
     (emitln "this.__meta = arguments[0]")
@@ -846,7 +853,9 @@
 
 (defmethod emit* :js
   [{:keys [env code segs args]}]
-  (let [numeric (or (= ["(" "- " ")"] segs)
+  (let [segs (map #(string/replace % "$" "__") segs)
+        segs (map #(string/replace % "''" "\"\"") segs)
+        numeric (or (= ["(" "- " ")"] segs)
                  (some  #(= ["(" (format " %s " %) ")"] segs)
                         ["+" "-" "*" "/" "<" "<=" ">=" ">" "==" "===" "&"]))
         bitwise (or (= ["(" "~ " ")"] segs)
