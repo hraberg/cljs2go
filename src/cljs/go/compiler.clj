@@ -860,6 +860,7 @@
   [{:keys [env code segs args]}]
   (let [segs (map #(string/replace % "$" "__") segs)
         segs (map #(string/replace % "''" "\"\"") segs)
+        segs (map #(string/replace % "cljs.core" "cljs_core") segs)
         numeric (or (= ["(" "- " ")"] segs)
                  (some  #(= ["(" (format " %s " %) ")"] segs)
                         ["+" "-" "*" "/" "<" "<=" ">=" ">" "==" "===" "&"]))
