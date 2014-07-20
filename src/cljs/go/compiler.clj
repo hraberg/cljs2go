@@ -237,7 +237,7 @@
   `(let [env# ~env]
      (when (= :return (:context env#)) (emits "return "))
      ~@body
-     (when-not (= :expr (:context env#)) (emitln ";"))))
+     (when-not (= :expr (:context env#)) (emitln))))
 
 (defmethod emit* :no-op [m])
 
@@ -418,25 +418,28 @@
   (let [mname (munge name)]
     (when init
       (emit-comment doc (:jsdoc init))
-      (emits var)
-      (emits " = " init)
+      (if (= :fn (:op init))
+        (emits init)
+        (do
+          (emits (last (string/split (str mname) #"\.")))
+          (emits " = " init)))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
       (when-not (= :expr (:context env)) (emitln))
       (when export
-        (emitln "goog.exportSymbol('" (munge export) "', " mname ");")))))
+        (emitln "goog.exportSymbol('" (munge export) "', " mname ")")))))
 
 (defn emit-apply-to
   [{:keys [name params env]}]
   (let [arglist (gensym "arglist__")
         delegate-name (str (munge name) "__delegate")]
-    (emitln "(func (" arglist "){")
+    (emitln "(func (" arglist " interface{}) interface{} {")
     (doseq [[i param] (map-indexed vector (drop-last 2 params))]
       (emits "var ")
       (emit param)
       (emits " = cljs.core.first(")
-      (emitln arglist ");")
+      (emitln arglist ")")
       (emitln arglist " = cljs.core.next(" arglist ")"))
     (if (< 1 (count params))
       (do
@@ -472,9 +475,9 @@
 (defn emit-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
   (emit-wrap env
-    (emits "(func " (munge name) "(")
+    (emits "func " (munge name) "(")
     (emit-fn-params params)
-    (emits " interface{}){")
+    (emits " interface{}) interface{} {")
     (when type
       (emitln "var self__ = this"))
     (when recurs (emitln "for {"))
@@ -482,7 +485,7 @@
     (when recurs
       (emitln "break")
       (emitln "}"))
-    (emits "})")))
+    (emits "}")))
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
@@ -495,7 +498,7 @@
                (doseq [param params]
                  (emit param)
                  (when-not (= param (last params)) (emits ",")))
-               (emits " interface{}){")
+               (emits " interface{}) interface{} {")
                (when recurs (emitln "for {"))
                (emits expr)
                (when recurs
@@ -506,7 +509,7 @@
                (emitln "var " mname " = func (" (comma-sep
                                                  (if variadic
                                                    (butlast params)
-                                                   params)) " interface{}," (when variadic ", arguments ...interface{}") "){")
+                                                   params)) " interface{}," (when variadic ", arguments ...interface{}") ") interface{} {")
                (when type
                  (emitln "var self__ = this"))
                (when variadic
@@ -564,7 +567,7 @@
           (when (= :return (:context env))
             (emits "return "))
           (emitln "(func() {")
-          (emitln "var " mname " = nil;")
+          (emitln "var " mname " = nil")
           (doseq [[n meth] ms]
             (emits "var " n " = ")
             (if (:variadic meth)
@@ -573,8 +576,8 @@
             (emitln))
             (emitln mname " = func(" (comma-sep
                                       (if variadic
-                                        (butlast params)
-                                        params)) " interface{}," (when variadic ", arguments ...interface{}") "){")
+                                        (butlast maxparams)
+                                        maxparams)) " interface{}," (when variadic ", arguments ...interface{}") ") interface{} {")
           (when variadic
             (emits "var ")
             (emit (last maxparams))
@@ -741,7 +744,6 @@
       (cond
        opt-not?
        (emits "!(" (first args) ")")
-
        proto?
        (let [pimpl (str (munge (protocol-prefix protocol))
                         (munge (name (:name info))) "$arity$" (count args))]
@@ -795,14 +797,14 @@
     (emitln "/**")
     (emitln "* @constructor")
     (emitln "*/")
-    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) "}")
+    (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) (munge t) "{")
     (emitln (munge t) " = (func (" (comma-sep fields) "  interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
     (doseq [[pno pmask] pmasks]
       (emitln "this.cljs$lang$protocol_mask$partition" pno "$ = " pmask))
-    (emitln "})")))
+    (emitln "})"))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
@@ -816,10 +818,10 @@
     (emitln "* @param {*=} __extmap")
     (emitln "*/")
     (emitln "type " (munge t) "struct {" (interleave fields (repeat  " interface{};"))) "}"
-    (emitln (munge t) " = (func (" (comma-sep fields) " interface{}, arguments ...interface{}){")
+    (emitln (munge t) " = (func (" (comma-sep fields) " interface{}, arguments ...interface{}) " (munge t) "{")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
-      (emitln "this." fld " = " fld ";"))
+      (emitln "this." fld " = " fld))
     (doseq [[pno pmask] pmasks]
       (emitln "this.cljs$lang$protocol_mask$partition" pno "$ = " pmask))
     (emitln "switch len(arguments) {" )
@@ -844,11 +846,24 @@
 
 (defmethod emit* :js
   [{:keys [env code segs args]}]
-  (emit-wrap env
-             (if code
-               (emits code)
-               (emits (interleave (concat segs (repeat nil))
-                                  (concat args [nil]))))))
+  (let [numeric (or (= ["(" "- " ")"] segs)
+                 (some  #(= ["(" (format " %s " %) ")"] segs)
+                        ["+" "-" "*" "/" "<" "<=" ">=" ">" "==" "===" "&"]))
+        bitwise (or (= ["(" "~ " ")"] segs)
+                    (some  #(= ["(" (format " %s " %) ")"] segs)
+                           ["&" "|" "^" "<<" ">>" ">>>"]))]
+    (emit-wrap env
+               (if code
+                 (emits code)
+                 (emits (interleave (concat (replace {"===" "==" "!==" "!=" "null" "nil"} segs) (repeat nil))
+                                    (concat
+                                     (cond
+                                      numeric
+                                      (map #(str "cljs.core.double(" (emit-str %) ")") args)
+                                      bitwise
+                                      (map #(str "cljs.core.long(" (emit-str %) ")") args)
+                                      :else
+                                      args) [nil])))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
@@ -1084,7 +1099,7 @@
       (emit-constant (if ns
                        (str ns "/" name)
                        name))
-      (emits "};\n"))))
+      (emitln "}"))))
 
 (defn emit-constants-table-to-file [table dest]
   (with-open [out ^java.io.Writer (io/make-writer dest {})]

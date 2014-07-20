@@ -23,6 +23,11 @@
        go->str
        println)
 
+;; func plus_one(x interface{}) interface{} {
+;; 	return (x.(int) + (1))
+;; }
+
+
   (->> '[(ns hello)
          (defn ^:export greet [n]
            (str "Hello " n))]
