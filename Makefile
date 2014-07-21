@@ -49,7 +49,10 @@ define REPL
 (let [{:keys [ss port]} (clojure.tools.nrepl.server/start-server :host $(LEIN_REPL_HOST)
                                                                  :port $(LEIN_REPL_PORT)
                                                                  :transport-fn $(LEIN_REPL_TRANSPORT)
-                                                                 :handler $(LEIN_REPL_HANDLER))
+                                                                 :handler (if (= clojure.tools.nrepl.server/default-handler
+                                                                                 $(LEIN_REPL_HANDLER))
+                                                                             ($(LEIN_REPL_HANDLER))
+                                                                             $(LEIN_REPL_HANDLER)))
       host (.getHostName (.getInetAddress ^java.net.ServerSocket ss))]
       (printf  "nREPL server started on port %s on host %s - nrepl://%s:%s\n" port host host port))
 endef
