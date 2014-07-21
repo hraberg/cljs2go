@@ -3,8 +3,10 @@
 CLASSPATH=$(shell cat .lein-classpath)
 LEIN_JVM_OPTS=-Xms512m -Xmx512m -noverify -XX:+TieredCompilation -XX:TieredStopAtLevel=1
 CLJ=java $(JVM_OPTS) $(LEIN_JVM_OPTS) -Xbootclasspath/a:$(CLASSPATH) clojure.main
-REPL_PORT=0
-REPL_TRANSPORT=clojure.tools.nrepl.transport/bencode
+LEIN_REPL_PORT=0
+LEIN_REPL_HOST="127.0.0.1"
+LEIN_REPL_TRANSPORT=clojure.tools.nrepl.transport/bencode
+LEIN_REPL_HANDLER=clojure.tools.nrepl.server/default-handler
 WATCH=$(shell echo $(CLASSPATH) | tr : ' ' | sed -E 's/\S+\.jar ?//g' | xargs ls -d {} 2> /dev/null)
 LEIN=$(shell (which lein || echo ./lein))
 
@@ -43,7 +45,11 @@ rlwrap-repl: classpath .rlwrap-completions
 
 define REPL
 (require (symbol "clojure.tools.nrepl.server"))
-(let [{:keys [ss port]} (clojure.tools.nrepl.server/start-server :port $(REPL_PORT) :transport-fn $(REPL_TRANSPORT))
+(-> "$(LEIN_REPL_HANDLER)" symbol namespace symbol require)
+(let [{:keys [ss port]} (clojure.tools.nrepl.server/start-server :host $(LEIN_REPL_HOST)
+                                                                 :port $(LEIN_REPL_PORT)
+                                                                 :transport-fn $(LEIN_REPL_TRANSPORT)
+                                                                 :handler $(LEIN_REPL_HANDLER))
       host (.getHostName (.getInetAddress ^java.net.ServerSocket ss))]
       (printf  "nREPL server started on port %s on host %s - nrepl://%s:%s\n" port host host port))
 endef
