@@ -675,30 +675,6 @@
     (emitln "}")
     (emitln "})")))
 
-(defmethod emit* :js
-  [{:keys [env code segs args]}]
-  (let [segs (map #(string/replace % "$" "__") segs)
-        segs (map #(string/replace % "''" "\"\"") segs)
-        segs (map #(string/replace % "cljs.core" "cljs_core") segs)
-        numeric (or (= ["(" "- " ")"] segs)
-                 (some  #(= ["(" (format " %s " %) ")"] segs)
-                        ["+" "-" "*" "/" "<" "<=" ">=" ">" "==" "===" "&"]))
-        bitwise (or (= ["(" "~ " ")"] segs)
-                    (some  #(= ["(" (format " %s " %) ")"] segs)
-                           ["&" "|" "^" "<<" ">>" ">>>"]))]
-    (emit-wrap env
-               (if code
-                 (emits code)
-                 (emits (interleave (concat (replace {"===" "==" "!==" "!=" "null" "nil"} segs) (repeat nil))
-                                    (concat
-                                     (cond
-                                      numeric
-                                      (map #(str "cljs_core.double(" (emit-str %) ")") args)
-                                      bitwise
-                                      (map #(str "cljs_core.long(" (emit-str %) ")") args)
-                                      :else
-                                      args) [nil])))))))
-
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
   String. Always returns a String."

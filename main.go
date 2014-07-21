@@ -25,7 +25,7 @@ func long(x interface{}) int64 {
 }
 
 func plus_one(x interface{}) interface{} {
-	return (double(x) + double((1)))
+	return (double(x) + (1))
 }
 
 func main() {

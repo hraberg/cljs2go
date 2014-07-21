@@ -133,48 +133,48 @@
 ;; internal - do not use.
 (defmacro truth_ [x]
   (core/assert (clojure.core/symbol? x) "x is substituted twice")
-  (core/list 'js* "(~{} != null && ~{} !== false)" x x))
+  (core/list 'js* "(~{} != nil && ~{} != false)" x x))
 
 (defmacro js-delete [obj key]
   (core/list 'js* "delete ~{}[~{}]" obj key))
 
 (defmacro true? [x]
-  (bool-expr (core/list 'js* "~{} === true" x)))
+  (bool-expr (core/list 'js* "~{} == true" x)))
 
 (defmacro false? [x]
-  (bool-expr (core/list 'js* "~{} === false" x)))
+  (bool-expr (core/list 'js* "~{} == false" x)))
 
 (defmacro array? [x]
   (if (= :nodejs (:target @env/*compiler*))
     (bool-expr `(.isArray js/Array ~x))
-    (bool-expr (core/list 'js* "~{} instanceof Array" x))))
+    (bool-expr (core/list 'js* "~{}.(type) == \"interface{}\"" x))))
 
 (defmacro string? [x]
-  (bool-expr (core/list 'js* "typeof ~{} === 'string'" x)))
+  (bool-expr (core/list 'js* "~{}.(type) == \"string\"" x)))
 
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
   (bool-expr
-   (core/list 'js* "typeof ~{} !== 'undefined'"
+   (core/list 'js* "~{} != nil"
               (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
-  (bool-expr (core/list 'js* "(void 0 === ~{})" x)))
+  (bool-expr (core/list 'js* "(nil == ~{})" x)))
 
 (defmacro identical? [a b]
-  (bool-expr (core/list 'js* "(~{} === ~{})" a b)))
+  (bool-expr (core/list 'js* "(&~{} == &~{})" a b)))
 
 (defmacro instance? [t o]
   ;; Google Closure warns about some references to RegExp, so
   ;; (instance? RegExp ...) needs to be inlined, but the expansion
   ;; should preserve the order of argument evaluation.
   (bool-expr (if (clojure.core/symbol? t)
-               (core/list 'js* "(~{} instanceof ~{})" o t)
+               (core/list 'js* "(~{}.(type) == ~{})" o t)
                `(let [t# ~t o# ~o]
-                  (~'js* "(~{} instanceof ~{})" o# t#)))))
+                  (~'js* "(~{}.(type) == ~{})" o# t#)))))
 
 (defmacro number? [x]
-  (bool-expr (core/list 'js* "typeof ~{} === 'number'" x)))
+  (bool-expr (core/list 'js* "~{}.(type) == 'float64'" x)))
 
 (defmacro aget
   ([a i]
@@ -191,86 +191,89 @@
            astr (apply core/str (repeat n "[~{}]"))]
        `(~'js* ~(core/str "(~{}[~{}][~{}]" astr " = ~{})") ~a ~idx ~idx2 ~@idxv))))
 
-(defmacro byte [x] x)
-(defmacro short [x] x)
-(defmacro float [x] x)
-(defmacro double [x] x)
+(defmacro byte [x] (core/list 'js* "(~{}).(byte)" x))
+(defmacro short [x] (core/list 'js* "(~{}).(int16)" x))
+(defmacro float [x] (core/list 'js* "(~{}).(float32)" x))
+(defmacro double [x]
+  (if (core/number? x)
+    x
+    (core/list 'js* "(~{}).(float64)" x)))
 
-(defmacro unchecked-byte [x] x)
-(defmacro unchecked-char [x] x)
-(defmacro unchecked-short [x] x)
-(defmacro unchecked-float [x] x)
-(defmacro unchecked-double [x] x)
+(defmacro unchecked-byte [x] `(byte ~x))
+(defmacro unchecked-char [x] (core/list 'js* "(~{}).(uint16)" x))
+(defmacro unchecked-short [x] `(short ~x))
+(defmacro unchecked-float [x] `(float ~x))
+(defmacro unchecked-double [x] `(double ~x))
 
 (defmacro ^::ana/numeric +
   ([] 0)
-  ([x] x)
-  ([x y] (core/list 'js* "(~{} + ~{})" x y))
+  ([x] `(double ~x))
+  ([x y] (core/list 'js* "(~{} + ~{})" `(double ~x) `(double ~y)))
   ([x y & more] `(+ (+ ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric -
-  ([x] (core/list 'js* "(- ~{})" x))
-  ([x y] (core/list 'js* "(~{} - ~{})" x y))
+  ([x] (core/list 'js* "(- ~{})" `(double ~x)))
+  ([x y] (core/list 'js* "(~{} - ~{})" `(double ~x) `(double ~y)))
   ([x y & more] `(- (- ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric *
   ([] 1)
-  ([x] x)
-  ([x y] (core/list 'js* "(~{} * ~{})" x y))
+  ([x] `(double ~x))
+  ([x y] (core/list 'js* "(~{} * ~{})" `(double ~x) `(double ~y)))
   ([x y & more] `(* (* ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric /
   ([x] `(/ 1 ~x))
-  ([x y] (core/list 'js* "(~{} / ~{})" x y))
+  ([x y] (core/list 'js* "(~{} / ~{})" `(double ~x) `(double ~y)))
   ([x y & more] `(/ (/ ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric divide
   ([x] `(/ 1 ~x))
-  ([x y] (core/list 'js* "(~{} / ~{})" x y))
+  ([x y] (core/list 'js* "(~{} / ~{})" `(double ~x) `(double ~y)))
   ([x y & more] `(/ (/ ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric <
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} < ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} < ~{})" `(double ~x) `(double ~y))))
   ([x y & more] `(and (< ~x ~y) (< ~y ~@more))))
 
 (defmacro ^::ana/numeric <=
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} <= ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} <= ~{})" `(double ~x) `(double ~y))))
   ([x y & more] `(and (<= ~x ~y) (<= ~y ~@more))))
 
 (defmacro ^::ana/numeric >
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} > ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} > ~{})" `(double ~x) `(double ~y))))
   ([x y & more] `(and (> ~x ~y) (> ~y ~@more))))
 
 (defmacro ^::ana/numeric >=
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} >= ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} >= ~{})" `(double ~x) `(double ~y))))
   ([x y & more] `(and (>= ~x ~y) (>= ~y ~@more))))
 
 (defmacro ^::ana/numeric ==
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} === ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} == ~{})" `(double ~x) `(double ~y))))
   ([x y & more] `(and (== ~x ~y) (== ~y ~@more))))
 
 (defmacro ^::ana/numeric max
   ([x] x)
   ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "((~{} > ~{}) ? ~{} : ~{})" x# y# x# y#)))
+            (if (> x# y#) x# y#)))
   ([x y & more] `(max (max ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric min
   ([x] x)
   ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "((~{} < ~{}) ? ~{} : ~{})" x# y# x# y#)))
+            (if (< x# y#) x# y#)))
   ([x y & more] `(min (min ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric js-mod [num div]
-  (core/list 'js* "(~{} % ~{})" num div))
+  (core/list 'js* "(~{} % ~{})" `(double ~num) `(double ~div)))
 
 (defmacro ^::ana/numeric bit-not [x]
-  (core/list 'js* "(~ ~{})" x))
+  (core/list 'js* "(~ ~{})" `(int ~x)))
 
 (defmacro ^::ana/numeric bit-and
   ([x y] (core/list 'js* "(~{} & ~{})" x y))
@@ -329,22 +332,22 @@
   (core/list 'js* "(1 << ~{})" `(mask ~hash ~shift)))
 
 (def #^:private base-type
-  {nil "null"
-   'object "object"
+  {nil "nil"
+   'object "interface{}"
    'string "string"
-   'number "number"
-   'array "array"
-   'function "function"
-   'boolean "boolean"
+   'number "float64"
+   'array "[]interface{}"
+   'function "func"
+   'boolean "bool"
    'default "_"})
 
 (def #^:private js-base-type
-  {'js/Boolean "boolean"
+  {'js/Boolean "bool"
    'js/String "string"
-   'js/Array "array"
-   'js/Object "object"
-   'js/Number "number"
-   'js/Function "function"})
+   'js/Array "[]interface{}"
+   'js/Object "interface{}"
+   'js/Number "float64"
+   'js/Function "func"})
 
 (defn js-obj* [kvs]
   (let [kvs-str (->> (repeat "~{}:~{}")
@@ -352,10 +355,10 @@
                      (interpose ",")
                      (apply core/str))]
     (vary-meta
-     (list* 'js* (core/str "{" kvs-str "}") (apply concat kvs))
+     (list* 'js* (core/str "map[string]interface{}{" kvs-str "}") (apply concat kvs))
      assoc :tag 'object)))
 
 (defmacro alength [a]
   (vary-meta
-   (core/list 'js* "~{}.length" a)
+   (core/list 'js* "len(~{})" a)
    assoc :tag 'number))
