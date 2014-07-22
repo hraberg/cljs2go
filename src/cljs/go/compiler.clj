@@ -10,18 +10,7 @@
 ;; References to js in the public API are retained.
 
 (require 'cljs.compiler)
-
-(ns cljs.compiler
-  (:refer-clojure :exclude [munge macroexpand-1])
-  (:require [clojure.java.io :as io]
-            [clojure.string :as string]
-            [clojure.tools.reader :as reader]
-            [cljs.env :as env]
-            [cljs.tagged-literals :as tags]
-            [cljs.analyzer :as ana]
-            [cljs.source-map :as sm])
-  (:import java.lang.StringBuilder
-           java.io.File))
+(in-ns 'cljs.compiler)
 
 ;; js* overlays, loaded by core.analyzer at the first run.
 (alter-var-root #'ana/*cljs-macros-path* (constantly "/cljs/go/core"))

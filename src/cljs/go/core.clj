@@ -12,43 +12,7 @@
 ;; Some of this leaks out into cljs/core.cljs
 
 (require 'cljs.core)
-
-(ns cljs.core
-  (:refer-clojure :exclude [-> ->> .. amap and areduce alength aclone assert binding bound-fn case comment cond condp
-                            declare definline definterface defmethod defmulti defn defn- defonce
-                            defprotocol defrecord defstruct deftype delay destructure doseq dosync dotimes doto
-                            extend-protocol extend-type fn for future gen-class gen-interface
-                            if-let if-not import io! lazy-cat lazy-seq let letfn locking loop
-                            memfn ns or proxy proxy-super pvalues refer-clojure reify sync time
-                            when when-first when-let when-not while with-bindings with-in-str
-                            with-loading-context with-local-vars with-open with-out-str with-precision with-redefs
-                            satisfies? identical? true? false? number? nil? instance? symbol? keyword? string? str get
-                            make-array vector list hash-map array-map hash-set
-
-                            aget aset
-                            + - * / < <= > >= == zero? pos? neg? inc dec max min mod
-                            byte char short int long float double
-                            unchecked-byte unchecked-char unchecked-short unchecked-int
-                            unchecked-long unchecked-float unchecked-double
-                            unchecked-add unchecked-add-int unchecked-dec unchecked-dec-int
-                            unchecked-divide unchecked-divide-int unchecked-inc unchecked-inc-int
-                            unchecked-multiply unchecked-multiply-int unchecked-negate unchecked-negate-int
-                            unchecked-subtract unchecked-subtract-int unchecked-remainder-int
-                            unsigned-bit-shift-right
-
-                            bit-and bit-and-not bit-clear bit-flip bit-not bit-or bit-set
-                            bit-test bit-shift-left bit-shift-right bit-xor
-
-                            cond-> cond->> as-> some-> some->>
-
-                            if-some when-some])
-  (:require clojure.walk
-            clojure.set
-            cljs.compiler
-            [cljs.env :as env]))
-
-(alias 'core 'clojure.core)
-(alias 'ana 'cljs.analyzer)
+(in-ns 'cljs.core)
 
 (defmacro str [& xs]
   ;; Eagerly stringify any string or char literals.
