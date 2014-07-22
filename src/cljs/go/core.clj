@@ -100,7 +100,7 @@
   (core/list 'js* "(~{} != nil && ~{} != false)" x x))
 
 (defmacro js-delete [obj key]
-  (core/list 'js* "delete ~{}[~{}]" obj key))
+  (core/list 'js* "delete(~{}, ~{})" obj key))
 
 (defmacro true? [x]
   (bool-expr (core/list 'js* "~{} == true" x)))
