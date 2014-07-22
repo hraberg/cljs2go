@@ -314,7 +314,7 @@
    'js/Function "func"})
 
 (defn js-obj* [kvs]
-  (let [kvs-str (->> (repeat "~{}:~{}")
+  (let [kvs-str (->> (repeat "\"~{}\":~{}")
                      (take (count kvs))
                      (interpose ",")
                      (apply core/str))]
