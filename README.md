@@ -2,6 +2,10 @@
 
 ClojureScript to Go.
 
+### See Also
+
+https://github.com/tcard/gojure
+
 ## License
 
 Copyright © 2014 Håkan Råberg
