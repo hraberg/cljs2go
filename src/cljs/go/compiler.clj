@@ -260,10 +260,9 @@
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
       (when-not (= :expr (:context env)) (emitln))
-
-      (when export
-        (let [export (last (string/split (str (munge export)) #"\."))]
-          (emitln "var "(str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)) " = " (last (string/split (str mname) #"\."))))))))
+      (let [export (or (and export (last (string/split (str (munge export)) #"\.")))
+                       (last (string/split (str mname) #"\.")))]
+        (emitln "var "(str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)) " = " (last (string/split (str mname) #"\.")))))))
 
 (defn emit-apply-to
   [{:keys [name params env]}]
