@@ -5,6 +5,8 @@ ClojureScript to Go.
 ### See Also
 
 https://github.com/tcard/gojure
+https://github.com/bjeanes/gojure
+https://github.com/zhemao/glisp
 
 ## License
 
