@@ -121,7 +121,13 @@
       ; (prevents duplicate fn-param-names)
       (emits (munge arg))
       (when-not (= :statement (:context env))
-        (emit-wrap env (emits (munge (if (= ana/*cljs-ns* (:ns info)) (update-in info [:name] name) info))))))))
+        (emit-wrap env (emits (munge (cond
+                                      (= ana/*cljs-ns* (:ns info))
+                                      (update-in info [:name] name)
+                                      (:ns info)
+                                      (update-in info [:name] #(str (namespace %) "."
+                                                                    (string/upper-case (subs (name %) 0 1)) (subs (name %) 1)))
+                                      :else info))))))))
 
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
