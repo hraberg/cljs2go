@@ -39,7 +39,7 @@
 
   (->> '[(ns hello)
          (defn main []
-           (println "Hello Workd"))]
+           (println "Hello World"))]
        cljs->go
        go->str
        println)
