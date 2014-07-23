@@ -1,6 +1,7 @@
 # LAKE - Leiningen AKcelErator
 
 CLASSPATH=$(shell cat .lein-classpath)
+LEIN_MAIN=`cat project.clj | grep :main | awk '{ print $$2 }'`
 LEIN_JVM_OPTS=-Xms512m -Xmx512m -noverify -XX:+TieredCompilation -XX:TieredStopAtLevel=1
 CLJ=java $(JVM_OPTS) $(LEIN_JVM_OPTS) -Xbootclasspath/a:$(CLASSPATH) clojure.main
 LEIN_REPL_PORT=0
@@ -69,6 +70,9 @@ define TEST
 (clojure.test/run-all-tests #"^(?!clojure|user).*test.*")
 endef
 export TEST
+
+run: classpath
+	@$(CLJ) -m $(LEIN_MAIN)
 
 test: classpath
 	@$(CLJ) -e "$$TEST"
