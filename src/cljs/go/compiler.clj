@@ -61,10 +61,10 @@
 (defmethod emit-constant clojure.lang.Keyword [x]
   (if (-> @env/*compiler* :opts :emit-constants)
     (let [value (-> @env/*compiler* ::ana/constant-table x)]
-      (emits "cljs_core." value))
+      (emits "" value))
     (let [ns   (namespace x)
           name (name x)]
-      (emits "cljs_core.Keyword{")
+      (emits "Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
@@ -82,7 +82,7 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "cljs_core.Symbol{")
+    (emits "Symbol{")
     (emit-constant ns)
     (emits ",")
     (emit-constant name)
@@ -100,7 +100,7 @@
   (emits "js.Date{" (.getTime date) "}"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "cljs_core.UUID{\"" (.toString uuid) "\"}"))
+  (emits "UUID{\"" (.toString uuid) "\"}"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
@@ -122,7 +122,7 @@
       (emits (munge arg))
       (when-not (= :statement (:context env))
         (emit-wrap env (emits (munge (cond
-                                      (= ana/*cljs-ns* (:ns info))
+                                      ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
                                       (update-in info [:name] name)
                                       (:ns info)
                                       (update-in info [:name] #(str (namespace %) "."
@@ -132,7 +132,7 @@
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
-    (emits "cljs_core.with_meta(" expr "," meta ")")))
+    (emits "with_meta(" expr "," meta ")")))
 
 (defmethod emit* :map
   [{:keys [env keys vals]}]
@@ -140,19 +140,19 @@
     (emit-wrap env
       (cond
         (zero? (count keys))
-        (emits "cljs_core.PersistentArrayMap.EMPTY")
+        (emits "PersistentArrayMap.EMPTY")
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "cljs_core.PersistentArrayMap{nil, " (count keys) ", []interface{}{"
+          (emits "PersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil}")
-          (emits "cljs_core.PersistentArrayMap.fromArray([]interface{}{"
+          (emits "PersistentArrayMap.fromArray([]interface{}{"
             (comma-sep (interleave keys vals))
             "}, true, false)"))
 
         :else
-        (emits "cljs_core.PersistentHashMap.fromArrays([]interface{}{"
+        (emits "PersistentHashMap.fromArrays([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
@@ -162,32 +162,32 @@
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "cljs_core.List.EMPTY")
-      (emits "cljs_core.list(" (comma-sep items) ")"))))
+      (emits "List.EMPTY")
+      (emits "List(" (comma-sep items) ")"))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "cljs_core.PersistentVector.EMPTY")
+      (emits "PersistentVector.EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "cljs_core.PersistentVector{nil, " cnt
-            ", 5, cljs_core.PersistentVector.EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
-          (emits "cljs_core.PersistentVector.fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
+          (emits "PersistentVector{nil, " cnt
+            ", 5, PersistentVector.EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
+          (emits "PersistentVector.fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
 
 (defmethod emit* :set
   [{:keys [items env]}]
   (emit-wrap env
     (cond
       (empty? items)
-      (emits "cljs_core.PersistentHashSet.EMPTY")
+      (emits "PersistentHashSet.EMPTY")
 
       (distinct-constants? items)
-      (emits "cljs_core.PersistentHashSet{nil, cljs_core.PersistentArrayMap{nil, " (count items) ", []interface{}{"
+      (emits "PersistentHashSet{nil, PersistentArrayMap{nil, " (count items) ", []interface{}{"
         (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "cljs_core.PersistentHashSet.fromArray([]interface{}{" (comma-sep items) "}, true)"))))
+      :else (emits "PersistentHashSet.fromArray([]interface{}{" (comma-sep items) "}, true)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
@@ -208,10 +208,10 @@
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))]
     (if (= :expr context)
-      (emits "(func() { if " (when checked "cljs_core.truth_") "(" test ") { return " then "} else { return " else "} )()")
+      (emits "(func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} )()")
       (do
         (if checked
-          (emitln "if(cljs_core.truth_(" test "))")
+          (emitln "if(Truth_(" test "))")
           (emitln "if(" test ")"))
         (emitln "{" then "} else")
         (emitln "{" else "}")))))
@@ -260,9 +260,12 @@
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
       (when-not (= :expr (:context env)) (emitln))
-      (let [export (or (and export (last (string/split (str (munge export)) #"\.")))
-                       (last (string/split (str mname) #"\.")))]
-        (emitln "var "(str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)) " = " (last (string/split (str mname) #"\.")))))))
+      (let [short-name (last (string/split (str mname) #"\."))
+            export (or (and export (last (string/split (str (munge export)) #"\.")))
+                       short-name)
+            export (and export (str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)))]
+        (when-not (= export short-name)
+          (emitln "var "export  " = " short-name))))))
 
 (defn emit-apply-to
   [{:keys [name params env]}]
@@ -272,17 +275,17 @@
     (doseq [[i param] (map-indexed vector (drop-last 2 params))]
       (emits "var ")
       (emit param)
-      (emits " = cljs_core.first(")
+      (emits " = First(")
       (emitln arglist ")")
-      (emitln arglist " = cljs_core.next(" arglist ")"))
+      (emitln arglist " = Next(" arglist ")"))
     (if (< 1 (count params))
       (do
         (emits "var ")
         (emit (last (butlast params)))
-        (emitln " = cljs_core.first(" arglist ")")
+        (emitln " = First(" arglist ")")
         (emits "var ")
         (emit (last params))
-        (emitln " = cljs_core.rest(" arglist ")")
+        (emitln " = Rest(" arglist ")")
         (emits "return " delegate-name "(")
         (doseq [param params]
           (emit param)
@@ -291,7 +294,7 @@
       (do
         (emits "var ")
         (emit (last params))
-        (emitln " = cljs_core.seq(" arglist ")")
+        (emitln " = Seq(" arglist ")")
         (emits "return " delegate-name "(")
         (doseq [param params]
           (emit param)
@@ -350,7 +353,7 @@
                  (emitln "if (len(arguments) > 0) {")
                  (emits "  ")
                  (emit (last params))
-                 (emits " = cljs_core.array_seq(arguments,0)")
+                 (emits " = Array_seq(arguments,0)")
                  (emitln "} "))
                (emits "return " delegate-name "(this,")
                (doseq [param params]
@@ -424,7 +427,7 @@
                   (emitln "return " n ".cljs__core__IFn___invoke__arity__variadic("
                           (comma-sep (butlast maxparams))
                           (when (> (count maxparams) 1) ", ")
-                          "cljs_core.array_seq(arguments, " max-fixed-arity "))"))
+                          "Array_seq(arguments, " max-fixed-arity "))"))
               (let [pcnt (count (:params meth))]
                 (emitln "case " pcnt ":")
                 (emitln "return " n "(this" (if (zero? pcnt) nil
@@ -588,7 +591,7 @@
        (let [mfa (:max-fixed-arity variadic-invoke)]
         (emits f "(" (comma-sep (take mfa args))
                (when-not (zero? mfa) ",")
-               "cljs_core.array_seq([]interface{}{" (comma-sep (drop mfa args)) "}, 0))"))
+               "Array_seq([]interface{}{" (comma-sep (drop mfa args)) "}, 0))"))
 
        (or fn? js? goog?)
        (emits f "(" (comma-sep args)  ")")
@@ -618,7 +621,7 @@
   (emitln "import (")
   (emitln "\t" (wrap-in-double-quotes "js"))
   (when-not (= name 'cljs.core)
-    (emitln "\t" "cljs_core" " " (wrap-in-double-quotes "cljs/core")))
+    (emitln "\t" "." " " (wrap-in-double-quotes "cljs/core")))
   (doseq [lib (distinct (into (vals requires) (vals uses)))]
     (emitln "\t" (string/replace (munge lib) "." "_") " " (wrap-in-double-quotes (string/replace (munge lib) #"[._]" "/"))))
   (emitln ")")
@@ -631,8 +634,8 @@
     (emitln "/**")
     (emitln "* @constructor")
     (emitln "*/")
-    (emitln "type " (munge t) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (munge t) " = (func (" (comma-sep fields) "  interface{}){")
+    (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
+    (emitln (last (string/split (str (munge t)) #"\.")) " = (func (" (comma-sep fields) "  interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
@@ -651,8 +654,8 @@
     (emitln "* @param {*=} __meta ")
     (emitln "* @param {*=} __extmap")
     (emitln "*/")
-    (emitln "type " (munge t) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (munge t) " = (func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
+    (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
+    (emitln (last (string/split (str (munge t)) #"\.")) " = (func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
@@ -692,7 +695,7 @@
   (doseq [[keyword value] table]
     (let [ns   (namespace keyword)
           name (name keyword)]
-      (emits "cljs_core." value " = cljs_core.Keyword{")
+      (emits "" value " = Keyword{")
       (emit-constant ns)
       (emits ",")
       (emit-constant name)
