@@ -7,7 +7,7 @@ CLJ=java $(JVM_OPTS) $(LEIN_JVM_OPTS) -Xbootclasspath/a:$(CLASSPATH) clojure.mai
 LEIN_REPL_PORT=0
 LEIN_REPL_HOST="127.0.0.1"
 LEIN_REPL_TRANSPORT=clojure.tools.nrepl.transport/bencode
-LEIN_REPL_HANDLER=clojure.tools.nrepl.server/default-handler
+LEIN_REPL_HANDLER=cider.nrepl/cider-nrepl-handler
 WATCH=$(shell echo $(CLASSPATH) | tr : ' ' | sed -E 's/\S+\.jar ?//g' | xargs ls -d {} 2> /dev/null)
 LEIN=$(shell (which lein || echo ./lein))
 

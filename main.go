@@ -1,6 +1,57 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
+
+type Bar func(x interface{}) interface{}
+
+func (b Bar) Bar1(x interface{}) interface{} {
+	fmt.Printf("%d\n", x)
+	return "Bar1"
+}
+
+func (b Bar) Bar2(x interface{}, y interface{}) interface{} {
+	fmt.Printf("%d %d\n", x, y)
+	return "Bar2"
+}
+
+func (b Bar) BarVA(x, y interface{}, xs ...interface{}) interface{} {
+	fmt.Printf("%d %d %d\n", x, y, xs)
+	return "BarVA"
+}
+
+func (b Bar) ApplyTo(xs []interface{}) interface{} {
+	var l = len(xs)
+	switch {
+	case l > 2:
+		var v = reflect.ValueOf(b)
+		var vs = make([]reflect.Value, len(xs))
+		for i, x := range xs {
+			vs[i] = reflect.ValueOf(x)
+		}
+		return v.MethodByName("BarVA").Call(vs)[0].Interface()
+	case l == 1:
+		return b.Bar1(xs[0])
+	case l == 2:
+		return b.Bar2(xs[0], xs[1])
+	}
+	panic(fmt.Sprintf("Invalid arity: %d", l))
+}
+
+func (b Bar) Invoke(xs ...interface{}) interface{} {
+	var l = len(xs)
+	switch {
+	case l > 2:
+		return b.ApplyTo(xs)
+	case l == 1:
+		return b.Bar1(xs[0])
+	case l == 2:
+		return b.Bar2(xs[0], xs[1])
+	}
+	panic(fmt.Sprintf("Invalid arity: %d", l))
+}
 
 func double(x interface{}) float64 {
 	switch x.(type) {
@@ -30,4 +81,37 @@ func plus_one(x interface{}) interface{} {
 
 func main() {
 	fmt.Printf("ClojureScript to Go [go] %v\n", plus_one(1))
+
+	var bar Bar
+	bar = func(x interface{}) interface{} { return bar.Bar1(x) }
+	fmt.Printf("%v\n", bar(8))
+
+	var xs = []int{4, 5, 6, 7}
+	var is = make([]interface{}, len(xs))
+	for i, x := range xs {
+		is[i] = x
+	}
+	fmt.Printf("%v\n", bar.ApplyTo(is))
+	xs = []int{4}
+	is = make([]interface{}, len(xs))
+	for i, x := range xs {
+		is[i] = x
+	}
+	fmt.Printf("%v\n", bar.ApplyTo(is))
+
+	xs = []int{8, 9}
+	is = make([]interface{}, len(xs))
+	for i, x := range xs {
+		is[i] = x
+	}
+	fmt.Printf("%v\n", bar.ApplyTo(is))
+
+	fmt.Printf("%v\n", bar.Bar1(2))
+	fmt.Printf("%v\n", bar.Bar2(2, 3))
+	fmt.Printf("%v\n", bar.BarVA(2, 3, 4))
+
+	fmt.Printf("%v\n", bar.Invoke(2))
+	fmt.Printf("%v\n", bar.Invoke(2, 3))
+	fmt.Printf("%v\n", bar.Invoke(2, 3, 4))
+	fmt.Printf("%v\n", bar.Invoke())
 }
