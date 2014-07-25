@@ -22,7 +22,7 @@ func (f Foo) Bar_2_VA(x, y interface{}, xs ...interface{}) interface{} {
 	return "Bar_2_VA"
 }
 
-func (f Foo) ApplyTo(xs []interface{}) interface{} {
+func (f Foo) Bar_ApplyTo(xs []interface{}) interface{} {
 	var l = len(xs)
 	switch {
 	case l > 2:
@@ -44,7 +44,7 @@ func (f Foo) Bar(xs ...interface{}) interface{} {
 	var l = len(xs)
 	switch {
 	case l > 2:
-		return f.ApplyTo(xs)
+		return f.Bar_ApplyTo(xs)
 	case l == 1:
 		return f.Bar_1(xs[0])
 	case l == 2:
@@ -90,20 +90,20 @@ func main() {
 	for i, x := range xs {
 		is[i] = x
 	}
-	fmt.Printf("%v\n", foo.ApplyTo(is))
+	fmt.Printf("%v\n", foo.Bar_ApplyTo(is))
 	xs = []int{4}
 	is = make([]interface{}, len(xs))
 	for i, x := range xs {
 		is[i] = x
 	}
-	fmt.Printf("%v\n", foo.ApplyTo(is))
+	fmt.Printf("%v\n", foo.Bar_ApplyTo(is))
 
 	xs = []int{8, 9}
 	is = make([]interface{}, len(xs))
 	for i, x := range xs {
 		is[i] = x
 	}
-	fmt.Printf("%v\n", foo.ApplyTo(is))
+	fmt.Printf("%v\n", foo.Bar_ApplyTo(is))
 
 	fmt.Printf("%v\n", foo.Bar_1(2))
 	fmt.Printf("%v\n", foo.Bar_2(2, 3))
