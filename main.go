@@ -7,6 +7,10 @@ import (
 
 type Foo struct{}
 
+type Bar interface {
+	Bar(...interface{}) interface{}
+}
+
 func (f Foo) Bar_1(x interface{}) interface{} {
 	fmt.Printf("%d\n", x)
 	return "Bar_1"
