@@ -84,7 +84,7 @@ clean:
 
 inotifywait:
 ifeq ($(shell which inotifywait),)
-	sudo apt-get install inotify-tools
+	sudo apt-get -y install inotify-tools
 endif
 
 test-refresh: classpath inotifywait
