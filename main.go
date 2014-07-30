@@ -5,6 +5,34 @@ import (
 	"reflect"
 )
 
+/*
+;; IFn
+
+;; Used in core.cljs apply, which uses apply-to built by core.clj gen-apply-to.
+;; It falls back to JS .apply it applyTo doesn't exist on the passed in fn.
+.-cljs$lang$maxFixedArity ;; a field on the fn
+.-cljs$lang$applyTo ;; accessed as field to see if it's there
+.cljs$lang$applyTo  ;; then called as fn if it exists.
+
+;; Used by the dispatch fn to actually invoke the various overloaded fns, uses JS arguments in a switch.
+;; See emit* :fn and emit* :invoke
+;; emit* :fn will emit a single fn or a dispatch fn around the real overlaoded fns.
+;; At times these are called directly, like cljs.core.str.cljs$core$IFn$_invoke$arity$1(~{}) in cljs.core/str
+.cljs$core$IFn$_invoke$arity$variadic
+.cljs$core$IFn$_invoke$arity$N
+
+;; defprotocol
+
+.-cljs$lang$protocol_mask$partitionN$
+
+;; deftype
+
+.-cljs$lang$type
+.-cljs$lang$ctorStr
+.-cljs$lang$ctorPrWriter
+
+*/
+
 type Foo struct{}
 
 type Bar interface {
