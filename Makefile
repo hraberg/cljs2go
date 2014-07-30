@@ -2,7 +2,7 @@
 
 CLASSPATH=$(shell cat .lein-classpath)
 LEIN_MAIN=$(shell cat project.clj | grep :main | awk '{ print $$2 }')
-LEIN_JVM_OPTS=-Xms512m -Xmx512m -noverify -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+LEIN_JVM_OPTS=-Xms1g -Xmx1g -noverify -XX:+TieredCompilation -XX:TieredStopAtLevel=2
 CLJ=java $(JVM_OPTS) $(LEIN_JVM_OPTS) -Xbootclasspath/a:$(CLASSPATH) clojure.main
 LEIN_REPL_PORT=0
 LEIN_REPL_HOST="127.0.0.1"
