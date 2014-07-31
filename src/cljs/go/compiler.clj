@@ -58,23 +58,26 @@
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
       (emits "(js.RegExp{\"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") ", " flags "\"}"))))
 
+(defn emits-keyword [kw]
+  (let [ns   (namespace kw)
+        name (name kw)]
+    (emits "Keyword{")
+    (emit-constant ns)
+    (emits ",")
+    (emit-constant name)
+    (emits ",")
+    (emit-constant (if ns
+                     (str ns "/" name)
+                     name))
+    (emits ",")
+    (emit-constant (hash kw))
+    (emits "}")))
+
 (defmethod emit-constant clojure.lang.Keyword [x]
   (if (-> @env/*compiler* :opts :emit-constants)
     (let [value (-> @env/*compiler* ::ana/constant-table x)]
-      (emits "" value))
-    (let [ns   (namespace x)
-          name (name x)]
-      (emits "Keyword{")
-      (emit-constant ns)
-      (emits ",")
-      (emit-constant name)
-      (emits ",")
-      (emit-constant (if ns
-                       (str ns "/" name)
-                       name))
-      (emits ",")
-      (emit-constant (hash x))
-      (emits "}"))))
+      (emits value))
+    (emits-keyword x)))
 
 (defmethod emit-constant clojure.lang.Symbol [x]
   (let [ns     (namespace x)
@@ -693,14 +696,6 @@
 
 (defn emit-constants-table [table]
   (doseq [[keyword value] table]
-    (let [ns   (namespace keyword)
-          name (name keyword)]
-      (emits "" value " = Keyword{")
-      (emit-constant ns)
-      (emits ",")
-      (emit-constant name)
-      (emits ",")
-      (emit-constant (if ns
-                       (str ns "/" name)
-                       name))
-      (emitln "}"))))
+    (emits value " = ")
+    (emits-keyword keyword)
+    (emitln)))
