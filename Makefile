@@ -6,8 +6,8 @@ LEIN_JVM_OPTS=-Xms1g -Xmx1g -noverify -XX:+TieredCompilation -XX:TieredStopAtLev
 CLJ=java $(JVM_OPTS) $(LEIN_JVM_OPTS) -Xbootclasspath/a:$(CLASSPATH) clojure.main
 LEIN_REPL_PORT=0
 LEIN_REPL_HOST="127.0.0.1"
-LEIN_REPL_TRANSPORT=clojure.tools.nrepl.transport/bencode
-LEIN_REPL_HANDLER=cider.nrepl/cider-nrepl-handler
+LEIN_REPL_TRANSPORT=clojure.tools.nrepl.transport/bencode # clojure.tools.nrepl.transport/tty
+LEIN_REPL_HANDLER=cider.nrepl/cider-nrepl-handler # clojure.tools.nrepl.server/default-handler
 WATCH=$(shell echo $(CLASSPATH) | tr : ' ' | sed -E 's/\S+\.jar ?//g' | xargs ls -d {} 2> /dev/null)
 LEIN=$(shell (which lein || echo ./lein))
 
@@ -55,7 +55,10 @@ define REPL
                                                                              ($(LEIN_REPL_HANDLER))
                                                                              $(LEIN_REPL_HANDLER)))
       host (.getHostName (.getInetAddress ^java.net.ServerSocket ss))]
-      (printf  "nREPL server started on port %s on host %s - nrepl://%s:%s\n" port host host port))
+  (doto (java.io.File. ".nrepl-port")
+    (spit port)
+    .deleteOnExit)
+  (printf  "nREPL server started on port %s on host %s - nrepl://%s:%s\n" port host host port))
 endef
 export REPL
 
