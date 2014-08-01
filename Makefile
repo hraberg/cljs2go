@@ -11,6 +11,8 @@ LEIN_REPL_HANDLER=cider.nrepl/cider-nrepl-handler # clojure.tools.nrepl.server/d
 WATCH=$(shell echo $(CLASSPATH) | tr : ' ' | sed -E 's/\S+\.jar ?//g' | xargs ls -d {} 2> /dev/null)
 LEIN=$(shell (which lein || echo ./lein))
 
+all: run
+
 lein:
 	wget -O lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 	chmod +x lein
@@ -40,6 +42,14 @@ export RLWRAP_COMPLETIONS
 .rlwrap-completions: .lein-classpath
 	@$(CLJ) -e "$$RLWRAP_COMPLETIONS"
 
+# (add-hook 'clojure-mode-hook
+#          (lambda ()
+#            (setq  inferior-lisp-program
+#                   (format "make -sC %s inferior-lisp"
+#                           (string-trim (shell-command-to-string "git rev-parse --show-toplevel"))))))
+inferior-lisp: classpath
+	@$(CLJ)
+
 rlwrap-repl: classpath .rlwrap-completions
 	@rlwrap --prompt-colour=Red --multi-line --remember --complete-filenames -b "(){}[],^%$#@\"\";:''|\\" \
 	  -f .rlwrap-completions $(CLJ)
@@ -63,6 +73,8 @@ endef
 export REPL
 
 # cider-jack-in
+# (setq cider-lein-command "make")
+# (setq cider-lein-parameters "-sC `git rev-parse --show-toplevel` repl")
 repl: classpath
 	@$(CLJ) -e "$$REPL"
 
