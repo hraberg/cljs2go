@@ -210,14 +210,17 @@
   [{:keys [test then else env unchecked]}]
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))]
-    (if (= :expr context)
-      (emits "(func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} )()")
-      (do
-        (if checked
-          (emitln "if(Truth_(" test "))")
-          (emitln "if(" test ")"))
-        (emitln "{" then "} else")
-        (emitln "{" else "}")))))
+    (cond
+      (truthy-constant? test) (emitln then)
+      (falsey-constant? test) (emitln else)
+      (if (= :expr context)
+        (emits "(func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} )()")
+        (do
+          (if checked
+            (emitln "if(Truth_(" test "))")
+            (emitln "if(" test ")"))
+          (emitln "{" then "} else")
+          (emitln "{" else "}"))))))
 
 (defmethod emit* :case*
   [{:keys [v tests thens default env]}]
