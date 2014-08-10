@@ -394,8 +394,7 @@
         (if variadic
           (emit-variadic-fn-method (assoc (first methods) :name name))
           (emit-fn-method (assoc (first methods) :name name)))
-        (let [has-name? (and name true)
-              name (or name (gensym))
+        (let [name (or name (gensym))
               mname (munge name)
               maxparams (apply max-key count (map :params methods))
               mmap (into {}
@@ -444,12 +443,11 @@
           (when variadic
             (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
             (emitln mname ".cljs__lang__applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) ".cljs__lang__applyTo"))
-          (when has-name?
-            (doseq [[n meth] ms]
-              (let [c (count (:params meth))]
-                (if (:variadic meth)
-                  (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " n ".cljs__core__IFn___invoke__arity__variadic")
-                  (emitln mname ".cljs__core__IFn___invoke__arity__" c " = " n)))))
+          (doseq [[n meth] ms]
+            (let [c (count (:params meth))]
+              (if (:variadic meth)
+                (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " n ".cljs__core__IFn___invoke__arity__variadic")
+                (emitln mname ".cljs__core__IFn___invoke__arity__" c " = " n))))
           (emitln "return " mname)
           (emitln "})()")))
       (when loop-locals
