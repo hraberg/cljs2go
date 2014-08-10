@@ -111,3 +111,5 @@ bench-clojure.main: classpath
 
 bench-repl: classpath
 	bash -c 'time $(CLJ) -e "(do $$REPL (flush) (System/exit 0))"'
+
+.PHONY: all clean classpath inferior-lisp rlwrap-repl repl run test check clean inotifywait test-refrech bench-clojure.main bench-repl
