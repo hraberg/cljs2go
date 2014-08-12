@@ -73,11 +73,12 @@
          (defn foo
            ([] (foo "World"))
            ([x] (println "Hello " x))
-           ([x & ys] (println "Hello " x ys)))]
+;           ([x & ys] (println "Hello " x ys))
+           )]
        cljs->go
        go->str
        gofmt
-       with-line-numbers
+;       with-line-numbers
        println)
 
   (cljs.closure/build '[(ns hello.core)
