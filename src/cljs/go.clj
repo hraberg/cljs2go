@@ -64,6 +64,17 @@
        with-line-numbers
        println)
 
+  (->> '[(ns hello)
+         (defn foo
+           ([] (foo "World"))
+           ([x] (println "Hello " x))
+           ([x & ys] (println "Hello " x ys)))]
+       cljs->go
+       go->str
+       gofmt
+       with-line-numbers
+       println)
+
   (cljs.closure/build '[(ns hello.core)
                         (defn ^{:export greet} greet [n] (str "Hola " n))
                         (defn ^:export sum [xs] 42)]
