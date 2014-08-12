@@ -18,7 +18,9 @@
   ;; Eagerly stringify any string or char literals.
   (let [clean-xs (reduce (fn [acc x]
                            (core/cond
-                            (core/or (core/string? x) (core/char? x))
+                            (core/or (core/string? x) (core/char? x)
+                                     (core/integer? %) (core/float? %)
+                                     (core/true? %) (core/false? %))
                             (if (core/string? (peek acc))
                               (conj (pop acc) (core/str (peek acc) x))
                               (conj acc (core/str x)))
@@ -28,9 +30,7 @@
         ;; clean-xs now has no nils, chars, or string-adjoining-string. bools,
         ;; ints and floats will be emitted literally to allow JS string coersion.
         strs (->> clean-xs
-                  (map #(if (core/or (core/string? %) (core/integer? %)
-                                     (core/float? %) (core/true? %)
-                                     (core/false? %))
+                  (map #(if (core/string? %)
                           "~{}"
                           "Str_cljs__core__IFn___invoke__arity__1(~{})"))
                   (interpose "+")
