@@ -8,20 +8,22 @@ import "fmt"
 // 	"js"
 // )
 
-var _STAR_print_fn_STAR_ func(...interface{}) interface{}
+var _STAR_print_fn_STAR_ = func(objs ...interface{}) interface{} {
+	panic(js_Error{"No *print-fn* fn set for evaluation environment"})
+}
 
-func Println(xs ...interface{}) interface{} {
-	_STAR_print_fn_STAR_(xs...)
+func Println(objs ...interface{}) interface{} {
+	_STAR_print_fn_STAR_(objs...)
 	return nil
 }
 
-func Set_print_fn_BANG_(f func(...interface{}) interface{}) {
+func Set_print_fn_BANG_(f func(objs ...interface{}) interface{}) {
 	_STAR_print_fn_STAR_ = f
 }
 
 func init() {
-	Set_print_fn_BANG_(func(xs ...interface{}) interface{} {
-		fmt.Println(xs...)
+	Set_print_fn_BANG_(func(objs ...interface{}) interface{} {
+		fmt.Println(objs...)
 		return nil
 	})
 }
