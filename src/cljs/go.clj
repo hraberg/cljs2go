@@ -2,7 +2,9 @@
   (:require [cljs.closure]
             [cljs.env]
             [cljs.js-deps]
-            [cljs.go.compiler]))
+            [cljs.go.compiler]
+            [clojure.string :as s]
+            [clojure.java.shell :as sh]))
 
 (defn cljs->go [in]
   (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
@@ -16,11 +18,25 @@
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
 
+(defn gofmt [in]
+  (let [{:keys [exit out err]} (sh/sh "gofmt" :in in)]
+    (if (zero? exit)
+      out
+      (do (println err) in))))
+
+(defn with-line-numbers [in]
+  (->> (for [[n l] (map-indexed vector (s/split-lines in))]
+         (format "%3d  %s\n" (inc n) l))
+       (apply str)
+       s/trim-newline))
+
 (comment
   (->> '[(ns test.app (:require [goog.array :as array]))
          (defn plus-one [x] (inc x))]
        cljs->go
        go->str
+       gofmt
+       with-line-numbers
        println)
 
 ;; func plus_one(x interface{}) interface{} {
@@ -35,6 +51,8 @@
            (str "Hello " n (world)))]
        cljs->go
        go->str
+       gofmt
+       with-line-numbers
        println)
 
   (->> '[(ns hello)
@@ -42,6 +60,8 @@
            (println "Hello World"))]
        cljs->go
        go->str
+       gofmt
+       with-line-numbers
        println)
 
   (cljs.closure/build '[(ns hello.core)
