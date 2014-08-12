@@ -213,6 +213,7 @@
     (cond
       (truthy-constant? test) (emitln then)
       (falsey-constant? test) (emitln else)
+      :else
       (if (= :expr context)
         (emits "(func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} )()")
         (do
