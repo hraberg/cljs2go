@@ -441,7 +441,7 @@
                 (emitln "return " n "(" (if (zero? pcnt) nil
                                                 (list (comma-sep (take pcnt maxparams)))) ")"))))
           (emitln "}")
-          (emitln "panic(js.Error{\"Invalid arity: \" + len(arguments)})")
+          (emitln "panic(js.Error{fmt.Sprint(\"Invalid arity: \", len(arguments))})")
           (emitln "}")
           (when variadic
             (emitln mname "_cljs__lang__maxFixedArity = " max-fixed-arity)
@@ -449,7 +449,7 @@
           (doseq [[n meth] ms]
             (let [c (count (:params meth))]
               (if (:variadic meth)
-                (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n ".cljs__core__IFn___invoke__arity__variadic")
+                (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n "_cljs__core__IFn___invoke__arity__variadic")
                 (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
           (when (= :expr (:context env))
             (emitln "return " mname)

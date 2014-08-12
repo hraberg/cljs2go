@@ -36,10 +36,6 @@ func (e js_Error) Error() string {
 	return e.error
 }
 
-var Foo_cljs__core__IFn___invoke__arity__0 func() interface{}
-var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
-var Foo func(...interface{}) interface{}
-
 func init() {
 	Foo_cljs__core__IFn___invoke__arity__0 = func() interface{} {
 		return Foo("World")
@@ -57,6 +53,10 @@ func init() {
 		panic(js_Error{fmt.Sprint("Invalid arity: ", len(arguments))})
 	}
 }
+
+var Foo_cljs__core__IFn___invoke__arity__0 func() interface{}
+var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
+var Foo func(...interface{}) interface{}
 
 func main() {
 	Foo()
