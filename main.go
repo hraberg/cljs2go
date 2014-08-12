@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"os/exec"
+)
 
 /*
 ;; IFn
@@ -91,7 +95,11 @@ func plus_one(x interface{}) interface{} {
 }
 
 func main() {
-	fmt.Printf("ClojureScript to Go [go] %v\n", plus_one(1))
+	fmt.Printf("ClojureScript to Go [go]\n")
+	out, err := exec.Command("go", "get", "code.google.com/p/go.tools/cmd/goimports").CombinedOutput()
+	if err != nil {
+		log.Fatal(string(out[:]))
+	}
 
 	var xs = []int{4, 5, 6, 7}
 	var is = make([]interface{}, len(xs))
