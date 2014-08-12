@@ -19,8 +19,8 @@
   (let [clean-xs (reduce (fn [acc x]
                            (core/cond
                             (core/or (core/string? x) (core/char? x)
-                                     (core/integer? %) (core/float? %)
-                                     (core/true? %) (core/false? %))
+                                     (core/integer? x) (core/float? x)
+                                     (core/true? x) (core/false? x))
                             (if (core/string? (peek acc))
                               (conj (pop acc) (core/str (peek acc) x))
                               (conj acc (core/str x)))
@@ -111,10 +111,10 @@
 (defmacro array? [x]
   (if (= :nodejs (:target @env/*compiler*))
     (bool-expr `(.isArray js/Array ~x))
-    (bool-expr (core/list 'js* "~{}.(type) == \"interface{}\"" x))))
+    (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Slice" x))))
 
 (defmacro string? [x]
-  (bool-expr (core/list 'js* "~{}.(type) == \"string\"" x)))
+  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.String" x)))
 
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
@@ -133,12 +133,12 @@
   ;; (instance? RegExp ...) needs to be inlined, but the expansion
   ;; should preserve the order of argument evaluation.
   (bool-expr (if (clojure.core/symbol? t)
-               (core/list 'js* "(~{}.(type) == ~{})" o t)
+               (core/list 'js* "reflect.TypeOf(~{}).Kind() == ~{}" o t)
                `(let [t# ~t o# ~o]
-                  (~'js* "(~{}.(type) == ~{})" o# t#)))))
+                  (~'js* "reflect.TypeOf(~{}).Kind() == ~{}" o# t#)))))
 
 (defmacro number? [x]
-  (bool-expr (core/list 'js* "~{}.(type) == 'float64'" x)))
+  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Float64" x)))
 
 (defmacro aget
   ([a i]

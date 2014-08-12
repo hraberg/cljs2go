@@ -625,6 +625,7 @@
   (emitln)
   (emitln "import (")
   (emitln "\t" (wrap-in-double-quotes "js"))
+  (emitln "\t" (wrap-in-double-quotes "reflect"))
   (when-not (= name 'cljs.core)
     (emitln "\t" "." " " (wrap-in-double-quotes "cljs/core")))
   (doseq [lib (distinct (into (vals requires) (vals uses)))]
