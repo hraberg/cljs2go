@@ -32,7 +32,7 @@
                                      (core/float? %) (core/true? %)
                                      (core/false? %))
                           "~{}"
-                          "cljs.core.str.cljs$core$IFn$_invoke$arity$1(~{})"))
+                          "Str_cljs__core__IFn___invoke__arity__1(~{})"))
                   (interpose "+")
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
