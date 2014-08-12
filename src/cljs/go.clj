@@ -18,8 +18,13 @@
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
 
+(defn go-get [package]
+  (let [{:keys [exit err]} (sh/sh "go" "get" package)]
+    (assert (zero? exit) err)))
+
 (defn gofmt [in]
-  (let [{:keys [exit out err]} (sh/sh "gofmt" :in in)]
+  (go-get "code.google.com/p/go.tools/cmd/goimports")
+  (let [{:keys [exit out err]} (sh/sh "goimports" :in in)]
     (if (zero? exit)
       out
       (do (println err) in))))
