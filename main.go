@@ -96,8 +96,9 @@ func plus_one(x interface{}) interface{} {
 
 func main() {
 	fmt.Printf("ClojureScript to Go [go]\n")
-	out, err := exec.Command("go", "get", "code.google.com/p/go.tools/cmd/goimports").CombinedOutput()
-	if err != nil {
+
+	goGet := exec.Command("go", "get", "code.google.com/p/go.tools/cmd/goimports")
+	if out, err := goGet.CombinedOutput(); err != nil {
 		log.Fatal(string(out[:]))
 	}
 
