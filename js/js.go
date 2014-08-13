@@ -69,6 +69,10 @@ func (this Date) String() string {
 	return this.time().String()
 }
 
+func (this Date) ToString() string {
+	return this.String()
+}
+
 type RegExp struct {
 	Pattern string
 	Flags   string
@@ -149,10 +153,18 @@ func (this JSString) Replace(re RegExp, f func(string) string) string {
 	return re.compile().ReplaceAllStringFunc(string(this), f)
 }
 
-func (this JSString) Search(re RegExp) int {
+func (this JSString) Search(re RegExp) float64 {
 	var match = re.compile().FindStringIndex(string(this))
 	if match == nil {
 		return -1
 	}
-	return match[0]
+	return float64(match[0])
+}
+
+func (this JSString) CharAt(index float64) string {
+	return string([]rune(string(this))[int(index)])
+}
+
+func (this JSString) CharCodeAt(index float64) float64 {
+	return float64([]rune(string(this))[int(index)])
 }

@@ -99,5 +99,8 @@ func init() {
 	sb = sb.Append("Hello Java").Append("Script World")
 	js.Console.Log(sb.ToString())
 
+	js.Console.Log(js.JSString("Hello").CharAt(2))
+	js.Console.Log(js.JSString("Hello").CharCodeAt(2))
+
 	js.Console.Log(gstring.HashCode("Hello World"))
 }
