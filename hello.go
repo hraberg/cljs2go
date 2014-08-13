@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 import (
+	garray "github.com/hraberg/cljs.go/goog/array"
 	gstring "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
 )
@@ -47,15 +48,34 @@ func init() {
 	js.Console.Log("Javascript", "Rules", js.Math.Random(), js.Infinity,
 		js.Math.Ceil(2.6), js.Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
 	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
-
-	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
-
 	js.Console.Log(js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},
 		func(match string) string {
 			return strings.ToUpper(match)
 		},
 	))
 	js.Console.Log(js.JSString("Hello World").Search(js.RegExp{"world", "i"}))
+
+	var xs = []int{1, 2, 3, 4, 5}
+	var is = make([]interface{}, len(xs))
+	for i, x := range xs {
+		is[i] = float64(x)
+	}
+	garray.Shuffle(is)
+	js.Console.Log(is)
+	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
+	js.Console.Log(is)
+	garray.Shuffle(is)
+	js.Console.Log(is)
+	garray.StableSort(is, garray.DefaultCompare)
+	js.Console.Log(is)
+
+	var ss = []string{"foo", "bar"}
+	is = make([]interface{}, len(ss))
+	for i, s := range ss {
+		is[i] = s
+	}
+	garray.StableSort(is, garray.DefaultCompare)
+	js.Console.Log(is)
 
 	var sb = gstring.StringBuffer{}
 	sb = sb.Append("Hello Java").Append("Script World")

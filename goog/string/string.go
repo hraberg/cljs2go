@@ -7,7 +7,7 @@ type StringBuffer struct {
 	bytes.Buffer
 }
 
-func (sb *StringBuffer) ToString() string {
+func (sb StringBuffer) ToString() string {
 	return sb.String()
 }
 
