@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"regexp"
+	"strconv"
 	"time"
 )
 
@@ -105,6 +106,20 @@ var Infinity = math.Inf(1)
 
 func IsNAN(x float64) bool {
 	return math.IsNaN(x)
+}
+
+func ParseFloat(string string) float64 {
+	if val, ok := strconv.ParseFloat(string, 64); ok == nil {
+		return val
+	}
+	return math.NaN()
+}
+
+func ParseInt(string string, radix float64) float64 {
+	if val, ok := strconv.ParseInt(string, int(radix), 64); ok == nil {
+		return float64(val)
+	}
+	return math.NaN()
 }
 
 type ConsoleConstructor struct{}

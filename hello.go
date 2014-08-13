@@ -56,6 +56,8 @@ func init() {
 		},
 	))
 	js.Console.Log(js.JSString("Hello World").Search(js.RegExp{"world", "i"}))
+	js.Console.Log(js.RegExp{"Hello", "i"})
+
 	var date = js.Date{1407962432671}
 	js.Console.Log(date.GetUTCFullYear())
 	js.Console.Log(date.GetUTCMonth())
@@ -65,7 +67,11 @@ func init() {
 	js.Console.Log(date.GetUTCSeconds())
 	js.Console.Log(date.GetUTCMilliseconds())
 	js.Console.Log(date)
-	js.Console.Log(js.RegExp{"Hello", "i"})
+
+	js.Console.Log(js.ParseFloat("3.14"))
+	js.Console.Log(js.ParseFloat(""))
+	js.Console.Log(js.ParseInt("314", 10))
+	js.Console.Log(js.ParseInt("x", 10))
 
 	var xs = []int{1, 2, 3, 4, 5}
 	var is = make([]interface{}, len(xs))
