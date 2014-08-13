@@ -2,13 +2,13 @@
 
 ClojureScript to Go. Implemented as an overlay onto ClojureScript, instead of a fork. Go is emitted from `cljs.go.compiler`, which is a monkey patch to `cljs.compiler`. It also does some AST rewriting to deal with JS corner cases. At run time, a thin JS compatibility is provided to avoid having to touch `cljs.core`, these `js` and `goog` packages aren't intended for end-user usage.
 
-Once the compiler starts working, the plan is to provide a second monkey patch, in spirit of the first, but this time for the Java dependencies, like `java.io.File` and their Clojure counterpart, `clojure.java.io`. This patch is to be able to compile the compiler itself to Go. This won't change the run time characteristics of the compiled programs, nor will it introduce `eval`, it's simply done to leverage the Go build pipeline.
+Once the compiler starts working, the plan is to provide a second monkey patch in spirit of the first, but this time for the Java dependencies, like `java.io.File` and their Clojure counterpart, `clojure.java.io`. This patch is to be able to compile the compiler itself to Go. This won't change the run-time characteristics of the compiled programs, nor will it introduce `eval`, it's simply done to leverage the Go build pipeline.
 
-While not introducing `eval`, it does open up for adding it as a third layer, the problem lies on the Go side, as you need a way to build and link code into the running process. This is certainly doable in various ways, but not yet sure what the right way to do so is yet.
+While not introducing `eval`, it does open up for adding it as a third layer, the problem lies on the Go side, as you need a way to build and link code into the running process. This is certainly doable in various ways, but not yet sure what the right way to do so is.
 
 ### Why?
 
-Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and startup time (a current concern in the Clojure world, see below). The goal isn't to compete with the JVM or V8 on performance. A final reason would be to leverage the Go ecosystem using ClojureScript.
+Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and startup time (a current concern in the Clojure world, see below). The goal isn't to compete with the JVM or V8 on performance. A final reason would be to leverage the Go ecosystem using ClojureScript. It's also meant to simplify creating new emitters for ClojureScript. I'm aware of `tools.analyzer` etc, but as far as I've seen, they don't help you implement `clojure.core` and the actual language run-time.
 
 ### See Also
 
