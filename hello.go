@@ -98,4 +98,6 @@ func init() {
 	var sb = gstring.StringBuffer{}
 	sb = sb.Append("Hello Java").Append("Script World")
 	js.Console.Log(sb.ToString())
+
+	js.Console.Log(gstring.HashCode("Hello World"))
 }
