@@ -13,6 +13,7 @@ https://github.com/zhemao/glisp
 #### Dialects of Clojure
 
 http://dev.clojure.org/display/design/Release.Next+Planning
+https://github.com/clojure/tools.analyzer/
 http://clojure-android.info/blog/2014/08/12/gsoc-2014-skummet-alpha1/
 https://github.com/arrdem/oxcart
 https://github.com/mikera/kiss/
