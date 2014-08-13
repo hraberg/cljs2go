@@ -56,7 +56,7 @@
   (if (= "" (str x))
     (emits "(js.RegExp{\"\"})")
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
-      (emits "(js.RegExp{\"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") ", " flags "\"}"))))
+      (emits "(js.RegExp{\"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") "\", \"" flags "\"}"))))
 
 (defn emits-keyword [kw]
   (let [ns   (namespace kw)
