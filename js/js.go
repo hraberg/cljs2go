@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"math/rand"
 	"regexp"
 	"time"
 )
@@ -99,26 +98,6 @@ type NumberConstructor struct {
 }
 
 var Number = NumberConstructor{math.MaxFloat64}
-
-type MathConstructor struct{}
-
-var Math = MathConstructor{}
-
-func (_ MathConstructor) Floor(x float64) float64 {
-	return math.Floor(x)
-}
-
-func (_ MathConstructor) Ceil(x float64) float64 {
-	return math.Ceil(x)
-}
-
-func (_ MathConstructor) Random() float64 {
-	return rand.Float64()
-}
-
-func (_ MathConstructor) Imul(a, b float64) float64 {
-	return float64(int64(a) * int64(b))
-}
 
 var Infinity = math.Inf(1)
 

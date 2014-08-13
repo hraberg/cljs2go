@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 import (
+	"github.com/hraberg/cljs.go/Math"
 	garray "github.com/hraberg/cljs.go/goog/array"
 	gobject "github.com/hraberg/cljs.go/goog/object"
 	gstring "github.com/hraberg/cljs.go/goog/string"
@@ -46,8 +47,8 @@ func main() {
 
 // JS smoke tests
 func init() {
-	js.Console.Log("Javascript", "Rules", js.Math.Random(), js.Infinity,
-		js.Math.Ceil(2.6), js.Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
+	js.Console.Log("Javascript", "Rules", Math.Random(), js.Infinity,
+		Math.Ceil(2.6), Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
 	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
 	js.Console.Log(js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},
 		func(match string) string {
