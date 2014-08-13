@@ -8,9 +8,11 @@ While not introducing `eval`, it does open up for adding it as a third layer, th
 
 ### Why?
 
-Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and startup time (a current concern in the Clojure world, see below). The goal isn't to compete with the JVM or V8 on performance. Another obvious reason would be to leverage the Go ecosystem using ClojureScript. It's also meant to simplify creating new emitters for ClojureScript. I'm aware of `tools.analyzer` etc, but as far as I've seen, they don't help you implement `clojure.core` and the actual language run-time.
+Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and startup time (a current concern in the Clojure world, see below). The goal isn't to compete with the JVM or V8 on performance. Another obivious reason would be to leverage the Go ecosystem using ClojureScript. It's also meant to simplify creating new emitters for ClojureScript. I'm aware of `tools.analyzer` etc, but as far as I've seen, they don't help you implement `clojure.core` and the actual language run-time.
 
 ### See Also
+
+http://martintrojer.github.io/clojure/2014/04/05/the-clojure-repl-a-blessing-and-a-curse/
 
 #### Lisp's in Go:
 
