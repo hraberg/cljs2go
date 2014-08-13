@@ -1,6 +1,7 @@
 package core
 
 import "github.com/hraberg/cljs.go/js"
+
 import "fmt"
 
 // This file will eventually be generated from cljs.core.
