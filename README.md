@@ -4,9 +4,25 @@ ClojureScript to Go.
 
 ### See Also
 
+#### Lisp's in Go:
+
 https://github.com/tcard/gojure
 https://github.com/bjeanes/gojure
 https://github.com/zhemao/glisp
+
+#### Dialects of Clojure
+
+http://dev.clojure.org/display/design/Release.Next+Planning
+http://clojure-android.info/blog/2014/08/12/gsoc-2014-skummet-alpha1/
+https://github.com/arrdem/oxcart
+https://github.com/mikera/kiss/
+
+### Ports of ClojureScript
+
+https://github.com/schani/clojurec
+https://github.com/takeoutweight/clojure-scheme
+https://github.com/raph-amiard/clojurescript-lua
+https://github.com/kanaka/clojurescript
 
 ## License
 
