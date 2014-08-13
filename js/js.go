@@ -26,6 +26,8 @@ func (e TypeError) Error() string {
 	return e.Message
 }
 
+type Object interface{}
+type Boolean bool
 type Array []interface{}
 
 type Date struct {
