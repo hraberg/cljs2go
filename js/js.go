@@ -29,7 +29,45 @@ func (e TypeError) Error() string {
 
 type Array []interface{}
 
-type Date time.Time
+type Date struct {
+	Millis int64
+}
+
+func (this Date) time() time.Time {
+	return time.Unix(this.Millis/1000, 1000*(this.Millis%1000))
+}
+
+func (this Date) GetUTCFullYear() float64 {
+	return float64(this.time().UTC().Year())
+}
+
+func (this Date) GetUTCMonth() float64 {
+	return float64(this.time().UTC().Month() - 1)
+}
+
+func (this Date) GetUTCDate() float64 {
+	return float64(this.time().UTC().Day())
+}
+
+func (this Date) GetUTCHours() float64 {
+	return float64(this.time().UTC().Hour())
+}
+
+func (this Date) GetUTCMinutes() float64 {
+	return float64(this.time().UTC().Minute())
+}
+
+func (this Date) GetUTCSeconds() float64 {
+	return float64(this.time().UTC().Second())
+}
+
+func (this Date) GetUTCMilliseconds() float64 {
+	return float64(this.time().UTC().Nanosecond() / 1000)
+}
+
+func (this Date) String() string {
+	return this.time().String()
+}
 
 type RegExp struct {
 	Pattern string
@@ -46,6 +84,10 @@ func (this RegExp) compile() *regexp.Regexp {
 
 func (this RegExp) Exec(str string) []string {
 	return this.compile().FindAllString(str, -1)
+}
+
+func (this RegExp) String() string {
+	return this.compile().String()
 }
 
 type NumberConstructor struct {
