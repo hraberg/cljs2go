@@ -15,7 +15,7 @@ var _STAR_print_newline_STAR_ = true
 func Enable_console_print_BANG_() interface{} {
 	_STAR_print_newline_STAR_ = false
 	_STAR_print_fn_STAR_ = func(x interface{}) interface{} {
-		fmt.Println(x)
+		js.Console.Log(x)
 		return nil
 	}
 	return nil
