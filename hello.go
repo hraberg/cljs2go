@@ -27,14 +27,8 @@ var Foo_cljs__core__IFn___invoke__arity__0 func() interface{}
 var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
 var Foo func(...interface{}) interface{}
 
-func init() {
-	Set_print_fn_BANG_(func(x interface{}) interface{} {
-		fmt.Println(x)
-		return nil
-	})
-}
-
 func main() {
+	Enable_console_print_BANG_()
 	Foo()
 	Foo("Space")
 	Foo_cljs__core__IFn___invoke__arity__0()
