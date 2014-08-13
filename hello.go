@@ -7,6 +7,7 @@ import (
 )
 import (
 	garray "github.com/hraberg/cljs.go/goog/array"
+	gobject "github.com/hraberg/cljs.go/goog/object"
 	gstring "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
 )
@@ -76,6 +77,13 @@ func init() {
 	}
 	garray.StableSort(is, garray.DefaultCompare)
 	js.Console.Log(is)
+
+	var obj = gobject.Create("foo", 2, "bar", 3)
+	js.Console.Log(obj)
+	gobject.ForEach(obj, func(k, v, obj interface{}) interface{} {
+		js.Console.Log("k:", k, "v:", v, "in", obj)
+		return nil
+	})
 
 	var sb = gstring.StringBuffer{}
 	sb = sb.Append("Hello Java").Append("Script World")
