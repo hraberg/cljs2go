@@ -28,8 +28,8 @@ var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
 var Foo func(...interface{}) interface{}
 
 func init() {
-	Set_print_fn_BANG_(func(objs ...interface{}) interface{} {
-		fmt.Println(objs...)
+	Set_print_fn_BANG_(func(x interface{}) interface{} {
+		fmt.Println(x)
 		return nil
 	})
 }
