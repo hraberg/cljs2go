@@ -1,15 +1,23 @@
 package string
 
-type StringBuffer struct{}
+import "hash/fnv"
+import "bytes"
 
-func (sb StringBuffer) ToString() {
-	panic("Not implemented")
+type StringBuffer struct {
+	bytes.Buffer
 }
 
-func (sb StringBuffer) Append(s interface{}) {
-	panic("Not implemented")
+func (sb StringBuffer) ToString() string {
+	return sb.String()
 }
 
-func HashCode(s interface{}) interface{} {
-	panic("Not implemented")
+func (sb StringBuffer) Append(a1 string) StringBuffer {
+	sb.WriteString(a1)
+	return sb
+}
+
+func HashCode(str string) float64 {
+	h := fnv.New32a()
+	h.Write([]byte(str))
+	return float64(h.Sum32())
 }
