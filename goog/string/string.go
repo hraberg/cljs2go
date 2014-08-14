@@ -7,11 +7,11 @@ type StringBuffer struct {
 	bytes.Buffer
 }
 
-func (sb StringBuffer) ToString() string {
+func (sb *StringBuffer) ToString() string {
 	return sb.String()
 }
 
-func (sb StringBuffer) Append(a1 string) StringBuffer {
+func (sb *StringBuffer) Append(a1 string) *StringBuffer {
 	sb.WriteString(a1)
 	return sb
 }
