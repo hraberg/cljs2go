@@ -12,20 +12,20 @@
   (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
     (doall (cljs.closure/-compile in {}))))
 
-(defn cljs->simple-ast [in]
-  (let [single? (not (sequential? in))]
-    (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
-      (-> (for [form (if single? [in] in)]
-            (->> form
-                 (cljs.analyzer/analyze (cljs.analyzer/empty-env))
-                 (w/prewalk
-                  #(cond-> %
-                           (map? %) (dissoc :children :ns :column :shadow
-                                            :protocol-inline :protocol-impl
-                                            :doc :js-globals :jsdoc)
-                           (:locals %) (update-in [:locals] keys)))))
-          doall
-          (cond-> single? first)))))
+(defn cljs->ast [in]
+  (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
+    (->> in
+         (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %))
+         doall)))
+
+(defn ast->simple-ast [in]
+  (->> in
+       (w/prewalk
+        #(cond-> %
+                 (map? %) (dissoc :children :ns :column :shadow
+                                  :protocol-inline :protocol-impl
+                                  :doc :js-globals :jsdoc)
+                 (:locals %) (update-in [:locals] keys)))))
 
 (defn go->str [in]
   (if (seq? in)
@@ -55,7 +55,8 @@
 (defn print-simple-ast-and-emitted-go [in]
   (println "==================== AST")
   (->> in
-       cljs->simple-ast
+       cljs->ast
+       ast->simple-ast
        clojure.pprint/pprint)
   (println "==================== Go")
   (->> in
