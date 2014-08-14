@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 import (
@@ -36,13 +37,22 @@ var Foo_cljs__core__IFn___invoke__arity__0 func() interface{}
 var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
 var Foo func(...interface{}) interface{}
 
-func main() {
-	Enable_console_print_BANG_()
+func Main(args ...interface{}) interface{} {
 	Foo()
 	Foo("Space")
 	Foo_cljs__core__IFn___invoke__arity__0()
 	Foo_cljs__core__IFn___invoke__arity__1("Space")
 	Foo("Space", "Hyper")
+	return nil
+}
+
+func main() {
+	Enable_console_print_BANG_()
+	var args = make([]interface{}, len(os.Args[1:]))
+	for i, a := range os.Args[1:] {
+		args[i] = a
+	}
+	Main(args...)
 }
 
 // JS smoke tests
