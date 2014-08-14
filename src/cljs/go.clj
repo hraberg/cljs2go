@@ -12,7 +12,7 @@
   (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
     (doall (cljs.closure/-compile in {}))))
 
-(defn cljs->readable-ast [in]
+(defn cljs->simple-ast [in]
   (let [single? (not (sequential? in))]
     (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
       (-> (for [form (if single? [in] in)]
@@ -52,6 +52,18 @@
        (apply str)
        s/trim-newline))
 
+(defn print-simple-ast-and-emitted-go [in]
+  (println "==================== AST")
+  (->> in
+       cljs->simple-ast
+       clojure.pprint/pprint)
+  (println "==================== Go")
+  (->> in
+       cljs->go
+       go->str
+       gofmt
+       println))
+
 (comment
   (->> '[(ns test.app (:require [goog.array :as array]))
          (defn plus-one [x] (inc x))]
@@ -86,11 +98,10 @@
        with-line-numbers
        println)
 
-  (->> '[(ns hello)
-         (defn main []
-           (println "Hello World"))]
-       cljs->readable-ast
-       clojure.pprint/pprint)
+  (print-simple-ast-and-emitted-go
+   '[(ns hello)
+     (defn main []
+       (println "Hello World"))])
 
   (->> '[(ns hello)
          (defn foo
