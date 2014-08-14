@@ -1,14 +1,30 @@
 (ns cljs.go
-  (:require [cljs.closure]
+  (:require [cljs.analyzer]
+            [cljs.closure]
             [cljs.env]
             [cljs.js-deps]
             [cljs.go.compiler]
             [clojure.string :as s]
+            [clojure.walk :as w]
             [clojure.java.shell :as sh]))
 
 (defn cljs->go [in]
   (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
     (doall (cljs.closure/-compile in {}))))
+
+(defn cljs->readable-ast [in]
+  (let [single? (not (sequential? in))]
+    (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
+      (cond->
+       (doall
+        (for [form (cond-> in single? list)]
+          (->> form
+               (cljs.analyzer/analyze (cljs.analyzer/empty-env))
+               (w/prewalk
+                #(cond-> % (map? %) (dissoc :children :locals :ns :column
+                                            :protocol-inline :protocol-impl
+                                            :doc :js-globals :jsdoc))))))
+       single? first))))
 
 (defn go->str [in]
   (if (seq? in)
@@ -68,6 +84,12 @@
        gofmt
        with-line-numbers
        println)
+
+  (->> '[(ns hello)
+         (defn main []
+           (println "Hello World"))]
+       cljs->readable-ast
+       clojure.pprint/pprint)
 
   (->> '[(ns hello)
          (defn foo
