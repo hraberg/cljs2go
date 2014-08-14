@@ -8,15 +8,14 @@
             [clojure.walk :as w]
             [clojure.java.shell :as sh]))
 
-(defn cljs->go [in]
-  (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
-    (doall (cljs.closure/-compile in {}))))
-
 (defn cljs->ast [in]
   (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
-    (->> in
-         (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %))
-         doall)))
+    (doall (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %) in))))
+
+(defn ast->go [in]
+  (with-out-str
+    (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
+      (dorun (map cljs.compiler/emit in)))))
 
 (defn ast->simple-ast [in]
   (->> in
@@ -26,11 +25,6 @@
                                   :protocol-inline :protocol-impl
                                   :doc :js-globals :jsdoc)
                  (:locals %) (update-in [:locals] keys)))))
-
-(defn go->str [in]
-  (if (seq? in)
-    (apply str (map go->str in))
-    (cljs.js-deps/-source in)))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
@@ -53,68 +47,41 @@
        s/trim-newline))
 
 (defn print-simple-ast-and-emitted-go [in]
-  (println "==================== AST")
-  (->> in
-       cljs->ast
-       ast->simple-ast
-       clojure.pprint/pprint)
-  (println "==================== Go")
-  (->> in
-       cljs->go
-       go->str
-       gofmt
-       println))
+  (let [ast (cljs->ast in)]
+    (println "==================== AST")
+    (->> ast
+         ast->simple-ast
+         clojure.pprint/pprint)
+    (println "==================== Go")
+    (->> ast
+         ast->go
+         gofmt
+         println)))
 
 (comment
-  (->> '[(ns test.app (:require [goog.array :as array]))
-         (defn plus-one [x] (inc x))]
-       cljs->go
-       go->str
-       gofmt
-       with-line-numbers
-       println)
+  (print-simple-ast-and-emitted-go
+   '[(ns test.app (:require [goog.array :as array]))
+     (defn plus-one [x] (inc x))])
 
-;; func plus_one(x interface{}) interface{} {
-;; 	return (x.(int) + (1))
-;; }
-
-
-  (->> '[(ns hello)
-         (defn world []
-           "World")
-         (defn ^:export greet [n]
-           (str "Hello " n (world)))]
-       cljs->go
-       go->str
-       gofmt
-       with-line-numbers
-       println)
-
-  (->> '[(ns hello)
-         (defn main []
-           (println "Hello World"))]
-       cljs->go
-       go->str
-       gofmt
-       with-line-numbers
-       println)
+  (print-simple-ast-and-emitted-go
+   '[(ns hello)
+     (defn world []
+       "World")
+     (defn ^:export greet [n]
+       (str "Hello " n (world)))])
 
   (print-simple-ast-and-emitted-go
    '[(ns hello)
      (defn main []
        (println "Hello World"))])
 
-  (->> '[(ns hello)
-         (defn foo
-           ([] (foo "World"))
-           ([x] (println "Hello " x))
-;           ([x & ys] (println "Hello " x ys))
-           )]
-       cljs->go
-       go->str
-       gofmt
-;       with-line-numbers
-       println)
+  (print-simple-ast-and-emitted-go
+   '[(ns hello)
+     (defn foo
+       ([] (foo "World"))
+       ([x] (println "Hello " x))
+       ;; ([x & ys] (println "Hello " x ys))
+       )])
 
   (cljs.closure/build '[(ns hello.core)
                         (defn ^{:export greet} greet [n] (str "Hola " n))
