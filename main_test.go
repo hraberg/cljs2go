@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strings"
 	"testing"
@@ -58,61 +59,68 @@ func MainPreamble() {
 }
 
 func Test_JS(t *testing.T) {
-	js.Console.Log("Javascript", "Rules", Math.Random(), js.Infinity, js.Number.MAX_VALUE,
-		Math.Ceil(2.6), Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
-	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
-	js.Console.Log(js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},
+	assert.Equal(t, math.Inf(1), js.Infinity)
+	assert.Equal(t, math.MaxFloat64, js.Number.MAX_VALUE)
+	assert.Equal(t, 0.6046602879796196, Math.Random())
+	assert.Equal(t, 3, Math.Ceil(2.6))
+	assert.Equal(t, 2, Math.Floor(2.6))
+	assert.Equal(t, 12, Math.Imul(2.3, 6.7))
+	assert.Equal(t, "ABC", js.String.FromCharCode(65, 66, 67))
+	assert.Nil(t, js.RegExp{"Hello", ""}.Exec("World"))
+	assert.Equal(t, []string{"Hello", "Hello"}, js.RegExp{"hello", "i"}.Exec("World Hello Hello"))
+	assert.Equal(t, "HELLO World", (js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},
 		func(match string) string {
 			return strings.ToUpper(match)
 		},
-	))
-	js.Console.Log(js.JSString("Hello World").Search(js.RegExp{"world", "i"}))
-	js.Console.Log(js.RegExp{"Hello", "i"})
+	)))
+	assert.Equal(t, 6, (js.JSString("Hello World").Search(js.RegExp{"world", "i"})))
+	assert.Equal(t, "(?i)Hello", (js.RegExp{"Hello", "i"}).String())
 
 	var date = js.Date{1407962432671}
-	js.Console.Log(date.GetUTCFullYear())
-	js.Console.Log(date.GetUTCMonth())
-	js.Console.Log(date.GetUTCDate())
-	js.Console.Log(date.GetUTCHours())
-	js.Console.Log(date.GetUTCMinutes())
-	js.Console.Log(date.GetUTCSeconds())
-	js.Console.Log(date.GetUTCMilliseconds())
-	js.Console.Log(date)
+	assert.Equal(t, 2014, date.GetUTCFullYear())
+	assert.Equal(t, 7, date.GetUTCMonth())
+	assert.Equal(t, 13, date.GetUTCDate())
+	assert.Equal(t, 20, date.GetUTCHours())
+	assert.Equal(t, 40, date.GetUTCMinutes())
+	assert.Equal(t, 32, date.GetUTCSeconds())
+	assert.Equal(t, 671, date.GetUTCMilliseconds())
+	assert.Equal(t, "2014-08-13 21:40:32.000671 +0100 BST", date.String())
 
-	js.Console.Log(js.ParseFloat("3.14"))
-	js.Console.Log(js.ParseFloat(""))
-	js.Console.Log(js.ParseInt("314", 10))
-	js.Console.Log(js.ParseInt("x", 10))
+	assert.Equal(t, 3.14, js.ParseFloat("3.14"))
+	assert.Equal(t, math.NaN(), js.ParseFloat(""))
+	assert.Equal(t, 3, js.ParseInt("3", 10))
+	assert.Equal(t, 10, js.ParseInt("a", 16))
+	assert.Equal(t, math.NaN(), js.ParseInt("3.14", 10))
+	assert.Equal(t, math.NaN(), js.ParseInt("x", 10))
 
 	var is = []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
 	garray.Shuffle(is)
-	js.Console.Log(is)
 	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
-	js.Console.Log(is)
+	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
 	garray.Shuffle(is)
-	js.Console.Log(is)
 	garray.StableSort(is, garray.DefaultCompare)
-	js.Console.Log(is)
+	assert.Equal(t, []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}, is)
 
 	var ss = []interface{}{"foo", "bar"}
 	garray.StableSort(ss, garray.DefaultCompare)
-	js.Console.Log(ss)
+	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
 
 	var obj = gobject.Create("foo", 2, "bar", 3)
-	js.Console.Log(obj)
+	var sb = gstring.StringBuffer{}
 	gobject.ForEach(obj, func(k, v, obj interface{}) interface{} {
-		js.Console.Log("k:", k, "v:", v, "in", obj)
+		sb.Append(fmt.Sprintf("k: %s v: %v in: %v ", k, v, obj))
 		return nil
 	})
+	assert.True(t, "k: foo v: 2 in: map[foo:2 bar:3] k: bar v: 3 in: map[foo:2 bar:3] " == sb.String() ||
+		"k: bar v: 3 in: map[foo:2 bar:3] k: foo v: 2 in: map[foo:2 bar:3] " == sb.String())
 
-	var sb = gstring.StringBuffer{}
-	js.Console.Log(sb.Append("Hello Java").Append("Script World").ToString())
-	js.Console.Log(sb.String())
+	sb = gstring.StringBuffer{}
+	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").ToString())
+	assert.Equal(t, "Hello JavaScript World", sb.String())
 
-	js.Console.Log(js.JSString("Hello").CharAt(2))
-	js.Console.Log(js.JSString("Hello").CharCodeAt(2))
-
-	js.Console.Log(gstring.HashCode("Hello World"))
+	assert.Equal(t, "l", (js.JSString("Hello").CharAt(2)))
+	assert.Equal(t, 108, (js.JSString("Hello").CharCodeAt(2)))
+	assert.Equal(t, 3.012568359e+09, (gstring.HashCode("Hello World")))
 }
 
 func init() {
