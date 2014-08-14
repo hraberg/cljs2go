@@ -12,6 +12,7 @@ import (
 	gstring "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
 	"github.com/hraberg/cljs.go/js/Math"
+	"github.com/stretchr/testify/assert"
 )
 import . "github.com/hraberg/cljs.go/cljs/core"
 
@@ -158,7 +159,7 @@ func Test_JS(t *testing.T) {
 }
 
 func Test_Main(t *testing.T) {
-	MainPreamble()
+	assert.Panics(t, func() { MainPreamble() })
 }
 
 func double(x interface{}) float64 {

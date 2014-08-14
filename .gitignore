@@ -10,3 +10,4 @@ pom.xml.asc
 /.rlwrap-completions
 /.nrepl-port
 *~
+/cljs.go.tests
