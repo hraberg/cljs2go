@@ -92,7 +92,7 @@ func MainPreamble() {
 }
 
 func Test_JS(t *testing.T) {
-	js.Console.Log("Javascript", "Rules", Math.Random(), js.Infinity,
+	js.Console.Log("Javascript", "Rules", Math.Random(), js.Infinity, js.Number.MAX_VALUE,
 		Math.Ceil(2.6), Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
 	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
 	js.Console.Log(js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},

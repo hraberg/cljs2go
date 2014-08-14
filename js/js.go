@@ -96,11 +96,7 @@ func (this RegExp) String() string {
 	return this.compile().String()
 }
 
-type NumberConstructor struct {
-	MAX_VALUE float64
-}
-
-var Number = NumberConstructor{math.MaxFloat64}
+var Number = struct{ MAX_VALUE float64 }{math.MaxFloat64}
 
 var Infinity = math.Inf(1)
 
