@@ -12,9 +12,6 @@
 (require 'cljs.compiler)
 (in-ns 'cljs.compiler)
 
-;; js* overlays, loaded by core.analyzer at the first run.
-(alter-var-root #'ana/*cljs-macros-path* (constantly "/cljs/go/core"))
-
 (def js-reserved
   #{"break" "case" "chan" "const" "continue" "default"
     "defer" "else" "fallthrough" "for" "func" "go" "goto"
@@ -680,6 +677,23 @@
     (emitln "}")
     (emitln "}")
     (emitln "})")))
+
+(defmethod emit* :dot
+  [{:keys [target field method args env]}]
+  (emit-wrap env
+             (if field
+               (emits target "." (munge field #{}))
+               (emits target "." (munge method #{}) "("
+                      (comma-sep args)
+                      ")"))))
+
+(defmethod emit* :js
+  [{:keys [env code segs args]}]
+  (emit-wrap env
+             (if code
+               (emits code)
+               (emits (interleave (concat segs (repeat nil))
+                                  (concat args [nil]))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
