@@ -15,18 +15,17 @@
 (defn cljs->readable-ast [in]
   (let [single? (not (sequential? in))]
     (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
-      (cond->
-       (doall
-        (for [form (cond-> in single? list)]
-          (->> form
-               (cljs.analyzer/analyze (cljs.analyzer/empty-env))
-               (w/prewalk
-                #(cond-> %
-                         (map? %) (dissoc :children :ns :column :shadow
-                                          :protocol-inline :protocol-impl
-                                          :doc :js-globals :jsdoc)
-                         (:locals %) (update-in [:locals] keys))))))
-       single? first))))
+      (-> (for [form (if single? [in] in)]
+            (->> form
+                 (cljs.analyzer/analyze (cljs.analyzer/empty-env))
+                 (w/prewalk
+                  #(cond-> %
+                           (map? %) (dissoc :children :ns :column :shadow
+                                            :protocol-inline :protocol-impl
+                                            :doc :js-globals :jsdoc)
+                           (:locals %) (update-in [:locals] keys)))))
+          doall
+          (cond-> single? first)))))
 
 (defn go->str [in]
   (if (seq? in)
