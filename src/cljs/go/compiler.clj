@@ -40,7 +40,8 @@
             ms (string/split (clojure.lang.Compiler/munge ss) #"\.")
             ms (if (butlast ms)
                  (str (string/join "_"(butlast ms)) "." (last ms))
-                 (str (last ms)))]
+                 (str (last ms)))
+            ms (string/replace ms  #"^_STAR" "STAR")]
         (if (symbol? s)
           (symbol ms)
           ms)))))
@@ -454,7 +455,12 @@
             (emitln "return " mname)
             (emitln "})()"))))
       (when loop-locals
-        (emitln "})(" (comma-sep loop-locals) "))")))))
+        (emitln "})(" (comma-sep loop-locals) "))"))))
+  (when (= '-main (:name name))
+    (emitln)
+    (emitln"func init() {")
+    (emitln "STAR_main_cli_fn_STAR_ = _main")
+    (emitln "}")))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
@@ -626,7 +632,6 @@
   (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
   (emitln "import (")
-  (emitln "\t" (wrap-in-double-quotes "reflect"))
   (emitln "\t" (wrap-in-double-quotes "github.com/hraberg/cljs.go/js"))
   (emitln "\t" (wrap-in-double-quotes "github.com/hraberg/cljs.go/js/Math"))
   (when-not (= name 'cljs.core)

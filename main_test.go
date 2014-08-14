@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"os"
 	"strings"
 	"testing"
 )
@@ -44,19 +43,6 @@ import . "github.com/hraberg/cljs.go/cljs/core"
 .-cljs$lang$ctorPrWriter
 
 */
-
-func Main(args ...interface{}) interface{} {
-	return nil
-}
-
-func MainPreamble() {
-	Enable_console_print_BANG_()
-	var args = make([]interface{}, len(os.Args[1:]))
-	for i, a := range os.Args[1:] {
-		args[i] = a
-	}
-	Main(args...)
-}
 
 func Test_JS(t *testing.T) {
 	assert.Equal(t, math.Inf(1), js.Infinity)
@@ -124,11 +110,15 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 3.012568359e+09, (gstring.HashCode("Hello World")))
 }
 
-func init() {
-	MainPreamble()
+func Test_Main(t *testing.T) {
+	var mainWasCalled = false
+	STAR_main_cli_fn_STAR_ = func(args ...interface{}) interface{} {
+		mainWasCalled = true
+		return nil
+	}
+	Main()
+	assert.True(t, mainWasCalled)
 }
-
-var Foo_cljs__lang__maxFixedArity = 1
 
 func init() {
 	Foo_cljs__core__IFn___invoke__arity__1 = func(x interface{}) interface{} {
@@ -150,6 +140,7 @@ func init() {
 	}
 }
 
+var Foo_cljs__lang__maxFixedArity = 1
 var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
 var Foo_cljs__core__IFn___invoke__arity__variadic func(interface{}, ...interface{}) interface{}
 var Foo func(...interface{}) interface{}
