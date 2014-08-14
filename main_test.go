@@ -1,10 +1,10 @@
-// hello
 package main
 
 import (
 	"fmt"
 	"os"
 	"strings"
+	"testing"
 )
 import (
 	garray "github.com/hraberg/cljs.go/goog/array"
@@ -15,38 +15,74 @@ import (
 )
 import . "github.com/hraberg/cljs.go/cljs/core"
 
+/*
+;; IFn
+
+;; Used in core.cljs apply, which uses apply-to built by core.clj gen-apply-to.
+;; It falls back to JS .apply it applyTo doesn't exist on the passed in fn.
+.-cljs$lang$maxFixedArity ;; a field on the fn
+.-cljs$lang$applyTo ;; accessed as field to see if it's there
+.cljs$lang$applyTo  ;; then called as fn if it exists.
+
+;; Used by the dispatch fn to actually invoke the various overloaded fns, uses JS arguments in a switch.
+;; See emit* :fn and emit* :invoke
+;; emit* :fn will emit a single fn or a dispatch fn around the real overlaoded fns.
+;; At times these are called directly, like cljs.core.str.cljs$core$IFn$_invoke$arity$1(~{}) in cljs.core/str
+.cljs$core$IFn$_invoke$arity$variadic
+.cljs$core$IFn$_invoke$arity$N
+
+;; defprotocol
+
+.-cljs$lang$protocol_mask$partitionN$
+
+;; deftype
+
+.-cljs$lang$type
+.-cljs$lang$ctorStr
+.-cljs$lang$ctorPrWriter
+
+*/
+
+var Foo_cljs__lang__maxFixedArity = 1
+
 func init() {
-	Foo_cljs__core__IFn___invoke__arity__0 = func() interface{} {
-		return Foo("World")
-	}
 	Foo_cljs__core__IFn___invoke__arity__1 = func(x interface{}) interface{} {
 		return Println("Hello ", x)
 	}
+	Foo_cljs__core__IFn___invoke__arity__variadic = func(x interface{}, xs ...interface{}) interface{} {
+		return Println("Hello ", x, xs)
+	}
+
 	Foo = func(arguments ...interface{}) interface{} {
-		switch len(arguments) {
-		case 0:
-			return Foo_cljs__core__IFn___invoke__arity__0()
-		case 1:
+		var l = len(arguments)
+		switch {
+		case l > 1:
+			return Foo_cljs__core__IFn___invoke__arity__variadic(arguments[0], arguments[1:]...)
+		case l == 1:
 			return Foo_cljs__core__IFn___invoke__arity__1(arguments[0])
 		}
 		panic(js.Error{fmt.Sprint("Invalid arity: ", len(arguments))})
 	}
 }
 
-var Foo_cljs__core__IFn___invoke__arity__0 func() interface{}
 var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
+var Foo_cljs__core__IFn___invoke__arity__variadic func(interface{}, ...interface{}) interface{}
 var Foo func(...interface{}) interface{}
 
+func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
+	return Foo(xs...)
+}
+
 func Main(args ...interface{}) interface{} {
-	Foo()
 	Foo("Space")
-	Foo_cljs__core__IFn___invoke__arity__0()
 	Foo_cljs__core__IFn___invoke__arity__1("Space")
 	Foo("Space", "Hyper")
+	Foo_cljs__core__IFn___invoke__arity__variadic("Space", "Hyper")
+	Foo()
 	return nil
 }
 
-func main() {
+func MainPreamble() {
 	Enable_console_print_BANG_()
 	var args = make([]interface{}, len(os.Args[1:]))
 	for i, a := range os.Args[1:] {
@@ -55,8 +91,7 @@ func main() {
 	Main(args...)
 }
 
-// JS smoke tests
-func init() {
+func Test_JS(t *testing.T) {
 	js.Console.Log("Javascript", "Rules", Math.Random(), js.Infinity,
 		Math.Ceil(2.6), Math.Imul(2.3, 6.7), js.String.FromCharCode(65, 66, 67))
 	js.Console.Log(js.RegExp{"hello", "i"}.Exec("World Hello Hello"), js.RegExp{"Hello", ""}.Exec("World") == nil)
@@ -120,4 +155,30 @@ func init() {
 	js.Console.Log(js.JSString("Hello").CharCodeAt(2))
 
 	js.Console.Log(gstring.HashCode("Hello World"))
+}
+
+func Test_Main(t *testing.T) {
+	MainPreamble()
+}
+
+func double(x interface{}) float64 {
+	switch x.(type) {
+	case int:
+		return float64(x.(int))
+	case int64:
+		return float64(x.(int64))
+	default:
+		return x.(float64)
+	}
+}
+
+func long(x interface{}) int64 {
+	switch x.(type) {
+	case int:
+		return int64(x.(int))
+	case float64:
+		return int64(x.(float64))
+	default:
+		return x.(int64)
+	}
 }
