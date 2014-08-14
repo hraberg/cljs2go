@@ -106,15 +106,16 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
 
 	var obj = gobject.Create("foo", 2, "bar", 3)
-	var sb = gstring.StringBuffer{}
-	gobject.ForEach(obj, func(k, v, obj interface{}) interface{} {
-		sb.Append(fmt.Sprintf("k: %s v: %v in: %v ", k, v, obj))
+	var copy = make(map[string]interface{})
+	gobject.ForEach(obj, func(k, v, o interface{}) interface{} {
+		assert.Equal(t, obj, o)
+		assert.Equal(t, v, o.(map[string]interface{})[k.(string)])
+		copy[k.(string)] = v
 		return nil
 	})
-	assert.True(t, "k: foo v: 2 in: map[foo:2 bar:3] k: bar v: 3 in: map[foo:2 bar:3] " == sb.String() ||
-		"k: bar v: 3 in: map[foo:2 bar:3] k: foo v: 2 in: map[foo:2 bar:3] " == sb.String())
+	assert.Equal(t, obj, copy)
 
-	sb = gstring.StringBuffer{}
+	var sb = gstring.StringBuffer{}
 	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").ToString())
 	assert.Equal(t, "Hello JavaScript World", sb.String())
 
