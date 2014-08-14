@@ -628,6 +628,7 @@
   (emitln "import (")
   (emitln "\t" (wrap-in-double-quotes "reflect"))
   (emitln "\t" (wrap-in-double-quotes "github.com/hraberg/cljs.go/js"))
+  (emitln "\t" (wrap-in-double-quotes "github.com/hraberg/cljs.go/js/Math"))
   (when-not (= name 'cljs.core)
     (emitln "\t" "." " " (wrap-in-double-quotes "github.com/hraberg/cljs.go/cljs/core")))
   (doseq [lib (distinct (into (vals requires) (vals uses)))]
