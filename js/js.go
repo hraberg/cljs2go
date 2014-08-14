@@ -118,26 +118,22 @@ func ParseInt(string string, radix float64) float64 {
 	return math.NaN()
 }
 
-type ConsoleConstructor struct{}
-
-func (_ ConsoleConstructor) Log(obj ...interface{}) interface{} {
+var Console = struct {
+	Log func(...interface{}) interface{}
+}{func(obj ...interface{}) interface{} {
 	fmt.Println(obj...)
 	return nil
-}
+}}
 
-var Console = ConsoleConstructor{}
-
-type StringConstructor struct{}
-
-func (_ StringConstructor) FromCharCode(num ...interface{}) interface{} {
+var String = struct {
+	FromCharCode func(...interface{}) interface{}
+}{func(num ...interface{}) interface{} {
 	var buffer bytes.Buffer
 	for _, n := range num {
 		buffer.WriteRune(rune(n.(int)))
 	}
 	return buffer.String()
-}
-
-var String = StringConstructor{}
+}}
 
 type JSString string
 
