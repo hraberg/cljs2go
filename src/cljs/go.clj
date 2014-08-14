@@ -22,11 +22,10 @@
                (cljs.analyzer/analyze (cljs.analyzer/empty-env))
                (w/prewalk
                 #(cond-> %
-                         (map? %) (-> (dissoc :children :ns :column :shadow
-                                              :protocol-inline :protocol-impl
-                                              :doc :js-globals :jsdoc)
-                                      (cond->
-                                       (:locals %) (update-in [:locals] keys))))))))
+                         (map? %) (dissoc :children :ns :column :shadow
+                                          :protocol-inline :protocol-impl
+                                          :doc :js-globals :jsdoc)
+                         (:locals %) (update-in [:locals] keys))))))
        single? first))))
 
 (defn go->str [in]
