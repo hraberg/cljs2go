@@ -1,6 +1,7 @@
 package js
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 	"regexp"
@@ -130,13 +131,25 @@ func (_ ConsoleConstructor) Log(obj ...interface{}) interface{} {
 
 var Console = ConsoleConstructor{}
 
-type String string
+type StringConstructor struct{}
 
-func (this String) Replace(re RegExp, f func(string) string) string {
+func (_ StringConstructor) FromCharCode(num ...interface{}) interface{} {
+	var buffer bytes.Buffer
+	for _, n := range num {
+		buffer.WriteRune(rune(n.(int)))
+	}
+	return buffer.String()
+}
+
+var String = StringConstructor{}
+
+type JSString string
+
+func (this JSString) Replace(re RegExp, f func(string) string) string {
 	return re.compile().ReplaceAllStringFunc(string(this), f)
 }
 
-func (this String) Search(re RegExp) float64 {
+func (this JSString) Search(re RegExp) float64 {
 	var match = re.compile().FindStringIndex(string(this))
 	if match == nil {
 		return -1
@@ -144,10 +157,10 @@ func (this String) Search(re RegExp) float64 {
 	return float64(match[0])
 }
 
-func (this String) CharAt(index float64) string {
+func (this JSString) CharAt(index float64) string {
 	return string([]rune(string(this))[int(index)])
 }
 
-func (this String) CharCodeAt(index float64) float64 {
+func (this JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(string(this))[int(index)])
 }

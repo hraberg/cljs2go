@@ -46,6 +46,8 @@
           ms)))))
 
 (defmethod emit-constant nil [x] (emits "nil"))
+(defmethod emit-constant String [x]
+  (emits "js.JSString(" (wrap-in-double-quotes (escape-string x)) ")"))
 (defmethod emit-constant Character [x]
   (emits (str "'" (escape-char x) "'")))
 
