@@ -46,6 +46,9 @@
           (symbol ms)
           ms)))))
 
+(defn go-public [s]
+  (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
+
 (defmethod emit-constant nil [x] (emits "nil"))
 (defmethod emit-constant String [x]
   (emits "js.JSString(" (wrap-in-double-quotes (escape-string x)) ")"))
@@ -128,8 +131,7 @@
                                       ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
                                       (update-in info [:name] name)
                                       (:ns info)
-                                      (update-in info [:name] #(str (namespace %) "."
-                                                                    (string/upper-case (subs (name %) 0 1)) (subs (name %) 1)))
+                                      (update-in info [:name] #(str (namespace %) "." (go-public %)))
                                       :else info))))))))
 
 (defmethod emit* :meta
@@ -270,7 +272,7 @@
       (let [short-name (last (string/split (str mname) #"\."))
             export (or (and export (last (string/split (str (munge export)) #"\.")))
                        short-name)
-            export (and export (str (string/upper-case (subs (str (munge export)) 0 1)) (subs (str (munge export)) 1)))]
+            export (and export (go-public (munge export)))]
         (when-not (= export short-name)
           (emitln "var "export  " = " short-name))))))
 
@@ -535,7 +537,8 @@
 
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
-  (let [info (:info f)
+  (let [f (update-in f [:info :name] go-public)
+        info (:info f)
         fn? (and ana/*cljs-static-fns*
                  (not (:dynamic info))
                  (:fn-var info))
