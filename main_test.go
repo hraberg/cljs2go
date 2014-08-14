@@ -44,42 +44,7 @@ import . "github.com/hraberg/cljs.go/cljs/core"
 
 */
 
-var Foo_cljs__lang__maxFixedArity = 1
-
-func init() {
-	Foo_cljs__core__IFn___invoke__arity__1 = func(x interface{}) interface{} {
-		return Println("Hello ", x)
-	}
-	Foo_cljs__core__IFn___invoke__arity__variadic = func(x interface{}, xs ...interface{}) interface{} {
-		return Println("Hello ", x, xs)
-	}
-
-	Foo = func(arguments ...interface{}) interface{} {
-		var l = len(arguments)
-		switch {
-		case l > 1:
-			return Foo_cljs__core__IFn___invoke__arity__variadic(arguments[0], arguments[1:]...)
-		case l == 1:
-			return Foo_cljs__core__IFn___invoke__arity__1(arguments[0])
-		}
-		panic(js.Error{fmt.Sprint("Invalid arity: ", len(arguments))})
-	}
-}
-
-var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
-var Foo_cljs__core__IFn___invoke__arity__variadic func(interface{}, ...interface{}) interface{}
-var Foo func(...interface{}) interface{}
-
-func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
-	return Foo(xs...)
-}
-
 func Main(args ...interface{}) interface{} {
-	Foo("Space")
-	Foo_cljs__core__IFn___invoke__arity__1("Space")
-	Foo("Space", "Hyper")
-	Foo_cljs__core__IFn___invoke__arity__variadic("Space", "Hyper")
-	Foo()
 	return nil
 }
 
@@ -119,11 +84,7 @@ func Test_JS(t *testing.T) {
 	js.Console.Log(js.ParseInt("314", 10))
 	js.Console.Log(js.ParseInt("x", 10))
 
-	var xs = []int{1, 2, 3, 4, 5}
-	var is = make([]interface{}, len(xs))
-	for i, x := range xs {
-		is[i] = float64(x)
-	}
+	var is = []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
 	garray.Shuffle(is)
 	js.Console.Log(is)
 	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
@@ -133,13 +94,9 @@ func Test_JS(t *testing.T) {
 	garray.StableSort(is, garray.DefaultCompare)
 	js.Console.Log(is)
 
-	var ss = []string{"foo", "bar"}
-	is = make([]interface{}, len(ss))
-	for i, s := range ss {
-		is[i] = s
-	}
-	garray.StableSort(is, garray.DefaultCompare)
-	js.Console.Log(is)
+	var ss = []interface{}{"foo", "bar"}
+	garray.StableSort(ss, garray.DefaultCompare)
+	js.Console.Log(ss)
 
 	var obj = gobject.Create("foo", 2, "bar", 3)
 	js.Console.Log(obj)
@@ -158,8 +115,47 @@ func Test_JS(t *testing.T) {
 	js.Console.Log(gstring.HashCode("Hello World"))
 }
 
-func Test_Main(t *testing.T) {
-	assert.Panics(t, func() { MainPreamble() })
+func init() {
+	MainPreamble()
+}
+
+var Foo_cljs__lang__maxFixedArity = 1
+
+func init() {
+	Foo_cljs__core__IFn___invoke__arity__1 = func(x interface{}) interface{} {
+		return fmt.Sprint("Hello ", x)
+	}
+	Foo_cljs__core__IFn___invoke__arity__variadic = func(x interface{}, xs ...interface{}) interface{} {
+		return fmt.Sprint("Hello ", x, xs)
+	}
+
+	Foo = func(arguments ...interface{}) interface{} {
+		var l = len(arguments)
+		switch {
+		case l > 1:
+			return Foo_cljs__core__IFn___invoke__arity__variadic(arguments[0], arguments[1:]...)
+		case l == 1:
+			return Foo_cljs__core__IFn___invoke__arity__1(arguments[0])
+		}
+		panic(js.Error{fmt.Sprint("Invalid arity: ", len(arguments))})
+	}
+}
+
+var Foo_cljs__core__IFn___invoke__arity__1 func(interface{}) interface{}
+var Foo_cljs__core__IFn___invoke__arity__variadic func(interface{}, ...interface{}) interface{}
+var Foo func(...interface{}) interface{}
+
+func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
+	return Foo(xs...)
+}
+
+func Test_Dispatch(t *testing.T) {
+	assert.Equal(t, "Hello Space", Foo("Space"))
+	assert.Equal(t, "Hello Space", Foo_cljs__core__IFn___invoke__arity__1("Space"))
+	assert.Equal(t, "Hello Space[Hyper]", Foo("Space", "Hyper"))
+	assert.Equal(t, "Hello Space[Hyper]", Foo_cljs__core__IFn___invoke__arity__variadic("Space", "Hyper"))
+	assert.Equal(t, "Hello foo[bar]", Foo_cljs__lang__applyTo([]interface{}{"foo", "bar"}))
+	assert.Panics(t, func() { Foo() })
 }
 
 func double(x interface{}) float64 {
