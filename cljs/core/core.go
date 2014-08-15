@@ -70,7 +70,12 @@ type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
 // Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
 // As can be seen above regarding IFn, it would be nice to ensure that IFn is just a special case that emit* :invoke knows about.
-// My impression is that this is how CLJS does it.
+// My impression is that this is how CLJS does it. To reiterate - the reason this becomes extra messy in Go is lack of overloading.
+// The main issue of making all invocations methods is that there's no way to create an anonymous type.
+// The anonymous function bodies need to stay in the context where they're defined for closures to work.
+// Interfaces might solve this though, as per earlier spikes.
+// Another reason a function cannot (only) be an empty struct, is that in a protocol it's an interface method in Go.
+// Most of this should be solvable with some indirection and interfaces.
 
 // We also have the issue of functions that refer to themselves and how to ensure the var exists.
 // This is extra interesting for anonymous "named" functions, ie. (fn foo [] (foo))
