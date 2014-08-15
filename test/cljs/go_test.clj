@@ -49,7 +49,4 @@
 (deftest go-test
   (let [{:keys [out exit]} (sh/sh "go" "test")
         out (s/replace (s/replace out "\r" "\n") "\n\t\t" "")]
-    (when-not (zero? exit)
-      (println)
-      (println out))
     (is (zero? exit) out)))
