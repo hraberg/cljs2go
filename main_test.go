@@ -61,7 +61,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 6, (js.JSString("Hello World").Search(js.RegExp{"world", "i"})))
 	assert.Equal(t, "(?i)Hello", (js.RegExp{"Hello", "i"}).String())
 
-	var date = js.Date{1407962432671}
+	date := js.Date{1407962432671}
 	assert.Equal(t, 2014, date.GetUTCFullYear())
 	assert.Equal(t, 7, date.GetUTCMonth())
 	assert.Equal(t, 13, date.GetUTCDate())
@@ -78,7 +78,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, math.NaN(), js.ParseInt("3.14", 10))
 	assert.Equal(t, math.NaN(), js.ParseInt("x", 10))
 
-	var is = []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
+	is := []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
 	garray.Shuffle(is)
 	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
 	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
@@ -86,12 +86,12 @@ func Test_JS(t *testing.T) {
 	garray.StableSort(is, garray.DefaultCompare)
 	assert.Equal(t, []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}, is)
 
-	var ss = []interface{}{"foo", "bar"}
+	ss := []interface{}{"foo", "bar"}
 	garray.StableSort(ss, garray.DefaultCompare)
 	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
 
-	var obj = gobject.Create("foo", 2, "bar", 3)
-	var copy = make(map[string]interface{})
+	obj := gobject.Create("foo", 2, "bar", 3)
+	copy := make(map[string]interface{})
 	gobject.ForEach(obj, func(k, v, o interface{}) interface{} {
 		assert.Equal(t, obj, o)
 		assert.Equal(t, v, o.(map[string]interface{})[k.(string)])
@@ -100,7 +100,7 @@ func Test_JS(t *testing.T) {
 	})
 	assert.Equal(t, obj, copy)
 
-	var sb = gstring.StringBuffer{}
+	sb := gstring.StringBuffer{}
 	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").ToString())
 	assert.Equal(t, "Hello JavaScript World", sb.String())
 
@@ -110,7 +110,7 @@ func Test_JS(t *testing.T) {
 }
 
 func Test_Main(t *testing.T) {
-	var mainWasCalled = false
+	mainWasCalled := false
 	STAR_main_cli_fn_STAR_ = func(args ...interface{}) interface{} {
 		mainWasCalled = true
 		return nil
@@ -122,9 +122,9 @@ func Test_Main(t *testing.T) {
 var Baz = AFn{
 	CljsLangMaxFixedArity: 1,
 	CljsCoreIFn_InvokeArityVariadic: func(args ...interface{}) interface{} {
-		var x = args[0]
-		var xs = args[1:]
-		var _ = x
+		x := args[0]
+		xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
+		_ = x
 		return xs
 	},
 	CljsCoreIFn_InvokeArity1: func(x interface{}) interface{} {

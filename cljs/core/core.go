@@ -48,7 +48,7 @@ func Println(objs ...interface{}) interface{} {
 
 func Main() {
 	Enable_console_print_BANG_()
-	var args = make([]interface{}, len(os.Args[1:]))
+	args := make([]interface{}, len(os.Args[1:]))
 	for i, a := range os.Args[1:] {
 		args[i] = a
 	}
@@ -96,7 +96,7 @@ func throwArity(arity int) interface{} {
 }
 
 func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
-	var argc = len(args)
+	argc := len(args)
 	switch {
 	case argc == 0 && this.CljsCoreIFn_InvokeArity0 != nil:
 		return this.CljsCoreIFn_InvokeArity0()
@@ -115,7 +115,7 @@ func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 }
 
 func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
-	var argc = len(args)
+	argc := len(args)
 	if argc < 1 {
 		throwArity(argc)
 	}
