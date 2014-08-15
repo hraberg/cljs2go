@@ -283,11 +283,11 @@ func (this DispatchTable) InvokeArity1(a interface{}) interface{} {
 }
 
 func (this DispatchTable) InvokeArity2(a, b interface{}) interface{} {
-	return this.method(1).(func(_, _ interface{}) interface{})(a, b)
+	return this.method(2).(func(_, _ interface{}) interface{})(a, b)
 }
 
 func (this DispatchTable) InvokeArity3(a, b, c interface{}) interface{} {
-	return this.method(1).(func(_, _, _ interface{}) interface{})(a, b, c)
+	return this.method(3).(func(_, _, _ interface{}) interface{})(a, b, c)
 }
 
 func (this DispatchTable) Call(args ...interface{}) interface{} {
