@@ -124,7 +124,27 @@ func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
 
 /*
 
-cljs.core.str.cljs$core$IFn$_invoke$arity$1(42) ;; (str 42)
+There's a cljs.core, clj macro that eagerly turns things into strings in cljs.core.clj, but when not:
+(str x) compiles to cljs.core.str.cljs$core$IFn$_invoke$arity$1(x)
+cljs.core.str is the fn var
+cljs$core$IFn is the protocol
+$_invoke is the protocol fn
+$arity$1 is the overload, ie [this a] in IFn, [x] in str. (How does the variadic [x & ys] map to the IFn arities?)
+
+;; in cljs.core, cljs
+(defn str
+  "With no args, returns the empty string. With one arg x, returns
+  x.toString().  (str nil) returns the empty string. With more than
+  one arg, returns the concatenation of the str values of the args."
+  ([] "")
+  ([x] (if (nil? x)
+         ""
+         (.toString x)))
+  ([x & ys]
+    (loop [sb (StringBuffer. (str x)) more ys]
+      (if more
+        (recur (. sb  (append (str (first more)))) (next more))
+        (.toString sb)))))
 
 (defprotocol IFn
   (-invoke
