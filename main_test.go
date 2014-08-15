@@ -151,40 +151,64 @@ func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
 
 type IFn interface {
 	Call(...interface{}) interface{}
-	ApplyTo(args []interface{}) interface{}
+}
+
+type IFnArity1 interface {
+	InvokeArity1(interface{}) interface{}
+}
+
+type IFnArity2 interface {
+	InvokeArity2(interface{}, interface{}) interface{}
+}
+
+type IFnArityVariadic interface {
+	InvokeArityVariadic(...interface{}) interface{}
 }
 
 type Bar struct{}
 
-func (this Bar) cljs__core__IFn___invoke__arity__1(x interface{}) interface{} {
+func (this Bar) InvokeArity1(x interface{}) interface{} {
 	return x
 }
 
-func (this Bar) cljs__core__IFn___invoke__arity__variadic(x interface{}, xs ...interface{}) interface{} {
+func (this Bar) InvokeArityVariadic(xs ...interface{}) interface{} {
+	var _ = xs[0]
+	xs = xs[1:]
 	return xs
 }
 
-func (this Bar) Call(arguments ...interface{}) interface{} {
-	var argc = len(arguments)
+func (this Bar) Call(args ...interface{}) interface{} {
+	var argc = len(args)
 	switch {
 	case argc == 1:
-		return this.cljs__core__IFn___invoke__arity__1(arguments[0])
+		return this.InvokeArity1(args[0])
 	case argc > 1:
-		return this.cljs__core__IFn___invoke__arity__variadic(arguments[0], arguments[0:]...)
+		return this.InvokeArityVariadic(args...)
 	}
-	panic(js.Error{fmt.Sprint("Invalid arity: ", len(arguments))})
+	panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
 }
 
-func (this Bar) ApplyTo(args []interface{}) interface{} {
-	return this.Call(args...)
+func ApplyTo(f IFn, args ...interface{}) interface{} {
+	var argc = len(args)
+	if argc < 1 {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	}
+	return f.Call(append(args[:argc-1], args[argc-1].([]interface{})...)...)
 }
 
 func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	var f IFn = Bar{}
 	assert.Panics(t, func() { f.Call() })
 	assert.Equal(t, "Hello", f.Call("Hello"))
-	assert.Equal(t, []interface{}{"Hello", "World"}, f.Call("Hello", "World"))
-	assert.Equal(t, []interface{}{"Hello", "World"}, f.ApplyTo([]interface{}{"Hello", "World"}))
+	assert.Equal(t, "Hello", f.(IFnArity1).InvokeArity1("Hello"))
+	assert.Equal(t, []interface{}{"World"}, f.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, f.(IFnArityVariadic).InvokeArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(f, []interface{}{"Hello", "World"}))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(f, "Hello", []interface{}{"World"}))
+	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(f, "Hello", []interface{}{"World", "Space"}))
+	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(f, "Hello", "World", []interface{}{"Space"}))
+	assert.Panics(t, func() { ApplyTo(f) })
+	assert.Panics(t, func() { ApplyTo(f, "Hello", "World") })
 }
 
 func Test_Dispatch(t *testing.T) {
