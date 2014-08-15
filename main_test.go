@@ -119,28 +119,28 @@ func Test_Main(t *testing.T) {
 	assert.True(t, mainWasCalled)
 }
 
-var Baz = CljsCoreIFn{
-	MaxFixedArity: 1,
-	InvokeArityVariadic: func(args ...interface{}) interface{} {
+var Baz = AFn{
+	CljsLangMaxFixedArity: 1,
+	CljsCoreIFn_InvokeArityVariadic: func(args ...interface{}) interface{} {
 		var x = args[0]
 		var xs = args[1:]
 		var _ = x
 		return xs
 	},
-	InvokeArity1: func(x interface{}) interface{} {
+	CljsCoreIFn_InvokeArity1: func(x interface{}) interface{} {
 		return x
 	},
 }
 
 func Test_Invoke(t *testing.T) {
-	assert.Panics(t, func() { Baz.Invoke() })
-	assert.Equal(t, "Hello", Baz.Invoke("Hello"))
-	assert.Panics(t, func() { Baz.InvokeArity0() })
-	assert.Equal(t, "Hello", Baz.InvokeArity1("Hello"))
-	assert.Panics(t, func() { Baz.InvokeArity2("Hello", "World") })
-	assert.Equal(t, []interface{}{"World"}, Baz.Invoke("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.InvokeArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.ApplyTo("Hello", []interface{}{"World"}))
+	assert.Panics(t, func() { Baz.CljsCoreIFn_Invoke() })
+	assert.Equal(t, "Hello", Baz.CljsCoreIFn_Invoke("Hello"))
+	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity0() })
+	assert.Equal(t, "Hello", Baz.CljsCoreIFn_InvokeArity1("Hello"))
+	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity2("Hello", "World") })
+	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_Invoke("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_InvokeArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
 }
 
 func double(x interface{}) float64 {
