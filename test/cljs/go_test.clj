@@ -1,6 +1,8 @@
 (ns cljs.go-test
   (:require [clojure.test :refer :all]
             [cljs.go :refer :all]
+            [clojure.string :as s]
+            [clojure.java.shell :as sh]
             [clojure.pprint :as pp]))
 
 (defn emit* [cljs]
@@ -8,6 +10,7 @@
         go (ast->go ast)
         {:keys [exit err]} (goimports go)]
     (when-not (zero? exit)
+      (println)
       (println "==================== ClojureScript")
       (doseq [f cljs]
         (pp/pprint f))
@@ -42,3 +45,11 @@
             ([] (foo "World"))
             ([x] (println "Hello " x))
             ([x & ys] (println "Hello " x ys))))))
+
+(deftest go-test
+  (let [{:keys [out exit]} (sh/sh "go" "test")
+        out (s/replace (s/replace out "\r" "\n") "\n\t\t" "")]
+    (when-not (zero? exit)
+      (println)
+      (println out))
+    (is (zero? exit) out)))
