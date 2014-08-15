@@ -381,7 +381,7 @@ func (this InvokeArity4) Call(args ...interface{}) interface{} {
 	return this(args[0], args[1], args[2], args[3])
 }
 
-type FixedDispatchTable struct {
+type CljsCoreIFn struct {
 	MaxFixedArity int
 	InvokeArityVariadic
 	InvokeArity0
@@ -391,7 +391,7 @@ type FixedDispatchTable struct {
 	InvokeArity4
 }
 
-func (this FixedDispatchTable) Call(args ...interface{}) interface{} {
+func (this CljsCoreIFn) Call(args ...interface{}) interface{} {
 	var argc = len(args)
 	switch {
 	case argc == 0 && this.InvokeArity0 != nil:
@@ -404,15 +404,18 @@ func (this FixedDispatchTable) Call(args ...interface{}) interface{} {
 		return this.InvokeArity3(args[0], args[1], args[3])
 	case argc == 4 && this.InvokeArity4 != nil:
 		return this.InvokeArity4(args[0], args[1], args[3], args[4])
+	case argc > this.MaxFixedArity && this.InvokeArityVariadic != nil:
+		return this.InvokeArityVariadic(args...)
 	}
-	if this.InvokeArityVariadic == nil {
-		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
-	}
-	return this.InvokeArityVariadic(args...)
+	panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
 }
 
-func Test_FixedDispatch_Table(t *testing.T) {
-	var d = FixedDispatchTable{
+func (this CljsCoreIFn) ApplyTo(args ...interface{}) interface{} {
+	return ApplyTo(this, args...)
+}
+
+func Test_CljsCoreIFn(t *testing.T) {
+	var f = CljsCoreIFn{
 		MaxFixedArity: 1,
 		InvokeArityVariadic: func(xs ...interface{}) interface{} {
 			var _ = xs[0]
@@ -424,14 +427,14 @@ func Test_FixedDispatch_Table(t *testing.T) {
 		},
 	}
 
-	assert.Panics(t, func() { d.Call() })
-	assert.Equal(t, "Hello", d.Call("Hello"))
-	assert.Panics(t, func() { d.InvokeArity0() })
-	assert.Equal(t, "Hello", d.InvokeArity1("Hello"))
-	assert.Panics(t, func() { d.InvokeArity2("Hello", "World") })
-	assert.Equal(t, []interface{}{"World"}, d.Call("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, d.InvokeArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, ApplyTo(d, "Hello", []interface{}{"World"}))
+	assert.Panics(t, func() { f.Call() })
+	assert.Equal(t, "Hello", f.Call("Hello"))
+	assert.Panics(t, func() { f.InvokeArity0() })
+	assert.Equal(t, "Hello", f.InvokeArity1("Hello"))
+	assert.Panics(t, func() { f.InvokeArity2("Hello", "World") })
+	assert.Equal(t, []interface{}{"World"}, f.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, f.InvokeArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, f.ApplyTo("Hello", []interface{}{"World"}))
 }
 
 func double(x interface{}) float64 {
