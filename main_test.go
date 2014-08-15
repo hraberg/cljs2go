@@ -185,9 +185,9 @@ func (this Bar) InvokeArityVariadic(xs ...interface{}) interface{} {
 	return xs
 }
 
-type Closure func(...interface{}) interface{}
+type AFn func(...interface{}) interface{}
 
-func (this Closure) Call(args ...interface{}) interface{} {
+func (this AFn) Call(args ...interface{}) interface{} {
 	return this(args...)
 }
 
@@ -226,11 +226,29 @@ func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	assert.Panics(t, func() { ApplyTo(f) })
 	assert.Panics(t, func() { ApplyTo(f, "Hello", "World") })
 
-	var c IFn = Closure(func(args ...interface{}) interface{} {
+	var c = AFn(func(args ...interface{}) interface{} {
 		var argc = len(args)
+		switch {
+		case argc == 1:
+			return func(x interface{}) interface{} {
+				return x
+			}(args[0])
+		case argc > 1:
+			return func(xs ...interface{}) interface{} {
+				var _ = xs[0]
+				xs = xs[1:]
+				return xs
+			}(args...)
+		}
 		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
 	})
 	assert.Panics(t, func() { c.Call() })
+	assert.Equal(t, "Hello", c.Call("Hello"))
+	assert.Equal(t, []interface{}{"World"}, c.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(c, []interface{}{"Hello", "World"}))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(c, "Hello", []interface{}{"World"}))
+	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(c, "Hello", []interface{}{"World", "Space"}))
+	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(c, "Hello", "World", []interface{}{"Space"}))
 }
 
 func Test_Dispatch(t *testing.T) {
