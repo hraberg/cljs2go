@@ -81,7 +81,7 @@ type RegExp struct {
 }
 
 func (this RegExp) compile() *regexp.Regexp {
-	var pattern = this.Pattern
+	pattern := this.Pattern
 	if len(this.Flags) != 0 {
 		pattern = "(?" + this.Flags + ")" + pattern
 	}
@@ -142,7 +142,7 @@ func (this JSString) Replace(re RegExp, f func(string) string) string {
 }
 
 func (this JSString) Search(re RegExp) float64 {
-	var match = re.compile().FindStringIndex(string(this))
+	match := re.compile().FindStringIndex(string(this))
 	if match == nil {
 		return -1
 	}

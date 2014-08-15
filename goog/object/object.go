@@ -1,7 +1,7 @@
 package object
 
 func Create(keyvals ...interface{}) map[string]interface{} {
-	var obj = make(map[string]interface{})
+	obj := make(map[string]interface{})
 	for i := 0; i < len(keyvals); i++ {
 		obj[keyvals[i].(string)] = keyvals[i+1]
 		i++
