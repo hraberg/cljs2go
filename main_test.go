@@ -149,6 +149,47 @@ func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
 	return Foo(xs...)
 }
 
+type IFn interface {
+	Call(...interface{}) interface{}
+	ApplyTo(args []interface{}) interface{}
+}
+
+type AFn struct{ MaxFixedArity float64 }
+
+type Bar AFn
+
+func (this Bar) cljs__core__IFn___invoke__arity__1(x interface{}) interface{} {
+	return x
+}
+
+func (this Bar) cljs__core__IFn___invoke__arity__variadic(x interface{}, xs ...interface{}) interface{} {
+	return xs
+}
+
+func (this Bar) Call(arguments ...interface{}) interface{} {
+	var argc = len(arguments)
+	switch {
+	case argc == 1:
+		return this.cljs__core__IFn___invoke__arity__1(arguments[0])
+	case argc > int(this.MaxFixedArity):
+		return this.cljs__core__IFn___invoke__arity__variadic(arguments[0], arguments[0:]...)
+	}
+	panic(js.Error{fmt.Sprint("Invalid arity: ", len(arguments))})
+}
+
+func (this Bar) ApplyTo(args []interface{}) interface{} {
+	return this.Call(args...)
+}
+
+func Test_Dispatch_FuncAsStruct(t *testing.T) {
+	var f IFn = Bar{1}
+	assert.Panics(t, func() { f.Call() })
+	assert.Equal(t, "Hello", f.Call("Hello"))
+	assert.Equal(t, []interface{}{"Hello", "World"}, f.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"Hello", "World"}, f.ApplyTo([]interface{}{"Hello", "World"}))
+	assert.Equal(t, 1, f.(Bar).MaxFixedArity)
+}
+
 func Test_Dispatch(t *testing.T) {
 	assert.Equal(t, "Hello Space", Foo("Space"))
 	assert.Equal(t, "Hello Space", Foo_cljs__core__IFn___invoke__arity__1("Space"))

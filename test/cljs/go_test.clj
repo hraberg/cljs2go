@@ -47,6 +47,6 @@
             ([x & ys] (println "Hello " x ys))))))
 
 (deftest go-test
-  (let [{:keys [out exit]} (sh/sh "go" "test")
-        out (s/replace (s/replace out "\r" "\n") "\n\t\t" "")]
+  (let [{:keys [out err exit]} (sh/sh "go" "test")
+        out (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" "")]
     (is (zero? exit) out)))
