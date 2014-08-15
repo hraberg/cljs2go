@@ -226,7 +226,7 @@ func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	assert.Panics(t, func() { ApplyTo(f, "Hello", "World") })
 }
 
-func Test_Dispatch_AnounymousFunc(t *testing.T) {
+func Test_Dispatch_AnonymousFunc(t *testing.T) {
 	var c = AFn(func(args ...interface{}) interface{} {
 		var argc = len(args)
 		switch {
