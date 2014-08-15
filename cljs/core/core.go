@@ -57,6 +57,7 @@ func Main() {
 
 // IFn
 
+// Implementations need to set up actual named locals as argument, and create an array-seq from the varargs.
 type CljsCoreIFn_InvokeArityVariadic func(...interface{}) interface{}
 type CljsCoreIFn_InvokeArity0 func() interface{}
 type CljsCoreIFn_InvokeArity1 func(interface{}) interface{}
@@ -118,7 +119,7 @@ func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
 	if argc < 1 {
 		throwArity(argc)
 	}
-	var spread = args[argc-1].([]interface{})
+	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
 	return this.CljsCoreIFn_Invoke(append(args[:argc-1], spread...)...)
 }
 
