@@ -121,9 +121,10 @@ func Test_Main(t *testing.T) {
 
 var Baz = CljsCoreIFn{
 	MaxFixedArity: 1,
-	InvokeArityVariadic: func(xs ...interface{}) interface{} {
-		var _ = xs[0]
-		xs = xs[1:]
+	InvokeArityVariadic: func(args ...interface{}) interface{} {
+		var x = args[0]
+		var xs = args[1:]
+		var _ = x
 		return xs
 	},
 	InvokeArity1: func(x interface{}) interface{} {
