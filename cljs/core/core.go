@@ -76,6 +76,10 @@ type AFn struct {
 	CljsCoreIFn_InvokeArity4
 }
 
+func throwArity(arity int) interface{} {
+	panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
+}
+
 func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 	var argc = len(args)
 	switch {
@@ -92,14 +96,14 @@ func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 	case argc > this.CljsLangMaxFixedArity && this.CljsCoreIFn_InvokeArityVariadic != nil:
 		return this.CljsCoreIFn_InvokeArityVariadic(args...)
 	}
-	panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	return throwArity(argc)
 }
 
 func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
 	var argc = len(args)
 	if argc < 1 {
-		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+		throwArity(argc)
 	}
-	args = append(args[:argc-1], args[argc-1].([]interface{})...)
-	return this.CljsCoreIFn_Invoke(args...)
+	var spread = args[argc-1].([]interface{})
+	return this.CljsCoreIFn_Invoke(append(args[:argc-1], spread...)...)
 }
