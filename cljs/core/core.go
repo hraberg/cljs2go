@@ -65,6 +65,11 @@ type CljsCoreIFn_InvokeArity3 func(_, _, _ interface{}) interface{}
 type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 
 // There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
+// So we might need to complicate this for various reasons, Keywords for example are IFns by protocol.
+// That is, they implement CljsCoreIFn_InvokeArity1 (and 2), so we might need to re-add the interfaces.
+// Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
+// We also have the issue of functions that refer to themselves and how to ensure the var exists.
+// This is extra interesting for anonymous "named" functions, ie. (fn foo [] (foo))
 
 type AFn struct {
 	CljsLangMaxFixedArity int
