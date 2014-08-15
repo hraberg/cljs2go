@@ -261,6 +261,78 @@ func Test_Dispatch_AnonymousFunc(t *testing.T) {
 	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(c, "Hello", "World", []interface{}{"Space"}))
 }
 
+type DispatchTable struct {
+	InvokeArities  []interface{}
+	InvokeVariadic func(...interface{}) interface{}
+}
+
+func (this DispatchTable) method(n int) interface{} {
+	var f = this.InvokeArities[n]
+	if f == nil {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", n)})
+	}
+	return f
+}
+
+func (this DispatchTable) InvokeArity0() interface{} {
+	return this.method(0).(func() interface{})()
+}
+
+func (this DispatchTable) InvokeArity1(a interface{}) interface{} {
+	return this.method(1).(func(interface{}) interface{})(a)
+}
+
+func (this DispatchTable) InvokeArity2(a, b interface{}) interface{} {
+	return this.method(1).(func(_, _ interface{}) interface{})(a, b)
+}
+
+func (this DispatchTable) InvokeArity3(a, b, c interface{}) interface{} {
+	return this.method(1).(func(_, _, _ interface{}) interface{})(a, b, c)
+}
+
+func (this DispatchTable) Call(args ...interface{}) interface{} {
+	var argc = len(args)
+	if argc < len(this.InvokeArities) {
+		switch argc {
+		case 0:
+			return this.InvokeArity0()
+		case 1:
+			return this.InvokeArity1(args[0])
+		case 2:
+			return this.InvokeArity2(args[0], args[1])
+		case 3:
+			return this.InvokeArity3(args[0], args[1], args[3])
+		}
+	}
+	if this.InvokeVariadic == nil {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	}
+	return this.InvokeVariadic(args...)
+}
+
+func Test_Dispatch_Table(t *testing.T) {
+	var d = DispatchTable{
+		[]interface{}{
+			nil,
+			func(x interface{}) interface{} {
+				return x
+			},
+		},
+		func(xs ...interface{}) interface{} {
+			var _ = xs[0]
+			xs = xs[1:]
+			return xs
+		},
+	}
+	assert.Panics(t, func() { d.Call() })
+	assert.Equal(t, "Hello", d.Call("Hello"))
+	assert.Panics(t, func() { d.InvokeArity0() })
+	assert.Equal(t, "Hello", d.InvokeArity1("Hello"))
+	assert.Equal(t, []interface{}{"World"}, d.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, d.InvokeVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(d, "Hello", []interface{}{"World"}))
+}
+
 func double(x interface{}) float64 {
 	switch x.(type) {
 	case int:
