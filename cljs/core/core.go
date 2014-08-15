@@ -71,6 +71,8 @@ type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
 // Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
 // As can be seen above regarding IFn, it would be nice to ensure that IFn is just a special case that emit* :invoke knows about.
+// IFn -invoke is like any other protocol in JS. There's a dispatch fn setup which looks for an implementation on the receiver.
+// That is, cljs.core._invoke will call  receiver.cljs$core$IFn$_invoke$arity$1(receiver, x)
 // My impression is that this is how CLJS does it. To reiterate - the reason this becomes extra messy in Go is lack of overloading.
 // The main issue of making all invocations methods is that there's no way to create an anonymous type.
 // The anonymous function bodies need to stay in the context where they're defined for closures to work.
