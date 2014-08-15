@@ -149,6 +149,15 @@ func Foo_cljs__lang__applyTo(xs []interface{}) interface{} {
 	return Foo(xs...)
 }
 
+func Test_Dispatch(t *testing.T) {
+	assert.Equal(t, "Hello Space", Foo("Space"))
+	assert.Equal(t, "Hello Space", Foo_cljs__core__IFn___invoke__arity__1("Space"))
+	assert.Equal(t, "Hello Space[Hyper]", Foo("Space", "Hyper"))
+	assert.Equal(t, "Hello Space[Hyper]", Foo_cljs__core__IFn___invoke__arity__variadic("Space", "Hyper"))
+	assert.Equal(t, "Hello foo[bar]", Foo_cljs__lang__applyTo([]interface{}{"foo", "bar"}))
+	assert.Panics(t, func() { Foo() })
+}
+
 type IFn interface {
 	Call(...interface{}) interface{}
 }
@@ -250,15 +259,6 @@ func Test_Dispatch_AnonymousFunc(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, ApplyTo(c, "Hello", []interface{}{"World"}))
 	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(c, "Hello", []interface{}{"World", "Space"}))
 	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(c, "Hello", "World", []interface{}{"Space"}))
-}
-
-func Test_Dispatch(t *testing.T) {
-	assert.Equal(t, "Hello Space", Foo("Space"))
-	assert.Equal(t, "Hello Space", Foo_cljs__core__IFn___invoke__arity__1("Space"))
-	assert.Equal(t, "Hello Space[Hyper]", Foo("Space", "Hyper"))
-	assert.Equal(t, "Hello Space[Hyper]", Foo_cljs__core__IFn___invoke__arity__variadic("Space", "Hyper"))
-	assert.Equal(t, "Hello foo[bar]", Foo_cljs__lang__applyTo([]interface{}{"foo", "bar"}))
-	assert.Panics(t, func() { Foo() })
 }
 
 func double(x interface{}) float64 {
