@@ -173,6 +173,12 @@ type IFnArityVariadic interface {
 	InvokeArityVariadic(...interface{}) interface{}
 }
 
+type AFn func(...interface{}) interface{}
+
+func (this AFn) Call(args ...interface{}) interface{} {
+	return this(args...)
+}
+
 type Bar struct{}
 
 func (this Bar) InvokeArity1(x interface{}) interface{} {
@@ -183,12 +189,6 @@ func (this Bar) InvokeArityVariadic(xs ...interface{}) interface{} {
 	var _ = xs[0]
 	xs = xs[1:]
 	return xs
-}
-
-type AFn func(...interface{}) interface{}
-
-func (this AFn) Call(args ...interface{}) interface{} {
-	return this(args...)
 }
 
 func (this Bar) Call(args ...interface{}) interface{} {
@@ -213,7 +213,6 @@ func ApplyTo(f IFn, args ...interface{}) interface{} {
 
 func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	var f IFn = Bar{}
-
 	assert.Panics(t, func() { f.Call() })
 	assert.Equal(t, "Hello", f.Call("Hello"))
 	assert.Equal(t, "Hello", f.(IFnArity1).InvokeArity1("Hello"))
@@ -225,7 +224,9 @@ func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(f, "Hello", "World", []interface{}{"Space"}))
 	assert.Panics(t, func() { ApplyTo(f) })
 	assert.Panics(t, func() { ApplyTo(f, "Hello", "World") })
+}
 
+func Test_Dispatch_AnounymousFunc(t *testing.T) {
 	var c = AFn(func(args ...interface{}) interface{} {
 		var argc = len(args)
 		switch {
