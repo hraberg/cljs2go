@@ -33,9 +33,12 @@
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]
     (assert (zero? exit) err)))
 
-(defn gofmt [in]
+(defn goimports [in]
   (go-get "code.google.com/p/go.tools/cmd/goimports")
-  (let [{:keys [exit out err]} (sh/sh "goimports" :in in)]
+  (sh/sh "goimports" :in in))
+
+(defn gofmt [in]
+  (let [{:keys [exit out err]} (goimports in)]
     (if (zero? exit)
       out
       (do (println err) in))))
@@ -59,30 +62,6 @@
          println)))
 
 (comment
-  (print-simple-ast-and-emitted-go
-   '[(ns test.app (:require [goog.array :as array]))
-     (defn plus-one [x] (inc x))])
-
-  (print-simple-ast-and-emitted-go
-   '[(ns hello)
-     (defn world []
-       "World")
-     (defn ^:export greet [n]
-       (str "Hello " n (world)))])
-
-  (print-simple-ast-and-emitted-go
-   '[(ns hello)
-     (defn main []
-       (println "Hello World"))])
-
-  (print-simple-ast-and-emitted-go
-   '[(ns hello)
-     (defn foo
-       ([] (foo "World"))
-       ([x] (println "Hello " x))
-       ;; ([x & ys] (println "Hello " x ys))
-       )])
-
   (cljs.closure/build '[(ns hello.core)
                         (defn ^{:export greet} greet [n] (str "Hola " n))
                         (defn ^:export sum [xs] 42)]
