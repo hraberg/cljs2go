@@ -333,6 +333,107 @@ func Test_Dispatch_Table(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, ApplyTo(d, "Hello", []interface{}{"World"}))
 }
 
+func assertArity(n int, args []interface{}) {
+	var argc = len(args)
+	if n != argc {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	}
+}
+
+type InvokeArityVariadic func(...interface{}) interface{}
+
+func (this InvokeArityVariadic) Call(args ...interface{}) interface{} {
+	return this(args...)
+}
+
+type InvokeArity0 func() interface{}
+
+func (this InvokeArity0) Call(args ...interface{}) interface{} {
+	assertArity(0, args)
+	return this()
+}
+
+type InvokeArity1 func(interface{}) interface{}
+
+func (this InvokeArity1) Call(args ...interface{}) interface{} {
+	assertArity(1, args)
+	return this(args[0])
+}
+
+type InvokeArity2 func(_, _ interface{}) interface{}
+
+func (this InvokeArity2) Call(args ...interface{}) interface{} {
+	assertArity(2, args)
+	return this(args[0], args[1])
+}
+
+type InvokeArity3 func(_, _, _ interface{}) interface{}
+
+func (this InvokeArity3) Call(args ...interface{}) interface{} {
+	assertArity(3, args)
+	return this(args[0], args[1], args[2])
+}
+
+type InvokeArity4 func(_, _, _, _ interface{}) interface{}
+
+func (this InvokeArity4) Call(args ...interface{}) interface{} {
+	assertArity(4, args)
+	return this(args[0], args[1], args[2], args[3])
+}
+
+type FixedDispatchTable struct {
+	MaxFixedArity int
+	InvokeArityVariadic
+	InvokeArity0
+	InvokeArity1
+	InvokeArity2
+	InvokeArity3
+	InvokeArity4
+}
+
+func (this FixedDispatchTable) Call(args ...interface{}) interface{} {
+	var argc = len(args)
+	switch {
+	case argc == 0 && this.InvokeArity0 != nil:
+		return this.InvokeArity0()
+	case argc == 1 && this.InvokeArity1 != nil:
+		return this.InvokeArity1(args[0])
+	case argc == 2 && this.InvokeArity2 != nil:
+		return this.InvokeArity2(args[0], args[1])
+	case argc == 3 && this.InvokeArity3 != nil:
+		return this.InvokeArity3(args[0], args[1], args[3])
+	case argc == 4 && this.InvokeArity4 != nil:
+		return this.InvokeArity4(args[0], args[1], args[3], args[4])
+	}
+	if this.InvokeArityVariadic == nil {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	}
+	return this.InvokeArityVariadic(args...)
+}
+
+func Test_FixedDispatch_Table(t *testing.T) {
+	var d = FixedDispatchTable{
+		MaxFixedArity: 1,
+		InvokeArityVariadic: func(xs ...interface{}) interface{} {
+			var _ = xs[0]
+			xs = xs[1:]
+			return xs
+		},
+		InvokeArity1: func(x interface{}) interface{} {
+			return x
+		},
+	}
+
+	assert.Panics(t, func() { d.Call() })
+	assert.Equal(t, "Hello", d.Call("Hello"))
+	assert.Panics(t, func() { d.InvokeArity0() })
+	assert.Equal(t, "Hello", d.InvokeArity1("Hello"))
+	assert.Panics(t, func() { d.InvokeArity2("Hello", "World") })
+	assert.Equal(t, []interface{}{"World"}, d.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, d.InvokeArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, ApplyTo(d, "Hello", []interface{}{"World"}))
+}
+
 func double(x interface{}) float64 {
 	switch x.(type) {
 	case int:
