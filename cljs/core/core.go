@@ -64,6 +64,8 @@ type CljsCoreIFn_InvokeArity2 func(_, _ interface{}) interface{}
 type CljsCoreIFn_InvokeArity3 func(_, _, _ interface{}) interface{}
 type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 
+// There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
+
 type AFn struct {
 	CljsLangMaxFixedArity int
 	CljsCoreIFn_InvokeArityVariadic
