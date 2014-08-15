@@ -68,6 +68,7 @@ type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 // There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
 // So we might need to complicate this for various reasons, Keywords for example are IFns by protocol.
 // That is, they implement CljsCoreIFn_InvokeArity1 (and 2), so we might need to re-add the interfaces.
+// CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
 // Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
 // As can be seen above regarding IFn, it would be nice to ensure that IFn is just a special case that emit* :invoke knows about.
