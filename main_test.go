@@ -153,12 +153,20 @@ type IFn interface {
 	Call(...interface{}) interface{}
 }
 
+type IFnArity0 interface {
+	InvokeArity0() interface{}
+}
+
 type IFnArity1 interface {
 	InvokeArity1(interface{}) interface{}
 }
 
 type IFnArity2 interface {
 	InvokeArity2(interface{}, interface{}) interface{}
+}
+
+type IFnArity3 interface {
+	InvokeArity3(interface{}, interface{}, interface{}) interface{}
 }
 
 type IFnArityVariadic interface {
@@ -177,6 +185,12 @@ func (this Bar) InvokeArityVariadic(xs ...interface{}) interface{} {
 	return xs
 }
 
+type Closure func(...interface{}) interface{}
+
+func (this Closure) Call(args ...interface{}) interface{} {
+	return this(args...)
+}
+
 func (this Bar) Call(args ...interface{}) interface{} {
 	var argc = len(args)
 	switch {
@@ -193,11 +207,13 @@ func ApplyTo(f IFn, args ...interface{}) interface{} {
 	if argc < 1 {
 		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
 	}
-	return f.Call(append(args[:argc-1], args[argc-1].([]interface{})...)...)
+	args = append(args[:argc-1], args[argc-1].([]interface{})...)
+	return f.Call(args...)
 }
 
 func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	var f IFn = Bar{}
+
 	assert.Panics(t, func() { f.Call() })
 	assert.Equal(t, "Hello", f.Call("Hello"))
 	assert.Equal(t, "Hello", f.(IFnArity1).InvokeArity1("Hello"))
@@ -209,6 +225,12 @@ func Test_Dispatch_FuncAsStruct(t *testing.T) {
 	assert.Equal(t, []interface{}{"World", "Space"}, ApplyTo(f, "Hello", "World", []interface{}{"Space"}))
 	assert.Panics(t, func() { ApplyTo(f) })
 	assert.Panics(t, func() { ApplyTo(f, "Hello", "World") })
+
+	var c IFn = Closure(func(args ...interface{}) interface{} {
+		var argc = len(args)
+		panic(js.Error{fmt.Sprint("Invalid arity: ", argc)})
+	})
+	assert.Panics(t, func() { c.Call() })
 }
 
 func Test_Dispatch(t *testing.T) {
