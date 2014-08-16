@@ -181,7 +181,7 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
 }
 
-func Benchmark_RecursiveDirectPrimtiveCall(t *testing.B) {
+func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
 		this.CljsCoreIFn_InvokeArity1DD = func(n float64) float64 {
@@ -296,6 +296,37 @@ func Benchmark_RecursiveGoUnsafePointerBox(t *testing.B) {
 	assert.Equal(t, 832040, UnboxFloat64(fib(BoxFloat64(30))))
 }
 
+func IBoxFloat64(f float64) interface{} {
+	var i interface{}
+	// v := (*[2]uint64)(unsafe.Pointer(&i))
+	//v[0] = 5262720
+	// v[1] = math.Float64bits(f)
+	(*[2]uint64)(unsafe.Pointer(&i))[1] = math.Float64bits(f)
+	return i
+}
+
+func IUnboxFloat64(p interface{}) float64 {
+	return math.Float64frombits((*[2]uint64)(unsafe.Pointer(&p))[1])
+}
+
+func Benchmark_RecursiveGoEmbedInInterface(t *testing.B) {
+	fib := func() func(interface{}) interface{} {
+		var this func(interface{}) interface{}
+		this = func(n interface{}) interface{} {
+			if IUnboxFloat64(n) == 0 {
+				return IBoxFloat64(0)
+			} else if IUnboxFloat64(n) == 1 {
+				return IBoxFloat64(1)
+			} else {
+				return IBoxFloat64(IUnboxFloat64(this(IBoxFloat64(IUnboxFloat64(n)-1))) +
+					IUnboxFloat64(this(IBoxFloat64(IUnboxFloat64(n)-2))))
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, IUnboxFloat64(fib(IBoxFloat64(30))))
+}
+
 func Test_Pointers(t *testing.T) {
 	var x interface{} = "Hello"
 	x_ptr := &x
@@ -305,8 +336,31 @@ func Test_Pointers(t *testing.T) {
 	//	var x_ptr uint64 = unsafe.Pointer(&x).(unit64)
 
 	pi := 3.14
-	pi_ptr := unsafe.Pointer(uintptr(math.Float64bits(pi)))
-	assert.Equal(t, pi, math.Float64frombits(uint64(uintptr(pi_ptr))))
+	var pi_ptr interface{} = uintptr(math.Float64bits(pi))
+
+	// func(i interface{}) {
+	// 	e := unsafe.Pointer(&i)
+	// 	val := (*[2]uintptr)(e)
+	// 	fmt.Println(*val)
+	// 	var x interface{} = (unsafe.Pointer(uintptr(0)))
+	// 	fmt.Println(reflect.TypeOf(x))
+	// 	fmt.Println(*(*[2]uintptr)(unsafe.Pointer(&x)))
+	// 	var y interface{}
+	// 	fmt.Println(reflect.TypeOf(y))
+	// 	fmt.Println(*(*[2]uintptr)(unsafe.Pointer(&y)))
+
+	// 	fmt.Println(math.Float64frombits(uint64(val[1])))
+	// 	val[0] = uintptr(math.Float64bits(2.0))
+	// 	val[1] = 0
+	// 	fmt.Println(uintptr(math.Float64bits(2.0)))
+	// 	fmt.Println(math.Float64bits(2.0))
+	// 	// fmt.Println(reflect.TypeOf(i))
+	// 	//		fmt.Println(i)
+	// }(1.0)
+
+	// var pi_interface interface{} = pi_ptr
+	//	assert.Equal(t, pi, math.Float64frombits(uint64(uintptr(pi_ptr))))
+	assert.Equal(t, pi, math.Float64frombits(uint64(pi_ptr.(uintptr))))
 	assert.Equal(t, pi, *(*float64)(unsafe.Pointer(&pi)))
 
 	// var y = *(*interface{})(unsafe.Pointer(p))
