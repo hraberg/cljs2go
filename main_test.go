@@ -253,17 +253,65 @@ func Benchmark_RecursiveGoUintptr(t *testing.B) {
 	assert.Equal(t, 832040, math.Float64frombits(uint64(fib(uintptr(math.Float64bits(30.0))))))
 }
 
+func Benchmark_RecursiveGoUnsafePointer(t *testing.B) {
+	fib := func() func(unsafe.Pointer) unsafe.Pointer {
+		var this func(unsafe.Pointer) unsafe.Pointer
+		this = func(n unsafe.Pointer) unsafe.Pointer {
+			if math.Float64frombits(uint64(uintptr(n))) == 0 {
+				return unsafe.Pointer(uintptr(math.Float64bits(0)))
+			} else if math.Float64frombits(uint64(uintptr(n))) == 1 {
+				return unsafe.Pointer(uintptr(math.Float64bits(1)))
+			} else {
+				return unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(this(unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(n)))-1))))))) + math.Float64frombits(uint64(uintptr(this(unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(n)))-2))))))))))
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, math.Float64frombits(uint64(uintptr(fib(unsafe.Pointer(uintptr(math.Float64bits(30))))))))
+}
+
+func BoxFloat64(f float64) unsafe.Pointer {
+	return unsafe.Pointer(uintptr(math.Float64bits(f)))
+}
+
+func UnboxFloat64(p unsafe.Pointer) float64 {
+	return math.Float64frombits(uint64(uintptr(p)))
+}
+
+func Benchmark_RecursiveGoUnsafePointerBox(t *testing.B) {
+	fib := func() func(unsafe.Pointer) unsafe.Pointer {
+		var this func(unsafe.Pointer) unsafe.Pointer
+		this = func(n unsafe.Pointer) unsafe.Pointer {
+			if UnboxFloat64(n) == 0 {
+				return BoxFloat64(0)
+			} else if UnboxFloat64(n) == 1 {
+				return BoxFloat64(1)
+			} else {
+				return BoxFloat64(UnboxFloat64(this(BoxFloat64(UnboxFloat64(n)-1))) +
+					UnboxFloat64(this(BoxFloat64(UnboxFloat64(n)-2))))
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, UnboxFloat64(fib(BoxFloat64(30))))
+}
+
 func Test_Pointers(t *testing.T) {
 	var x interface{} = "Hello"
 	x_ptr := &x
 	assert.Equal(t, "Hello", *x_ptr)
+	u_ptr := uintptr(unsafe.Pointer(x_ptr))
+	assert.Equal(t, "Hello", *(*interface{})(unsafe.Pointer(u_ptr)))
 	//	var x_ptr uint64 = unsafe.Pointer(&x).(unit64)
-	p := uintptr(unsafe.Pointer(x_ptr))
 
-	_ = math.Float64frombits(uint64(p))
+	pi := 3.14
+	pi_ptr := unsafe.Pointer(uintptr(math.Float64bits(pi)))
+	assert.Equal(t, pi, math.Float64frombits(uint64(uintptr(pi_ptr))))
+	assert.Equal(t, pi, *(*float64)(unsafe.Pointer(&pi)))
 
-	var y = *(*interface{})(unsafe.Pointer(p))
-	assert.Equal(t, "Hello", y)
+	// var y = *(*interface{})(unsafe.Pointer(p))
+	// assert.Equal(t, "Hello", y)
+	assert.Equal(t, "Hello", *(*interface{})(unsafe.Pointer(&x)))
 }
 
 func double(x interface{}) float64 {
