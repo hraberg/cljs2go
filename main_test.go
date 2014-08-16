@@ -143,6 +143,41 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
 }
 
+func Test_AnonymousRecursive(t *testing.T) {
+	fib := func() AFn {
+		var __this = AFn{}
+		__this.CljsCoreIFn_InvokeArity1 = func(n interface{}) interface{} {
+			if n == 0.0 {
+				return 0.0
+			} else if n == 1.0 {
+				return 1.0
+			} else {
+				return __this.CljsCoreIFn_InvokeArity1(n.(float64)-1.0).(float64) +
+					__this.CljsCoreIFn_InvokeArity1(n.(float64)-2.0).(float64)
+			}
+		}
+		return __this
+	}()
+	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+}
+
+func Test_AnonymousRecursiveGo(t *testing.T) {
+	fib := func() func(n float64) float64 {
+		var __this func(n float64) float64
+		__this = func(n float64) float64 {
+			if n == 0 {
+				return 0
+			} else if n == 1 {
+				return 1
+			} else {
+				return __this(n-1) + __this(n-2)
+			}
+		}
+		return __this
+	}()
+	assert.Equal(t, 832040, fib(30))
+}
+
 func double(x interface{}) float64 {
 	switch x.(type) {
 	case int:
