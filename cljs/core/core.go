@@ -65,6 +65,18 @@ type CljsCoreIFn_InvokeArity2 func(_, _ interface{}) interface{}
 type CljsCoreIFn_InvokeArity3 func(_, _, _ interface{}) interface{}
 type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
 
+type CljsCoreIFn_InvokeArity0D func() float64
+type CljsCoreIFn_InvokeArity1OD func(interface{}) float64
+type CljsCoreIFn_InvokeArity1DD func(float64) float64
+type CljsCoreIFn_InvokeArity1DO func(float64) interface{}
+type CljsCoreIFn_InvokeArity2OOD func(_, _ interface{}) float64
+type CljsCoreIFn_InvokeArity2ODO func(interface{}, float64) interface{}
+type CljsCoreIFn_InvokeArity2ODD func(interface{}, float64) float64
+type CljsCoreIFn_InvokeArity2DOO func(float64, interface{}) interface{}
+type CljsCoreIFn_InvokeArity2DOD func(float64, interface{}) float64
+type CljsCoreIFn_InvokeArity2DDO func(_, _ float64) interface{}
+type CljsCoreIFn_InvokeArity2DDD func(_, _ float64) float64
+
 // There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
 // So we might need to complicate this for various reasons, Keywords for example are IFns by protocol.
 // That is, they implement CljsCoreIFn_InvokeArity1 (and 2), so we might need to re-add the interfaces.
@@ -92,6 +104,17 @@ type AFn struct {
 	CljsCoreIFn_InvokeArity2
 	CljsCoreIFn_InvokeArity3
 	CljsCoreIFn_InvokeArity4
+	CljsCoreIFn_InvokeArity0D
+	CljsCoreIFn_InvokeArity1OD
+	CljsCoreIFn_InvokeArity1DO
+	CljsCoreIFn_InvokeArity1DD
+	CljsCoreIFn_InvokeArity2OOD
+	CljsCoreIFn_InvokeArity2ODO
+	CljsCoreIFn_InvokeArity2ODD
+	CljsCoreIFn_InvokeArity2DOO
+	CljsCoreIFn_InvokeArity2DOD
+	CljsCoreIFn_InvokeArity2DDO
+	CljsCoreIFn_InvokeArity2DDD
 }
 
 func throwArity(arity int) interface{} {
@@ -103,10 +126,32 @@ func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 	switch {
 	case argc == 0 && this.CljsCoreIFn_InvokeArity0 != nil:
 		return this.CljsCoreIFn_InvokeArity0()
+	case argc == 0 && this.CljsCoreIFn_InvokeArity0D != nil:
+		return this.CljsCoreIFn_InvokeArity0D()
 	case argc == 1 && this.CljsCoreIFn_InvokeArity1 != nil:
 		return this.CljsCoreIFn_InvokeArity1(args[0])
+	case argc == 1 && this.CljsCoreIFn_InvokeArity1OD != nil:
+		return this.CljsCoreIFn_InvokeArity1OD(args[0])
+	case argc == 1 && this.CljsCoreIFn_InvokeArity1DO != nil:
+		return this.CljsCoreIFn_InvokeArity1DO(args[0].(float64))
+	case argc == 1 && this.CljsCoreIFn_InvokeArity1DD != nil:
+		return this.CljsCoreIFn_InvokeArity1DD(args[0].(float64))
 	case argc == 2 && this.CljsCoreIFn_InvokeArity2 != nil:
 		return this.CljsCoreIFn_InvokeArity2(args[0], args[1])
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2OOD != nil:
+		return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1])
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2ODO != nil:
+		return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1].(float64))
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2ODD != nil:
+		return this.CljsCoreIFn_InvokeArity2ODO(args[0], args[1].(float64))
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2DOO != nil:
+		return this.CljsCoreIFn_InvokeArity2DOO(args[0].(float64), args[1])
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2DOD != nil:
+		return this.CljsCoreIFn_InvokeArity2DOD(args[0].(float64), args[1])
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2DDO != nil:
+		return this.CljsCoreIFn_InvokeArity2DDO(args[0].(float64), args[1].(float64))
+	case argc == 2 && this.CljsCoreIFn_InvokeArity2DDD != nil:
+		return this.CljsCoreIFn_InvokeArity2DDD(args[0].(float64), args[1].(float64))
 	case argc == 3 && this.CljsCoreIFn_InvokeArity3 != nil:
 		return this.CljsCoreIFn_InvokeArity3(args[0], args[1], args[3])
 	case argc == 4 && this.CljsCoreIFn_InvokeArity4 != nil:

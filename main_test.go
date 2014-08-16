@@ -143,58 +143,77 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
 }
 
-func Benchmark_AnonymousRecursive(t *testing.B) {
+func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func() AFn {
-		var __this = AFn{}
-		__this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
+		var this = AFn{}
+		this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return __this.CljsCoreIFn_InvokeArity1(n-1.0).(float64) +
-					__this.CljsCoreIFn_InvokeArity1(n-2.0).(float64)
+				return this.CljsCoreIFn_InvokeArity1(n-1.0).(float64) +
+					this.CljsCoreIFn_InvokeArity1(n-2.0).(float64)
 			}
 		}
-		return __this
+		return this
 	}()
 	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
 }
 
-func Benchmark_AnonymousRecursiveGo(t *testing.B) {
-	fib := func() func(float64) float64 {
-		var __this func(float64) float64
-		__this = func(n float64) float64 {
-			if n == 0 {
-				return 0
-			} else if n == 1 {
-				return 1
-			} else {
-				return __this(n-1) + __this(n-2)
-			}
-		}
-		return __this
-	}()
-	assert.Equal(t, 832040, fib(30))
-}
-
-func Benchmark_AnonymousRecursiveGoInterface(t *testing.B) {
-	fib := func() func(interface{}) interface{} {
-		var __this func(interface{}) interface{}
-		__this = func(a interface{}) interface{} {
-			n := a.(float64)
+func Benchmark_RecursiveDirectPrimtiveCall(t *testing.B) {
+	fib := func() AFn {
+		var this = AFn{}
+		this.CljsCoreIFn_InvokeArity1DD = func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return __this(n-1.0).(float64) + __this(n-2.0).(float64)
+				return this.CljsCoreIFn_InvokeArity1DD(n-1.0) +
+					this.CljsCoreIFn_InvokeArity1DD(n-2.0)
 			}
 		}
-		return __this
+		return this
 	}()
-	assert.Equal(t, 832040, fib(30.0))
+	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+}
+
+func Benchmark_RecursiveDispatch(t *testing.B) {
+	fib := func() AFn {
+		var this = AFn{}
+		this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
+			var n = a.(float64)
+			if n == 0.0 {
+				return 0.0
+			} else if n == 1.0 {
+				return 1.0
+			} else {
+				return this.CljsCoreIFn_Invoke(n-1.0).(float64) +
+					this.CljsCoreIFn_Invoke(n-2.0).(float64)
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+}
+
+func Benchmark_RecursiveGo(t *testing.B) {
+	fib := func() func(float64) float64 {
+		var this func(float64) float64
+		this = func(n float64) float64 {
+			if n == 0 {
+				return 0
+			} else if n == 1 {
+				return 1
+			} else {
+				return this(n-1) + this(n-2)
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, fib(30))
 }
 
 func double(x interface{}) float64 {
