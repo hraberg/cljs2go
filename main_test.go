@@ -238,18 +238,18 @@ func Benchmark_RecursiveGoUint64(t *testing.B) {
 	fib := func() func(uint64) uint64 {
 		var this func(uint64) uint64
 		this = func(n uint64) uint64 {
-			if math.Float64frombits(n) == 0 {
-				return 0
-			} else if math.Float64frombits(n) == 1 {
-				return 1
+			if math.Float64frombits(n) == 0.0 {
+				return math.Float64bits(0)
+			} else if math.Float64frombits(n) == 1.0 {
+				return math.Float64bits(1.0)
 			} else {
-				return this(math.Float64bits(math.Float64frombits(n)-1)) +
-					this(math.Float64bits(math.Float64frombits(n)-2))
+				return math.Float64bits(math.Float64frombits(this(math.Float64bits(math.Float64frombits(n)-1))) +
+					math.Float64frombits(this(math.Float64bits(math.Float64frombits(n)-2))))
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib(math.Float64bits(30.0)))
+	assert.Equal(t, 832040, math.Float64frombits(fib(math.Float64bits(30.0))))
 }
 
 func double(x interface{}) float64 {
