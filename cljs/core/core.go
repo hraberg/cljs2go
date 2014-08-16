@@ -123,41 +123,55 @@ func throwArity(arity int) interface{} {
 
 func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 	argc := len(args)
-	switch {
-	case argc == 0 && this.CljsCoreIFn_InvokeArity0 != nil:
-		return this.CljsCoreIFn_InvokeArity0()
-	case argc == 0 && this.CljsCoreIFn_InvokeArity0D != nil:
-		return this.CljsCoreIFn_InvokeArity0D()
-	case argc == 1 && this.CljsCoreIFn_InvokeArity1 != nil:
-		return this.CljsCoreIFn_InvokeArity1(args[0])
-	case argc == 1 && this.CljsCoreIFn_InvokeArity1OD != nil:
-		return this.CljsCoreIFn_InvokeArity1OD(args[0])
-	case argc == 1 && this.CljsCoreIFn_InvokeArity1DO != nil:
-		return this.CljsCoreIFn_InvokeArity1DO(args[0].(float64))
-	case argc == 1 && this.CljsCoreIFn_InvokeArity1DD != nil:
-		return this.CljsCoreIFn_InvokeArity1DD(args[0].(float64))
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2 != nil:
-		return this.CljsCoreIFn_InvokeArity2(args[0], args[1])
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2OOD != nil:
-		return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1])
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2ODO != nil:
-		return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1].(float64))
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2ODD != nil:
-		return this.CljsCoreIFn_InvokeArity2ODO(args[0], args[1].(float64))
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2DOO != nil:
-		return this.CljsCoreIFn_InvokeArity2DOO(args[0].(float64), args[1])
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2DOD != nil:
-		return this.CljsCoreIFn_InvokeArity2DOD(args[0].(float64), args[1])
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2DDO != nil:
-		return this.CljsCoreIFn_InvokeArity2DDO(args[0].(float64), args[1].(float64))
-	case argc == 2 && this.CljsCoreIFn_InvokeArity2DDD != nil:
-		return this.CljsCoreIFn_InvokeArity2DDD(args[0].(float64), args[1].(float64))
-	case argc == 3 && this.CljsCoreIFn_InvokeArity3 != nil:
-		return this.CljsCoreIFn_InvokeArity3(args[0], args[1], args[3])
-	case argc == 4 && this.CljsCoreIFn_InvokeArity4 != nil:
-		return this.CljsCoreIFn_InvokeArity4(args[0], args[1], args[3], args[4])
-	case argc > this.CljsLangMaxFixedArity && this.CljsCoreIFn_InvokeArityVariadic != nil:
+	if argc > this.CljsLangMaxFixedArity && this.CljsCoreIFn_InvokeArityVariadic != nil {
 		return this.CljsCoreIFn_InvokeArityVariadic(args...)
+	}
+	switch argc {
+	case 0:
+		switch {
+		case this.CljsCoreIFn_InvokeArity0 != nil:
+			return this.CljsCoreIFn_InvokeArity0()
+		case this.CljsCoreIFn_InvokeArity0D != nil:
+			return this.CljsCoreIFn_InvokeArity0D()
+		}
+	case 1:
+		switch {
+		case this.CljsCoreIFn_InvokeArity1 != nil:
+			return this.CljsCoreIFn_InvokeArity1(args[0])
+		case this.CljsCoreIFn_InvokeArity1OD != nil:
+			return this.CljsCoreIFn_InvokeArity1OD(args[0])
+		case this.CljsCoreIFn_InvokeArity1DO != nil:
+			return this.CljsCoreIFn_InvokeArity1DO(args[0].(float64))
+		case this.CljsCoreIFn_InvokeArity1DD != nil:
+			return this.CljsCoreIFn_InvokeArity1DD(args[0].(float64))
+		}
+	case 2:
+		switch {
+		case this.CljsCoreIFn_InvokeArity2 != nil:
+			return this.CljsCoreIFn_InvokeArity2(args[0], args[1])
+		case this.CljsCoreIFn_InvokeArity2OOD != nil:
+			return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1])
+		case this.CljsCoreIFn_InvokeArity2ODO != nil:
+			return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1].(float64))
+		case this.CljsCoreIFn_InvokeArity2ODD != nil:
+			return this.CljsCoreIFn_InvokeArity2ODO(args[0], args[1].(float64))
+		case this.CljsCoreIFn_InvokeArity2DOO != nil:
+			return this.CljsCoreIFn_InvokeArity2DOO(args[0].(float64), args[1])
+		case this.CljsCoreIFn_InvokeArity2DOD != nil:
+			return this.CljsCoreIFn_InvokeArity2DOD(args[0].(float64), args[1])
+		case this.CljsCoreIFn_InvokeArity2DDO != nil:
+			return this.CljsCoreIFn_InvokeArity2DDO(args[0].(float64), args[1].(float64))
+		case this.CljsCoreIFn_InvokeArity2DDD != nil:
+			return this.CljsCoreIFn_InvokeArity2DDD(args[0].(float64), args[1].(float64))
+		}
+	case 3:
+		if this.CljsCoreIFn_InvokeArity3 != nil {
+			return this.CljsCoreIFn_InvokeArity3(args[0], args[1], args[3])
+		}
+	case 4:
+		if this.CljsCoreIFn_InvokeArity4 != nil {
+			return this.CljsCoreIFn_InvokeArity4(args[0], args[1], args[3], args[4])
+		}
 	}
 	return throwArity(argc)
 }
