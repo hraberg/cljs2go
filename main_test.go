@@ -143,7 +143,7 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
 }
 
-func Benchmark_RecursiveDirectCall(t *testing.B) {
+func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
 		this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
@@ -155,6 +155,24 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 			} else {
 				return this.CljsCoreIFn_InvokeArity1(n-1.0).(float64) +
 					this.CljsCoreIFn_InvokeArity1(n-2.0).(float64)
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+}
+
+func Benchmark_RecursiveDirectCall(t *testing.B) {
+	fib := func() AFn {
+		var this = AFn{}
+		this.CljsCoreIFn_InvokeArity1 = func(n interface{}) interface{} {
+			if n == 0.0 {
+				return 0.0
+			} else if n == 1.0 {
+				return 1.0
+			} else {
+				return this.CljsCoreIFn_InvokeArity1(n.(float64)-1.0).(float64) +
+					this.CljsCoreIFn_InvokeArity1(n.(float64)-2.0).(float64)
 			}
 		}
 		return this
@@ -214,6 +232,24 @@ func Benchmark_RecursiveGo(t *testing.B) {
 		return this
 	}()
 	assert.Equal(t, 832040, fib(30))
+}
+
+func Benchmark_RecursiveGoUint64(t *testing.B) {
+	fib := func() func(uint64) uint64 {
+		var this func(uint64) uint64
+		this = func(n uint64) uint64 {
+			if math.Float64frombits(n) == 0 {
+				return 0
+			} else if math.Float64frombits(n) == 1 {
+				return 1
+			} else {
+				return this(math.Float64bits(math.Float64frombits(n)-1)) +
+					this(math.Float64bits(math.Float64frombits(n)-2))
+			}
+		}
+		return this
+	}()
+	assert.Equal(t, 832040, fib(math.Float64bits(30.0)))
 }
 
 func double(x interface{}) float64 {
