@@ -4,6 +4,7 @@ import (
 	"math"
 	"strings"
 	"testing"
+	"unsafe"
 )
 import (
 	garray "github.com/hraberg/cljs.go/goog/array"
@@ -234,22 +235,35 @@ func Benchmark_RecursiveGo(t *testing.B) {
 	assert.Equal(t, 832040, fib(30))
 }
 
-func Benchmark_RecursiveGoUint64(t *testing.B) {
-	fib := func() func(uint64) uint64 {
-		var this func(uint64) uint64
-		this = func(n uint64) uint64 {
-			if math.Float64frombits(n) == 0.0 {
-				return math.Float64bits(0)
-			} else if math.Float64frombits(n) == 1.0 {
-				return math.Float64bits(1.0)
+func Benchmark_RecursiveGoUintptr(t *testing.B) {
+	fib := func() func(uintptr) uintptr {
+		var this func(uintptr) uintptr
+		this = func(n uintptr) uintptr {
+			if math.Float64frombits(uint64(n)) == 0.0 {
+				return uintptr(math.Float64bits(0))
+			} else if math.Float64frombits(uint64(n)) == 1.0 {
+				return uintptr(math.Float64bits(1.0))
 			} else {
-				return math.Float64bits(math.Float64frombits(this(math.Float64bits(math.Float64frombits(n)-1))) +
-					math.Float64frombits(this(math.Float64bits(math.Float64frombits(n)-2))))
+				return uintptr(math.Float64bits(math.Float64frombits(uint64(this(uintptr(math.Float64bits(math.Float64frombits(uint64(n))-1))))) +
+					math.Float64frombits(uint64(this(uintptr(math.Float64bits(math.Float64frombits(uint64(n))-2)))))))
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, math.Float64frombits(fib(math.Float64bits(30.0))))
+	assert.Equal(t, 832040, math.Float64frombits(uint64(fib(uintptr(math.Float64bits(30.0))))))
+}
+
+func Test_Pointers(t *testing.T) {
+	var x interface{} = "Hello"
+	x_ptr := &x
+	assert.Equal(t, "Hello", *x_ptr)
+	//	var x_ptr uint64 = unsafe.Pointer(&x).(unit64)
+	p := uintptr(unsafe.Pointer(x_ptr))
+
+	_ = math.Float64frombits(uint64(p))
+
+	var y = *(*interface{})(unsafe.Pointer(p))
+	assert.Equal(t, "Hello", y)
 }
 
 func double(x interface{}) float64 {
