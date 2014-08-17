@@ -161,9 +161,34 @@ func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
 	return reflect.ValueOf(x).Type().Implements(reflect.TypeOf(p).Elem())
 }
 
+type INamed interface {
+	Name() string
+	Namespace() string
+}
+
+type Symbol struct {
+	name string
+	ns   string
+}
+
+func (this Symbol) Name() string {
+	return this.name
+}
+
+func (this Symbol) Namespace() string {
+	return this.ns
+}
+
 func Test_Protocols(t *testing.T) {
 	var Stringer *fmt.Stringer
 	assert.True(t, NativeSatisifes_QMARK_(Stringer, js.JSString("")).(bool))
+
+	var INamed *INamed
+	symbol := Symbol{ns: "foo", name: "bar"}
+
+	assert.True(t, NativeSatisifes_QMARK_(INamed, symbol).(bool))
+	assert.Equal(t, "foo", symbol.Namespace())
+	assert.Equal(t, "bar", symbol.Name())
 }
 
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
