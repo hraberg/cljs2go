@@ -315,7 +315,7 @@ func Test_ProtocolsFnStyle(t *testing.T) {
 	symbol := SymbolF.Invoke_Arity2("foo", "bar")
 	assert.Equal(t, "foo/bar", symbol.(Symbol2).ToString())
 	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
-	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
+	assert.Equal(t, "bar", IFn2.Invoke_Arity1(Name2, symbol))
 	assert.Equal(t, "foo", Namespace2.Invoke_Arity1(symbol))
 	assert.Equal(t, "bar", INamed2.Name_Arity1(symbol.(INamed2)))
 	assert.Equal(t, "bar", INamed2.Name(symbol.(INamed2)))
