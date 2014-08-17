@@ -264,8 +264,9 @@ var Invoke2 = AFn2{
 	Arity2: func(this, a interface{}) interface{} {
 		return this.(IFn2).Invoke_Arity1(a)
 	},
-	ArityVariadic: func(a ...interface{}) interface{} {
-		return a[0].(IFn2).Invoke_ArityVariadic(a[1:]...)
+	ArityVariadic: func(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+		return this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[0].(IFn2).
+			Invoke_ArityVariadic(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[1:]...)
 	},
 }
 
