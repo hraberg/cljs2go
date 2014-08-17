@@ -212,17 +212,17 @@ type IFn2 interface {
 	Invoke() struct{ Arity1 }
 }
 
-type Name2Dispatch struct{}
+type ProtocolDispatch struct{ DispatchTable struct{ Arity1 } }
 
-func (_ Name2Dispatch) Invoke() struct{ Arity1 } {
-	return struct{ Arity1 }{
-		Arity1: func(this interface{}) interface{} {
-			return this.(INamed2).Name().Arity1(this)
-		},
-	}
+func (this ProtocolDispatch) Invoke() struct{ Arity1 } {
+	return this.DispatchTable
 }
 
-var Name2 = Name2Dispatch{}
+var Name2 = ProtocolDispatch{DispatchTable: struct{ Arity1 }{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed2).Name().Arity1(this)
+	},
+}}
 
 func Test_ProtocolsFnStyle(t *testing.T) {
 	symbol := Symbol2{ns: "foo", name: "bar"}
