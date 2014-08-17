@@ -187,7 +187,6 @@ type NativeMap map[interface{}]interface{}
 
 func (coll NativeMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
 	Lookup := AFn{}
-	Lookup.CljsLangMaxFixedArity = 1
 	Lookup.CljsCoreIFn_InvokeArity1 = func(k interface{}) interface{} {
 		return coll.Lookup(k, nil)
 	}
