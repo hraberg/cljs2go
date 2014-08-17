@@ -90,6 +90,12 @@ func init() {
 	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
 }
 
+// Potential alternative, each protocol is a named struct with Arity0 etc fields:
+// type ILookup struct { Arity2, Arity3 }
+// A type has an ILookup field, with it's implementations of Arity1 etc.
+// Looks like this in CLJS: o.cljs$core$ILookup$_lookup$arity$2;
+// The owning namespace has a normal AFn IFn wrapper for Lookup which delegates Arity1 etc. to the receiver.
+
 // These naming conventions stem from the IFn protocol, but currently there's no real connection here.
 // Protocols are currently implemented as real Go interfaces with bridge methods hiding the AFn.
 // Implementations need to set up actual named locals as argument, and create an array-seq from the varargs.
