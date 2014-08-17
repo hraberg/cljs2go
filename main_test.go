@@ -256,6 +256,19 @@ type IFn2 interface {
 	Invoke_ArityVariadic(...interface{}) interface{}
 }
 
+// IFn is a special case, should have all arities up to 20 (they are - 1 as the receiver is the fn)
+var Invoke2 = AFn2{
+	Arity1: func(this interface{}) interface{} {
+		return this.(IFn2).Invoke_Arity0()
+	},
+	Arity2: func(this, a interface{}) interface{} {
+		return this.(IFn2).Invoke_Arity1(a)
+	},
+	ArityVariadic: func(a ...interface{}) interface{} {
+		return a[0].(IFn2).Invoke_ArityVariadic(a[1:]...)
+	},
+}
+
 type AFn2 struct {
 	MaxFixedArity int
 	ArityVariadic
