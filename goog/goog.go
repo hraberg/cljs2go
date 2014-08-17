@@ -2,16 +2,16 @@ package goog
 
 import "reflect"
 
-func TypeOf(x interface{}) reflect.Kind {
-	return reflect.TypeOf(x).Kind()
+func TypeOf(x interface{}) reflect.Type {
+	return reflect.TypeOf(x)
 }
 
 func IsString(x interface{}) bool {
-	return TypeOf(x) == reflect.String
+	return TypeOf(x).Kind() == reflect.String
 }
 
 func IsFunction(x interface{}) bool {
-	return TypeOf(x) == reflect.Func
+	return TypeOf(x).Kind() == reflect.Func
 }
 
 func GetUid(obj interface{}) float64 {

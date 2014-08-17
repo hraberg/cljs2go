@@ -135,12 +135,12 @@ var Baz = AFn{
 }
 
 func Test_Invoke(t *testing.T) {
-	assert.Panics(t, func() { Baz.CljsCoreIFn_Invoke() })
-	assert.Equal(t, "Hello", Baz.CljsCoreIFn_Invoke("Hello"))
+	assert.Panics(t, func() { Baz.Invoke() })
+	assert.Equal(t, "Hello", Baz.Invoke("Hello"))
 	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity0() })
 	assert.Equal(t, "Hello", Baz.CljsCoreIFn_InvokeArity1("Hello"))
 	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity2("Hello", "World") })
-	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_Invoke("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.Invoke("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_InvokeArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
 }
@@ -156,72 +156,27 @@ func Test_Invoke(t *testing.T) {
 // (defprotocol ILookup
 //   (-lookup [o k] [o k not-found]))
 
-type INamed interface {
-	Name() string
-	Namespace() string
-}
-
-type Symbol struct {
-	name string
-	ns   string
-}
-
-func (x Symbol) Name() string {
-	return x.name
-}
-
-func (x Symbol) Namespace() string {
-	return x.ns
-}
-
-type ILookup interface {
-	Lookup(k interface{}, notFound ...interface{}) interface{}
-}
-
-type NativeMap map[interface{}]interface{}
-
-func (coll NativeMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
-	Lookup := AFn{}
-	Lookup.CljsCoreIFn_InvokeArity1 = func(k interface{}) interface{} {
-		return coll.Lookup(k, nil)
-	}
-	Lookup.CljsCoreIFn_InvokeArity2 = func(k, notFound interface{}) interface{} {
-		val := coll[k]
-		if val == nil {
-			return notFound
-		} else {
-			return val
-		}
-	}
-	argc := len(notFound)
-	switch argc {
-	case 0:
-		return Lookup.CljsCoreIFn_InvokeArity1(k)
-	case 1:
-		return Lookup.CljsCoreIFn_InvokeArity2(k, notFound[0])
-	default:
-		return ThrowArity(argc)
-	}
-}
-
 func Test_Protocols(t *testing.T) {
-	var Stringer *fmt.Stringer
-	assert.True(t, NativeSatisifes_QMARK_(Stringer, js.JSString("")).(bool))
+	symbol := Symbol.CljsCoreIFn_InvokeArity2("foo", "bar")
 
-	var INamed *INamed
-	symbol := Symbol{ns: "foo", name: "bar"}
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "INamed"), symbol).(bool))
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "IFn"), symbol).(bool))
+	assert.Equal(t, "foo", symbol.(INamed).Namespace())
+	assert.Equal(t, "bar", symbol.(INamed).Name())
+	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
 
-	assert.True(t, NativeSatisifes_QMARK_(INamed, symbol).(bool))
-	assert.Equal(t, "foo", symbol.Namespace())
-	assert.Equal(t, "bar", symbol.Name())
+	foo, bar := Symbol.CljsCoreIFn_InvokeArity1("foo"), Symbol.CljsCoreIFn_InvokeArity1("bar")
+	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	var ILookup *ILookup
-	m := NativeMap(map[interface{}]interface{}{"foo": "bar"})
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "ILookup"), m).(bool))
+	assert.Equal(t, "bar", m.Lookup(foo))
+	assert.Nil(t, m.Lookup(bar))
+	assert.Equal(t, "baz", m.Lookup(bar, "baz"))
 
-	assert.True(t, NativeSatisifes_QMARK_(ILookup, m).(bool))
-	assert.Equal(t, "bar", m.Lookup("foo"))
-	assert.Nil(t, m.Lookup("bar"))
-	assert.Equal(t, "baz", m.Lookup("bar", "baz"))
+	assert.Equal(t, "bar", foo.(IFn).Invoke(m))
+	assert.Nil(t, bar.(IFn).Invoke(m))
+	assert.Equal(t, "baz", bar.(IFn).Invoke(m, "baz"))
+
 }
 
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
@@ -240,7 +195,7 @@ func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+	assert.Equal(t, 832040, fib.Invoke(30.0))
 }
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
@@ -258,7 +213,7 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+	assert.Equal(t, 832040, fib.Invoke(30.0))
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
@@ -276,7 +231,7 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+	assert.Equal(t, 832040, fib.Invoke(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
@@ -289,13 +244,13 @@ func Benchmark_RecursiveDispatch(t *testing.B) {
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.CljsCoreIFn_Invoke(n-1.0).(float64) +
-					this.CljsCoreIFn_Invoke(n-2.0).(float64)
+				return this.Invoke(n-1.0).(float64) +
+					this.Invoke(n-2.0).(float64)
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.CljsCoreIFn_Invoke(30.0))
+	assert.Equal(t, 832040, fib.Invoke(30.0))
 }
 
 func Benchmark_RecursiveGo(t *testing.B) {

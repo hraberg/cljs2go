@@ -9,7 +9,7 @@ import (
 
 import "fmt"
 
-// This file will eventually be generated from cljs.core.
+// This file will eventually (partly) be generated from cljs.core. Some of this will serve as overrides over cljs.core.
 
 var STAR_print_fn_STAR_ = func(_ interface{}) interface{} {
 	panic(js.Error{"No *print-fn* fn set for evaluation environment"})
@@ -56,8 +56,42 @@ func Main() {
 	STAR_main_cli_fn_STAR_.(func(...interface{}) interface{})(args...)
 }
 
-// IFn
+// core protocols
 
+var protocols = map[interface{}]reflect.Type{}
+
+func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
+	return reflect.ValueOf(x).Type().Implements(protocols[p])
+}
+
+type INamed interface {
+	Name() string
+	Namespace() string
+}
+
+func init() {
+	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "INamed")] = reflect.TypeOf((*INamed)(nil)).Elem()
+}
+
+// How to properly consolidate this with the internal CljsCoreIFn_InvokeArityN stuff?
+type IFn interface {
+	Invoke(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
+}
+
+func init() {
+	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "IFn")] = reflect.TypeOf((*IFn)(nil)).Elem()
+}
+
+type ILookup interface {
+	Lookup(k interface{}, notFound ...interface{}) interface{}
+}
+
+func init() {
+	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
+}
+
+// These naming conventions stem from the IFn protocol, but currently there's no real connection here.
+// Protocols are currently implemented as real Go interfaces with bridge methods hiding the AFn.
 // Implementations need to set up actual named locals as argument, and create an array-seq from the varargs.
 type CljsCoreIFn_InvokeArityVariadic func(...interface{}) interface{}
 type CljsCoreIFn_InvokeArity0 func() interface{}
@@ -122,7 +156,7 @@ func ThrowArity(arity int) interface{} {
 	panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
 }
 
-func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
+func (this AFn) Invoke(args ...interface{}) interface{} {
 	argc := len(args)
 	if argc > this.CljsLangMaxFixedArity && this.CljsCoreIFn_InvokeArityVariadic != nil {
 		return this.CljsCoreIFn_InvokeArityVariadic(args...)
@@ -177,17 +211,98 @@ func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 	return ThrowArity(argc)
 }
 
-func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
+func Apply(f interface{}, args ...interface{}) interface{} {
 	argc := len(args)
 	if argc < 1 {
 		ThrowArity(argc)
 	}
 	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-	return this.CljsCoreIFn_Invoke(append(args[:argc-1], spread...)...)
+	return f.(IFn).Invoke(append(args[:argc-1], spread...)...)
 }
 
-func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
-	return reflect.ValueOf(x).Type().Implements(reflect.TypeOf(p).Elem())
+// This isn't really needed unless we actually make it faster. It's only used for variadic fns in CLJS.
+func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
+	return Apply(this, args...)
+}
+
+type CljsCoreSymbol struct {
+	ns, name, str, _hash, _meta interface{}
+}
+
+var Symbol = func() AFn {
+	Symbol := AFn{}
+	Symbol.CljsCoreIFn_InvokeArity1 = func(name interface{}) interface{} {
+		return Symbol.CljsCoreIFn_InvokeArity2(nil, name)
+	}
+	Symbol.CljsCoreIFn_InvokeArity2 = func(ns, name interface{}) interface{} {
+		symStr := func() interface{} {
+			if ns != nil {
+				return ns.(string) + "/" + name.(string)
+			} else {
+				return name
+			}
+		}()
+		return CljsCoreSymbol{ns: ns, name: name, str: symStr}
+	}
+	return Symbol
+}()
+
+func (this CljsCoreSymbol) Name() string {
+	return this.name.(string)
+}
+
+func (this CljsCoreSymbol) Namespace() string {
+	return this.ns.(string)
+}
+
+func (this CljsCoreSymbol) String() string {
+	return this.str.(string)
+}
+
+func (this CljsCoreSymbol) Invoke(coll_notFound ...interface{}) interface{} {
+	Invoke := AFn{}
+	Invoke.CljsCoreIFn_InvokeArity1 = func(coll interface{}) interface{} {
+		return coll.(ILookup).Lookup(this, nil)
+	}
+	Invoke.CljsCoreIFn_InvokeArity2 = func(coll, notFound interface{}) interface{} {
+		return coll.(ILookup).Lookup(this, notFound)
+	}
+	argc := len(coll_notFound)
+	switch argc {
+	case 1:
+		return Invoke.CljsCoreIFn_InvokeArity1(coll_notFound[0])
+	case 2:
+		return Invoke.CljsCoreIFn_InvokeArity2(coll_notFound[0], coll_notFound[1])
+	default:
+		return ThrowArity(argc)
+	}
+}
+
+// Doesn't try to match cljs.core, just a temporary hack
+type ObjMap map[interface{}]interface{}
+
+func (coll ObjMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
+	Lookup := AFn{}
+	Lookup.CljsCoreIFn_InvokeArity1 = func(k interface{}) interface{} {
+		return coll.Lookup(k, nil)
+	}
+	Lookup.CljsCoreIFn_InvokeArity2 = func(k, notFound interface{}) interface{} {
+		val := coll[k]
+		if val == nil {
+			return notFound
+		} else {
+			return val
+		}
+	}
+	argc := len(notFound)
+	switch argc {
+	case 0:
+		return Lookup.CljsCoreIFn_InvokeArity1(k)
+	case 1:
+		return Lookup.CljsCoreIFn_InvokeArity2(k, notFound[0])
+	default:
+		return ThrowArity(argc)
+	}
 }
 
 /*
