@@ -190,6 +190,18 @@ type INamed2 interface {
 	Namespace_Arity1() interface{}
 }
 
+var Name2 = AFn2{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed2).Name_Arity1()
+	},
+}
+
+var Namespace2 = AFn2{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed2).Namespace_Arity1()
+	},
+}
+
 type Symbol2 struct {
 	ns, name, str, _hash, _meta interface{}
 }
@@ -283,18 +295,6 @@ func (this AFn2) Invoke_Arity1(a interface{}) interface{} {
 func (this AFn2) Invoke_Arity2(a, b interface{}) interface{} {
 	ThrowArity2(this.Arity2, 2)
 	return this.Arity2(a, b)
-}
-
-var Name2 = AFn2{
-	Arity1: func(this interface{}) interface{} {
-		return this.(INamed2).Name_Arity1()
-	},
-}
-
-var Namespace2 = AFn2{
-	Arity1: func(this interface{}) interface{} {
-		return this.(INamed2).Namespace_Arity1()
-	},
 }
 
 func Test_ProtocolsFnStyle(t *testing.T) {
