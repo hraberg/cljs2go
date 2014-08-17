@@ -2,6 +2,7 @@ package core
 
 import (
 	"os"
+	"reflect"
 
 	"github.com/hraberg/cljs.go/js"
 )
@@ -183,6 +184,10 @@ func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
 	}
 	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
 	return this.CljsCoreIFn_Invoke(append(args[:argc-1], spread...)...)
+}
+
+func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
+	return reflect.ValueOf(x).Type().Implements(reflect.TypeOf(p).Elem())
 }
 
 /*

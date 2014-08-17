@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"reflect"
 	"strings"
 	"testing"
 	"unsafe"
@@ -157,10 +156,6 @@ func Test_Invoke(t *testing.T) {
 // (defprotocol ILookup
 //   (-lookup [o k] [o k not-found]))
 
-func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
-	return reflect.ValueOf(x).Type().Implements(reflect.TypeOf(p).Elem())
-}
-
 type INamed interface {
 	Name() string
 	Namespace() string
@@ -220,8 +215,10 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "foo", symbol.Namespace())
 	assert.Equal(t, "bar", symbol.Name())
 
+	var ILookup *ILookup
 	m := NativeMap(map[interface{}]interface{}{"foo": "bar"})
 
+	assert.True(t, NativeSatisifes_QMARK_(ILookup, m).(bool))
 	assert.Equal(t, "bar", m.Lookup("foo"))
 	assert.Nil(t, m.Lookup("bar"))
 	assert.Equal(t, "baz", m.Lookup("bar", "baz"))
