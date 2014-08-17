@@ -176,57 +176,145 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "bar", foo.(IFn).Invoke(m))
 	assert.Nil(t, bar.(IFn).Invoke(m))
 	assert.Equal(t, "baz", bar.(IFn).Invoke(m, "baz"))
-
 }
 
+type ArityVarargs func(...interface{}) interface{}
+type Arity0 func() interface{}
 type Arity1 func(interface{}) interface{}
+type Arity2 func(_, _ interface{}) interface{}
 
 type INamed2 interface {
-	Name() struct{ Arity1 }
-	Namespace() struct{ Arity1 }
+	Name() interface{}
+	Name_Arity1() interface{}
+	Namespace() interface{}
+	Namespace_Arity1() interface{}
 }
 
 type Symbol2 struct {
 	ns, name, str, _hash, _meta interface{}
 }
 
-func (this Symbol2) Name() struct{ Arity1 } {
-	Name := struct{ Arity1 }{
-		Arity1: func(_ interface{}) interface{} {
-			return this.name
-		},
-	}
-	return Name
+func (this Symbol2) Name_Arity1() interface{} {
+	return this.name
 }
 
-func (this Symbol2) Namespace() struct{ Arity1 } {
-	Namespace := struct{ Arity1 }{
-		Arity1: func(_ interface{}) interface{} {
-			return this.ns
-		},
-	}
-	return Namespace
+func (this Symbol2) Name() interface{} {
+	return this.Name_Arity1()
 }
+
+func (this Symbol2) Namespace_Arity1() interface{} {
+	return this.ns
+}
+
+func (this Symbol2) Namespace() interface{} {
+	return this.Namespace_Arity1()
+}
+
+func (this Symbol2) ToString_Arity1() interface{} {
+	return this.str
+}
+
+func (this Symbol2) ToString() string {
+	return this.ToString_Arity1().(string)
+}
+
+var SymbolF = func() AFn2 {
+	SymbolF := AFn2{}
+	SymbolF.Arity1 = func(name interface{}) interface{} {
+		return SymbolF.Invoke_Arity2(nil, name)
+	}
+	SymbolF.Arity2 = func(ns, name interface{}) interface{} {
+		symStr := func() interface{} {
+			if ns != nil {
+				return ns.(string) + "/" + name.(string)
+			} else {
+				return name
+			}
+		}()
+		return Symbol2{ns: ns, name: name, str: symStr}
+	}
+	return SymbolF
+}()
 
 type IFn2 interface {
-	Invoke() struct{ Arity1 }
+	Invoke(...interface{}) interface{}
+	Invoke_Arity0() interface{}
+	Invoke_Arity1(interface{}) interface{}
+	Invoke_Arity2(_, _ interface{}) interface{}
+	Invoke_ArityVariadic(...interface{}) interface{}
 }
 
-type ProtocolDispatch struct{ DispatchTable struct{ Arity1 } }
-
-func (this ProtocolDispatch) Invoke() struct{ Arity1 } {
-	return this.DispatchTable
+type AFn2 struct {
+	MaxFixedArity int
+	ArityVarargs
+	Arity0
+	Arity1
+	Arity2
 }
 
-var Name2 = ProtocolDispatch{DispatchTable: struct{ Arity1 }{
+func ThrowArity2(f interface{}, arity int) interface{} {
+	if f == nil {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
+	}
+	return f
+}
+
+// This one should really be the dispatch fn
+func (this AFn2) Invoke(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	ThrowArity2(this.ArityVarargs, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this.ArityVarargs(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+}
+
+func (this AFn2) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	ThrowArity2(this.ArityVarargs, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this.ArityVarargs(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+}
+
+func (this AFn2) Invoke_Arity0() interface{} {
+	ThrowArity2(this.Arity0, 0)
+	return this.Arity0()
+}
+
+func (this AFn2) Invoke_Arity1(a interface{}) interface{} {
+	ThrowArity2(this.Arity1, 1)
+	return this.Arity1(a)
+}
+
+func (this AFn2) Invoke_Arity2(a, b interface{}) interface{} {
+	ThrowArity2(this.Arity2, 2)
+	return this.Arity2(a, b)
+}
+
+var Name2 = AFn2{
 	Arity1: func(this interface{}) interface{} {
-		return this.(INamed2).Name().Arity1(this)
+		return this.(INamed2).Name_Arity1()
 	},
-}}
+}
+
+var Namespace2 = AFn2{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed2).Namespace_Arity1()
+	},
+}
 
 func Test_ProtocolsFnStyle(t *testing.T) {
-	symbol := Symbol2{ns: "foo", name: "bar"}
-	assert.Equal(t, "bar", Name2.Invoke().Arity1(symbol))
+	symbol := SymbolF.Invoke_Arity2("foo", "bar")
+	assert.Equal(t, "foo/bar", symbol.(Symbol2).ToString())
+	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
+	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
+	assert.Equal(t, "foo", Namespace2.Invoke_Arity1(symbol))
+	assert.Equal(t, "bar", INamed2.Name_Arity1(symbol.(INamed2)))
+	assert.Equal(t, "bar", INamed2.Name(symbol.(INamed2)))
+	assert.Equal(t, "bar", symbol.(INamed2).Name_Arity1())
+	assert.Equal(t, "bar", symbol.(INamed2).Name())
+	assert.Equal(t, "foo", INamed2.Namespace_Arity1(symbol.(INamed2)))
+	assert.Equal(t, "foo", INamed2.Namespace(symbol.(INamed2)))
+	assert.Equal(t, "foo", symbol.(INamed2).Namespace_Arity1())
+	assert.Equal(t, "foo", symbol.(INamed2).Namespace())
+
+	baz := SymbolF.Invoke_Arity1("baz")
+	assert.Equal(t, "baz", Name2.Invoke_Arity1(baz))
+	assert.Nil(t, Namespace2.Invoke_Arity1(baz))
 }
 
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
