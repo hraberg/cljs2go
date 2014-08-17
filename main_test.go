@@ -179,6 +179,56 @@ func Test_Protocols(t *testing.T) {
 
 }
 
+type Arity1 func(interface{}) interface{}
+
+type INamed2 interface {
+	Name() struct{ Arity1 }
+	Namespace() struct{ Arity1 }
+}
+
+type Symbol2 struct {
+	ns, name, str, _hash, _meta interface{}
+}
+
+func (this Symbol2) Name() struct{ Arity1 } {
+	Name := struct{ Arity1 }{
+		Arity1: func(_ interface{}) interface{} {
+			return this.name
+		},
+	}
+	return Name
+}
+
+func (this Symbol2) Namespace() struct{ Arity1 } {
+	Namespace := struct{ Arity1 }{
+		Arity1: func(_ interface{}) interface{} {
+			return this.ns
+		},
+	}
+	return Namespace
+}
+
+type IFn2 interface {
+	Invoke() struct{ Arity1 }
+}
+
+type Name2Dispatch struct{}
+
+func (_ Name2Dispatch) Invoke() struct{ Arity1 } {
+	return struct{ Arity1 }{
+		Arity1: func(this interface{}) interface{} {
+			return this.(INamed2).Name().Arity1(this)
+		},
+	}
+}
+
+var Name2 = Name2Dispatch{}
+
+func Test_ProtocolsFnStyle(t *testing.T) {
+	symbol := Symbol2{ns: "foo", name: "bar"}
+	assert.Equal(t, "bar", Name2.Invoke().Arity1(symbol))
+}
+
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
