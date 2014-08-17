@@ -178,7 +178,7 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "baz", bar.(IFn).Invoke(m, "baz"))
 }
 
-type ArityVarargs func(...interface{}) interface{}
+type ArityVariadic func(...interface{}) interface{}
 type Arity0 func() interface{}
 type Arity1 func(interface{}) interface{}
 type Arity2 func(_, _ interface{}) interface{}
@@ -258,7 +258,7 @@ type IFn2 interface {
 
 type AFn2 struct {
 	MaxFixedArity int
-	ArityVarargs
+	ArityVariadic
 	Arity0
 	Arity1
 	Arity2
@@ -273,13 +273,13 @@ func ThrowArity2(f interface{}, arity int) interface{} {
 
 // This one should really be the dispatch fn
 func (this AFn2) Invoke(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity2(this.ArityVarargs, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
-	return this.ArityVarargs(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+	ThrowArity2(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
 func (this AFn2) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity2(this.ArityVarargs, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
-	return this.ArityVarargs(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+	ThrowArity2(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
 func (this AFn2) Invoke_Arity0() interface{} {
