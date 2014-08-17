@@ -186,19 +186,28 @@ type ILookup interface {
 type NativeMap map[interface{}]interface{}
 
 func (coll NativeMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
-	argc := len(notFound)
-	switch argc {
-	case 0:
+	Lookup := AFn{}
+	Lookup.CljsLangMaxFixedArity = 1
+	Lookup.CljsCoreIFn_InvokeArity1 = func(k interface{}) interface{} {
 		return coll.Lookup(k, nil)
-	case 1:
+	}
+	Lookup.CljsCoreIFn_InvokeArity2 = func(k, notFound interface{}) interface{} {
 		val := coll[k]
 		if val == nil {
-			return notFound[0]
+			return notFound
 		} else {
 			return val
 		}
 	}
-	return ThrowArity(argc)
+	argc := len(notFound)
+	switch argc {
+	case 0:
+		return Lookup.CljsCoreIFn_InvokeArity1(k)
+	case 1:
+		return Lookup.CljsCoreIFn_InvokeArity2(k, notFound[0])
+	default:
+		return ThrowArity(argc)
+	}
 }
 
 func Test_Protocols(t *testing.T) {
