@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"math"
+	"reflect"
 	"strings"
 	"testing"
 	"unsafe"
@@ -142,6 +144,26 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_Invoke("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_InvokeArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
+}
+
+// Protocols in ClojureScript don't seem to support vargs.
+// In cljs.core, only IFn, IReduce, IIndexed, ILookup, and ISwap have overloaded arities.
+// IFn is a special case which drops the receiver arg.
+
+// (defprotocol INamed
+//   (^string -name [x])
+//   (^string -namespace [x]))
+
+// (defprotocol ILookup
+//   (-lookup [o k] [o k not-found]))
+
+func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
+	return reflect.ValueOf(x).Type().Implements(reflect.TypeOf(p).Elem())
+}
+
+func Test_Protocols(t *testing.T) {
+	var Stringer *fmt.Stringer
+	assert.True(t, NativeSatisifes_QMARK_(Stringer, js.JSString("")).(bool))
 }
 
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {

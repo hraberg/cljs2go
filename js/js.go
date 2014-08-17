@@ -156,3 +156,7 @@ func (this JSString) CharAt(index float64) string {
 func (this JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(string(this))[int(index)])
 }
+
+func (this JSString) String() string {
+	return string(this)
+}
