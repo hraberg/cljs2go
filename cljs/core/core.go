@@ -117,7 +117,7 @@ type AFn struct {
 	CljsCoreIFn_InvokeArity2DDD
 }
 
-func throwArity(arity int) interface{} {
+func ThrowArity(arity int) interface{} {
 	panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
 }
 
@@ -173,13 +173,13 @@ func (this AFn) CljsCoreIFn_Invoke(args ...interface{}) interface{} {
 			return this.CljsCoreIFn_InvokeArity4(args[0], args[1], args[3], args[4])
 		}
 	}
-	return throwArity(argc)
+	return ThrowArity(argc)
 }
 
 func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
 	argc := len(args)
 	if argc < 1 {
-		throwArity(argc)
+		ThrowArity(argc)
 	}
 	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
 	return this.CljsCoreIFn_Invoke(append(args[:argc-1], spread...)...)

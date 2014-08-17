@@ -171,12 +171,34 @@ type Symbol struct {
 	ns   string
 }
 
-func (this Symbol) Name() string {
-	return this.name
+func (x Symbol) Name() string {
+	return x.name
 }
 
-func (this Symbol) Namespace() string {
-	return this.ns
+func (x Symbol) Namespace() string {
+	return x.ns
+}
+
+type ILookup interface {
+	Lookup(k interface{}, notFound ...interface{}) interface{}
+}
+
+type NativeMap map[interface{}]interface{}
+
+func (coll NativeMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
+	argc := len(notFound)
+	switch argc {
+	case 0:
+		return coll.Lookup(k, nil)
+	case 1:
+		val := coll[k]
+		if val == nil {
+			return notFound[0]
+		} else {
+			return val
+		}
+	}
+	return ThrowArity(argc)
 }
 
 func Test_Protocols(t *testing.T) {
@@ -189,6 +211,12 @@ func Test_Protocols(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_(INamed, symbol).(bool))
 	assert.Equal(t, "foo", symbol.Namespace())
 	assert.Equal(t, "bar", symbol.Name())
+
+	m := NativeMap(map[interface{}]interface{}{"foo": "bar"})
+
+	assert.Equal(t, "bar", m.Lookup("foo"))
+	assert.Nil(t, m.Lookup("bar"))
+	assert.Equal(t, "baz", m.Lookup("bar", "baz"))
 }
 
 func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
