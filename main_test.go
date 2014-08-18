@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -179,6 +180,17 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "bar", Invoke.Invoke_Arity2(foo, m))
 	assert.Nil(t, bar.(IFn).Invoke_Arity1(m))
 	assert.Equal(t, "baz", bar.(IFn).Invoke_Arity2(m, "baz"))
+}
+
+func Test_InteropViaReflection(t *testing.T) {
+	sb := gstring.StringBuffer{"foo"}
+	v := reflect.ValueOf(&sb).Elem()
+	assert.Equal(t, "foo", v.FieldByName("Buffer").Interface(), "(.-buffer sb)")
+	v.FieldByName("Buffer").Set(reflect.ValueOf("bar"))
+	assert.Equal(t, "bar", sb.Buffer, "(set! (.-buffer sb) \"bar\")")
+	append := reflect.ValueOf(&sb).MethodByName("Append")
+	append.Call([]reflect.Value{reflect.ValueOf("baz")})
+	assert.Equal(t, "barbaz", sb.Buffer, "(.append sb \"baz\")")
 }
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
