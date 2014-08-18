@@ -4,6 +4,7 @@ import (
 	"os"
 	"reflect"
 
+	goog_string "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
 )
 
@@ -413,6 +414,37 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 		return val
 	}
 }
+
+var Str = func() AFn {
+	Str := AFn{}
+	Str.Arity0 = func() interface{} {
+		return ""
+	}
+	Str.Arity1 = func(x interface{}) interface{} {
+		if x == nil {
+			return ""
+		} else {
+			return fmt.Sprint(x)
+		}
+	}
+	Str.ArityVariadic = func(x_ys ...interface{}) interface{} {
+		x := x_ys[0]
+		ys := x_ys[1:]
+
+		sb := &goog_string.StringBuffer{Str.Invoke_Arity1(x)}
+		more := ys
+		for {
+			if more != nil && len(more) != 0 {
+				sb = sb.Append(Str.Invoke_Arity1(more[0]))
+				more = more[1:]
+				continue
+			} else {
+				return fmt.Sprint(sb)
+			}
+		}
+	}
+	return Str
+}()
 
 /*
 

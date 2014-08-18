@@ -102,7 +102,8 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, obj, copy)
 
 	sb := gstring.StringBuffer{}
-	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").ToString())
+
+	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").String())
 	assert.Equal(t, "Hello JavaScript World", sb.String())
 
 	assert.Equal(t, "l", (js.JSString("Hello").CharAt(2)))
@@ -148,6 +149,11 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Invoke.Invoke_ArityVariadic(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke.Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
+
+	assert.Equal(t, "", Str.Invoke_Arity0())
+	assert.Equal(t, "Hello", Str.Invoke_Arity1("Hello"))
+	assert.Equal(t, "1", Str.Invoke_Arity1(1))
+	assert.Equal(t, "HelloClojureWorld", Str.Invoke_ArityVariadic("Hello", "Clojure", "World"))
 }
 
 func Test_Protocols(t *testing.T) {

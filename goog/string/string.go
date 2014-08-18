@@ -4,15 +4,20 @@ import "hash/fnv"
 import "bytes"
 
 type StringBuffer struct {
-	bytes.Buffer
+	Buffer interface{}
 }
 
-func (sb *StringBuffer) ToString() string {
-	return sb.String()
+func (sb *StringBuffer) String() string {
+	return sb.Buffer.(string)
 }
 
-func (sb *StringBuffer) Append(a1 string) *StringBuffer {
-	sb.WriteString(a1)
+func (sb *StringBuffer) Append(a1 interface{}) *StringBuffer {
+	if sb.Buffer == nil {
+		sb.Buffer = ""
+	}
+	buffer := bytes.NewBufferString(sb.Buffer.(string))
+	buffer.WriteString(a1.(string))
+	sb.Buffer = buffer.String()
 	return sb
 }
 
