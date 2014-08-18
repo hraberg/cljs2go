@@ -415,6 +415,26 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 	}
 }
 
+var First = AFn{
+	Arity1: func(coll interface{}) interface{} {
+		seq := coll.([]interface{})
+		if seq != nil && len(seq) != 0 {
+			return seq[0]
+		}
+		return nil
+	},
+}
+
+var More = AFn{
+	Arity1: func(coll interface{}) interface{} {
+		seq := coll.([]interface{})
+		if seq != nil && len(seq) != 0 {
+			return seq[1:]
+		}
+		return nil
+	},
+}
+
 var Str = func() AFn {
 	Str := AFn{}
 	Str.Arity0 = func() interface{} {
@@ -428,15 +448,14 @@ var Str = func() AFn {
 		}
 	}
 	Str.ArityVariadic = func(x_ys ...interface{}) interface{} {
-		x := x_ys[0]
-		ys := x_ys[1:]
+		var x, ys interface{} = x_ys[0], x_ys[1:]
 
 		sb := &goog_string.StringBuffer{Str.Invoke_Arity1(x)}
 		more := ys
 		for {
-			if more != nil && len(more) != 0 {
-				sb = sb.Append(Str.Invoke_Arity1(more[0]))
-				more = more[1:]
+			if more != nil {
+				sb = sb.Append(Str.Invoke_Arity1(First.Invoke_Arity1(more)))
+				more = More.Invoke_Arity1(more)
 				continue
 			} else {
 				return fmt.Sprint(sb)
