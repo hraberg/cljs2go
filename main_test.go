@@ -5,7 +5,6 @@ import (
 	"math"
 	"strings"
 	"testing"
-	"unsafe"
 )
 import (
 	garray "github.com/hraberg/cljs.go/goog/array"
@@ -122,27 +121,27 @@ func Test_Main(t *testing.T) {
 }
 
 var Baz = AFn{
-	CljsLangMaxFixedArity: 1,
-	CljsCoreIFn_InvokeArityVariadic: func(args ...interface{}) interface{} {
+	MaxFixedArity: 1,
+	ArityVariadic: func(args ...interface{}) interface{} {
 		x := args[0]
 		xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
 		_ = x
 		return xs
 	},
-	CljsCoreIFn_InvokeArity1: func(x interface{}) interface{} {
+	Arity1: func(x interface{}) interface{} {
 		return x
 	},
 }
 
 func Test_Invoke(t *testing.T) {
-	assert.Panics(t, func() { Baz.Invoke() })
-	assert.Equal(t, "Hello", Baz.Invoke("Hello"))
-	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity0() })
-	assert.Equal(t, "Hello", Baz.CljsCoreIFn_InvokeArity1("Hello"))
-	assert.Panics(t, func() { Baz.CljsCoreIFn_InvokeArity2("Hello", "World") })
-	assert.Equal(t, []interface{}{"World"}, Baz.Invoke("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.CljsCoreIFn_InvokeArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.CljsLangApplyTo("Hello", []interface{}{"World"}))
+	assert.Panics(t, func() { Baz.Call() })
+	assert.Equal(t, "Hello", Baz.Call("Hello"))
+	assert.Panics(t, func() { Baz.Invoke_Arity0() })
+	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
+	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
+	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.ApplyTo("Hello", []interface{}{"World"}))
 }
 
 // Protocols in ClojureScript don't seem to support vargs.
@@ -157,252 +156,100 @@ func Test_Invoke(t *testing.T) {
 //   (-lookup [o k] [o k not-found]))
 
 func Test_Protocols(t *testing.T) {
-	symbol := Symbol.CljsCoreIFn_InvokeArity2("foo", "bar")
+	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "INamed"), symbol).(bool))
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "IFn"), symbol).(bool))
-	assert.Equal(t, "foo", symbol.(INamed).Namespace())
-	assert.Equal(t, "bar", symbol.(INamed).Name())
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
+	assert.Equal(t, "bar", symbol.(INamed).Name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
 
-	foo, bar := Symbol.CljsCoreIFn_InvokeArity1("foo"), Symbol.CljsCoreIFn_InvokeArity1("bar")
+	foo, bar := Symbol.Invoke_Arity1("foo"), Symbol.Invoke_Arity1("bar")
 	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "ILookup"), m).(bool))
-	assert.Equal(t, "bar", m.Lookup(foo))
-	assert.Nil(t, m.Lookup(bar))
-	assert.Equal(t, "baz", m.Lookup(bar, "baz"))
+	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
+	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
+	assert.Nil(t, Lookup.Call(m, bar))
+	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
 
-	assert.Equal(t, "bar", foo.(IFn).Invoke(m))
-	assert.Nil(t, bar.(IFn).Invoke(m))
-	assert.Equal(t, "baz", bar.(IFn).Invoke(m, "baz"))
+	assert.Equal(t, "bar", foo.(IFn).Invoke_Arity1(m))
+	assert.Nil(t, bar.(IFn).Invoke_Arity1(m))
+	assert.Equal(t, "baz", bar.(IFn).Invoke_Arity2(m, "baz"))
 }
 
-type ArityVariadic func(...interface{}) interface{}
-type Arity0 func() interface{}
-type Arity1 func(interface{}) interface{}
-type Arity2 func(_, _ interface{}) interface{}
+// func Test_ProtocolsFnStyle(t *testing.T) {
+// 	symbol := SymbolF.Invoke_Arity2("foo", "bar")
+// 	assert.Equal(t, "foo/bar", symbol.(Symbol2).ToString())
+// 	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
+// 	assert.Equal(t, "bar", IFn2.Invoke_Arity1(Name2, symbol))
+// 	assert.Equal(t, "foo", Namespace2.Invoke_Arity1(symbol))
+// 	assert.Equal(t, "bar", INamed2.Name_Arity1(symbol.(INamed2)))
+// 	assert.Equal(t, "bar", INamed2.Name(symbol.(INamed2)))
+// 	assert.Equal(t, "bar", symbol.(INamed2).Name_Arity1())
+// 	assert.Equal(t, "bar", symbol.(INamed2).Name())
+// 	assert.Equal(t, "foo", INamed2.Namespace_Arity1(symbol.(INamed2)))
+// 	assert.Equal(t, "foo", INamed2.Namespace(symbol.(INamed2)))
+// 	assert.Equal(t, "foo", symbol.(INamed2).Namespace_Arity1())
+// 	assert.Equal(t, "foo", symbol.(INamed2).Namespace())
 
-type INamed2 interface {
-	Name() interface{}
-	Name_Arity1() interface{}
-	Namespace() interface{}
-	Namespace_Arity1() interface{}
-}
-
-var Name2 = AFn2{
-	Arity1: func(this interface{}) interface{} {
-		return this.(INamed2).Name_Arity1()
-	},
-}
-
-var Namespace2 = AFn2{
-	Arity1: func(this interface{}) interface{} {
-		return this.(INamed2).Namespace_Arity1()
-	},
-}
-
-type Symbol2 struct {
-	ns, name, str, _hash, _meta interface{}
-}
-
-func (this Symbol2) Name_Arity1() interface{} {
-	return this.name
-}
-
-func (this Symbol2) Name() interface{} {
-	return this.Name_Arity1()
-}
-
-func (this Symbol2) Namespace_Arity1() interface{} {
-	return this.ns
-}
-
-func (this Symbol2) Namespace() interface{} {
-	return this.Namespace_Arity1()
-}
-
-func (this Symbol2) ToString_Arity1() interface{} {
-	return this.str
-}
-
-func (this Symbol2) ToString() string {
-	return this.ToString_Arity1().(string)
-}
-
-var SymbolF = func() AFn2 {
-	SymbolF := AFn2{}
-	SymbolF.Arity1 = func(name interface{}) interface{} {
-		return SymbolF.Invoke_Arity2(nil, name)
-	}
-	SymbolF.Arity2 = func(ns, name interface{}) interface{} {
-		symStr := func() interface{} {
-			if ns != nil {
-				return ns.(string) + "/" + name.(string)
-			} else {
-				return name
-			}
-		}()
-		return Symbol2{ns: ns, name: name, str: symStr}
-	}
-	return SymbolF
-}()
-
-type IFn2 interface {
-	Invoke(...interface{}) interface{}
-	Invoke_Arity0() interface{}
-	Invoke_Arity1(interface{}) interface{}
-	Invoke_Arity2(_, _ interface{}) interface{}
-	Invoke_ArityVariadic(...interface{}) interface{}
-}
-
-// IFn is a special case, should have all arities up to 20 (they are - 1 as the receiver is the fn)
-var Invoke2 = AFn2{
-	Arity1: func(this interface{}) interface{} {
-		return this.(IFn2).Invoke_Arity0()
-	},
-	Arity2: func(this, a interface{}) interface{} {
-		return this.(IFn2).Invoke_Arity1(a)
-	},
-	ArityVariadic: func(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-		return this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[0].(IFn2).
-			Invoke_ArityVariadic(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[1:]...)
-	},
-}
-
-type AFn2 struct {
-	MaxFixedArity int
-	ArityVariadic
-	Arity0
-	Arity1
-	Arity2
-}
-
-func ThrowArity2(f interface{}, arity int) interface{} {
-	if f == nil {
-		panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
-	}
-	return f
-}
-
-// This one should really be the dispatch fn
-func (this AFn2) Invoke(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity2(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
-	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
-}
-
-func (this AFn2) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity2(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
-	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
-}
-
-func (this AFn2) Invoke_Arity0() interface{} {
-	ThrowArity2(this.Arity0, 0)
-	return this.Arity0()
-}
-
-func (this AFn2) Invoke_Arity1(a interface{}) interface{} {
-	ThrowArity2(this.Arity1, 1)
-	return this.Arity1(a)
-}
-
-func (this AFn2) Invoke_Arity2(a, b interface{}) interface{} {
-	ThrowArity2(this.Arity2, 2)
-	return this.Arity2(a, b)
-}
-
-func Test_ProtocolsFnStyle(t *testing.T) {
-	symbol := SymbolF.Invoke_Arity2("foo", "bar")
-	assert.Equal(t, "foo/bar", symbol.(Symbol2).ToString())
-	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
-	assert.Equal(t, "bar", IFn2.Invoke_Arity1(Name2, symbol))
-	assert.Equal(t, "foo", Namespace2.Invoke_Arity1(symbol))
-	assert.Equal(t, "bar", INamed2.Name_Arity1(symbol.(INamed2)))
-	assert.Equal(t, "bar", INamed2.Name(symbol.(INamed2)))
-	assert.Equal(t, "bar", symbol.(INamed2).Name_Arity1())
-	assert.Equal(t, "bar", symbol.(INamed2).Name())
-	assert.Equal(t, "foo", INamed2.Namespace_Arity1(symbol.(INamed2)))
-	assert.Equal(t, "foo", INamed2.Namespace(symbol.(INamed2)))
-	assert.Equal(t, "foo", symbol.(INamed2).Namespace_Arity1())
-	assert.Equal(t, "foo", symbol.(INamed2).Namespace())
-
-	baz := SymbolF.Invoke_Arity1("baz")
-	assert.Equal(t, "baz", Name2.Invoke_Arity1(baz))
-	assert.Nil(t, Namespace2.Invoke_Arity1(baz))
-}
-
-func Benchmark_RecursiveDirectCallPrimitiveLocal(t *testing.B) {
-	fib := func() AFn {
-		var this = AFn{}
-		this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
-			var n = a.(float64)
-			if n == 0.0 {
-				return 0.0
-			} else if n == 1.0 {
-				return 1.0
-			} else {
-				return this.CljsCoreIFn_InvokeArity1(n-1.0).(float64) +
-					this.CljsCoreIFn_InvokeArity1(n-2.0).(float64)
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, fib.Invoke(30.0))
-}
+// 	baz := SymbolF.Invoke_Arity1("baz")
+// 	assert.Equal(t, "baz", Name2.Invoke_Arity1(baz))
+// 	assert.Nil(t, Namespace2.Invoke_Arity1(baz))
+// }
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
-		this.CljsCoreIFn_InvokeArity1 = func(n interface{}) interface{} {
+		this.Arity1 = func(n interface{}) interface{} {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.CljsCoreIFn_InvokeArity1(n.(float64)-1.0).(float64) +
-					this.CljsCoreIFn_InvokeArity1(n.(float64)-2.0).(float64)
+				return this.Invoke_Arity1(n.(float64)-1.0).(float64) +
+					this.Invoke_Arity1(n.(float64)-2.0).(float64)
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.Invoke(30.0))
+	assert.Equal(t, 832040, fib.Call(30.0))
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
-		this.CljsCoreIFn_InvokeArity1DD = func(n float64) float64 {
+		this.Arity1FF = func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.CljsCoreIFn_InvokeArity1DD(n-1.0) +
-					this.CljsCoreIFn_InvokeArity1DD(n-2.0)
+				return this.Arity1FF(n-1.0) +
+					this.Arity1FF(n-2.0)
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.Invoke(30.0))
+	assert.Equal(t, 832040, fib.Call(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
-		this.CljsCoreIFn_InvokeArity1 = func(a interface{}) interface{} {
+		this.Arity1 = func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.Invoke(n-1.0).(float64) +
-					this.Invoke(n-2.0).(float64)
+				return this.Call(n-1.0).(float64) +
+					this.Call(n-2.0).(float64)
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.Invoke(30.0))
+	assert.Equal(t, 832040, fib.Call(30.0))
 }
 
 func Benchmark_RecursiveGo(t *testing.B) {
@@ -420,159 +267,4 @@ func Benchmark_RecursiveGo(t *testing.B) {
 		return this
 	}()
 	assert.Equal(t, 832040, fib(30))
-}
-
-func Benchmark_RecursiveGoUintptr(t *testing.B) {
-	fib := func() func(uintptr) uintptr {
-		var this func(uintptr) uintptr
-		this = func(n uintptr) uintptr {
-			if math.Float64frombits(uint64(n)) == 0.0 {
-				return uintptr(math.Float64bits(0))
-			} else if math.Float64frombits(uint64(n)) == 1.0 {
-				return uintptr(math.Float64bits(1.0))
-			} else {
-				return uintptr(math.Float64bits(math.Float64frombits(uint64(this(uintptr(math.Float64bits(math.Float64frombits(uint64(n))-1))))) +
-					math.Float64frombits(uint64(this(uintptr(math.Float64bits(math.Float64frombits(uint64(n))-2)))))))
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, math.Float64frombits(uint64(fib(uintptr(math.Float64bits(30.0))))))
-}
-
-func Benchmark_RecursiveGoUnsafePointer(t *testing.B) {
-	fib := func() func(unsafe.Pointer) unsafe.Pointer {
-		var this func(unsafe.Pointer) unsafe.Pointer
-		this = func(n unsafe.Pointer) unsafe.Pointer {
-			if math.Float64frombits(uint64(uintptr(n))) == 0 {
-				return unsafe.Pointer(uintptr(math.Float64bits(0)))
-			} else if math.Float64frombits(uint64(uintptr(n))) == 1 {
-				return unsafe.Pointer(uintptr(math.Float64bits(1)))
-			} else {
-				return unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(this(unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(n)))-1))))))) + math.Float64frombits(uint64(uintptr(this(unsafe.Pointer(uintptr(math.Float64bits(math.Float64frombits(uint64(uintptr(n)))-2))))))))))
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, math.Float64frombits(uint64(uintptr(fib(unsafe.Pointer(uintptr(math.Float64bits(30))))))))
-}
-
-func BoxFloat64(f float64) unsafe.Pointer {
-	return unsafe.Pointer(uintptr(math.Float64bits(f)))
-}
-
-func UnboxFloat64(p unsafe.Pointer) float64 {
-	return math.Float64frombits(uint64(uintptr(p)))
-}
-
-func Benchmark_RecursiveGoUnsafePointerBox(t *testing.B) {
-	fib := func() func(unsafe.Pointer) unsafe.Pointer {
-		var this func(unsafe.Pointer) unsafe.Pointer
-		this = func(n unsafe.Pointer) unsafe.Pointer {
-			if UnboxFloat64(n) == 0 {
-				return BoxFloat64(0)
-			} else if UnboxFloat64(n) == 1 {
-				return BoxFloat64(1)
-			} else {
-				return BoxFloat64(UnboxFloat64(this(BoxFloat64(UnboxFloat64(n)-1))) +
-					UnboxFloat64(this(BoxFloat64(UnboxFloat64(n)-2))))
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, UnboxFloat64(fib(BoxFloat64(30))))
-}
-
-func IBoxFloat64(f float64) interface{} {
-	var i interface{}
-	// v := (*[2]uint64)(unsafe.Pointer(&i))
-	//v[0] = 5262720
-	// v[1] = math.Float64bits(f)
-	(*[2]uint64)(unsafe.Pointer(&i))[1] = math.Float64bits(f)
-	return i
-}
-
-func IUnboxFloat64(p interface{}) float64 {
-	return math.Float64frombits((*[2]uint64)(unsafe.Pointer(&p))[1])
-}
-
-func Benchmark_RecursiveGoEmbedInInterface(t *testing.B) {
-	fib := func() func(interface{}) interface{} {
-		var this func(interface{}) interface{}
-		this = func(n interface{}) interface{} {
-			if IUnboxFloat64(n) == 0 {
-				return IBoxFloat64(0)
-			} else if IUnboxFloat64(n) == 1 {
-				return IBoxFloat64(1)
-			} else {
-				return IBoxFloat64(IUnboxFloat64(this(IBoxFloat64(IUnboxFloat64(n)-1))) +
-					IUnboxFloat64(this(IBoxFloat64(IUnboxFloat64(n)-2))))
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, IUnboxFloat64(fib(IBoxFloat64(30))))
-}
-
-func Test_Pointers(t *testing.T) {
-	var x interface{} = "Hello"
-	x_ptr := &x
-	assert.Equal(t, "Hello", *x_ptr)
-	u_ptr := uintptr(unsafe.Pointer(x_ptr))
-	assert.Equal(t, "Hello", *(*interface{})(unsafe.Pointer(u_ptr)))
-	//	var x_ptr uint64 = unsafe.Pointer(&x).(unit64)
-
-	pi := 3.14
-	var pi_ptr interface{} = uintptr(math.Float64bits(pi))
-
-	// func(i interface{}) {
-	// 	e := unsafe.Pointer(&i)
-	// 	val := (*[2]uintptr)(e)
-	// 	fmt.Println(*val)
-	// 	var x interface{} = (unsafe.Pointer(uintptr(0)))
-	// 	fmt.Println(reflect.TypeOf(x))
-	// 	fmt.Println(*(*[2]uintptr)(unsafe.Pointer(&x)))
-	// 	var y interface{}
-	// 	fmt.Println(reflect.TypeOf(y))
-	// 	fmt.Println(*(*[2]uintptr)(unsafe.Pointer(&y)))
-
-	// 	fmt.Println(math.Float64frombits(uint64(val[1])))
-	// 	val[0] = uintptr(math.Float64bits(2.0))
-	// 	val[1] = 0
-	// 	fmt.Println(uintptr(math.Float64bits(2.0)))
-	// 	fmt.Println(math.Float64bits(2.0))
-	// 	// fmt.Println(reflect.TypeOf(i))
-	// 	//		fmt.Println(i)
-	// }(1.0)
-
-	// var pi_interface interface{} = pi_ptr
-	//	assert.Equal(t, pi, math.Float64frombits(uint64(uintptr(pi_ptr))))
-	assert.Equal(t, pi, math.Float64frombits(uint64(pi_ptr.(uintptr))))
-	assert.Equal(t, pi, *(*float64)(unsafe.Pointer(&pi)))
-
-	// var y = *(*interface{})(unsafe.Pointer(p))
-	// assert.Equal(t, "Hello", y)
-	assert.Equal(t, "Hello", *(*interface{})(unsafe.Pointer(&x)))
-}
-
-func double(x interface{}) float64 {
-	switch x.(type) {
-	case int:
-		return float64(x.(int))
-	case int64:
-		return float64(x.(int64))
-	default:
-		return x.(float64)
-	}
-}
-
-func long(x interface{}) int64 {
-	switch x.(type) {
-	case int:
-		return int64(x.(int))
-	case float64:
-		return int64(x.(float64))
-	default:
-		return x.(int64)
-	}
 }

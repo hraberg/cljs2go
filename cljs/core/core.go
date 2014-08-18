@@ -65,29 +65,79 @@ func NativeSatisifes_QMARK_(p, x interface{}) interface{} {
 }
 
 type INamed interface {
-	Name() string
-	Namespace() string
+	Name_Arity1() string
+	Namespace_Arity1() string
+}
+
+var Name = AFn{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed).Name_Arity1()
+	},
+}
+
+var Namespace = AFn{
+	Arity1: func(this interface{}) interface{} {
+		return this.(INamed).Namespace_Arity1()
+	},
 }
 
 func init() {
-	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "INamed")] = reflect.TypeOf((*INamed)(nil)).Elem()
+	protocols[Symbol.Arity2("cljs.core", "INamed")] = reflect.TypeOf((*INamed)(nil)).Elem()
 }
 
-// How to properly consolidate this with the internal CljsCoreIFn_InvokeArityN stuff?
+// Note the arity difference here, starting with 0 unlike other protocols
 type IFn interface {
-	Invoke(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
+	Invoke_Arity0() interface{}
+	Invoke_Arity1(a interface{}) interface{}
+	Invoke_Arity2(a, b interface{}) interface{}
+	Invoke_Arity3(a, b, c interface{}) interface{}
+	Invoke_Arity4(a, b, c, d interface{}) interface{}
+	Invoke_Arity5(a, b, c, d, e interface{}) interface{}
+	Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
+}
+
+var Invoke IFn = AFn{
+	Arity1: func(this interface{}) interface{} {
+		return this.(IFn).Invoke_Arity0()
+	},
+	Arity2: func(this, a interface{}) interface{} {
+		return this.(IFn).Invoke_Arity1(a)
+	},
+	Arity3: func(this, a, b interface{}) interface{} {
+		return this.(IFn).Invoke_Arity2(a, b)
+	},
+	Arity4: func(this, a, b, c interface{}) interface{} {
+		return this.(IFn).Invoke_Arity3(a, b, c)
+	},
+	Arity5: func(this, a, b, c, d interface{}) interface{} {
+		return this.(IFn).Invoke_Arity4(a, b, c, d)
+	},
+	ArityVariadic: func(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+		return this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[0].(IFn).
+			Invoke_ArityVariadic(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[1:]...)
+	},
 }
 
 func init() {
-	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "IFn")] = reflect.TypeOf((*IFn)(nil)).Elem()
+	protocols[Symbol.Arity2("cljs.core", "IFn")] = reflect.TypeOf((*IFn)(nil)).Elem()
 }
 
 type ILookup interface {
-	Lookup(k interface{}, notFound ...interface{}) interface{}
+	Lookup_Arity2(k interface{}) interface{}
+	Lookup_Arity3(k, notFound interface{}) interface{}
+}
+
+var Lookup = AFn{
+	Arity2: func(this, k interface{}) interface{} {
+		return this.(ILookup).Lookup_Arity2(k)
+	},
+	Arity3: func(this, k, notFound interface{}) interface{} {
+		return this.(ILookup).Lookup_Arity3(k, notFound)
+	},
 }
 
 func init() {
-	protocols[Symbol.CljsCoreIFn_InvokeArity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
+	protocols[Symbol.Arity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
 }
 
 // Potential alternative, each protocol is a named struct with Arity0 etc fields:
@@ -99,24 +149,25 @@ func init() {
 // These naming conventions stem from the IFn protocol, but currently there's no real connection here.
 // Protocols are currently implemented as real Go interfaces with bridge methods hiding the AFn.
 // Implementations need to set up actual named locals as argument, and create an array-seq from the varargs.
-type CljsCoreIFn_InvokeArityVariadic func(...interface{}) interface{}
-type CljsCoreIFn_InvokeArity0 func() interface{}
-type CljsCoreIFn_InvokeArity1 func(interface{}) interface{}
-type CljsCoreIFn_InvokeArity2 func(_, _ interface{}) interface{}
-type CljsCoreIFn_InvokeArity3 func(_, _, _ interface{}) interface{}
-type CljsCoreIFn_InvokeArity4 func(_, _, _, _ interface{}) interface{}
+type ArityVariadic func(...interface{}) interface{}
+type Arity0 func() interface{}
+type Arity1 func(interface{}) interface{}
+type Arity2 func(_, _ interface{}) interface{}
+type Arity3 func(_, _, _ interface{}) interface{}
+type Arity4 func(_, _, _, _ interface{}) interface{}
+type Arity5 func(_, _, _, _, _ interface{}) interface{}
 
-type CljsCoreIFn_InvokeArity0D func() float64
-type CljsCoreIFn_InvokeArity1OD func(interface{}) float64
-type CljsCoreIFn_InvokeArity1DD func(float64) float64
-type CljsCoreIFn_InvokeArity1DO func(float64) interface{}
-type CljsCoreIFn_InvokeArity2OOD func(_, _ interface{}) float64
-type CljsCoreIFn_InvokeArity2ODO func(interface{}, float64) interface{}
-type CljsCoreIFn_InvokeArity2ODD func(interface{}, float64) float64
-type CljsCoreIFn_InvokeArity2DOO func(float64, interface{}) interface{}
-type CljsCoreIFn_InvokeArity2DOD func(float64, interface{}) float64
-type CljsCoreIFn_InvokeArity2DDO func(_, _ float64) interface{}
-type CljsCoreIFn_InvokeArity2DDD func(_, _ float64) float64
+type Arity0F func() float64
+type Arity1IF func(interface{}) float64
+type Arity1FF func(float64) float64
+type Arity1FI func(float64) interface{}
+type Arity2IIF func(_, _ interface{}) float64
+type Arity2IFI func(interface{}, float64) interface{}
+type Arity2IFF func(interface{}, float64) float64
+type Arity2FII func(float64, interface{}) interface{}
+type Arity2FIF func(float64, interface{}) float64
+type Arity2FFI func(_, _ float64) interface{}
+type Arity2FFF func(_, _ float64) float64
 
 // There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
 // So we might need to complicate this for various reasons, Keywords for example are IFns by protocol.
@@ -138,109 +189,184 @@ type CljsCoreIFn_InvokeArity2DDD func(_, _ float64) float64
 // This is extra interesting for anonymous "named" functions, ie. (fn foo [] (foo))
 
 type AFn struct {
-	CljsLangMaxFixedArity int
-	CljsCoreIFn_InvokeArityVariadic
-	CljsCoreIFn_InvokeArity0
-	CljsCoreIFn_InvokeArity1
-	CljsCoreIFn_InvokeArity2
-	CljsCoreIFn_InvokeArity3
-	CljsCoreIFn_InvokeArity4
-	CljsCoreIFn_InvokeArity0D
-	CljsCoreIFn_InvokeArity1OD
-	CljsCoreIFn_InvokeArity1DO
-	CljsCoreIFn_InvokeArity1DD
-	CljsCoreIFn_InvokeArity2OOD
-	CljsCoreIFn_InvokeArity2ODO
-	CljsCoreIFn_InvokeArity2ODD
-	CljsCoreIFn_InvokeArity2DOO
-	CljsCoreIFn_InvokeArity2DOD
-	CljsCoreIFn_InvokeArity2DDO
-	CljsCoreIFn_InvokeArity2DDD
+	MaxFixedArity int
+	ArityVariadic
+	Arity0
+	Arity1
+	Arity2
+	Arity3
+	Arity4
+	Arity5
+	Arity0F
+	Arity1IF
+	Arity1FF
+	Arity1FI
+	Arity2IIF
+	Arity2IFI
+	Arity2IFF
+	Arity2FII
+	Arity2FIF
+	Arity2FFI
+	Arity2FFF
 }
 
-func ThrowArity(arity int) interface{} {
-	panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
+func ThrowArity(f interface{}, arity int) interface{} {
+	if f == nil {
+		panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
+	}
+	return f
 }
 
-func (this AFn) Invoke(args ...interface{}) interface{} {
+func (this AFn) Call(args ...interface{}) interface{} {
 	argc := len(args)
-	if argc > this.CljsLangMaxFixedArity && this.CljsCoreIFn_InvokeArityVariadic != nil {
-		return this.CljsCoreIFn_InvokeArityVariadic(args...)
+	if argc > this.MaxFixedArity && this.ArityVariadic != nil {
+		return this.ArityVariadic(args...)
 	}
 	switch argc {
 	case 0:
 		switch {
-		case this.CljsCoreIFn_InvokeArity0 != nil:
-			return this.CljsCoreIFn_InvokeArity0()
-		case this.CljsCoreIFn_InvokeArity0D != nil:
-			return this.CljsCoreIFn_InvokeArity0D()
+		case this.Arity0 != nil:
+			return this.Arity0()
+		case this.Arity0F != nil:
+			return this.Arity0F()
 		}
 	case 1:
 		switch {
-		case this.CljsCoreIFn_InvokeArity1 != nil:
-			return this.CljsCoreIFn_InvokeArity1(args[0])
-		case this.CljsCoreIFn_InvokeArity1OD != nil:
-			return this.CljsCoreIFn_InvokeArity1OD(args[0])
-		case this.CljsCoreIFn_InvokeArity1DO != nil:
-			return this.CljsCoreIFn_InvokeArity1DO(args[0].(float64))
-		case this.CljsCoreIFn_InvokeArity1DD != nil:
-			return this.CljsCoreIFn_InvokeArity1DD(args[0].(float64))
+		case this.Arity1 != nil:
+			return this.Arity1(args[0])
+		case this.Arity1IF != nil:
+			return this.Arity1IF(args[0])
+		case this.Arity1FI != nil:
+			return this.Arity1FI(args[0].(float64))
+		case this.Arity1FF != nil:
+			return this.Arity1FF(args[0].(float64))
 		}
 	case 2:
 		switch {
-		case this.CljsCoreIFn_InvokeArity2 != nil:
-			return this.CljsCoreIFn_InvokeArity2(args[0], args[1])
-		case this.CljsCoreIFn_InvokeArity2OOD != nil:
-			return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1])
-		case this.CljsCoreIFn_InvokeArity2ODO != nil:
-			return this.CljsCoreIFn_InvokeArity2OOD(args[0], args[1].(float64))
-		case this.CljsCoreIFn_InvokeArity2ODD != nil:
-			return this.CljsCoreIFn_InvokeArity2ODO(args[0], args[1].(float64))
-		case this.CljsCoreIFn_InvokeArity2DOO != nil:
-			return this.CljsCoreIFn_InvokeArity2DOO(args[0].(float64), args[1])
-		case this.CljsCoreIFn_InvokeArity2DOD != nil:
-			return this.CljsCoreIFn_InvokeArity2DOD(args[0].(float64), args[1])
-		case this.CljsCoreIFn_InvokeArity2DDO != nil:
-			return this.CljsCoreIFn_InvokeArity2DDO(args[0].(float64), args[1].(float64))
-		case this.CljsCoreIFn_InvokeArity2DDD != nil:
-			return this.CljsCoreIFn_InvokeArity2DDD(args[0].(float64), args[1].(float64))
+		case this.Arity2 != nil:
+			return this.Arity2(args[0], args[1])
+		case this.Arity2IIF != nil:
+			return this.Arity2IIF(args[0], args[1])
+		case this.Arity2IFI != nil:
+			return this.Arity2IFI(args[0], args[1].(float64))
+		case this.Arity2IFF != nil:
+			return this.Arity2IFI(args[0], args[1].(float64))
+		case this.Arity2FII != nil:
+			return this.Arity2FII(args[0].(float64), args[1])
+		case this.Arity2FIF != nil:
+			return this.Arity2FIF(args[0].(float64), args[1])
+		case this.Arity2FFI != nil:
+			return this.Arity2FFI(args[0].(float64), args[1].(float64))
+		case this.Arity2FFF != nil:
+			return this.Arity2FFF(args[0].(float64), args[1].(float64))
 		}
 	case 3:
-		if this.CljsCoreIFn_InvokeArity3 != nil {
-			return this.CljsCoreIFn_InvokeArity3(args[0], args[1], args[3])
+		if this.Arity3 != nil {
+			return this.Arity3(args[0], args[1], args[3])
 		}
 	case 4:
-		if this.CljsCoreIFn_InvokeArity4 != nil {
-			return this.CljsCoreIFn_InvokeArity4(args[0], args[1], args[3], args[4])
+		if this.Arity4 != nil {
+			return this.Arity4(args[0], args[1], args[3], args[4])
 		}
+	case 5:
+		if this.Arity5 != nil {
+			return this.Arity5(args[0], args[1], args[3], args[4], args[5])
+		}
+
 	}
-	return ThrowArity(argc)
+	return ThrowArity(nil, argc)
+}
+
+func (this AFn) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	ThrowArity(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+}
+
+func (this AFn) Invoke_Arity0() interface{} {
+	ThrowArity(this.Arity0, 0)
+	return this.Arity0()
+}
+
+func (this AFn) Invoke_Arity1(a interface{}) interface{} {
+	ThrowArity(this.Arity1, 1)
+	return this.Arity1(a)
+}
+
+func (this AFn) Invoke_Arity2(a, b interface{}) interface{} {
+	ThrowArity(this.Arity2, 2)
+	return this.Arity2(a, b)
+}
+
+func (this AFn) Invoke_Arity3(a, b, c interface{}) interface{} {
+	ThrowArity(this.Arity3, 3)
+	return this.Arity3(a, b, c)
+}
+
+func (this AFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
+	ThrowArity(this.Arity4, 4)
+	return this.Arity4(a, b, c, d)
+}
+
+func (this AFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
+	ThrowArity(this.Arity4, 4)
+	return this.Arity4(a, b, c, d)
+}
+
+type AbstractIFn struct{}
+
+func (this AbstractIFn) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	return ThrowArity(nil, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+}
+
+func (this AbstractIFn) Invoke_Arity0() interface{} {
+	return ThrowArity(nil, 0)
+}
+
+func (this AbstractIFn) Invoke_Arity1(a interface{}) interface{} {
+	return ThrowArity(nil, 1)
+}
+
+func (this AbstractIFn) Invoke_Arity2(a, b interface{}) interface{} {
+	return ThrowArity(nil, 2)
+}
+
+func (this AbstractIFn) Invoke_Arity3(a, b, c interface{}) interface{} {
+	return ThrowArity(nil, 3)
+}
+
+func (this AbstractIFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
+	return ThrowArity(nil, 4)
+}
+
+func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
+	return ThrowArity(nil, 4)
 }
 
 func Apply(f interface{}, args ...interface{}) interface{} {
 	argc := len(args)
 	if argc < 1 {
-		ThrowArity(argc)
+		ThrowArity(nil, argc)
 	}
 	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-	return f.(IFn).Invoke(append(args[:argc-1], spread...)...)
+	return f.(AFn).Call(append(args[:argc-1], spread...)...)
 }
 
 // This isn't really needed unless we actually make it faster. It's only used for variadic fns in CLJS.
-func (this AFn) CljsLangApplyTo(args ...interface{}) interface{} {
+func (this AFn) ApplyTo(args ...interface{}) interface{} {
 	return Apply(this, args...)
 }
 
 type CljsCoreSymbol struct {
 	ns, name, str, _hash, _meta interface{}
+	AbstractIFn
 }
 
 var Symbol = func() AFn {
 	Symbol := AFn{}
-	Symbol.CljsCoreIFn_InvokeArity1 = func(name interface{}) interface{} {
-		return Symbol.CljsCoreIFn_InvokeArity2(nil, name)
+	Symbol.Arity1 = func(name interface{}) interface{} {
+		return Symbol.Arity2(nil, name)
 	}
-	Symbol.CljsCoreIFn_InvokeArity2 = func(ns, name interface{}) interface{} {
+	Symbol.Arity2 = func(ns, name interface{}) interface{} {
 		symStr := func() interface{} {
 			if ns != nil {
 				return ns.(string) + "/" + name.(string)
@@ -253,11 +379,11 @@ var Symbol = func() AFn {
 	return Symbol
 }()
 
-func (this CljsCoreSymbol) Name() string {
+func (this CljsCoreSymbol) Name_Arity1() string {
 	return this.name.(string)
 }
 
-func (this CljsCoreSymbol) Namespace() string {
+func (this CljsCoreSymbol) Namespace_Arity1() string {
 	return this.ns.(string)
 }
 
@@ -265,49 +391,27 @@ func (this CljsCoreSymbol) String() string {
 	return this.str.(string)
 }
 
-func (this CljsCoreSymbol) Invoke(coll_notFound ...interface{}) interface{} {
-	Invoke := AFn{}
-	Invoke.CljsCoreIFn_InvokeArity1 = func(coll interface{}) interface{} {
-		return coll.(ILookup).Lookup(this, nil)
-	}
-	Invoke.CljsCoreIFn_InvokeArity2 = func(coll, notFound interface{}) interface{} {
-		return coll.(ILookup).Lookup(this, notFound)
-	}
-	argc := len(coll_notFound)
-	switch argc {
-	case 1:
-		return Invoke.CljsCoreIFn_InvokeArity1(coll_notFound[0])
-	case 2:
-		return Invoke.CljsCoreIFn_InvokeArity2(coll_notFound[0], coll_notFound[1])
-	default:
-		return ThrowArity(argc)
-	}
+func (this CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
+	return coll.(ILookup).Lookup_Arity2(this)
+}
+
+func (this CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
+	return coll.(ILookup).Lookup_Arity3(this, notFound)
 }
 
 // Doesn't try to match cljs.core, just a temporary hack
 type ObjMap map[interface{}]interface{}
 
-func (coll ObjMap) Lookup(k interface{}, notFound ...interface{}) interface{} {
-	Lookup := AFn{}
-	Lookup.CljsCoreIFn_InvokeArity1 = func(k interface{}) interface{} {
-		return coll.Lookup(k, nil)
-	}
-	Lookup.CljsCoreIFn_InvokeArity2 = func(k, notFound interface{}) interface{} {
-		val := coll[k]
-		if val == nil {
-			return notFound
-		} else {
-			return val
-		}
-	}
-	argc := len(notFound)
-	switch argc {
-	case 0:
-		return Lookup.CljsCoreIFn_InvokeArity1(k)
-	case 1:
-		return Lookup.CljsCoreIFn_InvokeArity2(k, notFound[0])
-	default:
-		return ThrowArity(argc)
+func (coll ObjMap) Lookup_Arity2(k interface{}) interface{} {
+	return coll.Lookup_Arity3(k, nil)
+}
+
+func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
+	val := coll[k]
+	if val == nil {
+		return notFound
+	} else {
+		return val
 	}
 }
 
