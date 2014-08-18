@@ -1,23 +1,20 @@
 package string
 
 import "hash/fnv"
-import "bytes"
 
 type StringBuffer struct {
 	Buffer interface{}
 }
 
 func (sb *StringBuffer) String() string {
+	if sb.Buffer == nil {
+		sb.Buffer = ""
+	}
 	return sb.Buffer.(string)
 }
 
 func (sb *StringBuffer) Append(a1 interface{}) *StringBuffer {
-	if sb.Buffer == nil {
-		sb.Buffer = ""
-	}
-	buffer := bytes.NewBufferString(sb.Buffer.(string))
-	buffer.WriteString(a1.(string))
-	sb.Buffer = buffer.String()
+	sb.Buffer = sb.String() + a1.(string)
 	return sb
 }
 
