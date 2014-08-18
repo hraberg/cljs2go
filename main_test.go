@@ -141,7 +141,7 @@ func Test_Invoke(t *testing.T) {
 	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.ApplyTo("Hello", []interface{}{"World"}))
+	assert.Equal(t, []interface{}{"World"}, Apply(Baz, "Hello", []interface{}{"World"}))
 }
 
 // Protocols in ClojureScript don't seem to support vargs.

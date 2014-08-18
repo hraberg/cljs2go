@@ -330,11 +330,6 @@ func Apply(f interface{}, args ...interface{}) interface{} {
 	return f.(AFn).Call(append(args[:argc-1], spread...)...)
 }
 
-// This isn't really needed unless we actually make it faster. It's only used for variadic fns in CLJS.
-func (this AFn) ApplyTo(args ...interface{}) interface{} {
-	return Apply(this, args...)
-}
-
 type CljsCoreSymbol struct {
 	ns, name, str, _hash, _meta interface{}
 	AbstractIFn
