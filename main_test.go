@@ -189,25 +189,27 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.Call(30.0))
+	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
+		this.Arity1 = func(n interface{}) interface{} {
+			return this.Arity1FF(n.(float64))
+		}
 		this.Arity1FF = func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.Arity1FF(n-1.0) +
-					this.Arity1FF(n-2.0)
+				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
 			}
 		}
 		return this
 	}()
-	assert.Equal(t, 832040, fib.Call(30.0))
+	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
@@ -220,8 +222,7 @@ func Benchmark_RecursiveDispatch(t *testing.B) {
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.Call(n-1.0).(float64) +
-					this.Call(n-2.0).(float64)
+				return this.Call(n-1.0).(float64) + this.Call(n-2.0).(float64)
 			}
 		}
 		return this
