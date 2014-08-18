@@ -305,8 +305,8 @@ func (this AFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
 }
 
 func (this AFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	ThrowArity(this.Arity4, 4)
-	return this.Arity4(a, b, c, d)
+	ThrowArity(this.Arity5, 5)
+	return this.Arity5(a, b, c, d, e)
 }
 
 type AbstractIFn struct{}
