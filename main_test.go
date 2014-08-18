@@ -140,9 +140,12 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, "Hello", Baz.Call("Hello"))
 	assert.Panics(t, func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
+	assert.Equal(t, "Hello", Invoke.Invoke_Arity2(Baz, "Hello"))
 	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Invoke.Invoke_ArityVariadic(Baz, "Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Invoke.Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 }
 
@@ -152,6 +155,8 @@ func Test_Protocols(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
+	assert.Equal(t, "foo", Namespace.Invoke_Arity1(symbol))
+	assert.Equal(t, "foo", Invoke.Invoke_Arity2(Namespace, symbol))
 	assert.Equal(t, "bar", symbol.(INamed).Name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
 
@@ -164,6 +169,7 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
 
 	assert.Equal(t, "bar", foo.(IFn).Invoke_Arity1(m))
+	assert.Equal(t, "bar", Invoke.Invoke_Arity2(foo, m))
 	assert.Nil(t, bar.(IFn).Invoke_Arity1(m))
 	assert.Equal(t, "baz", bar.(IFn).Invoke_Arity2(m, "baz"))
 }

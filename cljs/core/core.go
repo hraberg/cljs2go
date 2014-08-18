@@ -114,7 +114,7 @@ type IFn interface {
 	Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
 }
 
-var Invoke IFn = AFn{
+var Invoke = AFn{
 	Arity1: func(this interface{}) interface{} {
 		return this.(IFn).Invoke_Arity0()
 	},
@@ -269,7 +269,6 @@ func (this AFn) Call(args ...interface{}) interface{} {
 		if this.Arity5 != nil {
 			return this.Arity5(args[0], args[1], args[3], args[4], args[5])
 		}
-
 	}
 	return ThrowArity(nil, argc)
 }
