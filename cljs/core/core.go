@@ -194,6 +194,10 @@ type AFn struct {
 	Arity3
 	Arity4
 	Arity5
+}
+
+type AFnPrimtive struct {
+	AFn
 	Arity0F
 	Arity1IF
 	Arity1FF
@@ -217,20 +221,34 @@ func ThrowArity(f, arity interface{}) interface{} {
 func (this AFn) Call(args ...interface{}) interface{} {
 	argc := len(args)
 	if argc > this.MaxFixedArity && this.ArityVariadic != nil {
-		return this.ArityVariadic(args...)
+		return this.Invoke_ArityVariadic(args...)
 	}
 	switch argc {
 	case 0:
+		return this.Invoke_Arity0()
+	case 1:
+		return this.Invoke_Arity1(args[0])
+	case 2:
+		return this.Invoke_Arity2(args[0], args[1])
+	case 3:
+		return this.Invoke_Arity3(args[0], args[1], args[2])
+	case 4:
+		return this.Invoke_Arity4(args[0], args[1], args[2], args[3])
+	case 5:
+		return this.Invoke_Arity5(args[0], args[1], args[2], args[3], args[4])
+	}
+	return ThrowArity(nil, argc)
+}
+
+func (this AFnPrimtive) Call(args ...interface{}) interface{} {
+	switch len(args) {
+	case 0:
 		switch {
-		case this.Arity0 != nil:
-			return this.Arity0()
 		case this.Arity0F != nil:
 			return this.Arity0F()
 		}
 	case 1:
 		switch {
-		case this.Arity1 != nil:
-			return this.Arity1(args[0])
 		case this.Arity1IF != nil:
 			return this.Arity1IF(args[0])
 		case this.Arity1FI != nil:
@@ -240,8 +258,6 @@ func (this AFn) Call(args ...interface{}) interface{} {
 		}
 	case 2:
 		switch {
-		case this.Arity2 != nil:
-			return this.Arity2(args[0], args[1])
 		case this.Arity2IIF != nil:
 			return this.Arity2IIF(args[0], args[1])
 		case this.Arity2IFI != nil:
@@ -257,20 +273,8 @@ func (this AFn) Call(args ...interface{}) interface{} {
 		case this.Arity2FFF != nil:
 			return this.Arity2FFF(args[0].(float64), args[1].(float64))
 		}
-	case 3:
-		if this.Arity3 != nil {
-			return this.Arity3(args[0], args[1], args[3])
-		}
-	case 4:
-		if this.Arity4 != nil {
-			return this.Arity4(args[0], args[1], args[3], args[4])
-		}
-	case 5:
-		if this.Arity5 != nil {
-			return this.Arity5(args[0], args[1], args[3], args[4], args[5])
-		}
 	}
-	return ThrowArity(nil, argc)
+	return this.AFn.Call(args...)
 }
 
 func (this ArityVariadic) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {

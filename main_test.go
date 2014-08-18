@@ -194,8 +194,8 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
-	fib := func() AFn {
-		var this = AFn{}
+	fib := func() IFn {
+		var this = AFnPrimtive{}
 		this.Arity1 = func(n interface{}) interface{} {
 			return this.Arity1FF(n.(float64))
 		}
