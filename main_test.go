@@ -112,9 +112,11 @@ func Test_JS(t *testing.T) {
 
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
-	STAR_main_cli_fn_STAR_ = func(args ...interface{}) interface{} {
-		mainWasCalled = true
-		return nil
+	STAR_main_cli_fn_STAR_ = AFn{
+		ArityVariadic: func(args ...interface{}) interface{} {
+			mainWasCalled = true
+			return nil
+		},
 	}
 	Main()
 	assert.True(t, mainWasCalled)
@@ -141,7 +143,7 @@ func Test_Invoke(t *testing.T) {
 	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Apply(Baz, "Hello", []interface{}{"World"}))
+	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 }
 
 // Protocols in ClojureScript don't seem to support vargs.
@@ -158,8 +160,8 @@ func Test_Invoke(t *testing.T) {
 func Test_Protocols(t *testing.T) {
 	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
+	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
 	assert.Equal(t, "bar", symbol.(INamed).Name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
@@ -167,7 +169,7 @@ func Test_Protocols(t *testing.T) {
 	foo, bar := Symbol.Invoke_Arity1("foo"), Symbol.Invoke_Arity1("bar")
 	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	assert.True(t, NativeSatisifes_QMARK_(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
+	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
 	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
 	assert.Nil(t, Lookup.Call(m, bar))
 	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
