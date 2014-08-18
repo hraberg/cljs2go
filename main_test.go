@@ -146,17 +146,6 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 }
 
-// Protocols in ClojureScript don't seem to support vargs.
-// In cljs.core, only IFn, IReduce, IIndexed, ILookup, and ISwap have overloaded arities.
-// IFn is a special case which drops the receiver arg.
-
-// (defprotocol INamed
-//   (^string -name [x])
-//   (^string -namespace [x]))
-
-// (defprotocol ILookup
-//   (-lookup [o k] [o k not-found]))
-
 func Test_Protocols(t *testing.T) {
 	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
@@ -178,26 +167,6 @@ func Test_Protocols(t *testing.T) {
 	assert.Nil(t, bar.(IFn).Invoke_Arity1(m))
 	assert.Equal(t, "baz", bar.(IFn).Invoke_Arity2(m, "baz"))
 }
-
-// func Test_ProtocolsFnStyle(t *testing.T) {
-// 	symbol := SymbolF.Invoke_Arity2("foo", "bar")
-// 	assert.Equal(t, "foo/bar", symbol.(Symbol2).ToString())
-// 	assert.Equal(t, "bar", Name2.Invoke_Arity1(symbol))
-// 	assert.Equal(t, "bar", IFn2.Invoke_Arity1(Name2, symbol))
-// 	assert.Equal(t, "foo", Namespace2.Invoke_Arity1(symbol))
-// 	assert.Equal(t, "bar", INamed2.Name_Arity1(symbol.(INamed2)))
-// 	assert.Equal(t, "bar", INamed2.Name(symbol.(INamed2)))
-// 	assert.Equal(t, "bar", symbol.(INamed2).Name_Arity1())
-// 	assert.Equal(t, "bar", symbol.(INamed2).Name())
-// 	assert.Equal(t, "foo", INamed2.Namespace_Arity1(symbol.(INamed2)))
-// 	assert.Equal(t, "foo", INamed2.Namespace(symbol.(INamed2)))
-// 	assert.Equal(t, "foo", symbol.(INamed2).Namespace_Arity1())
-// 	assert.Equal(t, "foo", symbol.(INamed2).Namespace())
-
-// 	baz := SymbolF.Invoke_Arity1("baz")
-// 	assert.Equal(t, "baz", Name2.Invoke_Arity1(baz))
-// 	assert.Nil(t, Namespace2.Invoke_Arity1(baz))
-// }
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func() AFn {

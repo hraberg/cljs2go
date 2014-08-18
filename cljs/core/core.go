@@ -70,6 +70,10 @@ func Main() {
 
 // core protocols
 
+// Protocols in ClojureScript don't seem to support vargs.
+// In cljs.core, only IFn, IReduce, IIndexed, ILookup, and ISwap have overloaded arities.
+// IFn is a special case which drops the receiver arg.
+
 var protocols = map[interface{}]reflect.Type{}
 
 var NativeSatisifes_QMARK_ = AFn{
