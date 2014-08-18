@@ -273,39 +273,39 @@ func (this AFn) Call(args ...interface{}) interface{} {
 	return ThrowArity(nil, argc)
 }
 
-func (this AFn) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity(this.ArityVariadic, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
-	return this.ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+func (this ArityVariadic) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	ThrowArity(this, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
-func (this AFn) Invoke_Arity0() interface{} {
-	ThrowArity(this.Arity0, 0)
-	return this.Arity0()
+func (this Arity0) Invoke_Arity0() interface{} {
+	ThrowArity(this, 0)
+	return this()
 }
 
-func (this AFn) Invoke_Arity1(a interface{}) interface{} {
-	ThrowArity(this.Arity1, 1)
-	return this.Arity1(a)
+func (this Arity1) Invoke_Arity1(a interface{}) interface{} {
+	ThrowArity(this, 1)
+	return this(a)
 }
 
-func (this AFn) Invoke_Arity2(a, b interface{}) interface{} {
-	ThrowArity(this.Arity2, 2)
-	return this.Arity2(a, b)
+func (this Arity2) Invoke_Arity2(a, b interface{}) interface{} {
+	ThrowArity(this, 2)
+	return this(a, b)
 }
 
-func (this AFn) Invoke_Arity3(a, b, c interface{}) interface{} {
-	ThrowArity(this.Arity3, 3)
-	return this.Arity3(a, b, c)
+func (this Arity3) Invoke_Arity3(a, b, c interface{}) interface{} {
+	ThrowArity(this, 3)
+	return this(a, b, c)
 }
 
-func (this AFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
-	ThrowArity(this.Arity4, 4)
-	return this.Arity4(a, b, c, d)
+func (this Arity4) Invoke_Arity4(a, b, c, d interface{}) interface{} {
+	ThrowArity(this, 4)
+	return this(a, b, c, d)
 }
 
-func (this AFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	ThrowArity(this.Arity5, 5)
-	return this.Arity5(a, b, c, d, e)
+func (this Arity5) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
+	ThrowArity(this, 5)
+	return this(a, b, c, d, e)
 }
 
 type AbstractIFn struct{}
