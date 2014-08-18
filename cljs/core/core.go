@@ -345,8 +345,7 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 
 var Apply = AFn{
 	ArityVariadic: func(f_args ...interface{}) interface{} {
-		f := f_args[0]
-		args := f_args[1:]
+		f, args := f_args[0], f_args[1:]
 		argc := len(args)
 		if argc < 1 {
 			ThrowArity(nil, argc)
@@ -425,7 +424,7 @@ var First = AFn{
 	},
 }
 
-var More = AFn{
+var Next = AFn{
 	Arity1: func(coll interface{}) interface{} {
 		seq := coll.([]interface{})
 		if seq != nil && len(seq) != 0 {
@@ -450,12 +449,10 @@ var Str = func() AFn {
 	Str.ArityVariadic = func(x_ys ...interface{}) interface{} {
 		var x, ys interface{} = x_ys[0], x_ys[1:]
 
-		sb := &goog_string.StringBuffer{Str.Invoke_Arity1(x)}
-		more := ys
+		sb, more := &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
 		for {
 			if more != nil {
-				sb = sb.Append(Str.Invoke_Arity1(First.Invoke_Arity1(more)))
-				more = More.Invoke_Arity1(more)
+				sb, more = sb.Append(Str.Invoke_Arity1(First.Invoke_Arity1(more))), Next.Invoke_Arity1(more)
 				continue
 			} else {
 				return fmt.Sprint(sb)
