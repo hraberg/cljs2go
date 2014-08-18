@@ -140,15 +140,6 @@ func init() {
 	protocols[Symbol.Arity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
 }
 
-// Potential alternative, each protocol is a named struct with Arity0 etc fields:
-// type ILookup struct { Arity2, Arity3 }
-// A type has an ILookup field, with it's implementations of Arity1 etc.
-// Looks like this in CLJS: o.cljs$core$ILookup$_lookup$arity$2;
-// The owning namespace has a normal AFn IFn wrapper for Lookup which delegates Arity1 etc. to the receiver.
-
-// These naming conventions stem from the IFn protocol, but currently there's no real connection here.
-// Protocols are currently implemented as real Go interfaces with bridge methods hiding the AFn.
-// Implementations need to set up actual named locals as argument, and create an array-seq from the varargs.
 type ArityVariadic func(...interface{}) interface{}
 type Arity0 func() interface{}
 type Arity1 func(interface{}) interface{}
@@ -169,9 +160,6 @@ type Arity2FIF func(float64, interface{}) float64
 type Arity2FFI func(_, _ float64) interface{}
 type Arity2FFF func(_, _ float64) float64
 
-// There's a protocol called cljs.core.IFn we need to cooperate with, so we use AFn for now.
-// So we might need to complicate this for various reasons, Keywords for example are IFns by protocol.
-// That is, they implement CljsCoreIFn_InvokeArity1 (and 2), so we might need to re-add the interfaces.
 // CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
 // Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
@@ -179,15 +167,6 @@ type Arity2FFF func(_, _ float64) float64
 // IFn -invoke is like any other protocol in JS. There's a dispatch fn setup which looks for an implementation on the receiver.
 // That is, cljs.core._invoke will call  receiver.cljs$core$IFn$_invoke$arity$1(receiver, x)
 // My impression is that this is how CLJS does it. To reiterate - the reason this becomes extra messy in Go is lack of overloading.
-// The main issue of making all invocations methods is that there's no way to create an anonymous type.
-// The anonymous function bodies need to stay in the context where they're defined for closures to work.
-// Interfaces might solve this though, as per earlier spikes.
-// Another reason a function cannot (only) be an empty struct, is that in a protocol it's an interface method in Go.
-// Most of this should be solvable with some indirection and interfaces.
-
-// We also have the issue of functions that refer to themselves and how to ensure the var exists.
-// This is extra interesting for anonymous "named" functions, ie. (fn foo [] (foo))
-
 type AFn struct {
 	MaxFixedArity int
 	ArityVariadic
