@@ -354,15 +354,15 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 }
 
 func NewAFn(fns ...interface{}) *AFn {
-	f := &AFn{}
-	v := reflect.ValueOf(f)
-
-	if len(fns) == 1 {
-		t := reflect.ValueOf(fns[0]).Type()
-		if t.NumIn() == 1 && t.In(0) == v.Type() {
-			fns = fns[0].(func(*AFn) []interface{})(f)
-		}
+	var f *AFn
+	if len(fns) > 1 && reflect.ValueOf(fns[0]).Type() == reflect.TypeOf(f) {
+		f = fns[0].(*AFn)
+		fns = fns[1:]
+	} else {
+		f = &AFn{}
 	}
+	v := reflect.ValueOf(f).Elem()
+
 	variadic := false
 	maxFixedArity := 0
 	for _, x := range fns {
@@ -374,7 +374,7 @@ func NewAFn(fns ...interface{}) *AFn {
 			if maxFixedArity < t.NumIn() {
 				maxFixedArity = t.NumIn()
 			}
-			v.Elem().FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
+			v.FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
 		}
 	}
 	if variadic {
@@ -434,8 +434,8 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 	}
 }
 
-var Symbol = NewAFn(func(Symbol *AFn) []interface{} {
-	return []interface{}{func(name interface{}) interface{} {
+var Symbol = func(Symbol *AFn) *AFn {
+	return NewAFn(Symbol, func(name interface{}) interface{} {
 		return Symbol.Arity2(nil, name)
 	}, func(ns, name interface{}) interface{} {
 		symStr := func() interface{} {
@@ -446,8 +446,8 @@ var Symbol = NewAFn(func(Symbol *AFn) []interface{} {
 			}
 		}()
 		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
-	}}
-})
+	})
+}(&AFn{})
 
 var Implements_QMARK_ = NativeSatisifes_QMARK_
 
@@ -497,8 +497,8 @@ var Next = NewAFn(func(coll interface{}) interface{} {
 	return nil
 })
 
-var Str = NewAFn(func(Str *AFn) []interface{} {
-	return []interface{}{func() interface{} {
+var Str = func(Str *AFn) *AFn {
+	return NewAFn(Str, func() interface{} {
 		return ""
 	}, func(x interface{}) interface{} {
 		if x == nil {
@@ -520,5 +520,5 @@ var Str = NewAFn(func(Str *AFn) []interface{} {
 				return fmt.Sprint(sb)
 			}
 		}
-	}}
-})
+	})
+}(&AFn{})
