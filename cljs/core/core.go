@@ -553,12 +553,12 @@ func Fn(fns ...interface{}) IFn {
 			if maxFixedArity < at.NumIn() {
 				maxFixedArity = at.NumIn()
 			}
+			af := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
 			if sig := primtiveSignature(at); sig != "" {
 				vp.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
-				bridge := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
-				bridge.Set(makeBridge(av, bridge.Type()))
+				af.Set(makeBridge(av, af.Type()))
 			} else {
-				v.FieldByName(fmt.Sprint("Arity", at.NumIn())).Set(av)
+				af.Set(av)
 			}
 		}
 	}
