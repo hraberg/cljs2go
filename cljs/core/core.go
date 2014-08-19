@@ -383,6 +383,10 @@ func Fn(fns ...interface{}) *AFn {
 	return f
 }
 
+func Truth_(x interface{}) bool {
+	return x != nil && x != false
+}
+
 var Apply = Fn(func(f_args ...interface{}) interface{} {
 	f, args := f_args[0], f_args[1:]
 	argc := len(args)
@@ -474,10 +478,6 @@ var Name = Fn(func(x interface{}) interface{} {
 		}
 	}
 })
-
-func Truth_(x interface{}) bool {
-	return x != nil && x != false
-}
 
 var First = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
