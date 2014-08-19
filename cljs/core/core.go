@@ -131,13 +131,13 @@ type INamed interface {
 	Namespace_Arity1() string
 }
 
-var Name = AFn{
+var Name_ = AFn{
 	Arity1: func(this interface{}) interface{} {
 		return this.(INamed).Name_Arity1()
 	},
 }
 
-var Namespace = AFn{
+var Namespace_ = AFn{
 	Arity1: func(this interface{}) interface{} {
 		return this.(INamed).Namespace_Arity1()
 	},
@@ -158,7 +158,7 @@ type IFn interface {
 	Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
 }
 
-var Invoke = AFn{
+var Invoke_ = AFn{
 	Arity1: func(this interface{}) interface{} {
 		return this.(IFn).Invoke_Arity0()
 	},
@@ -189,7 +189,7 @@ type ILookup interface {
 	Lookup_Arity3(k, notFound interface{}) interface{}
 }
 
-var Lookup = AFn{
+var Lookup_ = AFn{
 	Arity2: func(this, k interface{}) interface{} {
 		return this.(ILookup).Lookup_Arity2(k)
 	},
@@ -403,24 +403,6 @@ type CljsCoreSymbol struct {
 	AbstractIFn
 }
 
-var Symbol = func() AFn {
-	Symbol := AFn{}
-	Symbol.Arity1 = func(name interface{}) interface{} {
-		return Symbol.Arity2(nil, name)
-	}
-	Symbol.Arity2 = func(ns, name interface{}) interface{} {
-		symStr := func() interface{} {
-			if ns != nil {
-				return ns.(string) + "/" + name.(string)
-			} else {
-				return name
-			}
-		}()
-		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
-	}
-	return Symbol
-}()
-
 func (this *CljsCoreSymbol) Name_Arity1() string {
 	return this.name.(string)
 }
@@ -455,6 +437,56 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 	} else {
 		return val
 	}
+}
+
+var Symbol = func() AFn {
+	Symbol := AFn{}
+	Symbol.Arity1 = func(name interface{}) interface{} {
+		return Symbol.Arity2(nil, name)
+	}
+	Symbol.Arity2 = func(ns, name interface{}) interface{} {
+		symStr := func() interface{} {
+			if ns != nil {
+				return ns.(string) + "/" + name.(string)
+			} else {
+				return name
+			}
+		}()
+		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
+	}
+	return Symbol
+}()
+
+var Implements_QMARK_ = NativeSatisifes_QMARK_
+
+var String_QMARK_ = AFn{
+	Arity1: func(x interface{}) interface{} {
+		return reflect.ValueOf(x).Kind() == reflect.String
+	},
+}
+
+var Namespace = AFn{
+	Arity1: func(x interface{}) interface{} {
+		if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
+			return x.(INamed).Namespace_Arity1()
+		} else {
+			panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
+		}
+	},
+}
+
+var Name = AFn{
+	Arity1: func(x interface{}) interface{} {
+		if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
+			return x.(INamed).Name_Arity1()
+		} else {
+			if Truth_.Invoke_Arity1(String_QMARK_.Invoke_Arity1(x)).(bool) {
+				return x
+			} else {
+				panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support name: ", x)})
+			}
+		}
+	},
 }
 
 var Truth_ = AFn{

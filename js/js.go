@@ -12,19 +12,19 @@ import (
 // This file contains a thin js runtime layer so ClojureScript itself can run with minimal modifications.
 
 type Error struct {
-	Message string
+	Message interface{}
 }
 
 type TypeError struct {
-	Message string
+	Message interface{}
 }
 
 func (e Error) Error() string {
-	return e.Message
+	return fmt.Sprint(e.Message)
 }
 
 func (e TypeError) Error() string {
-	return e.Message
+	return fmt.Sprint(e.Message)
 }
 
 type Object interface{}
