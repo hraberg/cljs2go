@@ -362,12 +362,16 @@ func throwArity(f, arity interface{}) interface{} {
 	return f
 }
 
+func (this *AFn) IsVariadic() bool {
+	return this.MaxFixedArity >= 0 && this.ArityVariadic != nil
+}
+
 func (this *AFn) Call(args ...interface{}) interface{} {
 	if this == Invoke_ {
 		return args[0].(*AFn).Call(args[1:]...)
 	}
 	argc := len(args)
-	if argc > this.MaxFixedArity && this.ArityVariadic != nil {
+	if argc > this.MaxFixedArity && this.IsVariadic() {
 		return this.Invoke_ArityVariadic(args...)
 	}
 	switch argc {
@@ -425,37 +429,30 @@ func (this *AFnPrimtive) Call(args ...interface{}) interface{} {
 }
 
 func (this ArityVariadic) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	throwArity(this, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
 	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
 func (this Arity0) Invoke_Arity0() interface{} {
-	throwArity(this, 0)
 	return this()
 }
 
 func (this Arity1) Invoke_Arity1(a interface{}) interface{} {
-	throwArity(this, 1)
 	return this(a)
 }
 
 func (this Arity2) Invoke_Arity2(a, b interface{}) interface{} {
-	throwArity(this, 2)
 	return this(a, b)
 }
 
 func (this Arity3) Invoke_Arity3(a, b, c interface{}) interface{} {
-	throwArity(this, 3)
 	return this(a, b, c)
 }
 
 func (this Arity4) Invoke_Arity4(a, b, c, d interface{}) interface{} {
-	throwArity(this, 4)
 	return this(a, b, c, d)
 }
 
 func (this Arity5) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	throwArity(this, 5)
 	return this(a, b, c, d, e)
 }
 
@@ -522,6 +519,13 @@ func makeBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	})
 }
 
+func makeInvalidArity(from reflect.Type) reflect.Value {
+	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
+		throwArity(nil, len(in))
+		return nil
+	})
+}
+
 func Fn(fns ...interface{}) IFn {
 	var f *AFn = &AFn{}
 	var fp *AFnPrimtive
@@ -564,6 +568,15 @@ func Fn(fns ...interface{}) IFn {
 	}
 	if variadic {
 		f.MaxFixedArity = maxFixedArity
+	} else {
+		f.MaxFixedArity = -1
+	}
+	vt := v.Type()
+	for i := 0; i < vt.NumField(); i++ {
+		vf := v.Field(i)
+		if vf.Kind() == reflect.Func && vf.IsNil() {
+			vf.Set(makeInvalidArity(vf.Type()))
+		}
 	}
 	if fp != nil {
 		return fp

@@ -165,7 +165,7 @@ func Test_PrimitiveFn(t *testing.T) {
 	assert.NotNil(t, fib.(*AFnPrimtive).Arity1FF)
 	assert.NotNil(t, fib.(*AFnPrimtive).Arity1)
 	assert.Nil(t, fib.(*AFnPrimtive).Arity0F)
-	assert.Nil(t, fib.(*AFnPrimtive).Arity0)
+	//	assert.Nil(t, fib.(*AFnPrimtive).Arity0)
 	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 }
 
