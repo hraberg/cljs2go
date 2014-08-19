@@ -491,67 +491,74 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 
 var type2sig = map[string]string{"interface": "I", "slice": "I", "float64": "F", "bool": "B"}
 
+func primtiveSignature(t reflect.Type) string {
+	sig := ""
+	for i := 0; i < t.NumIn(); i++ {
+		sig += type2sig[t.In(i).Kind().String()]
+	}
+	for i := 0; i < t.NumOut(); i++ {
+		sig += type2sig[t.Out(i).Kind().String()]
+	}
+	if regexp.MustCompile("I+").MatchString(sig) {
+		sig = ""
+	}
+	return sig
+}
+
+func makeBridge(f reflect.Value, from reflect.Type) reflect.Value {
+	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
+		for i, v := range in {
+			in[i] = reflect.ValueOf(v.Interface())
+		}
+		out := f.Call(in)
+		for i, v := range out {
+			switch v.Kind() {
+			case reflect.Float64:
+				var o interface{} = v.Float()
+				out[i] = reflect.ValueOf(&o).Elem()
+			}
+		}
+		return out
+	})
+}
+
 func Fn(fns ...interface{}) IFn {
-	var f *AFn
+	var f *AFn = &AFn{}
 	var fp *AFnPrimtive
-	if len(fns) > 1 && (reflect.ValueOf(fns[0]).Type() == reflect.TypeOf(f)) {
-		f = fns[0].(*AFn)
-		fns = fns[1:]
-	} else if len(fns) > 1 && (reflect.ValueOf(fns[0]).Type() == reflect.TypeOf((*AFnPrimtive)(nil))) {
-		fp = fns[0].(*AFnPrimtive)
-		f = &fp.AFn
-		fns = fns[1:]
-	} else {
-		f = &AFn{}
+	var vp reflect.Value
+	if len(fns) > 0 {
+		switch reflect.ValueOf(fns[0]).Type() {
+		case reflect.TypeOf(f):
+			f = fns[0].(*AFn)
+			fns = fns[1:]
+		case reflect.TypeOf(fp):
+			fp = fns[0].(*AFnPrimtive)
+			f = &fp.AFn
+			fns = fns[1:]
+			vp = reflect.ValueOf(fp).Elem()
+		}
 	}
 	v := reflect.ValueOf(f).Elem()
-	vp := reflect.ValueOf(fp).Elem()
 
 	variadic := false
 	maxFixedArity := 0
-	for _, x := range fns {
-		xv := reflect.ValueOf(x)
-		xt := xv.Type()
+	for _, a := range fns {
+		av := reflect.ValueOf(a)
+		at := av.Type()
 
-		sig := ""
-		for i := 0; i < xt.NumIn(); i++ {
-			sig += type2sig[xt.In(i).Kind().String()]
-		}
-		for i := 0; i < xt.NumOut(); i++ {
-			sig += type2sig[xt.Out(i).Kind().String()]
-		}
-		if regexp.MustCompile("I").ReplaceAllString(sig, "") == "" {
-			sig = ""
-		}
-
-		if xt.IsVariadic() {
+		if at.IsVariadic() {
 			variadic = true
-			f.ArityVariadic = x.(func(...interface{}) interface{})
+			f.ArityVariadic = a.(func(...interface{}) interface{})
 		} else {
-			if maxFixedArity < xt.NumIn() {
-				maxFixedArity = xt.NumIn()
+			if maxFixedArity < at.NumIn() {
+				maxFixedArity = at.NumIn()
 			}
-			if sig != "" {
-				vp.FieldByName(fmt.Sprintf("Arity%d%s", xt.NumIn(), sig)).Set(xv)
-				bridge := v.FieldByName(fmt.Sprint("Arity", xt.NumIn()))
-				bridge.Set(reflect.MakeFunc(bridge.Type(),
-					func(in []reflect.Value) []reflect.Value {
-						for i, v := range in {
-							if xt.In(i).Kind() == reflect.Float64 {
-								in[i] = reflect.ValueOf(v.Interface().(float64))
-							}
-						}
-						out := xv.Call(in)
-						for i, v := range out {
-							if v.Kind() == reflect.Float64 {
-								var fi interface{} = v.Float()
-								out[i] = reflect.ValueOf(&fi).Elem()
-							}
-						}
-						return out
-					}))
+			if sig := primtiveSignature(at); sig != "" {
+				vp.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
+				bridge := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
+				bridge.Set(makeBridge(av, bridge.Type()))
 			} else {
-				v.FieldByName(fmt.Sprint("Arity", xt.NumIn())).Set(xv)
+				v.FieldByName(fmt.Sprint("Arity", at.NumIn())).Set(av)
 			}
 		}
 	}
@@ -560,8 +567,9 @@ func Fn(fns ...interface{}) IFn {
 	}
 	if fp != nil {
 		return fp
+	} else {
+		return f
 	}
-	return f
 }
 
 func Truth_(x interface{}) bool {
