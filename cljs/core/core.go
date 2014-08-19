@@ -355,11 +355,13 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 
 func NewAFn(fns ...interface{}) *AFn {
 	f := &AFn{}
-	v := reflect.ValueOf(f).Elem()
+	v := reflect.ValueOf(f)
 
-	if len(fns) == 1 && reflect.ValueOf(fns[0]).Type().NumIn() == 1 &&
-		reflect.ValueOf(fns[0]).Type().In(0) == reflect.ValueOf(f).Type() {
-		fns = fns[0].(func(*AFn) []interface{})(f)
+	if len(fns) == 1 {
+		t := reflect.ValueOf(fns[0]).Type()
+		if t.NumIn() == 1 && t.In(0) == v.Type() {
+			fns = fns[0].(func(*AFn) []interface{})(f)
+		}
 	}
 	variadic := false
 	maxFixedArity := 0
@@ -372,7 +374,7 @@ func NewAFn(fns ...interface{}) *AFn {
 			if maxFixedArity < t.NumIn() {
 				maxFixedArity = t.NumIn()
 			}
-			v.FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
+			v.Elem().FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
 		}
 	}
 	if variadic {
