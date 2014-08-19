@@ -283,9 +283,8 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
-	fib := func() *AFn {
-		var this = &AFn{}
-		this.Arity1 = func(a interface{}) interface{} {
+	fib := func(this *AFn) *AFn {
+		return Fn(this, func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
 				return 0.0
@@ -294,9 +293,8 @@ func Benchmark_RecursiveDispatch(t *testing.B) {
 			} else {
 				return this.Call(n-1.0).(float64) + this.Call(n-2.0).(float64)
 			}
-		}
-		return this
-	}()
+		})
+	}(&AFn{})
 	assert.Equal(t, 832040, fib.Call(30.0))
 }
 
