@@ -250,7 +250,7 @@ Eventually we want to actually generate the Go tests from Clojure, or at least a
 */
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
-	fib := func() *AFn {
+	fib := func() IFn {
 		var this = &AFn{}
 		this.Arity1 = func(n interface{}) interface{} {
 			if n == 0.0 {
@@ -269,7 +269,7 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 	fib := func() IFn {
-		var this = AFnPrimtive{}
+		var this = &AFnPrimtive{}
 		this.Arity1 = func(n interface{}) interface{} {
 			return this.Arity1FF(n.(float64))
 		}
