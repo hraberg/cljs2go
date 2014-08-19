@@ -621,9 +621,9 @@
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-             (emits "(" ctor "{"
+             (emits "&" ctor "{"
                     (comma-sep args)
-                    "})")))
+                    "}")))
 
 (defmethod emit* :set!
   [{:keys [target val env]}]
