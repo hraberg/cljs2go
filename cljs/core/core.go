@@ -58,8 +58,6 @@ var Println = AFn{
 	},
 }
 
-// Main preamble
-
 func Main() {
 	Enable_console_print_BANG_.Invoke_Arity0()
 	args := make([]interface{}, len(os.Args[1:]))
