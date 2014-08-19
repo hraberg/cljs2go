@@ -227,6 +227,9 @@ func throwArity(f, arity interface{}) interface{} {
 }
 
 func (this *AFn) Call(args ...interface{}) interface{} {
+	if this == Invoke_ {
+		return args[0].(*AFn).Call(args[1:]...)
+	}
 	argc := len(args)
 	if argc > this.MaxFixedArity && this.ArityVariadic != nil {
 		return this.Invoke_ArityVariadic(args...)

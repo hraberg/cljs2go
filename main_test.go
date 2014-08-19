@@ -146,6 +146,7 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.Invoke_ArityVariadic(Baz, "Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Invoke_.Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 
 	assert.Equal(t, "", Str.Invoke_Arity0())
