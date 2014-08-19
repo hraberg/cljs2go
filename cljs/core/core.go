@@ -349,7 +349,7 @@ func NativeGet(obj, k interface{}) interface{} {
 
 func NativeSet(obj, k, v interface{}) interface{} {
 	reflect.ValueOf(obj).Elem().FieldByName(k.(string)).Set(reflect.ValueOf(v))
-	return obj
+	return v
 }
 
 func NativeCall(obj, method interface{}, args ...interface{}) interface{} {
