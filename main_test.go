@@ -193,6 +193,42 @@ func Test_InteropViaReflection(t *testing.T) {
 	assert.Equal(t, "barbaz", sb.Buffer, "(.append sb \"baz\")")
 }
 
+/*
+These are the special-forms of ClojureScript.
+We need two levels of tests, one in Clojure testing the emitter, and one in Go testing and defining the semantics.
+For now, the first test will be string based, and the string expected Go source string will be exectued here.
+Eventually we want to actually generate the Go tests from Clojure, or at least an example package they use instead.
+
+:no-op
+:var
+:meta
+:map
+:list
+:vector
+:set
+:js-value
+:constant
+:if
+:case*
+:throw
+:def
+:fn
+:do
+:try
+:let
+:loop
+:recur
+:letfn
+:invoke
+:new
+:set!
+:ns
+:deftype*
+:defrecord*
+:dot
+:js
+*/
+
 func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func() AFn {
 		var this = AFn{}
