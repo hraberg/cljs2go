@@ -468,7 +468,7 @@ var String_QMARK_ = AFn{
 var Namespace = AFn{
 	Arity1: func(x interface{}) interface{} {
 		if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
-			return x.(INamed).Namespace_Arity1()
+			return Namespace_.Invoke_Arity1(x)
 		} else {
 			panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
 		}
@@ -478,7 +478,7 @@ var Namespace = AFn{
 var Name = AFn{
 	Arity1: func(x interface{}) interface{} {
 		if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
-			return x.(INamed).Name_Arity1()
+			return Name_.Invoke_Arity1(x)
 		} else {
 			if Truth_.Invoke_Arity1(String_QMARK_.Invoke_Arity1(x)).(bool) {
 				return x
