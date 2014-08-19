@@ -257,7 +257,7 @@ type AFnPrimtive struct {
 	Arity2FFF
 }
 
-func ThrowArity(f, arity interface{}) interface{} {
+func throwArity(f, arity interface{}) interface{} {
 	if f == nil {
 		panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
 	}
@@ -283,7 +283,7 @@ func (this AFn) Call(args ...interface{}) interface{} {
 	case 5:
 		return this.Invoke_Arity5(args[0], args[1], args[2], args[3], args[4])
 	}
-	return ThrowArity(nil, argc)
+	return throwArity(nil, argc)
 }
 
 func (this AFnPrimtive) Call(args ...interface{}) interface{} {
@@ -324,68 +324,68 @@ func (this AFnPrimtive) Call(args ...interface{}) interface{} {
 }
 
 func (this ArityVariadic) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	ThrowArity(this, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	throwArity(this, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
 	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
 func (this Arity0) Invoke_Arity0() interface{} {
-	ThrowArity(this, 0)
+	throwArity(this, 0)
 	return this()
 }
 
 func (this Arity1) Invoke_Arity1(a interface{}) interface{} {
-	ThrowArity(this, 1)
+	throwArity(this, 1)
 	return this(a)
 }
 
 func (this Arity2) Invoke_Arity2(a, b interface{}) interface{} {
-	ThrowArity(this, 2)
+	throwArity(this, 2)
 	return this(a, b)
 }
 
 func (this Arity3) Invoke_Arity3(a, b, c interface{}) interface{} {
-	ThrowArity(this, 3)
+	throwArity(this, 3)
 	return this(a, b, c)
 }
 
 func (this Arity4) Invoke_Arity4(a, b, c, d interface{}) interface{} {
-	ThrowArity(this, 4)
+	throwArity(this, 4)
 	return this(a, b, c, d)
 }
 
 func (this Arity5) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	ThrowArity(this, 5)
+	throwArity(this, 5)
 	return this(a, b, c, d, e)
 }
 
 type AbstractIFn struct{}
 
 func (this AbstractIFn) Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	return ThrowArity(nil, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+	return throwArity(nil, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
 }
 
 func (this AbstractIFn) Invoke_Arity0() interface{} {
-	return ThrowArity(nil, 0)
+	return throwArity(nil, 0)
 }
 
 func (this AbstractIFn) Invoke_Arity1(a interface{}) interface{} {
-	return ThrowArity(nil, 1)
+	return throwArity(nil, 1)
 }
 
 func (this AbstractIFn) Invoke_Arity2(a, b interface{}) interface{} {
-	return ThrowArity(nil, 2)
+	return throwArity(nil, 2)
 }
 
 func (this AbstractIFn) Invoke_Arity3(a, b, c interface{}) interface{} {
-	return ThrowArity(nil, 3)
+	return throwArity(nil, 3)
 }
 
 func (this AbstractIFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
-	return ThrowArity(nil, 4)
+	return throwArity(nil, 4)
 }
 
 func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	return ThrowArity(nil, 4)
+	return throwArity(nil, 4)
 }
 
 var Apply = AFn{
@@ -393,7 +393,7 @@ var Apply = AFn{
 		f, args := f_args[0], f_args[1:]
 		argc := len(args)
 		if argc < 1 {
-			ThrowArity(nil, argc)
+			throwArity(nil, argc)
 		}
 		var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
 		return f.(AFn).Call(append(args[:argc-1], spread...)...)
