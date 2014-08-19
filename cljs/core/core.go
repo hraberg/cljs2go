@@ -34,7 +34,7 @@ var pr_opts = Fn(func() interface{} {
 })
 
 var Newline = Fn(func(opts interface{}) interface{} {
-	if Truth_.Invoke_Arity1(STAR_print_newline_STAR_).(bool) {
+	if Truth_(STAR_print_newline_STAR_) {
 		STAR_print_fn_STAR_.(IFn).Invoke_Arity1("\n")
 	}
 	return nil
@@ -456,7 +456,7 @@ var String_QMARK_ = Fn(func(x interface{}) interface{} {
 })
 
 var Namespace = Fn(func(x interface{}) interface{} {
-	if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
+	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
 		return Namespace_.Invoke_Arity1(x)
 	} else {
 		panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
@@ -464,10 +464,10 @@ var Namespace = Fn(func(x interface{}) interface{} {
 })
 
 var Name = Fn(func(x interface{}) interface{} {
-	if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
+	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
 		return Name_.Invoke_Arity1(x)
 	} else {
-		if Truth_.Invoke_Arity1(String_QMARK_.Invoke_Arity1(x)).(bool) {
+		if Truth_(String_QMARK_.Invoke_Arity1(x)) {
 			return x
 		} else {
 			panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support name: ", x)})
@@ -475,9 +475,9 @@ var Name = Fn(func(x interface{}) interface{} {
 	}
 })
 
-var Truth_ = Fn(func(x interface{}) interface{} {
+func Truth_(x interface{}) bool {
 	return x != nil && x != false
-})
+}
 
 var First = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
@@ -509,7 +509,7 @@ var Str = func(Str IFn) IFn {
 
 		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
 		for {
-			if Truth_.Invoke_Arity1(more).(bool) {
+			if Truth_(more) {
 				sb = NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append",
 					[]interface{}{Str.Invoke_Arity1(First.Invoke_Arity1(more))})
 				more = Next.Invoke_Arity1(more)
