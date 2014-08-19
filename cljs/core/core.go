@@ -226,7 +226,7 @@ func throwArity(f, arity interface{}) interface{} {
 	return f
 }
 
-func (this AFn) Call(args ...interface{}) interface{} {
+func (this *AFn) Call(args ...interface{}) interface{} {
 	argc := len(args)
 	if argc > this.MaxFixedArity && this.ArityVariadic != nil {
 		return this.Invoke_ArityVariadic(args...)
@@ -248,7 +248,7 @@ func (this AFn) Call(args ...interface{}) interface{} {
 	return throwArity(nil, argc)
 }
 
-func (this AFnPrimtive) Call(args ...interface{}) interface{} {
+func (this *AFnPrimtive) Call(args ...interface{}) interface{} {
 	switch len(args) {
 	case 0:
 		switch {
@@ -353,13 +353,22 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 func NewAFn(fns ...interface{}) *AFn {
 	f := &AFn{}
 	v := reflect.ValueOf(f).Elem()
+	variadic := false
+	maxFixedArity := 0
 	for _, x := range fns {
 		t := reflect.ValueOf(x).Type()
 		if t.IsVariadic() {
+			variadic = true
 			f.ArityVariadic = x.(func(...interface{}) interface{})
 		} else {
+			if maxFixedArity < t.NumIn() {
+				maxFixedArity = t.NumIn()
+			}
 			v.FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
 		}
+	}
+	if variadic {
+		f.MaxFixedArity = maxFixedArity
 	}
 	return f
 }
@@ -371,7 +380,7 @@ var Apply = NewAFn(func(f_args ...interface{}) interface{} {
 		throwArity(nil, argc)
 	}
 	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-	return f.(AFn).Call(append(args[:argc-1], spread...)...)
+	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 })
 
 type CljsCoreSymbol struct {
@@ -415,8 +424,8 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 	}
 }
 
-var Symbol = func() AFn {
-	Symbol := AFn{}
+var Symbol = func() *AFn {
+	Symbol := &AFn{}
 	Symbol.Arity1 = func(name interface{}) interface{} {
 		return Symbol.Arity2(nil, name)
 	}
@@ -481,8 +490,8 @@ var Next = NewAFn(func(coll interface{}) interface{} {
 	return nil
 })
 
-var Str = func() AFn {
-	Str := AFn{}
+var Str = func() *AFn {
+	Str := &AFn{}
 	Str.MaxFixedArity = 1
 	Str.Arity0 = func() interface{} {
 		return ""

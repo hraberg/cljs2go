@@ -113,28 +113,22 @@ func Test_JS(t *testing.T) {
 
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
-	STAR_main_cli_fn_STAR_ = AFn{
-		ArityVariadic: func(args ...interface{}) interface{} {
-			mainWasCalled = true
-			return nil
-		},
-	}
+	STAR_main_cli_fn_STAR_ = NewAFn(func(args ...interface{}) interface{} {
+		mainWasCalled = true
+		return nil
+	})
 	Main()
 	assert.True(t, mainWasCalled)
 }
 
-var Baz = AFn{
-	MaxFixedArity: 1,
-	ArityVariadic: func(args ...interface{}) interface{} {
-		x := args[0]
-		xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
-		_ = x
-		return xs
-	},
-	Arity1: func(x interface{}) interface{} {
-		return x
-	},
-}
+var Baz = NewAFn(func(args ...interface{}) interface{} {
+	x := args[0]
+	xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
+	_ = x
+	return xs
+}, func(x interface{}) interface{} {
+	return x
+})
 
 func Test_Invoke(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
@@ -145,13 +139,13 @@ func Test_Invoke(t *testing.T) {
 		return
 	}())
 	assert.Panics(t, func() { Baz.Invoke_Arity0() })
+	assert.Equal(t, 1, Baz.MaxFixedArity)
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", Invoke_.Invoke_Arity2(Baz, "Hello"))
 	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.Invoke_ArityVariadic(Baz, "Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Invoke_.Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 
 	assert.Equal(t, "", Str.Invoke_Arity0())
@@ -255,8 +249,8 @@ Eventually we want to actually generate the Go tests from Clojure, or at least a
 */
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
-	fib := func() AFn {
-		var this = AFn{}
+	fib := func() *AFn {
+		var this = &AFn{}
 		this.Arity1 = func(n interface{}) interface{} {
 			if n == 0.0 {
 				return 0.0
@@ -293,8 +287,8 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
-	fib := func() AFn {
-		var this = AFn{}
+	fib := func() *AFn {
+		var this = &AFn{}
 		this.Arity1 = func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
