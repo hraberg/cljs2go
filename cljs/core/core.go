@@ -3,6 +3,7 @@ package core
 import (
 	"os"
 	"reflect"
+	"regexp"
 
 	goog_string "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
@@ -314,6 +315,10 @@ type Arity2FIF func(float64, interface{}) float64
 type Arity2FFI func(_, _ float64) interface{}
 type Arity2FFF func(_, _ float64) float64
 
+type Arity0B func() bool
+type Arity1IB func(interface{}) bool
+type Arity2IIB func(_, _ interface{}) bool
+
 // CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
 // Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
@@ -345,6 +350,9 @@ type AFnPrimtive struct {
 	Arity2FIF
 	Arity2FFI
 	Arity2FFF
+	Arity0B
+	Arity1IB
+	Arity2IIB
 }
 
 func throwArity(f, arity interface{}) interface{} {
@@ -481,32 +489,77 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return throwArity(nil, 4)
 }
 
-func Fn(fns ...interface{}) *AFn {
+var type2sig = map[string]string{"interface": "I", "slice": "I", "float64": "F", "bool": "B"}
+
+func Fn(fns ...interface{}) IFn {
 	var f *AFn
-	if len(fns) > 1 && reflect.ValueOf(fns[0]).Type() == reflect.TypeOf(f) {
+	var fp *AFnPrimtive
+	if len(fns) > 1 && (reflect.ValueOf(fns[0]).Type() == reflect.TypeOf(f)) {
 		f = fns[0].(*AFn)
+		fns = fns[1:]
+	} else if len(fns) > 1 && (reflect.ValueOf(fns[0]).Type() == reflect.TypeOf((*AFnPrimtive)(nil))) {
+		fp = fns[0].(*AFnPrimtive)
+		f = &fp.AFn
 		fns = fns[1:]
 	} else {
 		f = &AFn{}
 	}
 	v := reflect.ValueOf(f).Elem()
+	vp := reflect.ValueOf(fp).Elem()
 
 	variadic := false
 	maxFixedArity := 0
 	for _, x := range fns {
-		t := reflect.ValueOf(x).Type()
-		if t.IsVariadic() {
+		xv := reflect.ValueOf(x)
+		xt := xv.Type()
+
+		sig := ""
+		for i := 0; i < xt.NumIn(); i++ {
+			sig += type2sig[xt.In(i).Kind().String()]
+		}
+		for i := 0; i < xt.NumOut(); i++ {
+			sig += type2sig[xt.Out(i).Kind().String()]
+		}
+		if regexp.MustCompile("I").ReplaceAllString(sig, "") == "" {
+			sig = ""
+		}
+
+		if xt.IsVariadic() {
 			variadic = true
 			f.ArityVariadic = x.(func(...interface{}) interface{})
 		} else {
-			if maxFixedArity < t.NumIn() {
-				maxFixedArity = t.NumIn()
+			if maxFixedArity < xt.NumIn() {
+				maxFixedArity = xt.NumIn()
 			}
-			v.FieldByName(fmt.Sprint("Arity", t.NumIn())).Set(reflect.ValueOf(x))
+			if sig != "" {
+				vp.FieldByName(fmt.Sprintf("Arity%d%s", xt.NumIn(), sig)).Set(xv)
+				bridge := v.FieldByName(fmt.Sprint("Arity", xt.NumIn()))
+				bridge.Set(reflect.MakeFunc(bridge.Type(),
+					func(in []reflect.Value) []reflect.Value {
+						for i, v := range in {
+							if xt.In(i).Kind() == reflect.Float64 {
+								in[i] = reflect.ValueOf(v.Interface().(float64))
+							}
+						}
+						out := xv.Call(in)
+						for i, v := range out {
+							if v.Kind() == reflect.Float64 {
+								var fi interface{} = v.Float()
+								out[i] = reflect.ValueOf(&fi).Elem()
+							}
+						}
+						return out
+					}))
+			} else {
+				v.FieldByName(fmt.Sprint("Arity", xt.NumIn())).Set(xv)
+			}
 		}
 	}
 	if variadic {
 		f.MaxFixedArity = maxFixedArity
+	}
+	if fp != nil {
+		return fp
 	}
 	return f
 }

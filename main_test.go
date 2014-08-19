@@ -132,22 +132,41 @@ var Baz = Fn(func(args ...interface{}) interface{} {
 
 func Test_Invoke(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
-	PanicsWith(t, "Invalid arity: 0", func() { Baz.Call() })
+	PanicsWith(t, "Invalid arity: 0", func() { Baz.(*AFn).Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
-	assert.Equal(t, 1, Baz.MaxFixedArity)
+	assert.Equal(t, 1, Baz.(*AFn).MaxFixedArity)
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", Invoke_.Invoke_Arity2(Baz, "Hello"))
 	PanicsWith(t, "Invalid arity: 2", func() { Baz.Invoke_Arity2("Hello", "World") })
-	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.(*AFn).Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.Invoke_ArityVariadic(Baz, "Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Invoke_.Call(Baz, "Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Invoke_.(*AFn).Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
 
 	assert.Equal(t, "", Str.Invoke_Arity0())
 	assert.Equal(t, "Hello", Str.Invoke_Arity1("Hello"))
 	assert.Equal(t, "1", Str.Invoke_Arity1(1))
 	assert.Equal(t, "HelloClojureWorld", Str.Invoke_ArityVariadic("Hello", "Clojure", "World"))
+}
+
+func Test_PrimitiveFn(t *testing.T) {
+	fib := func(this *AFnPrimtive) IFn {
+		return Fn(this, func(n float64) float64 {
+			if n == 0.0 {
+				return 0.0
+			} else if n == 1.0 {
+				return 1.0
+			} else {
+				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
+			}
+		})
+	}(&AFnPrimtive{})
+	assert.NotNil(t, fib.(*AFnPrimtive).Arity1FF)
+	assert.NotNil(t, fib.(*AFnPrimtive).Arity1)
+	assert.Nil(t, fib.(*AFnPrimtive).Arity0F)
+	assert.Nil(t, fib.(*AFnPrimtive).Arity0)
+	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 }
 
 func Test_Protocols(t *testing.T) {
@@ -176,7 +195,7 @@ func Test_Protocols(t *testing.T) {
 
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
 	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
-	assert.Nil(t, Lookup_.Call(m, bar))
+	assert.Nil(t, Lookup_.(*AFn).Call(m, bar))
 	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
 
 	assert.Equal(t, "bar", foo.(IFn).Invoke_Arity1(m))
@@ -263,12 +282,8 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
-	fib := func() IFn {
-		var this = &AFnPrimtive{}
-		this.Arity1 = func(n interface{}) interface{} {
-			return this.Arity1FF(n.(float64))
-		}
-		this.Arity1FF = func(n float64) float64 {
+	fib := func(this *AFnPrimtive) IFn {
+		return Fn(this, func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
@@ -276,14 +291,13 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 			} else {
 				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
 			}
-		}
-		return this
-	}()
+		})
+	}(&AFnPrimtive{})
 	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
-	fib := func(this *AFn) *AFn {
+	fib := func(this *AFn) IFn {
 		return Fn(this, func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
@@ -295,7 +309,7 @@ func Benchmark_RecursiveDispatch(t *testing.B) {
 			}
 		})
 	}(&AFn{})
-	assert.Equal(t, 832040, fib.Call(30.0))
+	assert.Equal(t, 832040, fib.(*AFn).Call(30.0))
 }
 
 func Benchmark_RecursiveGo(t *testing.B) {
