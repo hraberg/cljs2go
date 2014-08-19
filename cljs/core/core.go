@@ -343,6 +343,23 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return ThrowArity(nil, 4)
 }
 
+func NativeGet(obj, k interface{}) interface{} {
+	return reflect.ValueOf(obj).Elem().FieldByName(k.(string)).Interface()
+}
+
+func NativeSet(obj, k, v interface{}) interface{} {
+	reflect.ValueOf(obj).Elem().FieldByName(k.(string)).Set(reflect.ValueOf(v))
+	return obj
+}
+
+func NativeCall(obj, method interface{}, args ...interface{}) interface{} {
+	in := make([]reflect.Value, len(args))
+	for i, a := range args {
+		in[i] = reflect.ValueOf(a)
+	}
+	return reflect.ValueOf(obj).MethodByName(method.(string)).Call(in)[0].Interface()
+}
+
 var Apply = AFn{
 	ArityVariadic: func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]

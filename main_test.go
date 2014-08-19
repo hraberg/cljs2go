@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -183,13 +182,11 @@ func Test_Protocols(t *testing.T) {
 }
 
 func Test_InteropViaReflection(t *testing.T) {
-	sb := gstring.StringBuffer{"foo"}
-	v := reflect.ValueOf(&sb).Elem()
-	assert.Equal(t, "foo", v.FieldByName("Buffer").Interface(), "(.-buffer sb)")
-	v.FieldByName("Buffer").Set(reflect.ValueOf("bar"))
+	sb := &gstring.StringBuffer{"foo"}
+	assert.Equal(t, "foo", NativeGet(sb, "Buffer"), "(.-buffer sb)")
+	NativeSet(sb, "Buffer", "bar")
 	assert.Equal(t, "bar", sb.Buffer, "(set! (.-buffer sb) \"bar\")")
-	append := reflect.ValueOf(&sb).MethodByName("Append")
-	append.Call([]reflect.Value{reflect.ValueOf("baz")})
+	assert.Equal(t, sb, NativeCall(sb, "Append", "baz"))
 	assert.Equal(t, "barbaz", sb.Buffer, "(.append sb \"baz\")")
 }
 
