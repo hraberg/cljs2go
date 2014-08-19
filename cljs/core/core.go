@@ -14,7 +14,7 @@ import "fmt"
 
 var STAR_print_fn_STAR_ interface{} = AFn{
 	Arity1: func(_ interface{}) interface{} {
-		panic(js.Error{"No *print-fn* fn set for evaluation environment"})
+		panic(&js.Error{"No *print-fn* fn set for evaluation environment"})
 	},
 }
 
@@ -118,11 +118,11 @@ var NativeInvokeInstanceMethod = AFn{
 // In cljs.core, only IFn, IReduce, IIndexed, ILookup, and ISwap have overloaded arities.
 // IFn is a special case which drops the receiver arg.
 
-var protocols = map[interface{}]reflect.Type{}
+var protocols = map[string]reflect.Type{}
 
 var NativeSatisifes_QMARK_ = AFn{
 	Arity2: func(p, x interface{}) interface{} {
-		return reflect.ValueOf(x).Type().Implements(protocols[p])
+		return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 	},
 }
 
@@ -144,7 +144,7 @@ var Namespace = AFn{
 }
 
 func init() {
-	protocols[Symbol.Arity2("cljs.core", "INamed")] = reflect.TypeOf((*INamed)(nil)).Elem()
+	protocols["cljs.core/INamed"] = reflect.TypeOf((*INamed)(nil)).Elem()
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
@@ -181,7 +181,7 @@ var Invoke = AFn{
 }
 
 func init() {
-	protocols[Symbol.Arity2("cljs.core", "IFn")] = reflect.TypeOf((*IFn)(nil)).Elem()
+	protocols["cljs.core/IFn"] = reflect.TypeOf((*IFn)(nil)).Elem()
 }
 
 type ILookup interface {
@@ -199,7 +199,7 @@ var Lookup = AFn{
 }
 
 func init() {
-	protocols[Symbol.Arity2("cljs.core", "ILookup")] = reflect.TypeOf((*ILookup)(nil)).Elem()
+	protocols["cljs.core/ILookup"] = reflect.TypeOf((*ILookup)(nil)).Elem()
 }
 
 type ArityVariadic func(...interface{}) interface{}
@@ -257,7 +257,7 @@ type AFnPrimtive struct {
 
 func throwArity(f, arity interface{}) interface{} {
 	if f == nil {
-		panic(js.Error{fmt.Sprint("Invalid arity: ", arity)})
+		panic(&js.Error{fmt.Sprint("Invalid arity: ", arity)})
 	}
 	return f
 }
@@ -416,28 +416,28 @@ var Symbol = func() AFn {
 				return name
 			}
 		}()
-		return CljsCoreSymbol{ns: ns, name: name, str: symStr}
+		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
 	}
 	return Symbol
 }()
 
-func (this CljsCoreSymbol) Name_Arity1() string {
+func (this *CljsCoreSymbol) Name_Arity1() string {
 	return this.name.(string)
 }
 
-func (this CljsCoreSymbol) Namespace_Arity1() string {
+func (this *CljsCoreSymbol) Namespace_Arity1() string {
 	return this.ns.(string)
 }
 
-func (this CljsCoreSymbol) String() string {
+func (this *CljsCoreSymbol) String() string {
 	return this.str.(string)
 }
 
-func (this CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
+func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
 	return coll.(ILookup).Lookup_Arity2(this)
 }
 
-func (this CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
+func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
 	return coll.(ILookup).Lookup_Arity3(this, notFound)
 }
 
