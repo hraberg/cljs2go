@@ -70,21 +70,27 @@ func Main() {
 }
 
 // clojure.lang.Reflector
-func NativeGetInstanceField(target, fieldName interface{}) interface{} {
-	return reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Interface()
+var NativeGetInstanceField = AFn{
+	Arity2: func(target, fieldName interface{}) interface{} {
+		return reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Interface()
+	},
 }
 
-func NativeSetInstanceField(target, fieldName, val interface{}) interface{} {
-	reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
-	return val
+var NativeSetInstanceField = AFn{
+	Arity3: func(target, fieldName, val interface{}) interface{} {
+		reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+		return val
+	},
 }
 
-func NativeInvokeInstanceMethod(target, methodName interface{}, args ...interface{}) interface{} {
-	in := make([]reflect.Value, len(args))
-	for i, a := range args {
-		in[i] = reflect.ValueOf(a)
-	}
-	return reflect.ValueOf(target).MethodByName(methodName.(string)).Call(in)[0].Interface()
+var NativeInvokeInstanceMethod = AFn{
+	Arity3: func(target, methodName, args interface{}) interface{} {
+		in := make([]reflect.Value, len(args.([]interface{})))
+		for i, a := range args.([]interface{}) {
+			in[i] = reflect.ValueOf(a)
+		}
+		return reflect.ValueOf(target).MethodByName(methodName.(string)).Call(in)[0].Interface()
+	},
 }
 
 // core protocols
