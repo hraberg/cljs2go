@@ -411,11 +411,11 @@ func (this *CljsCoreSymbol) String() string {
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
-	return coll.(ILookup).Lookup_Arity2(this)
+	return Lookup_.Invoke_Arity2(coll, this)
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
-	return coll.(ILookup).Lookup_Arity3(this, notFound)
+	return Lookup_.Invoke_Arity3(coll, this, notFound)
 }
 
 // Doesn't try to match cljs.core, just a temporary hack
@@ -451,11 +451,9 @@ var Symbol = func(Symbol IFn) IFn {
 
 var Implements_QMARK_ = NativeSatisifes_QMARK_
 
-var String_QMARK_ = Fn(
-	func(x interface{}) interface{} {
-		return reflect.ValueOf(x).Kind() == reflect.String
-	},
-)
+var String_QMARK_ = Fn(func(x interface{}) interface{} {
+	return reflect.ValueOf(x).Kind() == reflect.String
+})
 
 var Namespace = Fn(func(x interface{}) interface{} {
 	if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
