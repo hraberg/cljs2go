@@ -135,14 +135,17 @@ func Test_Invoke(t *testing.T) {
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.(*AFn).Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, 1, Baz.(*AFn).MaxFixedArity)
+	assert.True(t, Baz.(*AFn).IsVariadic())
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", Invoke_.Invoke_Arity2(Baz, "Hello"))
-	PanicsWith(t, "Invalid arity: 2", func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.(*AFn).Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.Invoke_ArityVariadic(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.(*AFn).Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.Invoke_ArityVariadic(Baz, "Hello", []interface{}{"World"}))
+
+	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_Arity2("Hello", "World"))
+	assert.Equal(t, []interface{}{"World", "Space"}, Baz.Invoke_Arity3("Hello", "World", "Space"))
 
 	assert.Equal(t, "", Str.Invoke_Arity0())
 	assert.Equal(t, "Hello", Str.Invoke_Arity1("Hello"))
@@ -165,8 +168,15 @@ func Test_PrimitiveFn(t *testing.T) {
 	assert.NotNil(t, fib.(*AFnPrimtive).Arity1FF)
 	assert.NotNil(t, fib.(*AFnPrimtive).Arity1)
 	assert.Nil(t, fib.(*AFnPrimtive).Arity0F)
-	//	assert.Nil(t, fib.(*AFnPrimtive).Arity0)
 	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
+
+	odd := Fn(&AFnPrimtive{}, func(n interface{}) bool {
+		return int(n.(float64))%2 != 0
+	})
+	assert.NotNil(t, odd.(*AFnPrimtive).Arity1IB)
+	assert.NotNil(t, odd.(*AFnPrimtive).Arity1)
+	assert.True(t, odd.Invoke_Arity1(1.0).(bool))
+	assert.False(t, odd.(*AFnPrimtive).Arity1IB(2.0))
 }
 
 func Test_Protocols(t *testing.T) {

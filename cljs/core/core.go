@@ -496,26 +496,36 @@ func primtiveSignature(t reflect.Type) string {
 	for i := 0; i < t.NumOut(); i++ {
 		sig += type2sig[t.Out(i).Kind().String()]
 	}
-	if regexp.MustCompile("I+").MatchString(sig) {
+	if regexp.MustCompile("I").ReplaceAllString(sig, "") == "" {
 		sig = ""
 	}
 	return sig
 }
 
-func makeBridge(f reflect.Value, from reflect.Type) reflect.Value {
+func makePrimtiveBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
 			in[i] = reflect.ValueOf(v.Interface())
 		}
 		out := f.Call(in)
 		for i, v := range out {
+			var o interface{}
 			switch v.Kind() {
 			case reflect.Float64:
-				var o interface{} = v.Float()
+				o = v.Float()
+				out[i] = reflect.ValueOf(&o).Elem()
+			case reflect.Bool:
+				o = v.Bool()
 				out[i] = reflect.ValueOf(&o).Elem()
 			}
 		}
 		return out
+	})
+}
+
+func makeVarargsBridge(varargs reflect.Value, from reflect.Type) reflect.Value {
+	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
+		return varargs.Call(in)
 	})
 }
 
@@ -560,7 +570,7 @@ func Fn(fns ...interface{}) IFn {
 			af := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
 			if sig := primtiveSignature(at); sig != "" {
 				vp.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
-				af.Set(makeBridge(av, af.Type()))
+				af.Set(makePrimtiveBridge(av, af.Type()))
 			} else {
 				af.Set(av)
 			}
@@ -575,7 +585,11 @@ func Fn(fns ...interface{}) IFn {
 	for i := 0; i < vt.NumField(); i++ {
 		vf := v.Field(i)
 		if vf.Kind() == reflect.Func && vf.IsNil() {
-			vf.Set(makeInvalidArity(vf.Type()))
+			if variadic && vf.Type().NumIn() > maxFixedArity {
+				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vf.Type()))
+			} else {
+				vf.Set(makeInvalidArity(vf.Type()))
+			}
 		}
 	}
 	if fp != nil {
