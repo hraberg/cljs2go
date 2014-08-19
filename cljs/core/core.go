@@ -436,7 +436,7 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 
 var Symbol = func(Symbol *AFn) *AFn {
 	return NewAFn(Symbol, func(name interface{}) interface{} {
-		return Symbol.Arity2(nil, name)
+		return Symbol.Invoke_Arity2(nil, name)
 	}, func(ns, name interface{}) interface{} {
 		symStr := func() interface{} {
 			if ns != nil {
