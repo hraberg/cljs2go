@@ -3,7 +3,7 @@ package core
 import (
 	"os"
 	"reflect"
-	"regexp"
+	"strings"
 
 	goog_string "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
@@ -486,18 +486,18 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return throwArity(nil, 4)
 }
 
-var type2sig = map[string]string{"interface": "I", "slice": "I", "float64": "F", "bool": "B"}
+var type2sig = map[reflect.Kind]string{reflect.Interface: "I", reflect.Slice: "I", reflect.Float64: "F", reflect.Bool: "B"}
 
 func primtiveSignature(t reflect.Type) string {
 	sig := ""
 	for i := 0; i < t.NumIn(); i++ {
-		sig += type2sig[t.In(i).Kind().String()]
+		sig += type2sig[t.In(i).Kind()]
 	}
 	for i := 0; i < t.NumOut(); i++ {
-		sig += type2sig[t.Out(i).Kind().String()]
+		sig += type2sig[t.Out(i).Kind()]
 	}
-	if regexp.MustCompile("I").ReplaceAllString(sig, "") == "" {
-		sig = ""
+	if strings.Replace(sig, "I", "", -1) == "" {
+		return ""
 	}
 	return sig
 }
@@ -594,9 +594,8 @@ func Fn(fns ...interface{}) IFn {
 	}
 	if fp != nil {
 		return fp
-	} else {
-		return f
 	}
+	return f
 }
 
 func Truth_(x interface{}) bool {
