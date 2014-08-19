@@ -46,52 +46,6 @@ var Println = Fn(func(objs ...interface{}) interface{} {
 	return nil
 })
 
-func Main() {
-	Enable_console_print_BANG_.Invoke_Arity0()
-	args := make([]interface{}, len(os.Args[1:]))
-	for i, a := range os.Args[1:] {
-		args[i] = a
-	}
-	STAR_main_cli_fn_STAR_.(IFn).Invoke_ArityVariadic(args...)
-}
-
-// clojure.lang.Reflector
-var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
-	tv := reflect.ValueOf(target)
-	if tv.Kind() == reflect.Ptr {
-		tv = tv.Elem()
-	}
-	return tv.FieldByName(fieldName.(string)).Interface()
-})
-
-var NativeSetInstanceField = Fn(func(target, fieldName, val interface{}) interface{} {
-	tv := reflect.ValueOf(target)
-	if tv.Kind() == reflect.Ptr {
-		tv = tv.Elem()
-	}
-	tv.FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
-	return val
-})
-
-var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
-	var fv reflect.Value
-	switch f.(type) {
-	case reflect.Value:
-		fv = f.(reflect.Value)
-	default:
-		fv = reflect.ValueOf(f)
-	}
-	in := make([]reflect.Value, len(args.([]interface{})))
-	for i, a := range args.([]interface{}) {
-		in[i] = reflect.ValueOf(a)
-	}
-	return fv.Call(in)[0].Interface()
-})
-
-var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
-	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
-})
-
 // core protocols
 
 // Protocols in ClojureScript don't seem to support vargs.
@@ -165,6 +119,180 @@ var Lookup_ = Fn(func(this, k interface{}) interface{} {
 func init() {
 	protocols["cljs.core/ILookup"] = reflect.TypeOf((*ILookup)(nil)).Elem()
 }
+
+// This will likley be generated / overriding the gen-apply-to stuff.
+var Apply = Fn(func(f_args ...interface{}) interface{} {
+	f, args := f_args[0], f_args[1:]
+	argc := len(args)
+	if argc < 1 {
+		throwArity(nil, argc)
+	}
+	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
+	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
+})
+
+type CljsCoreSymbol struct {
+	ns, name, str, _hash, _meta interface{}
+	AbstractIFn
+}
+
+func (this *CljsCoreSymbol) Name_Arity1() string {
+	return this.name.(string)
+}
+
+func (this *CljsCoreSymbol) Namespace_Arity1() string {
+	return this.ns.(string)
+}
+
+func (this *CljsCoreSymbol) String() string {
+	return this.str.(string)
+}
+
+func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
+	return Lookup_.Invoke_Arity2(coll, this)
+}
+
+func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
+	return Lookup_.Invoke_Arity3(coll, this, notFound)
+}
+
+// Doesn't try to match cljs.core, just a temporary hack
+type ObjMap map[interface{}]interface{}
+
+func (coll ObjMap) Lookup_Arity2(k interface{}) interface{} {
+	return coll.Lookup_Arity3(k, nil)
+}
+
+func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
+	val := coll[k]
+	if val == nil {
+		return notFound
+	} else {
+		return val
+	}
+}
+
+var Symbol = func(Symbol IFn) IFn {
+	return Fn(Symbol, func(name interface{}) interface{} {
+		return Symbol.Invoke_Arity2(nil, name)
+	}, func(ns, name interface{}) interface{} {
+		symStr := func() interface{} {
+			if ns != nil {
+				return ns.(string) + "/" + name.(string)
+			} else {
+				return name
+			}
+		}()
+		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
+	})
+}(&AFn{})
+
+var Implements_QMARK_ = NativeSatisifes_QMARK_
+
+var String_QMARK_ = Fn(func(x interface{}) interface{} {
+	return reflect.ValueOf(x).Kind() == reflect.String
+})
+
+var Namespace = Fn(func(x interface{}) interface{} {
+	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
+		return Namespace_.Invoke_Arity1(x)
+	} else {
+		panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
+	}
+})
+
+var Name = Fn(func(x interface{}) interface{} {
+	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
+		return Name_.Invoke_Arity1(x)
+	} else {
+		if Truth_(String_QMARK_.Invoke_Arity1(x)) {
+			return x
+		} else {
+			panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support name: ", x)})
+		}
+	}
+})
+
+var First = Fn(func(coll interface{}) interface{} {
+	seq := coll.([]interface{})
+	if seq != nil && len(seq) != 0 {
+		return seq[0]
+	}
+	return nil
+})
+
+var Next = Fn(func(coll interface{}) interface{} {
+	seq := coll.([]interface{})
+	if seq != nil && len(seq) != 0 {
+		return seq[1:]
+	}
+	return nil
+})
+
+var Str = func(Str IFn) IFn {
+	return Fn(Str, func() interface{} {
+		return ""
+	}, func(x interface{}) interface{} {
+		if x == nil {
+			return ""
+		} else {
+			return fmt.Sprint(x)
+		}
+	}, func(x_ys ...interface{}) interface{} {
+		var x, ys interface{} = x_ys[0], x_ys[1:]
+
+		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
+		for {
+			if Truth_(more) {
+				sb = NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append",
+					[]interface{}{Str.Invoke_Arity1(First.Invoke_Arity1(more))})
+				more = Next.Invoke_Arity1(more)
+				continue
+			} else {
+				return fmt.Sprint(sb)
+			}
+		}
+	})
+}(&AFn{})
+
+// cljs.reflect / clojure.lang.Reflector
+var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
+	tv := reflect.ValueOf(target)
+	if tv.Kind() == reflect.Ptr {
+		tv = tv.Elem()
+	}
+	return tv.FieldByName(fieldName.(string)).Interface()
+})
+
+var NativeSetInstanceField = Fn(func(target, fieldName, val interface{}) interface{} {
+	tv := reflect.ValueOf(target)
+	if tv.Kind() == reflect.Ptr {
+		tv = tv.Elem()
+	}
+	tv.FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+	return val
+})
+
+var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
+	var fv reflect.Value
+	switch f.(type) {
+	case reflect.Value:
+		fv = f.(reflect.Value)
+	default:
+		fv = reflect.ValueOf(f)
+	}
+	in := make([]reflect.Value, len(args.([]interface{})))
+	for i, a := range args.([]interface{}) {
+		in[i] = reflect.ValueOf(a)
+	}
+	return fv.Call(in)[0].Interface()
+})
+
+var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
+	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
+})
+
+// cljs.rt
 
 type ArityVariadic func(...interface{}) interface{}
 type Arity0 func() interface{}
@@ -387,136 +515,11 @@ func Truth_(x interface{}) bool {
 	return x != nil && x != false
 }
 
-var Apply = Fn(func(f_args ...interface{}) interface{} {
-	f, args := f_args[0], f_args[1:]
-	argc := len(args)
-	if argc < 1 {
-		throwArity(nil, argc)
+func Main() {
+	Enable_console_print_BANG_.Invoke_Arity0()
+	args := make([]interface{}, len(os.Args[1:]))
+	for i, a := range os.Args[1:] {
+		args[i] = a
 	}
-	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
-})
-
-type CljsCoreSymbol struct {
-	ns, name, str, _hash, _meta interface{}
-	AbstractIFn
+	STAR_main_cli_fn_STAR_.(IFn).Invoke_ArityVariadic(args...)
 }
-
-func (this *CljsCoreSymbol) Name_Arity1() string {
-	return this.name.(string)
-}
-
-func (this *CljsCoreSymbol) Namespace_Arity1() string {
-	return this.ns.(string)
-}
-
-func (this *CljsCoreSymbol) String() string {
-	return this.str.(string)
-}
-
-func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
-	return Lookup_.Invoke_Arity2(coll, this)
-}
-
-func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
-	return Lookup_.Invoke_Arity3(coll, this, notFound)
-}
-
-// Doesn't try to match cljs.core, just a temporary hack
-type ObjMap map[interface{}]interface{}
-
-func (coll ObjMap) Lookup_Arity2(k interface{}) interface{} {
-	return coll.Lookup_Arity3(k, nil)
-}
-
-func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
-	val := coll[k]
-	if val == nil {
-		return notFound
-	} else {
-		return val
-	}
-}
-
-var Symbol = func(Symbol IFn) IFn {
-	return Fn(Symbol, func(name interface{}) interface{} {
-		return Symbol.Invoke_Arity2(nil, name)
-	}, func(ns, name interface{}) interface{} {
-		symStr := func() interface{} {
-			if ns != nil {
-				return ns.(string) + "/" + name.(string)
-			} else {
-				return name
-			}
-		}()
-		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
-	})
-}(&AFn{})
-
-var Implements_QMARK_ = NativeSatisifes_QMARK_
-
-var String_QMARK_ = Fn(func(x interface{}) interface{} {
-	return reflect.ValueOf(x).Kind() == reflect.String
-})
-
-var Namespace = Fn(func(x interface{}) interface{} {
-	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return Namespace_.Invoke_Arity1(x)
-	} else {
-		panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
-	}
-})
-
-var Name = Fn(func(x interface{}) interface{} {
-	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return Name_.Invoke_Arity1(x)
-	} else {
-		if Truth_(String_QMARK_.Invoke_Arity1(x)) {
-			return x
-		} else {
-			panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support name: ", x)})
-		}
-	}
-})
-
-var First = Fn(func(coll interface{}) interface{} {
-	seq := coll.([]interface{})
-	if seq != nil && len(seq) != 0 {
-		return seq[0]
-	}
-	return nil
-})
-
-var Next = Fn(func(coll interface{}) interface{} {
-	seq := coll.([]interface{})
-	if seq != nil && len(seq) != 0 {
-		return seq[1:]
-	}
-	return nil
-})
-
-var Str = func(Str IFn) IFn {
-	return Fn(Str, func() interface{} {
-		return ""
-	}, func(x interface{}) interface{} {
-		if x == nil {
-			return ""
-		} else {
-			return fmt.Sprint(x)
-		}
-	}, func(x_ys ...interface{}) interface{} {
-		var x, ys interface{} = x_ys[0], x_ys[1:]
-
-		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
-		for {
-			if Truth_(more) {
-				sb = NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append",
-					[]interface{}{Str.Invoke_Arity1(First.Invoke_Arity1(more))})
-				more = Next.Invoke_Arity1(more)
-				continue
-			} else {
-				return fmt.Sprint(sb)
-			}
-		}
-	})
-}(&AFn{})
