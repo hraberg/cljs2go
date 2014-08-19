@@ -43,7 +43,7 @@ var pr_opts = AFn{
 
 var Newline = AFn{
 	Arity1: func(opts interface{}) interface{} {
-		if STAR_print_newline_STAR_.(bool) {
+		if Truth_.Invoke_Arity1(STAR_print_newline_STAR_).(bool) {
 			STAR_print_fn_STAR_.(IFn).Invoke_Arity1("\n")
 		}
 		return nil
