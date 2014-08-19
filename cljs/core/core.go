@@ -12,15 +12,15 @@ import "fmt"
 
 // This file will eventually (partly) be generated from cljs.core. Some of this will serve as overrides over cljs.core.
 
-var STAR_print_fn_STAR_ interface{} = NewAFn(func(_ interface{}) interface{} {
+var STAR_print_fn_STAR_ interface{} = Fn(func(_ interface{}) interface{} {
 	panic(&js.Error{"No *print-fn* fn set for evaluation environment"})
 })
 
 var STAR_print_newline_STAR_ interface{} = true
 
-var Enable_console_print_BANG_ = NewAFn(func() interface{} {
+var Enable_console_print_BANG_ = Fn(func() interface{} {
 	STAR_print_newline_STAR_ = false
-	STAR_print_fn_STAR_ = NewAFn(func(x interface{}) interface{} {
+	STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
 		js.Console.Log(x)
 		return nil
 	})
@@ -29,18 +29,18 @@ var Enable_console_print_BANG_ = NewAFn(func() interface{} {
 
 var STAR_main_cli_fn_STAR_ interface{}
 
-var pr_opts = NewAFn(func() interface{} {
+var pr_opts = Fn(func() interface{} {
 	return nil
 })
 
-var Newline = NewAFn(func(opts interface{}) interface{} {
+var Newline = Fn(func(opts interface{}) interface{} {
 	if Truth_.Invoke_Arity1(STAR_print_newline_STAR_).(bool) {
 		STAR_print_fn_STAR_.(IFn).Invoke_Arity1("\n")
 	}
 	return nil
 })
 
-var Println = NewAFn(func(objs ...interface{}) interface{} {
+var Println = Fn(func(objs ...interface{}) interface{} {
 	STAR_print_fn_STAR_.(IFn).Invoke_Arity1(fmt.Sprint(objs...))
 	Newline.Invoke_Arity1(pr_opts.Invoke_Arity0())
 	return nil
@@ -56,7 +56,7 @@ func Main() {
 }
 
 // clojure.lang.Reflector
-var NativeGetInstanceField = NewAFn(func(target, fieldName interface{}) interface{} {
+var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
 	tv := reflect.ValueOf(target)
 	if tv.Kind() == reflect.Ptr {
 		tv = tv.Elem()
@@ -64,7 +64,7 @@ var NativeGetInstanceField = NewAFn(func(target, fieldName interface{}) interfac
 	return tv.FieldByName(fieldName.(string)).Interface()
 })
 
-var NativeSetInstanceField = NewAFn(func(target, fieldName, val interface{}) interface{} {
+var NativeSetInstanceField = Fn(func(target, fieldName, val interface{}) interface{} {
 	tv := reflect.ValueOf(target)
 	if tv.Kind() == reflect.Ptr {
 		tv = tv.Elem()
@@ -73,7 +73,7 @@ var NativeSetInstanceField = NewAFn(func(target, fieldName, val interface{}) int
 	return val
 })
 
-var NativeInvokeFunc = NewAFn(func(f, args interface{}) interface{} {
+var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
 	var fv reflect.Value
 	switch f.(type) {
 	case reflect.Value:
@@ -88,7 +88,7 @@ var NativeInvokeFunc = NewAFn(func(f, args interface{}) interface{} {
 	return fv.Call(in)[0].Interface()
 })
 
-var NativeInvokeInstanceMethod = NewAFn(func(target, methodName, args interface{}) interface{} {
+var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
 	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
 })
 
@@ -100,7 +100,7 @@ var NativeInvokeInstanceMethod = NewAFn(func(target, methodName, args interface{
 
 var protocols = map[string]reflect.Type{}
 
-var NativeSatisifes_QMARK_ = NewAFn(func(p, x interface{}) interface{} {
+var NativeSatisifes_QMARK_ = Fn(func(p, x interface{}) interface{} {
 	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 })
 
@@ -109,11 +109,11 @@ type INamed interface {
 	Namespace_Arity1() string
 }
 
-var Name_ = NewAFn(func(this interface{}) interface{} {
+var Name_ = Fn(func(this interface{}) interface{} {
 	return this.(INamed).Name_Arity1()
 })
 
-var Namespace_ = NewAFn(func(this interface{}) interface{} {
+var Namespace_ = Fn(func(this interface{}) interface{} {
 	return this.(INamed).Namespace_Arity1()
 })
 
@@ -132,7 +132,7 @@ type IFn interface {
 	Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
 }
 
-var Invoke_ = NewAFn(func(this interface{}) interface{} {
+var Invoke_ = Fn(func(this interface{}) interface{} {
 	return this.(IFn).Invoke_Arity0()
 }, func(this, a interface{}) interface{} {
 	return this.(IFn).Invoke_Arity1(a)
@@ -156,7 +156,7 @@ type ILookup interface {
 	Lookup_Arity3(k, notFound interface{}) interface{}
 }
 
-var Lookup_ = NewAFn(func(this, k interface{}) interface{} {
+var Lookup_ = Fn(func(this, k interface{}) interface{} {
 	return this.(ILookup).Lookup_Arity2(k)
 }, func(this, k, notFound interface{}) interface{} {
 	return this.(ILookup).Lookup_Arity3(k, notFound)
@@ -353,7 +353,7 @@ func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return throwArity(nil, 4)
 }
 
-func NewAFn(fns ...interface{}) *AFn {
+func Fn(fns ...interface{}) *AFn {
 	var f *AFn
 	if len(fns) > 1 && reflect.ValueOf(fns[0]).Type() == reflect.TypeOf(f) {
 		f = fns[0].(*AFn)
@@ -383,7 +383,7 @@ func NewAFn(fns ...interface{}) *AFn {
 	return f
 }
 
-var Apply = NewAFn(func(f_args ...interface{}) interface{} {
+var Apply = Fn(func(f_args ...interface{}) interface{} {
 	f, args := f_args[0], f_args[1:]
 	argc := len(args)
 	if argc < 1 {
@@ -435,7 +435,7 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 }
 
 var Symbol = func(Symbol IFn) IFn {
-	return NewAFn(Symbol, func(name interface{}) interface{} {
+	return Fn(Symbol, func(name interface{}) interface{} {
 		return Symbol.Invoke_Arity2(nil, name)
 	}, func(ns, name interface{}) interface{} {
 		symStr := func() interface{} {
@@ -451,13 +451,13 @@ var Symbol = func(Symbol IFn) IFn {
 
 var Implements_QMARK_ = NativeSatisifes_QMARK_
 
-var String_QMARK_ = NewAFn(
+var String_QMARK_ = Fn(
 	func(x interface{}) interface{} {
 		return reflect.ValueOf(x).Kind() == reflect.String
 	},
 )
 
-var Namespace = NewAFn(func(x interface{}) interface{} {
+var Namespace = Fn(func(x interface{}) interface{} {
 	if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
 		return Namespace_.Invoke_Arity1(x)
 	} else {
@@ -465,7 +465,7 @@ var Namespace = NewAFn(func(x interface{}) interface{} {
 	}
 })
 
-var Name = NewAFn(func(x interface{}) interface{} {
+var Name = Fn(func(x interface{}) interface{} {
 	if Truth_.Invoke_Arity1(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)).(bool) {
 		return Name_.Invoke_Arity1(x)
 	} else {
@@ -477,11 +477,11 @@ var Name = NewAFn(func(x interface{}) interface{} {
 	}
 })
 
-var Truth_ = NewAFn(func(x interface{}) interface{} {
+var Truth_ = Fn(func(x interface{}) interface{} {
 	return x != nil && x != false
 })
 
-var First = NewAFn(func(coll interface{}) interface{} {
+var First = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
 	if seq != nil && len(seq) != 0 {
 		return seq[0]
@@ -489,7 +489,7 @@ var First = NewAFn(func(coll interface{}) interface{} {
 	return nil
 })
 
-var Next = NewAFn(func(coll interface{}) interface{} {
+var Next = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
 	if seq != nil && len(seq) != 0 {
 		return seq[1:]
@@ -498,7 +498,7 @@ var Next = NewAFn(func(coll interface{}) interface{} {
 })
 
 var Str = func(Str IFn) IFn {
-	return NewAFn(Str, func() interface{} {
+	return Fn(Str, func() interface{} {
 		return ""
 	}, func(x interface{}) interface{} {
 		if x == nil {

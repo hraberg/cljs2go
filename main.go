@@ -7,7 +7,7 @@ import (
 
 import . "github.com/hraberg/cljs.go/cljs/core"
 
-var _main = NewAFn(func(args ...interface{}) interface{} {
+var _main = Fn(func(args ...interface{}) interface{} {
 	Println.Invoke_ArityVariadic("ClojureScript to Go [go]")
 	goGet := exec.Command("go", "get", "code.google.com/p/go.tools/cmd/goimports")
 	if out, err := goGet.CombinedOutput(); err != nil {

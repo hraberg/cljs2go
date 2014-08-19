@@ -113,7 +113,7 @@ func Test_JS(t *testing.T) {
 
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
-	STAR_main_cli_fn_STAR_ = NewAFn(func(args ...interface{}) interface{} {
+	STAR_main_cli_fn_STAR_ = Fn(func(args ...interface{}) interface{} {
 		mainWasCalled = true
 		return nil
 	})
@@ -121,7 +121,7 @@ func Test_Main(t *testing.T) {
 	assert.True(t, mainWasCalled)
 }
 
-var Baz = NewAFn(func(args ...interface{}) interface{} {
+var Baz = Fn(func(args ...interface{}) interface{} {
 	x := args[0]
 	xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
 	_ = x
@@ -251,7 +251,7 @@ Eventually we want to actually generate the Go tests from Clojure, or at least a
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func(this IFn) IFn {
-		return NewAFn(this, func(n interface{}) interface{} {
+		return Fn(this, func(n interface{}) interface{} {
 			if n == 0.0 {
 				return 0.0
 			} else if n == 1.0 {
