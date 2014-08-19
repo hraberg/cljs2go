@@ -12,6 +12,8 @@ import (
 import "fmt"
 
 // This file will eventually (partly) be generated from cljs.core. Some of this will serve as overrides over cljs.core.
+// Note that "source maps" are possible using //line cljs/core.cljs:1 directives (absolute or relative to package)
+// Also: packages can be imported relative to each other.
 
 var STAR_print_fn_STAR_ interface{} = Fn(func(_ interface{}) interface{} {
 	panic(&js.Error{"No *print-fn* fn set for evaluation environment"})
