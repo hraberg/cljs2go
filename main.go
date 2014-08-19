@@ -18,7 +18,10 @@ var _main = AFn{
 	},
 }
 
-func main() {
+func init() {
 	STAR_main_cli_fn_STAR_ = _main
+}
+
+func main() {
 	Main()
 }
