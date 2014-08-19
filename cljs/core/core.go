@@ -72,24 +72,45 @@ func Main() {
 // clojure.lang.Reflector
 var NativeGetInstanceField = AFn{
 	Arity2: func(target, fieldName interface{}) interface{} {
-		return reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Interface()
+		tv := reflect.ValueOf(target)
+		if tv.Kind() == reflect.Ptr {
+			tv = tv.Elem()
+		}
+		return tv.FieldByName(fieldName.(string)).Interface()
 	},
 }
 
 var NativeSetInstanceField = AFn{
 	Arity3: func(target, fieldName, val interface{}) interface{} {
-		reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+		tv := reflect.ValueOf(target)
+		if tv.Kind() == reflect.Ptr {
+			tv = tv.Elem()
+		}
+		tv.FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
 		return val
+	},
+}
+
+var NativeInvokeFunc = AFn{
+	Arity2: func(f, args interface{}) interface{} {
+		var fv reflect.Value
+		switch f.(type) {
+		case reflect.Value:
+			fv = f.(reflect.Value)
+		default:
+			fv = reflect.ValueOf(f)
+		}
+		in := make([]reflect.Value, len(args.([]interface{})))
+		for i, a := range args.([]interface{}) {
+			in[i] = reflect.ValueOf(a)
+		}
+		return fv.Call(in)[0].Interface()
 	},
 }
 
 var NativeInvokeInstanceMethod = AFn{
 	Arity3: func(target, methodName, args interface{}) interface{} {
-		in := make([]reflect.Value, len(args.([]interface{})))
-		for i, a := range args.([]interface{}) {
-			in[i] = reflect.ValueOf(a)
-		}
-		return reflect.ValueOf(target).MethodByName(methodName.(string)).Call(in)[0].Interface()
+		return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
 	},
 }
 
