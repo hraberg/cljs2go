@@ -183,10 +183,10 @@ func Test_Protocols(t *testing.T) {
 
 func Test_InteropViaReflection(t *testing.T) {
 	sb := &gstring.StringBuffer{"foo"}
-	assert.Equal(t, "foo", NativeGet(sb, "Buffer"), "(.-buffer sb)")
-	NativeSet(sb, "Buffer", "bar")
+	assert.Equal(t, "foo", NativeGetInstanceField(sb, "Buffer"), "(.-buffer sb)")
+	NativeSetInstanceField(sb, "Buffer", "bar")
 	assert.Equal(t, "bar", sb.Buffer, "(set! (.-buffer sb) \"bar\")")
-	assert.Equal(t, sb, NativeCall(sb, "Append", "baz"))
+	assert.Equal(t, sb, NativeInvokeInstanceMethod(sb, "Append", "baz"))
 	assert.Equal(t, "barbaz", sb.Buffer, "(.append sb \"baz\")")
 }
 

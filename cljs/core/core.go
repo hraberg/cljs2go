@@ -69,6 +69,24 @@ func Main() {
 	STAR_main_cli_fn_STAR_.(IFn).Invoke_ArityVariadic(args...)
 }
 
+// clojure.lang.Reflector
+func NativeGetInstanceField(target, fieldName interface{}) interface{} {
+	return reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Interface()
+}
+
+func NativeSetInstanceField(target, fieldName, val interface{}) interface{} {
+	reflect.ValueOf(target).Elem().FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+	return val
+}
+
+func NativeInvokeInstanceMethod(target, methodName interface{}, args ...interface{}) interface{} {
+	in := make([]reflect.Value, len(args))
+	for i, a := range args {
+		in[i] = reflect.ValueOf(a)
+	}
+	return reflect.ValueOf(target).MethodByName(methodName.(string)).Call(in)[0].Interface()
+}
+
 // core protocols
 
 // Protocols in ClojureScript don't seem to support vargs.
@@ -341,23 +359,6 @@ func (this AbstractIFn) Invoke_Arity4(a, b, c, d interface{}) interface{} {
 
 func (this AbstractIFn) Invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return ThrowArity(nil, 4)
-}
-
-func NativeGet(obj, k interface{}) interface{} {
-	return reflect.ValueOf(obj).Elem().FieldByName(k.(string)).Interface()
-}
-
-func NativeSet(obj, k, v interface{}) interface{} {
-	reflect.ValueOf(obj).Elem().FieldByName(k.(string)).Set(reflect.ValueOf(v))
-	return v
-}
-
-func NativeCall(obj, method interface{}, args ...interface{}) interface{} {
-	in := make([]reflect.Value, len(args))
-	for i, a := range args {
-		in[i] = reflect.ValueOf(a)
-	}
-	return reflect.ValueOf(obj).MethodByName(method.(string)).Call(in)[0].Interface()
 }
 
 var Apply = AFn{
