@@ -130,15 +130,6 @@ var Baz = Fn(func(args ...interface{}) interface{} {
 	return x
 })
 
-func PanicsWith(t *testing.T, message string, f assert.PanicTestFunc) {
-	assert.Equal(t, message, func() (message string) {
-		defer func() { message = fmt.Sprint(recover()) }()
-		f()
-		assert.Fail(t, "should panic")
-		return
-	}())
-}
-
 func Test_Invoke(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Call() })
@@ -324,4 +315,13 @@ func Benchmark_RecursiveGo(t *testing.B) {
 		return this
 	}()
 	assert.Equal(t, 832040, fib(30))
+}
+
+func PanicsWith(t *testing.T, message string, f assert.PanicTestFunc) {
+	assert.Equal(t, message, func() (message string) {
+		defer func() { message = fmt.Sprint(recover()) }()
+		f()
+		assert.Fail(t, "should panic")
+		return
+	}())
 }
