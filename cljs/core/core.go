@@ -502,7 +502,8 @@ var Str = func() AFn {
 		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
 		for {
 			if Truth_.Invoke_Arity1(more).(bool) {
-				sb = sb.(*goog_string.StringBuffer).Append(Str.Invoke_Arity1(First.Invoke_Arity1(more)))
+				sb = NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append",
+					[]interface{}{Str.Invoke_Arity1(First.Invoke_Arity1(more))})
 				more = Next.Invoke_Arity1(more)
 				continue
 			} else {
