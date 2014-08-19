@@ -3,7 +3,7 @@
 package main
 
 import . "github.com/hraberg/cljs.go/cljs/core"
-import _ "github.com/hraberg/cljs.go/hello"
+import _ "."
 
 func main() {
 	Main()
