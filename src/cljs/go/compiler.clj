@@ -217,7 +217,7 @@
       (falsey-constant? test) (emitln else)
       :else
       (if (= :expr context)
-        (emits "(func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} )()")
+        (emits "func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} ()")
         (do
           (if checked
             (emitln "if(Truth_(" test "))")
@@ -228,7 +228,7 @@
 (defmethod emit* :case*
   [{:keys [v tests thens default env]}]
   (when (= (:context env) :expr)
-    (emitln "(func(){"))
+    (emitln "func(){"))
   (let [gs (gensym "caseval__")]
     (when (= :expr (:context env))
       (emitln "var " gs ""))
@@ -247,12 +247,12 @@
         (emitln default)))
     (emitln "}")
     (when (= :expr (:context env))
-      (emitln "return " gs "})()"))))
+      (emitln "return " gs "}()"))))
 
 (defmethod emit* :throw
   [{:keys [throw env]}]
   (if (= :expr (:context env))
-    (emits "(func(){panic(" throw ")})()")
+    (emits "func(){panic(" throw ")}()")
     (emitln "panic(" throw ")")))
 
 (defmethod emit* :def
@@ -280,7 +280,7 @@
   [{:keys [name params env]}]
   (let [arglist (gensym "arglist__")
         delegate-name (str (munge name) "__delegate")]
-    (emitln "(func (" arglist " interface{}) interface{} {")
+    (emitln "func (" arglist " interface{}) interface{} {")
     (doseq [[i param] (map-indexed vector (drop-last 2 params))]
       (emits "var ")
       (emit param)
@@ -309,7 +309,7 @@
           (emit param)
           (when-not (= param (last params)) (emits ",")))
         (emitln ")")))
-    (emits "})")))
+    (emits "}")))
 
 (defn emit-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
@@ -332,7 +332,7 @@
              (let [name (or name (gensym))
                    mname (munge name)
                    delegate-name (str mname "__delegate")]
-               (emitln "(func() { ")
+               (emitln "func() { ")
                (emits "var " delegate-name " = func (")
                (doseq [param params]
                  (emit param)
@@ -377,7 +377,7 @@
                (emitln)
                (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " delegate-name)
                (emitln "return " mname)
-               (emitln "})()"))))
+               (emitln "}()"))))
 
 (defmethod emit* :fn
   [{:keys [name env methods max-fixed-arity variadic recur-frames loop-lets]}]
@@ -390,7 +390,7 @@
       (when loop-locals
         (when (= :return (:context env))
             (emits "return "))
-        (emitln "((func (" (comma-sep (map munge loop-locals)) " interface{}){")
+        (emitln "func (" (comma-sep (map munge loop-locals)) " interface{}){")
         (when-not (= :return (:context env))
             (emits "return ")))
       (if (= 1 (count methods))
@@ -409,7 +409,7 @@
           (when (= :return (:context env))
             (emits "return "))
           (when (= :expr (:context env))
-            (emitln "(func() {"))
+            (emitln "func() {"))
           (emitln "var " mname " = nil")
           (doseq [[n meth] ms]
             (emits "var " n " = ")
@@ -455,9 +455,9 @@
                 (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
           (when (= :expr (:context env))
             (emitln "return " mname)
-            (emitln "})()"))))
+            (emitln "}()"))))
       (when loop-locals
-        (emitln "})(" (comma-sep loop-locals) "))"))))
+        (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
     (emitln)
     (emitln"func init() {")
@@ -467,31 +467,31 @@
 (defmethod emit* :do
   [{:keys [statements ret env]}]
   (let [context (:context env)]
-    (when (and statements (= :expr context)) (emits "(func (){"))
+    (when (and statements (= :expr context)) (emits "func (){"))
     (when statements
       (emits statements))
     (emit ret)
-    (when (and statements (= :expr context)) (emits "})()"))))
+    (when (and statements (= :expr context)) (emits "}()"))))
 
 (defmethod emit* :try
   [{:keys [env try catch name finally]}]
   (let [context (:context env)]
     (if (or name finally)
       (do
-        (emits "(func (){")
+        (emits "func (){")
         (when name
           (emits "defer func() { if " (munge name) " := recover(); " (munge name) " != nil {" catch "}}()"))
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
           (emits "defer func() {" finally "}()"))
         (emits "{" try "}")
-        (emits "})()"))
+        (emits "}()"))
       (emits try))))
 
 (defn emit-let
   [{:keys [bindings expr env]} is-loop]
   (let [context (:context env)]
-    (when (= :expr context) (emits "(func (){"))
+    (when (= :expr context) (emits "func (){"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
                                         (map #(vector (System/identityHashCode %)
@@ -506,7 +506,7 @@
       (when is-loop
         (emitln "break")
         (emitln "}")))
-    (when (= :expr context) (emits "})()"))))
+    (when (= :expr context) (emits "}()"))))
 
 (defmethod emit* :let [ast]
   (emit-let ast false))
@@ -529,11 +529,11 @@
 (defmethod emit* :letfn
   [{:keys [bindings expr env]}]
   (let [context (:context env)]
-    (when (= :expr context) (emits "(func (){"))
+    (when (= :expr context) (emits "func (){"))
     (doseq [{:keys [init] :as binding} bindings]
       (emitln "var " (munge binding) " = " init))
     (emits expr)
-    (when (= :expr context) (emits "})()"))))
+    (when (= :expr context) (emits "}()"))))
 
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
@@ -615,7 +615,7 @@
        :else
        (if (and ana/*cljs-static-fns* (= (:op f) :var))
          (let [fprop (str "_cljs__core__IFn___invoke__arity__" (count args))]
-           (emits "(func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep args) ")}})()"))
+           (emits "func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep args) ")}}()"))
          (emits f "(" (comma-sep args) ")"))))))
 
 (defmethod emit* :new
@@ -652,13 +652,13 @@
     (emitln "* @constructor")
     (emitln "*/")
     (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (last (string/split (str (munge t)) #"\.")) " = (func (" (comma-sep fields) "  interface{}){")
+    (emitln (last (string/split (str (munge t)) #"\.")) " = func (" (comma-sep fields) "  interface{}){")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
     (doseq [[pno pmask] pmasks]
       (emitln "this.cljs__lang__protocol_mask__partition" pno "__ = " pmask))
-    (emitln "})")))
+    (emitln "}")))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
@@ -672,7 +672,7 @@
     (emitln "* @param {*=} __extmap")
     (emitln "*/")
     (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (last (string/split (str (munge t)) #"\.")) " = (func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
+    (emitln (last (string/split (str (munge t)) #"\.")) " = func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
     (emitln "var this = new(" t ")")
     (doseq [fld fields]
       (emitln "this." fld " = " fld))
@@ -687,7 +687,7 @@
     (emitln "this.__extmap = arguments[1]")
     (emitln "}")
     (emitln "}")
-    (emitln "})")))
+    (emitln "}")))
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]

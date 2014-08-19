@@ -414,7 +414,7 @@ func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
 	}
 }
 
-var Truth = AFn{
+var Truth_ = AFn{
 	Arity1: func(x interface{}) interface{} {
 		return x != nil && x != false
 	},
@@ -458,7 +458,7 @@ var Str = func() AFn {
 
 		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
 		for {
-			if Truth.Invoke_Arity1(more).(bool) {
+			if Truth_.Invoke_Arity1(more).(bool) {
 				sb = sb.(*goog_string.StringBuffer).Append(Str.Invoke_Arity1(First.Invoke_Arity1(more)))
 				more = Next.Invoke_Arity1(more)
 				continue
