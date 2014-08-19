@@ -196,7 +196,7 @@ func Test_InteropViaReflection(t *testing.T) {
 /*
 These are the special-forms of ClojureScript.
 We need two levels of tests, one in Clojure testing the emitter, and one in Go testing and defining the semantics.
-For now, the first test will be string based, and the string expected Go source string will be exectued here.
+For now, the first test will be string based, and the expected Go source will be duplicated and tested here.
 Eventually we want to actually generate the Go tests from Clojure, or at least an example package they use instead.
 
 :no-op
