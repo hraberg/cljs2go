@@ -138,8 +138,12 @@ var Baz = AFn{
 
 func Test_Invoke(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
-	assert.Panics(t, func() { Baz.Call() })
-	assert.Equal(t, "Hello", Baz.Call("Hello"))
+	assert.Equal(t, "Invalid arity: 0", func() (message string) {
+		defer func() { message = fmt.Sprint(recover()) }()
+		Baz.Call()
+		assert.Fail(t, fmt.Sprintf("%#v should panic", Baz.Call))
+		return
+	}())
 	assert.Panics(t, func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", Invoke.Invoke_Arity2(Baz, "Hello"))
