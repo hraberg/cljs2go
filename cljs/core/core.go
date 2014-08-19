@@ -220,7 +220,7 @@ type AFnPrimtive struct {
 }
 
 func throwArity(f, arity interface{}) interface{} {
-	if reflect.ValueOf(f).IsNil() {
+	if f == nil || reflect.ValueOf(f).IsNil() {
 		panic(&js.Error{fmt.Sprint("Invalid arity: ", arity)})
 	}
 	return f

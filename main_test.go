@@ -130,19 +130,23 @@ var Baz = Fn(func(args ...interface{}) interface{} {
 	return x
 })
 
-func Test_Invoke(t *testing.T) {
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
-	assert.Equal(t, "Invalid arity: 0", func() (message string) {
+func PanicsWith(t *testing.T, message string, f assert.PanicTestFunc) {
+	assert.Equal(t, message, func() (message string) {
 		defer func() { message = fmt.Sprint(recover()) }()
-		Baz.Call()
-		assert.Fail(t, fmt.Sprintf("%#v should panic", Baz.Call))
+		f()
+		assert.Fail(t, "should panic")
 		return
 	}())
-	assert.Panics(t, func() { Baz.Invoke_Arity0() })
+}
+
+func Test_Invoke(t *testing.T) {
+	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
+	PanicsWith(t, "Invalid arity: 0", func() { Baz.Call() })
+	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, 1, Baz.MaxFixedArity)
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", Invoke_.Invoke_Arity2(Baz, "Hello"))
-	assert.Panics(t, func() { Baz.Invoke_Arity2("Hello", "World") })
+	PanicsWith(t, "Invalid arity: 2", func() { Baz.Invoke_Arity2("Hello", "World") })
 	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Baz.Invoke_ArityVariadic("Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Invoke_.Invoke_ArityVariadic(Baz, "Hello", "World"))
@@ -162,12 +166,14 @@ func Test_Protocols(t *testing.T) {
 	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
 	assert.Equal(t, "foo", Namespace_.Invoke_Arity1(symbol))
+	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).Invoke_Arity0() })
+	PanicsWith(t, "Invalid arity: 0", func() { Invoke_.Invoke_Arity1(symbol) })
 
 	assert.Equal(t, "foo", Namespace.Invoke_Arity1(symbol))
-	assert.Panics(t, func() { Namespace.Invoke_Arity1(2) })
+	PanicsWith(t, "Doesn't support namespace: 2", func() { Namespace.Invoke_Arity1(2) })
 
 	assert.Equal(t, "bar", Name.Invoke_Arity1(symbol))
-	assert.Panics(t, func() { Name.Invoke_Arity1(2) })
+	PanicsWith(t, "Doesn't support name: 2", func() { Name.Invoke_Arity1(2) })
 	assert.Equal(t, "baz", Name.Invoke_Arity1("baz"))
 
 	assert.Equal(t, "foo", Invoke_.Invoke_Arity2(Namespace_, symbol))
