@@ -8,9 +8,12 @@
             [clojure.walk :as w]
             [clojure.java.shell :as sh]))
 
+(defn empty-env []
+  (dissoc (cljs.analyzer/empty-env) :js-globals))
+
 (defn cljs->ast [in]
   (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
-    (doall (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %) in))))
+    (doall (map #(cljs.analyzer/analyze (empty-env) %) in))))
 
 (defn ast->go [in]
   (with-out-str
