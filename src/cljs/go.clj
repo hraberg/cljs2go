@@ -67,7 +67,7 @@
         (println gofmt))))
 
 (defn emit-go*
-  ([cljs] (emit* false cljs))
+  ([cljs] (emit-go* false cljs))
   ([debug? cljs]
      (let [ast (cljs->ast cljs)
            go (ast->go ast)
