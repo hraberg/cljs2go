@@ -3,29 +3,12 @@
             [cljs.go :refer :all]
             [clojure.string :as s]
             [clojure.java.io :as io]
-            [clojure.java.shell :as sh]
-            [clojure.pprint :as pp])
+            [clojure.java.shell :as sh])
   (:import [java.io File]))
 
-(defn emit* [cljs]
-  (let [ast (cljs->ast cljs)
-        go (ast->go ast)
-        {:keys [exit err]} (goimports go)]
-    (when-not (zero? exit)
-      (println)
-      (println "==================== ClojureScript")
-      (doseq [f cljs]
-        (pp/pprint f))
-      (println "==================== AST")
-      (pp/pprint (ast->simple-ast ast))
-      (println "==================== Go")
-      (println (with-line-numbers go))
-      (println "==================== gofmt")
-      (println err))
-    (is (zero? exit) err)))
-
 (defmacro emit [& body]
-  `(emit* '~body))
+  `(let [res# (emit-go* '~body)]
+     (is (zero? (:exit res#)) (:err res#))))
 
 (deftest cljs->go
   (emit (ns test.go (:require [goog.array :as array]))

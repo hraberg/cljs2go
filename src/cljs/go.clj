@@ -5,29 +5,29 @@
             [cljs.js-deps]
             [cljs.go.compiler]
             [clojure.string :as s]
-            [clojure.walk :as w]
+            [clojure.pprint :as pp]
             [clojure.java.shell :as sh]))
 
-(defn empty-env []
-  (dissoc (cljs.analyzer/empty-env) :js-globals))
+(defn elide-children [_ ast]
+  (dissoc ast :children))
+
+(defn simplify-env [_ {:keys [op] :as ast}]
+  (let [env (:env ast)
+        ast (if (= op :fn)
+              (assoc ast :methods
+                (map #(simplify-env nil %) (:methods ast)))
+              ast)]
+    (update-in ast [:env] #(select-keys % [:context :column :line]))))
 
 (defn cljs->ast [in]
-  (binding [cljs.analyzer/*cljs-ns* 'cljs.user]
-    (doall (map #(cljs.analyzer/analyze (empty-env) %) in))))
+  (binding [cljs.analyzer/*cljs-ns* 'cljs.user
+            cljs.analyzer/*passes* [elide-children simplify-env cljs.analyzer/infer-type]]
+    (doall (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %) in))))
 
 (defn ast->go [in]
   (with-out-str
     (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
       (dorun (map cljs.compiler/emit in)))))
-
-(defn ast->simple-ast [in]
-  (->> in
-       (w/prewalk
-        #(cond-> %
-                 (map? %) (dissoc :children :ns :column :shadow
-                                  :protocol-inline :protocol-impl
-                                  :doc :js-globals :jsdoc)
-                 (:locals %) (update-in [:locals] keys)))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
@@ -52,17 +52,36 @@
        (apply str)
        s/trim-newline))
 
-(defn print-simple-ast-and-emitted-go [in]
-  (let [ast (cljs->ast in)]
-    (println "==================== AST")
-    (->> ast
-         ast->simple-ast
-         clojure.pprint/pprint)
-    (println "==================== Go")
-    (->> ast
-         ast->go
-         gofmt
-         println)))
+(defn print-ast-and-emitted-go
+  ([cljs ast go] (print-ast-and-emitted-go cljs ast go nil))
+  ([cljs ast go gofmt]
+      (println "==================== ClojureScript")
+      (doseq [f cljs]
+        (pp/pprint f))
+      (println "==================== AST")
+      (pp/pprint ast)
+      (println "==================== Go")
+      (println (with-line-numbers go))
+      (when (seq gofmt)
+        (println "==================== gofmt")
+        (println gofmt))))
+
+(defn emit-go*
+  ([cljs] (emit* false cljs))
+  ([debug? cljs]
+     (let [ast (cljs->ast cljs)
+           go (ast->go ast)
+           {:keys [exit err out] :as result} (goimports go)
+           error? (pos? exit)
+           go (if error? go out)]
+       (when (or error? debug?)
+         (print-ast-and-emitted-go cljs ast go err))
+       result)))
+
+(defn emit-go [cljs]
+  (let [{:keys [out err exit]} (emit-go* cljs)]
+    (assert (zero? exit) err)
+    out))
 
 (comment
   (cljs.closure/build '[(ns hello.core)
