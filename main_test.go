@@ -240,7 +240,7 @@ func Test_InteropViaReflection(t *testing.T) {
 		"(.fromCharCode js/String 65 66 67)")
 }
 
-// This is a side track, playing with the idea of writing the emitter in Go using the ananlyzer AST.
+// This is a side track, playing with the idea of writing the emitter in Go using the analyzer AST.
 func Test_ParseASTFromJSON(t *testing.T) {
 	data := `{"tag":"string","op":"constant","env":{"ns":null,"context":"statement","locals":{}},"form":"Hello World"}`
 	var ast map[string]interface{}
