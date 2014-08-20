@@ -583,8 +583,7 @@ func Fn(fns ...interface{}) IFn {
 	} else {
 		f.MaxFixedArity = -1
 	}
-	vt := v.Type()
-	for i := 0; i < vt.NumField(); i++ {
+	for i := 0; i < v.Type().NumField(); i++ {
 		vf := v.Field(i)
 		if vf.Kind() == reflect.Func && vf.IsNil() {
 			if variadic && vf.Type().NumIn() > maxFixedArity {
