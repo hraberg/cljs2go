@@ -49,18 +49,19 @@
             ([x & ys] (println "Hello " x ys))))))
 
 (defn go-test [package]
-  (let [{:keys [out err exit]} (sh/sh "go" "test" package)
+  (let [{:keys [out err exit]} (sh/sh "go" "test" (str package))
         out (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" "")]
     (is (zero? exit) out)))
 
-(defn testify-header []
+(defn testify-header [package & imports]
   (with-out-str
-    (println "package go_test")
+    (println "package" package)
     (println "import (")
-    (doseq [import ["math" "testing"
-                    "github.com/hraberg/cljs.go/js"
-                    "github.com/hraberg/cljs.go/js/Math"
-                    "github.com/stretchr/testify/assert"]]
+    (doseq [import (concat ["testing"
+                            "github.com/stretchr/testify/assert"
+                            "github.com/hraberg/cljs.go/js"
+                            "github.com/hraberg/cljs.go/js/Math"]
+                           imports)]
       (println "\t" (pr-str import)))
     (println "\t" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))
     (println ")")))
@@ -77,17 +78,18 @@
                 (-> cljs cljs->ast ast->go))))
     (printf "}\n")))
 
-(defn emit-and-test [package src]
-  (let [^File f (io/file "target/generated/" (str package ".go"))]
+(defn emit-test [package & tests]
+  (let [^File f (io/file "target/generated" (str package ".go"))
+        src (gofmt (apply str (testify-header package) tests))]
     (io/make-parents f)
-    (spit f (gofmt (apply str (testify-header) src)))
-    (go-test (str (io/file "." (.getParent f)))))  )
+    (spit f src)
+    (go-test (io/file "." (.getParent f))))  )
 
 (deftest go-emitter-tests
-  (->> [(testify "IncludeCljsCore"
-                 ["Truth_(true)" "True"]
-                 ["Truth_(false)" "False"])]
-       (emit-and-test "go_test")))
+  (emit-test "go_test"
+             (testify "IncludeCljsCore"
+                      ["Truth_(true)" "True"]
+                      ["Truth_(false)" "False"])))
 
 (deftest go-main-test
   (go-test "."))
