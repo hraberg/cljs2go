@@ -552,7 +552,7 @@
 (defmethod emit* :letfn
   [{:keys [bindings expr env]}]
   (let [context (:context env)]
-    (when (= :expr context) (emits "func (){"))
+    (when (= :expr context) (emits "func () interface{} {"))
     (doseq [{:keys [init] :as binding} bindings]
       (emitln "var " (munge binding) " = " init))
     (emits expr)
