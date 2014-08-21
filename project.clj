@@ -7,4 +7,5 @@
   :dependencies [[org.clojure/clojure "1.7.0-alpha1"]
                  [org.clojure/clojurescript "0.0-2311"]
                  [org.clojure/data.json "0.2.5"]
+                 [org.clojure/tools.analyzer "0.5.2"]
                  [org.clojure/core.async "0.1.319.0-6b1aca-alpha"]])
