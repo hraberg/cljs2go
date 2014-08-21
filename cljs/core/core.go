@@ -134,21 +134,30 @@ var Apply = Fn(func(f_args ...interface{}) interface{} {
 	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 })
 
+type CljsCoreUUID struct {
+	Uuid interface{}
+}
+
+type CljsCoreKeyword struct {
+	Ns, Name, Fqn, Hash interface{}
+	AbstractIFn
+}
+
 type CljsCoreSymbol struct {
-	ns, name, str, _hash, _meta interface{}
+	Ns, Name, Str, Hash, Meta interface{}
 	AbstractIFn
 }
 
 func (this *CljsCoreSymbol) Name_Arity1() string {
-	return this.name.(string)
+	return this.Name.(string)
 }
 
 func (this *CljsCoreSymbol) Namespace_Arity1() string {
-	return this.ns.(string)
+	return this.Ns.(string)
 }
 
 func (this *CljsCoreSymbol) String() string {
-	return this.str.(string)
+	return this.Str.(string)
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
@@ -186,7 +195,7 @@ var Symbol = func(Symbol IFn) IFn {
 				return name
 			}
 		}()
-		return &CljsCoreSymbol{ns: ns, name: name, str: symStr}
+		return &CljsCoreSymbol{Ns: ns, Name: name, Str: symStr}
 	})
 }(&AFn{})
 
@@ -215,7 +224,6 @@ var Name = Fn(func(x interface{}) interface{} {
 		}
 	}
 })
-
 var First = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
 	if seq != nil && len(seq) != 0 {

@@ -57,22 +57,26 @@
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
-    (emits "(js.RegExp{\"\"})")
+    (emits "(&js.RegExp{Pattern: \"\", Flags: \"\"})")
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
-      (emits "(js.RegExp{\"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") "\", \"" flags "\"}"))))
+      (emits "(&js.RegExp{Pattern: \"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") "\", Flags: \"" flags "\"})"))))
 
 (defn emits-keyword [kw]
   (let [ns   (namespace kw)
         name (name kw)]
-    (emits "Keyword{")
+    (emits "&CljsCoreKeyword{")
+    (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
+    (emits "Name: ")
     (emit-constant name)
     (emits ",")
+    (emits "Fqn: ")
     (emit-constant (if ns
                      (str ns "/" name)
                      name))
     (emits ",")
+    (emits "Hash: ")
     (emit-constant (hash kw))
     (emits "}")))
 
@@ -88,25 +92,30 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "Symbol{")
+    (emits "&CljsCoreSymbol{")
+    (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
+    (emits "Name: ")
     (emit-constant name)
     (emits ",")
+    (emits "Str: ")
     (emit-constant symstr)
     (emits ",")
+    (emits "Hash: ")
     (emit-constant (hash x))
     (emits ",")
+    (emits "Meta: ")
     (emit-constant nil)
     (emits "}")))
 
 ;; tagged literal support
 
 (defmethod emit-constant java.util.Date [^java.util.Date date]
-  (emits "js.Date{" (.getTime date) "}"))
+  (emits "&js.Date{Millis: " (.getTime date) "}"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "UUID{\"" (.toString uuid) "\"}"))
+  (emits "&CljsCoreUUID{Uuid: `" (.toString uuid) "`}"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
@@ -263,7 +272,7 @@
       (if (= :fn (:op init))
         (emits init)
         (do
-          (emits "var " (last (string/split (str mname) #"\.")))
+          (emits "var " (last (string/split (str mname) #"\.")) " interface{}")
           (emitln " = " init)))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David

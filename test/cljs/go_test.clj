@@ -52,13 +52,15 @@
 (defn testify [test & assertions]
   (with-out-str
     (printf "func Test_%s(t *testing.T) {\n" (name test))
-    (doseq [[cljs assertion expected] assertions]
+    (doseq [[actual assertion expected setup] assertions]
+      (printf "{\n")
+      (when setup
+        (printf "\t%s\n" (-> setup cljs->ast ast->go)))
       (printf "\tassert.%s(t%s, %s)\n"
-              assertion
+              (s/capitalize (name assertion))
               (if expected (str ", " expected) "")
-              (if (string? cljs)
-                cljs
-                (-> cljs cljs->ast ast->go))))
+              actual)
+      (printf "}\n"))
     (printf "}\n")))
 
 (defn emit-test [package & tests]
@@ -68,11 +70,36 @@
     (spit f src)
     (go-test (io/file "." (.getParent f))))  )
 
+(defn constant [expected actual]
+  ["X" "Equal" expected [(list 'def 'x actual)]])
+
 (deftest go-emitter-tests
-  (emit-test "go_test"
-             (testify "IncludeCljsCore"
-                      ["Truth_(true)" "True"]
-                      ["Truth_(false)" "False"])))
+  (->>
+   (testify "Constants"
+            (constant "nil" nil)
+            (constant true true)
+            (constant 1 1)
+            (constant 3.14 3.14)
+            (constant 2 '(inc 1))
+            (constant 10 '(* 4 2.5))
+            (constant "`foo`" "foo")
+            (constant "'x'" \x)
+            (constant "map[string]interface{}{`foo`: `bar`}",
+                      (binding [*data-readers* cljs.tagged-literals/*cljs-data-readers*]
+                        (read-string "#js {:foo \"bar\"}")))
+            (constant "[]interface{}{\"foo\", \"bar\"}"
+                      (binding [*data-readers* cljs.tagged-literals/*cljs-data-readers*]
+                        (read-string "#js [\"foo\", \"bar\"])")))
+            (constant "&js.Date{Millis: 1408642409602}" #inst "2014-08-21T17:33:29.602-00:00")
+            (constant "&CljsCoreUUID{Uuid: `15c52219-a8fd-4771-87e2-42ee33b79bca`}"
+                      #uuid "15c52219-a8fd-4771-87e2-42ee33b79bca")
+            (constant "&js.RegExp{Pattern: `x`, Flags: ``}" #"x")
+            (constant "&js.RegExp{Pattern: ``, Flags: ``}" #"")
+            (constant "&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, Hash: -568535109, Meta: nil}"
+                      ''user/x)
+            (constant "&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, Hash: 2085900660}"
+                      :user/x))
+   (emit-test "go_test")))
 
 (deftest go-main-test
   (go-test "."))
