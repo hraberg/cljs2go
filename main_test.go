@@ -255,6 +255,7 @@ func Test_ParseASTFromJSON(t *testing.T) {
 }
 
 // Another side track, but it seems seems hard to create the tree without parsing it using go/ast.
+// For more AST, see https://talks.golang.org/2014/hammers.slide
 func Test_GenerateGoAST(t *testing.T) {
 	fset := token.NewFileSet()
 	src := `"Hello World"`
