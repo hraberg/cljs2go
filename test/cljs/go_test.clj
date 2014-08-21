@@ -156,7 +156,8 @@
                       (try
                         x
                         (finally
-                          (js* "x[`finally`] = true")))) "try")
+                          (js* "x[`finally`] = true"))))
+                   "try")
              (expr "map[string]interface{}{`catch`: true, `finally`: true, `last`: `finally`}"
                    '(let [x (js* "map[string]interface{}{}")]
                       (try
@@ -167,7 +168,8 @@
                           x)
                         (finally
                           (js* "x[`finally`] = true")
-                          (js* "x[`last`] = `finally`")))) "try"))]
+                          (js* "x[`last`] = `finally`"))))
+                   "try"))]
    (emit-test "go_test")))
 
 (deftest go-main-test

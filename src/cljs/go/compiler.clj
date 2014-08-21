@@ -271,7 +271,7 @@
 (defmethod emit* :throw
   [{:keys [throw env]}]
   (if (= :expr (:context env))
-    (emits "func(){panic(" throw ")}()")
+    (emits "func() interface{} {panic(" throw ")}()")
     (emitln "panic(" throw ")")))
 
 (defmethod emit* :def
