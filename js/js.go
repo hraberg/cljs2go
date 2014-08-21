@@ -32,11 +32,11 @@ type Boolean bool
 type Array []interface{}
 
 type Date struct {
-	Millis int64
+	Millis float64
 }
 
 func (this Date) time() time.Time {
-	return time.Unix(this.Millis/1000, 1000*(this.Millis%1000))
+	return time.Unix(int64(this.Millis)/1000, 1000*(int64(this.Millis)%1000))
 }
 
 func (this Date) GetUTCFullYear() float64 {

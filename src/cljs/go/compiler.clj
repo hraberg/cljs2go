@@ -49,7 +49,11 @@
 (defn go-public [s]
   (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
 
+(def ^:dynamic *go-return* nil)
+
 (defmethod emit-constant nil [x] (emits "nil"))
+(defmethod emit-constant Long [x] (emits "float64(" x ")"))
+(defmethod emit-constant Integer [x] (emits "float64(" x ")")) ; reader puts Integers in metadata
 (defmethod emit-constant String [x]
   (emits "js.JSString(" (wrap-in-double-quotes (escape-string x)) ")"))
 (defmethod emit-constant Character [x]
@@ -64,7 +68,7 @@
 (defn emits-keyword [kw]
   (let [ns   (namespace kw)
         name (name kw)]
-    (emits "&CljsCoreKeyword{")
+    (emits "(&CljsCoreKeyword{")
     (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
@@ -78,7 +82,7 @@
     (emits ",")
     (emits "Hash: ")
     (emit-constant (hash kw))
-    (emits "}")))
+    (emits "})")))
 
 (defmethod emit-constant clojure.lang.Keyword [x]
   (if (-> @env/*compiler* :opts :emit-constants)
@@ -92,7 +96,7 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "&CljsCoreSymbol{")
+    (emits "(&CljsCoreSymbol{")
     (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
@@ -107,19 +111,21 @@
     (emits ",")
     (emits "Meta: ")
     (emit-constant nil)
-    (emits "}")))
+    (emits "})")))
 
 ;; tagged literal support
 
 (defmethod emit-constant java.util.Date [^java.util.Date date]
-  (emits "&js.Date{Millis: " (.getTime date) "}"))
+  (emits "(&js.Date{Millis: " (.getTime date) "})"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "&CljsCoreUUID{Uuid: `" (.toString uuid) "`}"))
+  (emits "(&CljsCoreUUID{Uuid: `" (.toString uuid) "`})"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
-     (when (= :return (:context env#)) (emits "return "))
+     (when (= :return (:context env#)) (if-let [out# *go-return*]
+                                         (emits out# " = ")
+                                         (emits "return ")))
      ~@body
      (when-not (= :expr (:context env#)) (emitln))))
 
@@ -226,18 +232,18 @@
       (falsey-constant? test) (emitln else)
       :else
       (if (= :expr context)
-        (emits "func() { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} ()")
+        (emits "func() interface{} { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} }()")
         (do
           (if checked
-            (emitln "if(Truth_(" test "))")
-            (emitln "if(" test ")"))
-          (emitln "{" then "} else")
-          (emitln "{" else "}"))))))
+            (emitln "if Truth_(" test ") {")
+            (emitln "if " test " {"))
+          (emitln then "} else {")
+          (emitln else "}"))))))
 
 (defmethod emit* :case*
   [{:keys [v tests thens default env]}]
   (when (= (:context env) :expr)
-    (emitln "func(){"))
+    (emitln "func() interface{} {"))
   (let [gs (gensym "caseval__")]
     (when (= :expr (:context env))
       (emitln "var " gs ""))
@@ -247,8 +253,7 @@
         (emitln "case " test ":"))
       (if (= :expr (:context env))
         (emitln gs "=" then)
-        (emitln then))
-      (emitln "break"))
+        (emitln then)))
     (when default
       (emitln "default:")
       (if (= :expr (:context env))
@@ -476,7 +481,7 @@
 (defmethod emit* :do
   [{:keys [statements ret env]}]
   (let [context (:context env)]
-    (when (and statements (= :expr context)) (emits "func (){"))
+    (when (and statements (= :expr context)) (emits "func () interface{} {"))
     (when statements
       (emits statements))
     (emit ret)
@@ -486,13 +491,15 @@
   [{:keys [env try catch name finally]}]
   (let [context (:context env)]
     (if (or name finally)
-      (do
-        (emits "func (){")
+      (let [out (gensym "return__")]
+        (emits "func () (" out " interface{}) {")
         (when name
-          (emits "defer func() { if " (munge name) " := recover(); " (munge name) " != nil {" catch "}}()"))
+          (binding [*go-return* out]
+            (emitln "defer func() { if " (munge name) " := recover(); "
+                    (munge name) " != nil {" catch "}}()")))
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
-          (emits "defer func() {" finally "}()"))
+          (emitln "defer func() {" finally "}()"))
         (emits "{" try "}")
         (emits "}()"))
       (emits try))))
@@ -500,7 +507,7 @@
 (defn emit-let
   [{:keys [bindings expr env]} is-loop]
   (let [context (:context env)]
-    (when (= :expr context) (emits "func (){"))
+    (when (= :expr context) (emits "func () interface{} {"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
                                         (map #(vector (System/identityHashCode %)
@@ -513,7 +520,7 @@
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop
-        (emitln "break")
+        (emitln "return nil")
         (emitln "}")))
     (when (= :expr context) (emits "}()"))))
 
@@ -630,9 +637,9 @@
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-             (emits "&" ctor "{"
+             (emits "(&" ctor "{"
                     (comma-sep args)
-                    "}")))
+                    "})")))
 
 (defmethod emit* :set!
   [{:keys [target val env]}]
@@ -703,16 +710,18 @@
   (emit-wrap env
              (if field
                (emits target "." (munge field #{}))
-               (emits target "." (munge method #{}) "("
+               (emits target "." (munge (go-public method) #{}) "("
                       (comma-sep args)
                       ")"))))
+
+(def go-segs {["(" " instanceof " ")"] ["reflect.TypeOf(" ").Elem().String() == `" "`"]})
 
 (defmethod emit* :js
   [{:keys [env code segs args]}]
   (emit-wrap env
              (if code
                (emits code)
-               (emits (interleave (concat segs (repeat nil))
+               (emits (interleave (concat (go-segs segs segs) (repeat nil))
                                   (concat args [nil]))))))
 
 (defn rename-to-js
