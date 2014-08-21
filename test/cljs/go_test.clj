@@ -113,14 +113,61 @@
              (expr true '(let [y :foo]
                            (if y true false)) "if")
              (expr 5 '(loop [y 0]
-                        (if (>= y 5) y (recur (inc y)))) "loop")
+                        (if (>= y 5)
+                          y
+                          (recur (inc y)))) "loop")
              (expr 3 '(do 1 2 3) "do")
              (expr "&js.Date{Millis: 0}" '(js/Date. 0) "new")
              (expr 1970 '(.getUTCFullYear (js/Date. 0)) "dot")
              (expr "math.Inf(1)" 'js/Infinity "var")
-             (expr true '(let [x 2] (case x 2 true 1 false 0)) "case*")
-             (expr "reflect.Float64" '(let [x 1] (js* "reflect.ValueOf(x).Kind()")) "js*")
-             (expr "&js.Error{`Foo`}" '(try (throw (js/Error. "Foo")) (catch js/Error e e)) "try"))]
+             (expr true '(let [x 2]
+                           (case x
+                             2 true
+                             1 false
+                             0))
+                   "case*")
+             (expr "reflect.Float64" '(let [x 1]
+                                        (js* "reflect.ValueOf(x).Kind()"))
+                   "js*")
+             (expr "reflect.Int" '(let [v (js* "reflect.ValueOf(1)")]
+                                    (-> v .Type .Kind))
+                   "js*")
+             (expr "&js.Error{`Foo`}" '(try
+                                         (throw (js/Error. "Foo"))
+                                         (catch js/Error e
+                                           e))
+                   "try")
+             (expr "`TypeError`" '(try
+                                    (throw (js/TypeError. "Foo"))
+                                    (catch js/Error _
+                                      "Error")
+                                    (catch js/TypeError _
+                                      "TypeError"))
+                   "try")
+             (expr "`Bar`" '(try
+                              "Bar"
+                              (catch js/Error e
+                                e)
+                              (finally
+                                "Baz"))
+                   "try")
+             (expr "map[string]interface{}{`finally`: true}"
+                   '(let [x (js* "map[string]interface{}{}")]
+                      (try
+                        x
+                        (finally
+                          (js* "x[`finally`] = true")))) "try")
+             (expr "map[string]interface{}{`catch`: true, `finally`: true, `last`: `finally`}"
+                   '(let [x (js* "map[string]interface{}{}")]
+                      (try
+                        (throw (js/Error. "Foo"))
+                        (catch js/Error _
+                          (js* "x[`catch`] = true")
+                          (js* "x[`last`] = `catch`")
+                          x)
+                        (finally
+                          (js* "x[`finally`] = true")
+                          (js* "x[`last`] = `finally`")))) "try"))]
    (emit-test "go_test")))
 
 (deftest go-main-test

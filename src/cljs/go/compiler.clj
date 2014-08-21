@@ -223,6 +223,11 @@
         (emits "}"))
       (emits "[]interface{}{" (comma-sep items) "}"))))
 
+(defmethod emit* :constant
+  [{:keys [form env]}]
+  (when-not (= :statement (:context env))
+    (emit-wrap env (emit-constant form))))
+
 (defmethod emit* :if
   [{:keys [test then else env unchecked]}]
   (let [context (:context env)
@@ -491,15 +496,17 @@
   [{:keys [env try catch name finally]}]
   (let [context (:context env)]
     (if (or name finally)
-      (let [out (gensym "return__")]
+      (let [out (when name (gensym "return__"))]
+        (when (= :return (:context env))
+          (emits "return "))
         (emits "func () (" out " interface{}) {")
-        (when name
-          (binding [*go-return* out]
-            (emitln "defer func() { if " (munge name) " := recover(); "
-                    (munge name) " != nil {" catch "}}()")))
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
           (emitln "defer func() {" finally "}()"))
+        (when name
+          (binding [*go-return* (or out *go-return*)]
+            (emitln "defer func() { if " (munge name) " := recover(); "
+                    (munge name) " != nil {" catch "}}()")))
         (emits "{" try "}")
         (emits "}()"))
       (emits try))))
