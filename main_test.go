@@ -8,6 +8,9 @@ import (
 	"testing"
 )
 import (
+	"go/parser"
+	"go/token"
+
 	garray "github.com/hraberg/cljs.go/goog/array"
 	gobject "github.com/hraberg/cljs.go/goog/object"
 	gstring "github.com/hraberg/cljs.go/goog/string"
@@ -242,13 +245,39 @@ func Test_InteropViaReflection(t *testing.T) {
 
 // This is a side track, playing with the idea of writing the emitter in Go using the analyzer AST.
 func Test_ParseASTFromJSON(t *testing.T) {
-	data := `{"tag":"string","op":"constant","env":{"ns":null,"context":"statement","locals":{}},"form":"Hello World"}`
-	var ast map[string]interface{}
-	if err := json.Unmarshal([]byte(data), &ast); err != nil {
+	ast := `{"tag":"string","op":"constant","env":{"context":"statement","line":1, "column":1},"form":"Hello World"}`
+	var src map[string]interface{}
+	if err := json.Unmarshal([]byte(ast), &src); err != nil {
 		panic(err)
 	}
-	assert.NotNil(t, ast)
-	assert.Equal(t, 4, len(ast))
+	assert.NotNil(t, src)
+	assert.Equal(t, 4, len(src))
+}
+
+// Another side track, but it seems seems hard to create the tree without parsing it using go/ast.
+func Test_GenerateGoAST(t *testing.T) {
+	fset := token.NewFileSet()
+	src := `"Hello World"`
+	hello := fset.AddFile("hello.go", 1, len(src))
+	hello.SetLines([]int{0})
+	// lit := ast.BasicLit{Value: src, Kind: token.STRING, ValuePos: 1}
+	// ast.Print(fset, lit)
+
+	fset = token.NewFileSet()
+	f, err := parser.ParseFile(fset, "hello.go",
+		`package hello
+var x = "Hello World"`,
+		0)
+	if err != nil {
+		panic(err)
+	}
+	_ = f
+	// if err := ast.Print(fset, f); err != nil {
+	// 	panic(err)
+	// }
+	// if err := format.Node(os.Stdout, fset, f); err != nil {
+	// 	panic(err)
+	// }
 }
 
 /*
