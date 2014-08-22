@@ -1,5 +1,5 @@
 (ns cljs.go
-  (:require [cljs.analyzer]
+  (:require [cljs.analyzer :as ana]
             [cljs.closure]
             [cljs.env]
             [cljs.js-deps]
@@ -20,11 +20,14 @@
     (update-in ast [:env] #(select-keys % [:context :column :line]))))
 
 (defn cljs->ast
-  ([in] (cljs->ast in (cljs.analyzer/empty-env)))
+  ([in] (cljs->ast in (ana/empty-env)))
   ([in env]
-     (binding [cljs.analyzer/*cljs-ns* 'cljs.user
-               cljs.analyzer/*passes* [elide-children simplify-env cljs.analyzer/infer-type]]
-       (doall (map #(cljs.analyzer/analyze env %) in)))))
+     (cljs.env/ensure
+      (binding [ana/*cljs-ns* (or ana/*cljs-ns* 'cljs.user)
+                ana/*passes* [elide-children simplify-env ana/infer-type]]
+        (when-not (ana/get-namespace ana/*cljs-ns*)
+          (ana/analyze env (list 'ns ana/*cljs-ns*)))
+        (doall (map #(ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*)) %) in))))))
 
 (defn ast->go [in]
   (with-out-str

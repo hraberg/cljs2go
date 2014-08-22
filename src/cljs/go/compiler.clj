@@ -144,7 +144,7 @@
       (when-not (= :statement (:context env))
         (emit-wrap env (emits (munge (cond
                                       ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
-                                      (update-in info [:name] name)
+                                      (update-in info [:name] (comp go-public name))
                                       (:ns info)
                                       (update-in info [:name] #(str (namespace %) "." (go-public %)))
                                       :else info))))))))
