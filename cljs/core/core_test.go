@@ -164,7 +164,7 @@ func Test_InteropViaReflection(t *testing.T) {
 	assert.Equal(t, 3.14, NativeInvokeFunc.Invoke_Arity2(js.ParseFloat, []interface{}{js.JSString("3.14")}),
 		"(js/parseFloat \"3.14\")")
 
-	assert.Equal(t, "ABC", NativeInvokeFunc.Invoke_Arity2(js.String.FromCharCode, []interface{}{65, 66, 67}),
+	assert.Equal(t, "ABC", NativeInvokeFunc.Invoke_Arity2(js.String.FromCharCode, []interface{}{65.0, 66.0, 67.0}),
 		"(.fromCharCode js/String 65 66 67)")
 }
 
