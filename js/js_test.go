@@ -47,6 +47,6 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, "l", (JSString("Hello").CharAt(2)))
 	assert.Equal(t, 108, (JSString("Hello").CharCodeAt(2)))
-	assert.True(t, (Array.IsArray(JSArray{"Hello", "World"})))
-	assert.False(t, (Array.IsArray("Hello")))
+	assert.True(t, Array.IsArray(JSArray{"Hello", "World"}))
+	assert.False(t, Array.IsArray("Hello"))
 }

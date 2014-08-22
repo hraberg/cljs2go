@@ -147,13 +147,13 @@ var Console = struct {
 }}
 
 var String = struct {
-	FromCharCode func(...interface{}) interface{}
-}{func(num ...interface{}) interface{} {
+	FromCharCode func(...float64) JSString
+}{func(num ...float64) JSString {
 	var buffer bytes.Buffer
 	for _, n := range num {
-		buffer.WriteRune(rune(n.(int)))
+		buffer.WriteRune(rune(int(n)))
 	}
-	return buffer.String()
+	return JSString(buffer.String())
 }}
 
 type JSString string
