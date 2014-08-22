@@ -67,8 +67,8 @@
       (printf "}\n"))
     (printf "}\n")))
 
-(defn emit-test [package tests]
-  (let [^File f (io/file "target/generated" (str package ".go"))
+(defn emit-test [package file tests]
+  (let [^File f (io/file (str "target/generated/" package) (str file ".go"))
         src (gofmt (apply str (testify-header package) tests))]
     (io/make-parents f)
     (spit f src)
@@ -77,10 +77,10 @@
 (defn constant [expected actual]
   ["X" "Equal" expected (list 'def 'x actual)])
 
-(defn expr [expected actual op]
-  ["X" "Equal" expected (list 'def 'x actual) op])
+(defn expr [expected actual]
+  ["X" "Equal" expected (list 'def 'x actual)])
 
-(deftest go-emitter-tests
+(deftest constants
   (->>
    [(testify "Constants"
               (constant "nil" nil)
@@ -106,61 +106,67 @@
               (constant "&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, Hash: float64(-568535109), Meta: nil}"
                         ''user/x)
               (constant "&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, Hash: float64(2085900660)}"
-                        :user/x))
-    (testify "SpecialForms"
+                        :user/x))]
+   (emit-test "go_test" "constants_test")))
+
+(deftest special-forms
+  (->>
+   [(testify "Let"
              (expr 1 '(let [y 1]
-                        y) "let")
+                        y)))
+    (testify "If"
              (expr true '(let [y :foo]
-                           (if y true false)) "if")
+                           (if y true false)))
              (expr 1 '(let [y true
                             z (if y 1 0)]
-                        z) "if")
+                        z)))
+    (testify "Loop"
              (expr 5 '(loop [y 0]
                         (if (>= y 5)
                           y
-                          (recur (inc y)))) "loop")
-             (expr 3 '(do 1 2 3) "do")
-             (expr "&js.Date{Millis: 0}" '(js/Date. 0) "new")
-             (expr 1970 '(.getUTCFullYear (js/Date. 0)) "dot")
-             (expr "math.Inf(1)" 'js/Infinity "var")
+                          (recur (inc y))))))
+    (testify "Do"
+             (expr 3 '(do 1 2 3)))
+    (testify "New"
+             (expr "&js.Date{Millis: 0}" '(js/Date. 0)))
+    (testify "Dot"
+             (expr 1970 '(.getUTCFullYear (js/Date. 0))))
+    (testify "Var"
+             (expr "math.Inf(1)" 'js/Infinity))
+    (testify "Case"
              (expr true '(let [x 2]
                            (case x
                              2 true
                              1 false
-                             0))
-                   "case*")
+                             0))))
+    (testify "JS"
              (expr "reflect.Float64" '(let [x 1]
-                                        (js* "reflect.ValueOf(x).Kind()"))
-                   "js*")
+                                        (js* "reflect.ValueOf(x).Kind()")))
              (expr "reflect.Int" '(let [v (js* "reflect.ValueOf(1)")]
-                                    (-> v .Type .Kind))
-                   "js*")
+                                    (-> v .Type .Kind))))
+    (testify "Try"
              (expr "&js.Error{`Foo`}" '(try
                                          (throw (js/Error. "Foo"))
                                          (catch js/Error e
-                                           e))
-                   "try")
+                                           e)))
              (expr "`TypeError`" '(try
                                     (throw (js/TypeError. "Foo"))
                                     (catch js/Error _
                                       "Error")
                                     (catch js/TypeError _
-                                      "TypeError"))
-                   "try")
+                                      "TypeError")))
              (expr "`Bar`" '(try
                               "Bar"
                               (catch js/Error e
                                 e)
                               (finally
-                                "Baz"))
-                   "try")
+                                "Baz")))
              (expr "map[string]interface{}{`finally`: true}"
                    '(let [x (js* "map[string]interface{}{}")]
                       (try
                         x
                         (finally
-                          (js* "x[`finally`] = true"))))
-                   "try")
+                          (js* "x[`finally`] = true")))))
              (expr "map[string]interface{}{`catch`: true, `finally`: true, `last`: `finally`}"
                    '(let [x (js* "map[string]interface{}{}")]
                       (try
@@ -171,9 +177,8 @@
                           x)
                         (finally
                           (js* "x[`finally`] = true")
-                          (js* "x[`last`] = `finally`"))))
-                   "try"))]
-   (emit-test "go_test")))
+                          (js* "x[`last`] = `finally`"))))))]
+   (emit-test "go_test" "special_forms_test")))
 
 (deftest go-main-test
   (go-test "."))
