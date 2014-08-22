@@ -12,24 +12,24 @@ type StringBuffer struct {
 	Buffer interface{}
 }
 
-func (sb *StringBuffer) buffer() *bytes.Buffer {
-	switch sb.Buffer.(type) {
+func (this *StringBuffer) buffer() *bytes.Buffer {
+	switch this.Buffer.(type) {
 	case *bytes.Buffer:
 	case nil:
-		sb.Buffer = &bytes.Buffer{}
+		this.Buffer = &bytes.Buffer{}
 	default:
-		sb.Buffer = bytes.NewBufferString(fmt.Sprint(sb.Buffer))
+		this.Buffer = bytes.NewBufferString(fmt.Sprint(this.Buffer))
 	}
-	return sb.Buffer.(*bytes.Buffer)
+	return this.Buffer.(*bytes.Buffer)
 }
 
-func (sb *StringBuffer) String() string {
-	return sb.buffer().String()
+func (this *StringBuffer) String() string {
+	return this.buffer().String()
 }
 
-func (sb *StringBuffer) Append(a1 interface{}) *StringBuffer {
-	sb.buffer().WriteString(fmt.Sprint(a1))
-	return sb
+func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {
+	this.buffer().WriteString(fmt.Sprint(a1))
+	return this
 }
 
 func HashCode(str js.JSString) float64 {
