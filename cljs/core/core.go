@@ -57,6 +57,16 @@ var Println = Fn(func(objs ...interface{}) interface{} {
 
 var protocols = map[string]reflect.Type{}
 
+// This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.
+// While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
+// The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
+
+// Object
+// (toString [coll]
+//   (pr-str* coll))
+// (equiv [this other]
+//   (-equiv this other))
+
 var NativeSatisifes_QMARK_ = Fn(func(p, x interface{}) interface{} {
 	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 })
