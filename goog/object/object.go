@@ -1,7 +1,9 @@
 package object
 
-func Create(keyvals ...interface{}) map[string]interface{} {
-	obj := make(map[string]interface{})
+import "github.com/hraberg/cljs.go/js"
+
+func Create(keyvals ...interface{}) js.JSObject {
+	obj := make(js.JSObject, len(keyvals)/2)
 	for i := 0; i < len(keyvals); i++ {
 		obj[keyvals[i].(string)] = keyvals[i+1]
 		i++
@@ -9,7 +11,7 @@ func Create(keyvals ...interface{}) map[string]interface{} {
 	return obj
 }
 
-func ForEach(obj map[string]interface{}, f func(k, v, obj interface{}) interface{}) interface{} {
+func ForEach(obj js.JSObject, f func(k, v, obj interface{}) interface{}) interface{} {
 	for k, v := range obj {
 		f(k, v, obj)
 	}

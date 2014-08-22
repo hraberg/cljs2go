@@ -6,27 +6,28 @@ import (
 	goog_array "github.com/hraberg/cljs.go/goog/array"
 	goog_object "github.com/hraberg/cljs.go/goog/object"
 	goog_string "github.com/hraberg/cljs.go/goog/string"
+	"github.com/hraberg/cljs.go/js"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_Goog(t *testing.T) {
-	is := []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
+	is := js.JSArray{1.0, 2.0, 3.0, 4.0, 5.0}
 	goog_array.Shuffle(is)
 	goog_array.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
-	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
+	assert.Equal(t, js.JSArray{5.0, 4.0, 3.0, 2.0, 1.0}, is)
 	goog_array.Shuffle(is)
 	goog_array.StableSort(is, goog_array.DefaultCompare)
-	assert.Equal(t, []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}, is)
+	assert.Equal(t, js.JSArray{1.0, 2.0, 3.0, 4.0, 5.0}, is)
 
-	ss := []interface{}{"foo", "bar"}
+	ss := js.JSArray{"foo", "bar"}
 	goog_array.StableSort(ss, goog_array.DefaultCompare)
-	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
+	assert.Equal(t, js.JSArray{"bar", "foo"}, ss)
 
 	obj := goog_object.Create("foo", 2, "bar", 3)
-	copy := make(map[string]interface{})
+	copy := js.JSObject{}
 	goog_object.ForEach(obj, func(k, v, o interface{}) interface{} {
 		assert.Equal(t, obj, o)
-		assert.Equal(t, v, o.(map[string]interface{})[k.(string)])
+		assert.Equal(t, v, o.(js.JSObject)[k.(string)])
 		copy[k.(string)] = v
 		return nil
 	})

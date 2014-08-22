@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"reflect"
 	"regexp"
 	"strconv"
 	"time"
@@ -31,8 +32,16 @@ type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool
 }
-type Boolean bool
-type Array []interface{}
+type JSObject map[string]interface{}
+
+type JSBoolean bool
+type JSArray []interface{}
+
+var Array = struct {
+	IsArray func(interface{}) bool
+}{func(x interface{}) bool {
+	return reflect.TypeOf(x).Kind() == reflect.Slice
+}}
 
 type Date struct {
 	Millis float64

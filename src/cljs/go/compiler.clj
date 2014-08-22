@@ -214,14 +214,14 @@
   (emit-wrap env
     (if (= js-type :object)
       (do
-        (emits "map[string]interface{}{")
+        (emits "js.JSObject{")
         (when-let [items (seq items)]
           (let [[[k v] & r] items]
             (emits "\"" (name k) "\": " v)
             (doseq [[k v] r]
               (emits ", \"" (name k) "\": " v))))
         (emits "}"))
-      (emits "[]interface{}{" (comma-sep items) "}"))))
+      (emits "js.JSArray{" (comma-sep items) "}"))))
 
 (defmethod emit* :constant
   [{:keys [form env]}]
@@ -723,15 +723,21 @@
                       (comma-sep args)
                       ")"))))
 
-(def go-segs {["(" " instanceof " ")"] ["reflect.TypeOf(" ").Elem().String() == `" "`"]})
+(def go-segs {["(" " instanceof " ")"]
+              (fn [[o t]]
+                (emits "reflect.TypeOf(" o ").Elem().String() == `" t "`"))
+              ["(" " === " ")"]
+              (fn [[x y]]
+                (emits x " == " y))})
 
 (defmethod emit* :js
   [{:keys [env code segs args]}]
   (emit-wrap env
-             (if code
-               (emits code)
-               (emits (interleave (concat (go-segs segs segs) (repeat nil))
-                                  (concat args [nil]))))))
+             (cond
+              code (emits code)
+              (go-segs segs) ((go-segs segs) args)
+              :else (emits (interleave (concat segs (repeat nil))
+                                       (concat args [nil]))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a

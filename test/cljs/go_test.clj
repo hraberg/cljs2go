@@ -93,10 +93,10 @@
              ["`foo`" "foo"]
              ["'x'" \x]
              (binding [*data-readers* *cljs-data-readers*]
-               ["map[string]interface{}{`foo`: `bar`}"
+               ["js.JSObject{`foo`: `bar`}"
                 (read-string "#js {:foo \"bar\"}")])
              (binding [*data-readers* *cljs-data-readers*]
-               ["[]interface{}{\"foo\", \"bar\"}"
+               ["js.JSArray{\"foo\", \"bar\"}"
                 (read-string "#js [\"foo\", \"bar\"])")])
              ["&js.Date{Millis: 1408642409602}"
               #inst "2014-08-21T17:33:29.602-00:00"]
@@ -123,7 +123,7 @@
                    z)])
     (testify "Loop"
              [5 '(loop [y 0]
-                   (if (>= y 5)
+                   (if (== y 5)
                      y
                      (recur (inc y))))])
     (testify "Do"
@@ -164,14 +164,14 @@
                            e)
                          (finally
                            "Baz"))]
-             ["map[string]interface{}{`finally`: true}"
-              '(let [x (js* "map[string]interface{}{}")]
+             ["js.JSObject{`finally`: true}"
+              '(let [x (js* "js.JSObject{}")]
                  (try
                     x
                     (finally
                       (js* "x[`finally`] = true"))))]
-             ["map[string]interface{}{`catch`: true, `finally`: true, `last`: `finally`}"
-              '(let [x (js* "map[string]interface{}{}")]
+             ["js.JSObject{`catch`: true, `finally`: true, `last`: `finally`}"
+              '(let [x (js* "js.JSObject{}")]
                  (try
                    (throw (js/Error. "Foo"))
                    (catch js/Error _
@@ -183,5 +183,5 @@
                       (js* "x[`last`] = `finally`"))))])]
    (emit-test "go_test" "special_forms_test")))
 
-(deftest go-main-test
-  (go-test "."))
+(deftest go-all-tests
+  (go-test "./..."))
