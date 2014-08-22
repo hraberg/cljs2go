@@ -5,7 +5,13 @@
             [clojure.string :as s]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh])
-  (:import [java.io File]))
+  (:import [java.io File Writer]
+           [cljs.tagged_literals JSValue]))
+
+(defmethod print-method cljs.tagged_literals.JSValue
+  [^JSValue d ^Writer w]
+  (.write w "#js ")
+  (print-method (.val d) w))
 
 (defmacro emit [& body]
   `(let [res# (emit-go* '~body)]
