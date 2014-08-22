@@ -5,7 +5,7 @@ import "github.com/hraberg/cljs.go/js"
 func Create(keyvals ...interface{}) js.JSObject {
 	obj := make(js.JSObject, len(keyvals)/2)
 	for i := 0; i < len(keyvals); i++ {
-		obj[keyvals[i].(string)] = keyvals[i+1]
+		obj[keyvals[i].(js.JSString)] = keyvals[i+1]
 		i++
 	}
 	return obj

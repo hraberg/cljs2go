@@ -32,7 +32,7 @@ type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool
 }
-type JSObject map[string]interface{}
+type JSObject map[JSString]interface{}
 
 type JSBoolean bool
 type JSArray []interface{}

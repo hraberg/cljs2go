@@ -23,12 +23,12 @@ func Test_Goog(t *testing.T) {
 	goog_array.StableSort(ss, goog_array.DefaultCompare)
 	assert.Equal(t, js.JSArray{"bar", "foo"}, ss)
 
-	obj := goog_object.Create("foo", 2, "bar", 3)
+	obj := goog_object.Create(js.JSString("foo"), 2, js.JSString("bar"), 3)
 	copy := js.JSObject{}
 	goog_object.ForEach(obj, func(k, v, o interface{}) interface{} {
 		assert.Equal(t, obj, o)
-		assert.Equal(t, v, o.(js.JSObject)[k.(string)])
-		copy[k.(string)] = v
+		assert.Equal(t, v, o.(js.JSObject)[k.(js.JSString)])
+		copy[k.(js.JSString)] = v
 		return nil
 	})
 	assert.Equal(t, obj, copy)

@@ -217,9 +217,9 @@
         (emits "js.JSObject{")
         (when-let [items (seq items)]
           (let [[[k v] & r] items]
-            (emits "\"" (name k) "\": " v)
+            (emits "js.JSString(\"" (name k) "\"): " v)
             (doseq [[k v] r]
-              (emits ", \"" (name k) "\": " v))))
+              (emits ", js.JSString(\"" (name k) "\"): " v))))
         (emits "}"))
       (emits "js.JSArray{" (comma-sep items) "}"))))
 
