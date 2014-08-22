@@ -6,9 +6,6 @@ import (
 	"testing"
 )
 import (
-	garray "github.com/hraberg/cljs.go/goog/array"
-	gobject "github.com/hraberg/cljs.go/goog/object"
-	gstring "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js/Math"
 	"github.com/stretchr/testify/assert"
 )
@@ -48,34 +45,6 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, math.NaN(), ParseInt("3.14", 10))
 	assert.Equal(t, math.NaN(), ParseInt("x", 10))
 
-	is := []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
-	garray.Shuffle(is)
-	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
-	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
-	garray.Shuffle(is)
-	garray.StableSort(is, garray.DefaultCompare)
-	assert.Equal(t, []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}, is)
-
-	ss := []interface{}{"foo", "bar"}
-	garray.StableSort(ss, garray.DefaultCompare)
-	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
-
-	obj := gobject.Create("foo", 2, "bar", 3)
-	copy := make(map[string]interface{})
-	gobject.ForEach(obj, func(k, v, o interface{}) interface{} {
-		assert.Equal(t, obj, o)
-		assert.Equal(t, v, o.(map[string]interface{})[k.(string)])
-		copy[k.(string)] = v
-		return nil
-	})
-	assert.Equal(t, obj, copy)
-
-	sb := gstring.StringBuffer{}
-
-	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").String())
-	assert.Equal(t, "Hello JavaScript World", sb.String())
-
 	assert.Equal(t, "l", (JSString("Hello").CharAt(2)))
 	assert.Equal(t, 108, (JSString("Hello").CharCodeAt(2)))
-	assert.Equal(t, 3.012568359e+09, (gstring.HashCode("Hello World")))
 }
