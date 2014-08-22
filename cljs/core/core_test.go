@@ -151,7 +151,7 @@ func Test_InteropViaReflection(t *testing.T) {
 	assert.Equal(t, "bar", sb.Buffer,
 		"(set! (.-buffer sb) \"bar\")")
 	assert.Equal(t, sb, NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append", []interface{}{"baz"}))
-	assert.Equal(t, "barbaz", sb.Buffer,
+	assert.Equal(t, "barbaz", sb.String(),
 		"(.append sb \"baz\")")
 
 	assert.Equal(t, js.Number.MAX_VALUE, NativeGetInstanceField.Invoke_Arity2(js.Number, "MAX_VALUE"),

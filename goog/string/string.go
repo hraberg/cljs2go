@@ -1,6 +1,7 @@
 package string
 
 import (
+	"bytes"
 	"fmt"
 	"hash/fnv"
 
@@ -11,18 +12,23 @@ type StringBuffer struct {
 	Buffer interface{}
 }
 
-func (sb *StringBuffer) String() string {
+func (sb *StringBuffer) buffer() *bytes.Buffer {
 	switch sb.Buffer.(type) {
+	case *bytes.Buffer:
 	case nil:
-		sb.Buffer = js.JSString("")
-	case string:
-		sb.Buffer = js.JSString(sb.Buffer.(string))
+		sb.Buffer = &bytes.Buffer{}
+	default:
+		sb.Buffer = bytes.NewBufferString(fmt.Sprint(sb.Buffer))
 	}
-	return string(sb.Buffer.(js.JSString))
+	return sb.Buffer.(*bytes.Buffer)
+}
+
+func (sb *StringBuffer) String() string {
+	return sb.buffer().String()
 }
 
 func (sb *StringBuffer) Append(a1 interface{}) *StringBuffer {
-	sb.Buffer = js.JSString(sb.String() + fmt.Sprint(a1))
+	sb.buffer().WriteString(fmt.Sprint(a1))
 	return sb
 }
 
