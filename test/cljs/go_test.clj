@@ -56,6 +56,13 @@
     (println "\t" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))
     (println ")")))
 
+(defn test-comment [code ast]
+  (println "/*")
+  (clojure.pprint/pprint code)
+  (println)
+  (clojure.pprint/pprint ast)
+  (println"*/"))
+
 (defn testify [test & assertions]
   (with-out-str
     (printf "func Test_%s(t *testing.T) {\n" (name test))
@@ -63,14 +70,10 @@
             :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
       (when setup
         (printf "{\n")
-        (printf "/*\n")
-        (printf "%s\n" (with-out-str (clojure.pprint/pprint setup)))
-        (printf " */\n")
-        (printf "\t%s\n" (-> [setup] cljs->ast ast->go)))
-      (printf "/*\n")
-      (printf "%s\n" (with-out-str (clojure.pprint/pprint actual)))
-      (printf "%s\n" (with-out-str (clojure.pprint/pprint (first ast))))
-      (printf " */\n")
+        (let [ast (-> [setup] cljs->ast)]
+          (comment setup ast)
+          (printf "\t%s\n" (ast->go ast))))
+      (test-comment actual (first ast))
       (printf "\tassert.Equal(t%s, %s%s)\n"
               (if (nil? expected) "" (str ", \n" expected))
               (str "\n" (ast->go ast))
@@ -84,7 +87,7 @@
         src (gofmt (apply str (testify-header package) tests))]
     (io/make-parents f)
     (spit f src)
-    (go-test (io/file "." (.getParent f))))  )
+    (go-test (io/file "." (.getParent f)))))
 
 (deftest constants
   (->>
@@ -110,8 +113,12 @@
               #uuid "15c52219-a8fd-4771-87e2-42ee33b79bca"]
              ["&js.RegExp{Pattern: `x`, Flags: ``}" #"x"]
              ["&js.RegExp{Pattern: ``, Flags: ``}" #""]
+             ["&CljsCoreSymbol{Ns: nil, Name: `x`, Str: `x`, Hash: float64(-555367584), Meta: nil}"
+              ''x]
              ["&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, Hash: float64(-568535109), Meta: nil}"
               ''user/x]
+             ["&CljsCoreKeyword{Ns: nil, Name: `x`, Fqn: `x`, Hash: float64(2099068185)}"
+              :x]
              ["&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, Hash: float64(2085900660)}"
               :user/x])]
    (emit-test "go_test" "constants_test")))
