@@ -20,10 +20,14 @@ func Test_Goog(t *testing.T) {
 	assert.Equal(t, js.JSArray{1.0, 2.0, 3.0, 4.0, 5.0}, is)
 
 	ss := js.JSArray{"foo", "bar"}
+	assert.True(t, IsArray(ss))
+	assert.False(t, IsObject(ss))
 	goog_array.StableSort(ss, goog_array.DefaultCompare)
 	assert.Equal(t, js.JSArray{"bar", "foo"}, ss)
 
 	obj := goog_object.Create(js.JSString("foo"), 2, js.JSString("bar"), 3)
+	assert.True(t, IsObject(obj))
+	assert.False(t, IsArray(obj))
 	copy := js.JSObject{}
 	goog_object.ForEach(obj, func(k, v, o interface{}) interface{} {
 		assert.Equal(t, obj, o)
@@ -38,4 +42,9 @@ func Test_Goog(t *testing.T) {
 	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").String())
 	assert.Equal(t, "Hello JavaScript World", sb.String())
 	assert.Equal(t, 3.012568359e+09, (goog_string.HashCode("Hello World")))
+
+	s := js.JSString("Hello World")
+
+	assert.False(t, IsObject(s))
+	assert.True(t, IsString(s))
 }

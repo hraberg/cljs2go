@@ -28,6 +28,8 @@ func (e TypeError) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
+var Undefined interface{} = nil
+
 type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool
