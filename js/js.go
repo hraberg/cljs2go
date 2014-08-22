@@ -158,10 +158,10 @@ var String = struct {
 
 type JSString string
 
-func (this JSString) Replace(re RegExp, f func(JSString) JSString) JSString {
+func (this JSString) Replace(re RegExp, f func(interface{}) interface{}) JSString {
 	return JSString(re.compile().ReplaceAllStringFunc(string(this),
 		func(x string) string {
-			return string(f(JSString(x)))
+			return fmt.Sprint(f(JSString(x)))
 		}))
 }
 

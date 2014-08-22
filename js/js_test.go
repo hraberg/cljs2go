@@ -1,6 +1,7 @@
 package js
 
 import (
+	"fmt"
 	"math"
 	"strings"
 	"testing"
@@ -21,8 +22,8 @@ func Test_JS(t *testing.T) {
 	assert.Nil(t, RegExp{"Hello", ""}.Exec("World"))
 	assert.Equal(t, []JSString{"Hello", "Hello"}, RegExp{"hello", "i"}.Exec("World Hello Hello"))
 	assert.Equal(t, "HELLO World", (JSString("Hello World").Replace(RegExp{"hello", "i"},
-		func(match JSString) JSString {
-			return JSString(strings.ToUpper(string(match)))
+		func(match interface{}) interface{} {
+			return strings.ToUpper(fmt.Sprint(match))
 		},
 	)))
 	assert.Equal(t, 6, (JSString("Hello World").Search(RegExp{"world", "i"})))
