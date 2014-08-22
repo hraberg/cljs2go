@@ -165,7 +165,7 @@ func (this JSString) Replace(re *RegExp, f func(interface{}) interface{}) JSStri
 		}))
 }
 
-func (this JSString) Search(re RegExp) float64 {
+func (this JSString) Search(re *RegExp) float64 {
 	match := re.compile().FindStringIndex(this.String())
 	if match == nil {
 		return -1

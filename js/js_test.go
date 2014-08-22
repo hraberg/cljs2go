@@ -26,7 +26,7 @@ func Test_JS(t *testing.T) {
 			return strings.ToUpper(fmt.Sprint(match))
 		},
 	))
-	assert.Equal(t, 6, (JSString("Hello World").Search(RegExp{"world", "i"})))
+	assert.Equal(t, 6, JSString("Hello World").Search(&RegExp{"world", "i"}))
 	assert.Equal(t, "(?i)Hello", (&RegExp{"Hello", "i"}).String())
 
 	date := Date{1407962432671}
