@@ -19,10 +19,12 @@
               ast)]
     (update-in ast [:env] #(select-keys % [:context :column :line]))))
 
-(defn cljs->ast [in]
-  (binding [cljs.analyzer/*cljs-ns* 'cljs.user
-            cljs.analyzer/*passes* [elide-children simplify-env cljs.analyzer/infer-type]]
-    (doall (map #(cljs.analyzer/analyze (cljs.analyzer/empty-env) %) in))))
+(defn cljs->ast
+  ([in] (cljs->ast in (cljs.analyzer/empty-env)))
+  ([in env]
+     (binding [cljs.analyzer/*cljs-ns* 'cljs.user
+               cljs.analyzer/*passes* [elide-children simplify-env cljs.analyzer/infer-type]]
+       (doall (map #(cljs.analyzer/analyze env %) in)))))
 
 (defn ast->go [in]
   (with-out-str

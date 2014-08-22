@@ -59,10 +59,13 @@
         (printf "%s\n" (with-out-str (clojure.pprint/pprint setup)))
         (printf " */\n")
         (printf "\t%s\n" (-> [setup] cljs->ast ast->go)))
+      (printf "/*\n")
+      (printf "%s\n" (with-out-str (clojure.pprint/pprint actual)))
+      (printf " */\n")
       (printf "\tassert.%s(t%s, %s%s)\n"
               (s/capitalize (name assertion))
               (if (nil? expected) "" (str ", " expected))
-              actual
+              (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)) ast->go)
               (if (nil? message) "" (str ", `" message "`")))
       (printf "}\n"))
     (printf "}\n")))
@@ -74,11 +77,13 @@
     (spit f src)
     (go-test (io/file "." (.getParent f))))  )
 
-(defn constant [expected actual]
-  ["X" "Equal" expected (list 'def 'x actual)])
-
 (defn expr [expected actual]
-  ["X" "Equal" expected (list 'def 'x actual)])
+  [actual "Equal" expected])
+
+(defn constant [expected actual]
+  (expr expected actual))
+
+
 
 (deftest constants
   (->>
