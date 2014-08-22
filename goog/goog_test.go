@@ -38,13 +38,11 @@ func Test_Goog(t *testing.T) {
 	assert.Equal(t, obj, copy)
 
 	sb := goog_string.StringBuffer{}
-
 	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").String())
 	assert.Equal(t, "Hello JavaScript World", sb.String())
 	assert.Equal(t, 3.012568359e+09, (goog_string.HashCode("Hello World")))
 
 	s := js.JSString("Hello World")
-
 	assert.False(t, IsObject(s))
 	assert.True(t, IsString(s))
 }
