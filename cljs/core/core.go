@@ -57,17 +57,6 @@ var Println = Fn(func(objs ...interface{}) interface{} {
 
 var protocols = map[string]reflect.Type{}
 
-// This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.
-// While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
-// The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
-// This interface should maybe live in js for consistency.
-
-// Object
-// (toString [coll]
-//   (pr-str* coll))
-// (equiv [this other]
-//   (-equiv this other))
-
 var NativeSatisifes_QMARK_ = Fn(func(p, x interface{}) interface{} {
 	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 })
@@ -157,6 +146,18 @@ type CljsCoreKeyword struct {
 type CljsCoreSymbol struct {
 	Ns, Name, Str, Hash, Meta interface{}
 	AbstractIFn
+}
+
+// This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.
+// While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
+// The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
+
+func (this *CljsCoreSymbol) ToString() string {
+	return this.Str.(string)
+}
+
+func (this *CljsCoreSymbol) Equiv(other interface{}) bool {
+	return this == other
 }
 
 func (this *CljsCoreSymbol) Name_Arity1() string {

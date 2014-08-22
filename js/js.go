@@ -27,7 +27,10 @@ func (e TypeError) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
-type Object interface{}
+type Object interface {
+	ToString() string
+	Equiv(other interface{}) bool
+}
 type Boolean bool
 type Array []interface{}
 
