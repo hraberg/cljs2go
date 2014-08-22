@@ -72,9 +72,9 @@
       (printf "%s\n" (with-out-str (clojure.pprint/pprint (first ast))))
       (printf " */\n")
       (printf "\tassert.Equal(t%s, %s%s)\n"
-              (if (nil? expected) "" (str ", " expected))
-              (ast->go ast)
-              (if (nil? message) "" (str ", `" message "`")))
+              (if (nil? expected) "" (str ", \n" expected))
+              (str "\n" (ast->go ast))
+              (if (nil? message) "" (str ", \n`" message "`")))
       (when setup
         (printf "}\n")))
     (printf "}\n")))
