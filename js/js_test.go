@@ -19,10 +19,10 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 12, Math.Imul(2.3, 6.7))
 	assert.Equal(t, "ABC", String.FromCharCode(65, 66, 67))
 	assert.Nil(t, RegExp{"Hello", ""}.Exec("World"))
-	assert.Equal(t, []string{"Hello", "Hello"}, RegExp{"hello", "i"}.Exec("World Hello Hello"))
+	assert.Equal(t, []JSString{"Hello", "Hello"}, RegExp{"hello", "i"}.Exec("World Hello Hello"))
 	assert.Equal(t, "HELLO World", (JSString("Hello World").Replace(RegExp{"hello", "i"},
-		func(match string) string {
-			return strings.ToUpper(match)
+		func(match JSString) JSString {
+			return JSString(strings.ToUpper(string(match)))
 		},
 	)))
 	assert.Equal(t, 6, (JSString("Hello World").Search(RegExp{"world", "i"})))
@@ -38,7 +38,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 671, date.GetUTCMilliseconds())
 	assert.Equal(t, "2014-08-13 21:40:32.000671 +0100 BST", date.String())
 
-	assert.Equal(t, 3.14, ParseFloat("3.14"))
+	assert.Equal(t, 3.14, ParseFloat(JSString("3.14")))
 	assert.Equal(t, math.NaN(), ParseFloat(""))
 	assert.Equal(t, 3, ParseInt("3", 10))
 	assert.Equal(t, 10, ParseInt("a", 16))

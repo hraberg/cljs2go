@@ -19,7 +19,7 @@ func Test_Goog(t *testing.T) {
 	goog_array.StableSort(is, goog_array.DefaultCompare)
 	assert.Equal(t, js.JSArray{1.0, 2.0, 3.0, 4.0, 5.0}, is)
 
-	ss := js.JSArray{"foo", "bar"}
+	ss := js.JSArray{js.JSString("foo"), js.JSString("bar")}
 	assert.True(t, IsArray(ss))
 	assert.False(t, IsObject(ss))
 	goog_array.StableSort(ss, goog_array.DefaultCompare)
@@ -45,4 +45,11 @@ func Test_Goog(t *testing.T) {
 	s := js.JSString("Hello World")
 	assert.False(t, IsObject(s))
 	assert.True(t, IsString(s))
+	assert.Equal(t, "js.JSString", TypeOf(s))
+
+	assert.True(t, IsFunction(func() {}))
+
+	x, y := "Hello", "Hello"
+	assert.Equal(t, x, y)
+	assert.NotEqual(t, GetUid(x), GetUid(y))
 }

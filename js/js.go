@@ -102,8 +102,15 @@ func (this RegExp) compile() *regexp.Regexp {
 	return regexp.MustCompile(pattern)
 }
 
-func (this RegExp) Exec(str string) []string {
-	return this.compile().FindAllString(str, -1)
+func (this RegExp) Exec(str JSString) []JSString {
+	if match := this.compile().FindAllString(string(str), -1); match != nil {
+		strs := make([]JSString, len(match))
+		for i, v := range match {
+			strs[i] = JSString(v)
+		}
+		return strs
+	}
+	return nil
 }
 
 func (this RegExp) String() string {
@@ -118,15 +125,15 @@ func IsNAN(x float64) bool {
 	return math.IsNaN(x)
 }
 
-func ParseFloat(string string) float64 {
-	if val, ok := strconv.ParseFloat(string, 64); ok == nil {
+func ParseFloat(str JSString) float64 {
+	if val, ok := strconv.ParseFloat(string(str), 64); ok == nil {
 		return val
 	}
 	return math.NaN()
 }
 
-func ParseInt(string string, radix float64) float64 {
-	if val, ok := strconv.ParseInt(string, int(radix), 64); ok == nil {
+func ParseInt(str JSString, radix float64) float64 {
+	if val, ok := strconv.ParseInt(string(str), int(radix), 64); ok == nil {
 		return float64(val)
 	}
 	return math.NaN()
@@ -151,8 +158,11 @@ var String = struct {
 
 type JSString string
 
-func (this JSString) Replace(re RegExp, f func(string) string) string {
-	return re.compile().ReplaceAllStringFunc(string(this), f)
+func (this JSString) Replace(re RegExp, f func(JSString) JSString) JSString {
+	return JSString(re.compile().ReplaceAllStringFunc(string(this),
+		func(x string) string {
+			return string(f(JSString(x)))
+		}))
 }
 
 func (this JSString) Search(re RegExp) float64 {
@@ -163,8 +173,8 @@ func (this JSString) Search(re RegExp) float64 {
 	return float64(match[0])
 }
 
-func (this JSString) CharAt(index float64) string {
-	return string([]rune(string(this))[int(index)])
+func (this JSString) CharAt(index float64) JSString {
+	return JSString([]rune(string(this))[int(index)])
 }
 
 func (this JSString) CharCodeAt(index float64) float64 {

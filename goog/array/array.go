@@ -10,10 +10,10 @@ import (
 
 func DefaultCompare(x, y interface{}) interface{} {
 	switch t := y.(type) {
-	case string:
-		if y.(string) > x.(string) {
+	case js.JSString:
+		if y.(js.JSString) > x.(js.JSString) {
 			return 1.0
-		} else if y.(string) == x.(string) {
+		} else if y.(js.JSString) == x.(js.JSString) {
 			return 0.0
 		} else {
 			return -1.0

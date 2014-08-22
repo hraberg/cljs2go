@@ -1,25 +1,29 @@
 package goog
 
-import "reflect"
+import (
+	"reflect"
 
-func TypeOf(x interface{}) reflect.Type {
-	return reflect.TypeOf(x)
+	"github.com/hraberg/cljs.go/js"
+)
+
+func TypeOf(x interface{}) js.JSString {
+	return js.JSString(reflect.TypeOf(x).String())
 }
 
 func IsArray(x interface{}) bool {
-	return TypeOf(x).String() == `js.JSArray`
+	return TypeOf(x) == `js.JSArray`
 }
 
 func IsObject(x interface{}) bool {
-	return TypeOf(x).String() == `js.JSObject`
+	return TypeOf(x) == `js.JSObject`
 }
 
 func IsString(x interface{}) bool {
-	return TypeOf(x).String() == `js.JSString`
+	return TypeOf(x) == `js.JSString`
 }
 
 func IsFunction(x interface{}) bool {
-	return TypeOf(x).Kind() == reflect.Func
+	return reflect.TypeOf(x).Kind() == reflect.Func
 }
 
 func GetUid(obj interface{}) float64 {
