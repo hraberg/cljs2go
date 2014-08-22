@@ -1,7 +1,6 @@
 package core
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"testing"
@@ -167,17 +166,6 @@ func Test_InteropViaReflection(t *testing.T) {
 
 	assert.Equal(t, "ABC", NativeInvokeFunc.Invoke_Arity2(js.String.FromCharCode, []interface{}{65, 66, 67}),
 		"(.fromCharCode js/String 65 66 67)")
-}
-
-// This is a side track, playing with the idea of writing the emitter in Go using the analyzer AST.
-func Test_ParseASTFromJSON(t *testing.T) {
-	ast := `{"tag":"string","op":"constant","env":{"context":"statement","line":1, "column":1},"form":"Hello World"}`
-	var src map[string]interface{}
-	if err := json.Unmarshal([]byte(ast), &src); err != nil {
-		panic(err)
-	}
-	assert.NotNil(t, src)
-	assert.Equal(t, 4, len(src))
 }
 
 func PanicsWith(t *testing.T, message string, f assert.PanicTestFunc) {
