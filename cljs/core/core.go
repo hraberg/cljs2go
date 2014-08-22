@@ -60,6 +60,7 @@ var protocols = map[string]reflect.Type{}
 // This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.
 // While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
 // The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
+// This interface should maybe live in js for consistency.
 
 // Object
 // (toString [coll]
