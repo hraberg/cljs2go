@@ -20,11 +20,11 @@ type TypeError struct {
 	Message interface{}
 }
 
-func (e Error) Error() string {
+func (e *Error) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
-func (e TypeError) Error() string {
+func (e *TypeError) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
@@ -49,43 +49,43 @@ type Date struct {
 	Millis float64
 }
 
-func (this Date) time() time.Time {
+func (this *Date) time() time.Time {
 	return time.Unix(int64(this.Millis)/1000, 1000*(int64(this.Millis)%1000))
 }
 
-func (this Date) GetUTCFullYear() float64 {
+func (this *Date) GetUTCFullYear() float64 {
 	return float64(this.time().UTC().Year())
 }
 
-func (this Date) GetUTCMonth() float64 {
+func (this *Date) GetUTCMonth() float64 {
 	return float64(this.time().UTC().Month() - 1)
 }
 
-func (this Date) GetUTCDate() float64 {
+func (this *Date) GetUTCDate() float64 {
 	return float64(this.time().UTC().Day())
 }
 
-func (this Date) GetUTCHours() float64 {
+func (this *Date) GetUTCHours() float64 {
 	return float64(this.time().UTC().Hour())
 }
 
-func (this Date) GetUTCMinutes() float64 {
+func (this *Date) GetUTCMinutes() float64 {
 	return float64(this.time().UTC().Minute())
 }
 
-func (this Date) GetUTCSeconds() float64 {
+func (this *Date) GetUTCSeconds() float64 {
 	return float64(this.time().UTC().Second())
 }
 
-func (this Date) GetUTCMilliseconds() float64 {
+func (this *Date) GetUTCMilliseconds() float64 {
 	return float64(this.time().UTC().Nanosecond() / 1000)
 }
 
-func (this Date) String() string {
+func (this *Date) String() string {
 	return this.time().String()
 }
 
-func (this Date) ToString() string {
+func (this *Date) ToString() string {
 	return this.String()
 }
 
@@ -94,7 +94,7 @@ type RegExp struct {
 	Flags   string
 }
 
-func (this RegExp) compile() *regexp.Regexp {
+func (this *RegExp) compile() *regexp.Regexp {
 	pattern := this.Pattern
 	if len(this.Flags) != 0 {
 		pattern = "(?" + this.Flags + ")" + pattern
@@ -102,7 +102,7 @@ func (this RegExp) compile() *regexp.Regexp {
 	return regexp.MustCompile(pattern)
 }
 
-func (this RegExp) Exec(str JSString) []JSString {
+func (this *RegExp) Exec(str JSString) []JSString {
 	if match := this.compile().FindAllString(string(str), -1); match != nil {
 		strs := make([]JSString, len(match))
 		for i, v := range match {
@@ -113,7 +113,7 @@ func (this RegExp) Exec(str JSString) []JSString {
 	return nil
 }
 
-func (this RegExp) String() string {
+func (this *RegExp) String() string {
 	return this.compile().String()
 }
 
@@ -158,15 +158,15 @@ var String = struct {
 
 type JSString string
 
-func (this JSString) Replace(re RegExp, f func(interface{}) interface{}) JSString {
-	return JSString(re.compile().ReplaceAllStringFunc(string(this),
+func (this JSString) Replace(re *RegExp, f func(interface{}) interface{}) JSString {
+	return JSString(re.compile().ReplaceAllStringFunc(this.String(),
 		func(x string) string {
 			return fmt.Sprint(f(JSString(x)))
 		}))
 }
 
 func (this JSString) Search(re RegExp) float64 {
-	match := re.compile().FindStringIndex(string(this))
+	match := re.compile().FindStringIndex(this.String())
 	if match == nil {
 		return -1
 	}
@@ -174,11 +174,11 @@ func (this JSString) Search(re RegExp) float64 {
 }
 
 func (this JSString) CharAt(index float64) JSString {
-	return JSString([]rune(string(this))[int(index)])
+	return JSString([]rune(this.String())[int(index)])
 }
 
 func (this JSString) CharCodeAt(index float64) float64 {
-	return float64([]rune(string(this))[int(index)])
+	return float64([]rune(this.String())[int(index)])
 }
 
 func (this JSString) String() string {

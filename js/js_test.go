@@ -19,15 +19,15 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 2, Math.Floor(2.6))
 	assert.Equal(t, 12, Math.Imul(2.3, 6.7))
 	assert.Equal(t, "ABC", String.FromCharCode(65, 66, 67))
-	assert.Nil(t, RegExp{"Hello", ""}.Exec("World"))
-	assert.Equal(t, []JSString{"Hello", "Hello"}, RegExp{"hello", "i"}.Exec("World Hello Hello"))
-	assert.Equal(t, "HELLO World", (JSString("Hello World").Replace(RegExp{"hello", "i"},
+	assert.Nil(t, (&RegExp{"Hello", ""}).Exec("World"))
+	assert.Equal(t, []JSString{"Hello", "Hello"}, (&RegExp{"hello", "i"}).Exec("World Hello Hello"))
+	assert.Equal(t, "HELLO World", (JSString("Hello World")).Replace(&RegExp{"hello", "i"},
 		func(match interface{}) interface{} {
 			return strings.ToUpper(fmt.Sprint(match))
 		},
-	)))
+	))
 	assert.Equal(t, 6, (JSString("Hello World").Search(RegExp{"world", "i"})))
-	assert.Equal(t, "(?i)Hello", (RegExp{"Hello", "i"}).String())
+	assert.Equal(t, "(?i)Hello", (&RegExp{"Hello", "i"}).String())
 
 	date := Date{1407962432671}
 	assert.Equal(t, 2014, date.GetUTCFullYear())
