@@ -1,24 +1,17 @@
-package main
+package core
 
 import (
 	"encoding/json"
 	"fmt"
-	"math"
-	"strings"
+
 	"testing"
 )
 import (
-	"go/parser"
-	"go/token"
-
-	garray "github.com/hraberg/cljs.go/goog/array"
-	gobject "github.com/hraberg/cljs.go/goog/object"
 	gstring "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
 	"github.com/hraberg/cljs.go/js/Math"
 	"github.com/stretchr/testify/assert"
 )
-import . "github.com/hraberg/cljs.go/cljs/core"
 
 /*
 ;; IFn
@@ -47,73 +40,6 @@ import . "github.com/hraberg/cljs.go/cljs/core"
 .-cljs$lang$ctorPrWriter
 
 */
-
-func Test_JS(t *testing.T) {
-	assert.Equal(t, math.Inf(1), js.Infinity)
-	assert.Equal(t, math.MaxFloat64, js.Number.MAX_VALUE)
-	assert.Equal(t, 0.6046602879796196, Math.Random())
-	assert.Equal(t, 3, Math.Ceil(2.6))
-	assert.Equal(t, 2, Math.Floor(2.6))
-	assert.Equal(t, 12, Math.Imul(2.3, 6.7))
-	assert.Equal(t, "ABC", js.String.FromCharCode(65, 66, 67))
-	assert.Nil(t, js.RegExp{"Hello", ""}.Exec("World"))
-	assert.Equal(t, []string{"Hello", "Hello"}, js.RegExp{"hello", "i"}.Exec("World Hello Hello"))
-	assert.Equal(t, "HELLO World", (js.JSString("Hello World").Replace(js.RegExp{"hello", "i"},
-		func(match string) string {
-			return strings.ToUpper(match)
-		},
-	)))
-	assert.Equal(t, 6, (js.JSString("Hello World").Search(js.RegExp{"world", "i"})))
-	assert.Equal(t, "(?i)Hello", (js.RegExp{"Hello", "i"}).String())
-
-	date := js.Date{1407962432671}
-	assert.Equal(t, 2014, date.GetUTCFullYear())
-	assert.Equal(t, 7, date.GetUTCMonth())
-	assert.Equal(t, 13, date.GetUTCDate())
-	assert.Equal(t, 20, date.GetUTCHours())
-	assert.Equal(t, 40, date.GetUTCMinutes())
-	assert.Equal(t, 32, date.GetUTCSeconds())
-	assert.Equal(t, 671, date.GetUTCMilliseconds())
-	assert.Equal(t, "2014-08-13 21:40:32.000671 +0100 BST", date.String())
-
-	assert.Equal(t, 3.14, js.ParseFloat("3.14"))
-	assert.Equal(t, math.NaN(), js.ParseFloat(""))
-	assert.Equal(t, 3, js.ParseInt("3", 10))
-	assert.Equal(t, 10, js.ParseInt("a", 16))
-	assert.Equal(t, math.NaN(), js.ParseInt("3.14", 10))
-	assert.Equal(t, math.NaN(), js.ParseInt("x", 10))
-
-	is := []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
-	garray.Shuffle(is)
-	garray.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
-	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
-	garray.Shuffle(is)
-	garray.StableSort(is, garray.DefaultCompare)
-	assert.Equal(t, []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}, is)
-
-	ss := []interface{}{"foo", "bar"}
-	garray.StableSort(ss, garray.DefaultCompare)
-	assert.Equal(t, []interface{}{"bar", "foo"}, ss)
-
-	obj := gobject.Create("foo", 2, "bar", 3)
-	copy := make(map[string]interface{})
-	gobject.ForEach(obj, func(k, v, o interface{}) interface{} {
-		assert.Equal(t, obj, o)
-		assert.Equal(t, v, o.(map[string]interface{})[k.(string)])
-		copy[k.(string)] = v
-		return nil
-	})
-	assert.Equal(t, obj, copy)
-
-	sb := gstring.StringBuffer{}
-
-	assert.Equal(t, "Hello JavaScript World", sb.Append("Hello Java").Append("Script World").String())
-	assert.Equal(t, "Hello JavaScript World", sb.String())
-
-	assert.Equal(t, "l", (js.JSString("Hello").CharAt(2)))
-	assert.Equal(t, 108, (js.JSString("Hello").CharCodeAt(2)))
-	assert.Equal(t, 3.012568359e+09, (gstring.HashCode("Hello World")))
-}
 
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
@@ -252,133 +178,6 @@ func Test_ParseASTFromJSON(t *testing.T) {
 	}
 	assert.NotNil(t, src)
 	assert.Equal(t, 4, len(src))
-}
-
-// Another side track, but it seems seems hard to create the tree without parsing it using go/ast.
-// For more AST, see https://talks.golang.org/2014/hammers.slide
-func Test_GenerateGoAST(t *testing.T) {
-	fset := token.NewFileSet()
-	src := `"Hello World"`
-	hello := fset.AddFile("hello.go", 1, len(src))
-	hello.SetLines([]int{0})
-	// lit := ast.BasicLit{Value: src, Kind: token.STRING, ValuePos: 1}
-	// ast.Print(fset, lit)
-
-	fset = token.NewFileSet()
-	f, err := parser.ParseFile(fset, "hello.go",
-		`package hello
-var x = "Hello World"`,
-		0)
-	if err != nil {
-		panic(err)
-	}
-	_ = f
-	// if err := ast.Print(fset, f); err != nil {
-	// 	panic(err)
-	// }
-	// if err := format.Node(os.Stdout, fset, f); err != nil {
-	// 	panic(err)
-	// }
-}
-
-/*
-These are the special-forms of ClojureScript.
-We need two levels of tests, one in Clojure testing the emitter, and one in Go testing and defining the semantics.
-For now, the first test will be string based, and the expected Go source will be duplicated and tested here.
-Eventually we want to actually generate the Go tests from Clojure, or at least an example package they use instead.
-
-:no-op
-:var
-:meta
-:map
-:list
-:vector
-:set
-:js-value
-:constant
-:if
-:case*
-:throw
-:def
-:fn
-:do
-:try
-:let
-:loop
-:recur
-:letfn
-:invoke
-:new
-:set!
-:ns
-:deftype*
-:defrecord*
-:dot
-:js
-*/
-
-func Benchmark_RecursiveDirectCall(t *testing.B) {
-	fib := func(this IFn) IFn {
-		return Fn(this, func(n interface{}) interface{} {
-			if n == 0.0 {
-				return 0.0
-			} else if n == 1.0 {
-				return 1.0
-			} else {
-				return this.Invoke_Arity1(n.(float64)-1.0).(float64) +
-					this.Invoke_Arity1(n.(float64)-2.0).(float64)
-			}
-		})
-	}(&AFn{})
-	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
-}
-
-func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
-	fib := func(this *AFnPrimtive) IFn {
-		return Fn(this, func(n float64) float64 {
-			if n == 0.0 {
-				return 0.0
-			} else if n == 1.0 {
-				return 1.0
-			} else {
-				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
-			}
-		})
-	}(&AFnPrimtive{})
-	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
-}
-
-func Benchmark_RecursiveDispatch(t *testing.B) {
-	fib := func(this *AFn) IFn {
-		return Fn(this, func(a interface{}) interface{} {
-			var n = a.(float64)
-			if n == 0.0 {
-				return 0.0
-			} else if n == 1.0 {
-				return 1.0
-			} else {
-				return this.Call(n-1.0).(float64) + this.Call(n-2.0).(float64)
-			}
-		})
-	}(&AFn{})
-	assert.Equal(t, 832040, fib.(*AFn).Call(30.0))
-}
-
-func Benchmark_RecursiveGo(t *testing.B) {
-	fib := func() func(float64) float64 {
-		var this func(float64) float64
-		this = func(n float64) float64 {
-			if n == 0 {
-				return 0
-			} else if n == 1 {
-				return 1
-			} else {
-				return this(n-1) + this(n-2)
-			}
-		}
-		return this
-	}()
-	assert.Equal(t, 832040, fib(30))
 }
 
 func PanicsWith(t *testing.T, message string, f assert.PanicTestFunc) {
