@@ -112,6 +112,9 @@
                         y) "let")
              (expr true '(let [y :foo]
                            (if y true false)) "if")
+             (expr 1 '(let [y true
+                            z (if y 1 0)]
+                        z) "if")
              (expr 5 '(loop [y 0]
                         (if (>= y 5)
                           y

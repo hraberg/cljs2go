@@ -282,7 +282,9 @@
       (if (= :fn (:op init))
         (emits init)
         (do
-          (emits "var " (last (string/split (str mname) #"\.")) " interface{}")
+          (emits "var " (last (string/split (str mname) #"\.")))
+          (when (= 'clj-nil (:tag init))
+            (emits " interface{}"))
           (emitln " = " init)))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
