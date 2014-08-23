@@ -22,16 +22,7 @@
 (defn test-header [package & imports]
   (with-out-str
     (println "package" package)
-    (println "import (")
-    (doseq [import (concat ["testing"
-                            "math"
-                            "reflect"
-                            "github.com/stretchr/testify/assert"
-                            "github.com/hraberg/cljs.go/js"]
-                           imports)]
-      (println "\t" (pr-str import)))
-    (println "\t" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))
-    (println ")")))
+    (println "import" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))))
 
 (defn test-comment [code ast]
   (println "/*")
@@ -61,9 +52,10 @@
     (printf "}\n")))
 
 (defn emit-test [package file tests]
+  (go-get "github.com/stretchr/testify/assert")
   (doto (io/file (str "target/generated/" package) (str file ".go"))
     io/make-parents
-    (spit (gofmt (apply str (test-header package) tests)))))
+    (spit (goimports (apply str (test-header package) tests)))))
 
 (defn constants []
   (->>

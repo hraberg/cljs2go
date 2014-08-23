@@ -40,10 +40,7 @@
 
 (defn goimports [in]
   (go-get "code.google.com/p/go.tools/cmd/goimports")
-  (sh/sh "goimports" :in in))
-
-(defn gofmt [in]
-  (let [{:keys [exit out err]} (goimports in)]
+  (let [{:keys [exit out err]} (sh/sh "goimports" :in in)]
     (if (zero? exit)
       out
       (do (println err) in))))
