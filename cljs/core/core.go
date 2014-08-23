@@ -287,11 +287,7 @@ var Str = func(Str IFn) IFn {
 }(&AFn{})
 
 var Not = Fn(&AFnPrimtive{}, func(x interface{}) bool {
-	if Truth_(x) {
-		return false
-	} else {
-		return true
-	}
+	return !Truth_(x)
 }).(*AFnPrimtive)
 
 // cljs.reflect / clojure.lang.Reflector
