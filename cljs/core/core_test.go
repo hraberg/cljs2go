@@ -83,7 +83,7 @@ func Test_Invoke(t *testing.T) {
 }
 
 func Test_PrimitiveFn(t *testing.T) {
-	fib := func(this *AFnPrimtive) IFn {
+	fib := func(this *AFnPrimtive) *AFnPrimtive {
 		return Fn(this, func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
@@ -92,20 +92,23 @@ func Test_PrimitiveFn(t *testing.T) {
 			} else {
 				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
 			}
-		})
+		}).(*AFnPrimtive)
 	}(&AFnPrimtive{})
-	assert.NotNil(t, fib.(*AFnPrimtive).Arity1FF)
-	assert.NotNil(t, fib.(*AFnPrimtive).Arity1)
-	assert.Nil(t, fib.(*AFnPrimtive).Arity0F)
+	assert.NotNil(t, fib.Arity1FF)
+	assert.NotNil(t, fib.Arity1)
+	assert.Nil(t, fib.Arity0F)
 	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
 
 	odd := Fn(&AFnPrimtive{}, func(n interface{}) bool {
 		return int(n.(float64))%2 != 0
-	})
-	assert.NotNil(t, odd.(*AFnPrimtive).Arity1IB)
-	assert.NotNil(t, odd.(*AFnPrimtive).Arity1)
+	}).(*AFnPrimtive)
+	assert.NotNil(t, odd.Arity1IB)
+	assert.NotNil(t, odd.Arity1)
 	assert.True(t, odd.Invoke_Arity1(1.0).(bool))
-	assert.False(t, odd.(*AFnPrimtive).Arity1IB(2.0))
+	assert.False(t, odd.Arity1IB(2.0))
+
+	assert.True(t, Not.Invoke_Arity1(false).(bool))
+	assert.False(t, Not.Arity1IB(true))
 }
 
 func Test_Protocols(t *testing.T) {
