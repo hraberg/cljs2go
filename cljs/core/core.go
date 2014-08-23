@@ -291,48 +291,54 @@ var Not = Fn(&AFnPrimtive{}, func(x interface{}) bool {
 }).(*AFnPrimtive)
 
 // cljs.reflect / clojure.lang.Reflector
-var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
-	tv := reflect.ValueOf(target)
-	if tv.Kind() == reflect.Ptr {
-		tv = tv.Elem()
+
+func element(x interface{}) reflect.Value {
+	if e := reflect.ValueOf(x); e.Kind() == reflect.Ptr {
+		return e.Elem()
+	} else {
+		return e
 	}
-	return tv.FieldByName(fieldName.(string)).Interface()
+}
+
+var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
+	return element(target).FieldByName(fieldName.(string)).Interface()
 })
 
 var NativeSetInstanceField = Fn(func(target, fieldName, val interface{}) interface{} {
-	tv := reflect.ValueOf(target)
-	if tv.Kind() == reflect.Ptr {
-		tv = tv.Elem()
-	}
-	tv.FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+	element(target).FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
 	return val
 })
 
-var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
-	var fv reflect.Value
-	switch f.(type) {
-	case reflect.Value:
-		fv = f.(reflect.Value)
-	default:
-		fv = reflect.ValueOf(f)
+func value(x interface{}) reflect.Value {
+	if v, ok := x.(reflect.Value); ok {
+		return v
 	}
+	return reflect.ValueOf(x)
+}
+
+var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
 	in := make([]reflect.Value, len(args.([]interface{})))
 	for i, a := range args.([]interface{}) {
 		in[i] = reflect.ValueOf(a)
 	}
-	return fv.Call(in)[0].Interface()
+	return value(f).Call(in)[0].Interface()
 })
 
-var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
+func decorate(target interface{}) interface{} {
 	switch object := target.(type) {
 	case string:
-		target = js.JSString(object)
+		return js.JSString(object)
 	case []interface{}:
-		target = js.JSArray(object)
+		return js.JSArray(object)
 	case map[string]interface{}:
-		target = js.JSObject(object)
+		return js.JSObject(object)
+	default:
+		return object
 	}
-	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
+}
+
+var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
+	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
 })
 
 // cljs.rt
