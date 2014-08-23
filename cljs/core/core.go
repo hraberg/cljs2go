@@ -57,6 +57,10 @@ var Println = Fn(func(objs ...interface{}) interface{} {
 
 var protocols = map[string]reflect.Type{}
 
+func RegisterProtocol(name string, p interface{}) {
+	protocols[name] = reflect.TypeOf(p).Elem()
+}
+
 var NativeSatisifes_QMARK_ = Fn(func(p, x interface{}) interface{} {
 	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 })
@@ -75,7 +79,7 @@ var Namespace_ = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	protocols["cljs.core/INamed"] = reflect.TypeOf((*INamed)(nil)).Elem()
+	RegisterProtocol("cljs.core/INamed", (*INamed)(nil))
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
@@ -105,7 +109,7 @@ var Invoke_ = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	protocols["cljs.core/IFn"] = reflect.TypeOf((*IFn)(nil)).Elem()
+	RegisterProtocol("cljs.core/IFn", (*IFn)(nil))
 }
 
 type ILookup interface {
@@ -120,7 +124,7 @@ var Lookup_ = Fn(func(this, k interface{}) interface{} {
 })
 
 func init() {
-	protocols["cljs.core/ILookup"] = reflect.TypeOf((*ILookup)(nil)).Elem()
+	RegisterProtocol("cljs.core/ILookup", (*ILookup)(nil))
 }
 
 // This will likley be generated / overriding the gen-apply-to stuff.
@@ -152,12 +156,20 @@ type CljsCoreSymbol struct {
 // While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
 // The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
 
-func (this *CljsCoreSymbol) ToString() string {
-	return this.Str.(string)
+func (this *CljsCoreSymbol) ToString() js.JSString {
+	return js.JSString((this.Str).(string))
+}
+
+// Will be added automatically when implementing ToString
+func (this *CljsCoreSymbol) String() string {
+	return string(this.ToString())
 }
 
 func (this *CljsCoreSymbol) Equiv(other interface{}) bool {
-	return this == other
+	if ptr, instanceof := other.(*CljsCoreSymbol); instanceof {
+		other = *ptr
+	}
+	return *this == other
 }
 
 func (this *CljsCoreSymbol) Name_Arity1() string {
@@ -166,10 +178,6 @@ func (this *CljsCoreSymbol) Name_Arity1() string {
 
 func (this *CljsCoreSymbol) Namespace_Arity1() string {
 	return this.Ns.(string)
-}
-
-func (this *CljsCoreSymbol) String() string {
-	return this.Str.(string)
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
@@ -645,6 +653,10 @@ func Fn(fns ...interface{}) IFn {
 
 func Truth_(x interface{}) bool {
 	return x != nil && x != false
+}
+
+func init() {
+	RegisterProtocol("js/Object", (*js.Object)(nil))
 }
 
 func Main() {

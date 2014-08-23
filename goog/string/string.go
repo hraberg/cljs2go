@@ -23,8 +23,19 @@ func (this *StringBuffer) buffer() *bytes.Buffer {
 	return this.Buffer.(*bytes.Buffer)
 }
 
+func (this *StringBuffer) Equiv(other interface{}) bool {
+	if ptr, instanceof := other.(*StringBuffer); instanceof {
+		other = *ptr
+	}
+	return *this == other
+}
+
+func (this *StringBuffer) ToString() js.JSString {
+	return js.JSString(this.buffer().String())
+}
+
 func (this *StringBuffer) String() string {
-	return this.buffer().String()
+	return string(this.ToString())
 }
 
 func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {

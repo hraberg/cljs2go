@@ -31,9 +31,10 @@ func (e *TypeError) Error() string {
 var Undefined interface{} = nil
 
 type Object interface {
-	ToString() string
+	ToString() JSString
 	Equiv(other interface{}) bool
 }
+
 type JSObject map[JSString]interface{}
 
 type JSBoolean bool
