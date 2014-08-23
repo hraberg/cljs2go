@@ -63,6 +63,17 @@
   (clojure.pprint/pprint ast)
   (println"*/"))
 
+(defn test-setup [setup]
+  (let [ast (-> [setup] cljs->ast)]
+    (test-comment setup ast)
+    (printf "\t%s\n" (ast->go ast))))
+
+(defn test-setup-toplevel [setup]
+  (binding [cljs.analyzer/*cljs-file* (.getAbsolutePath (io/file (io/resource "cljs/go_test.clj")))
+            cljs.compiler/*go-line-numbers* true]
+    (with-out-str
+      (test-setup setup))))
+
 (defn testify [test & assertions]
   (binding [cljs.analyzer/*cljs-file* (.getAbsolutePath (io/file (io/resource "cljs/go_test.clj")))
             cljs.compiler/*go-line-numbers* true]
@@ -72,9 +83,7 @@
               :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
         (when setup
           (printf "{\n")
-          (let [ast (-> [setup] cljs->ast)]
-            (test-comment setup ast)
-            (printf "\t%s\n" (ast->go ast))))
+          (test-setup setup))
         (test-comment actual (first ast))
         (printf "\tassert.Equal(t%s, %s%s)\n"
                 (if (nil? expected) "" (str ", \n" expected))
@@ -185,8 +194,10 @@
                      (recur (inc y))))])
     (testify "Do"
              [3 '(do 1 2 3)])
+    (test-setup-toplevel
+     '(def x 2))
     (testify "Def"
-             [2 'x '(def x 2)])
+             [2 'x])
     (testify "New"
              ["&js.Date{Millis: 0}" '(js/Date. 0)])
     (testify "Dot"
