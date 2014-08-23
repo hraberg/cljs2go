@@ -34,9 +34,6 @@
     (cljs.env/with-compiler-env (cljs.env/default-compiler-env)
       (dorun (map cljs.compiler/emit in)))))
 
-(defn -main [& args]
-  (println "ClojureScript to Go [clojure]"))
-
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]
     (assert (zero? exit) err)))
@@ -51,48 +48,5 @@
       out
       (do (println err) in))))
 
-(defn with-line-numbers [in]
-  (->> (for [[n l] (map-indexed vector (s/split-lines in))]
-         (format "%3d  %s\n" (inc n) l))
-       (apply str)
-       s/trim-newline))
-
-(defn print-ast-and-emitted-go
-  ([cljs ast go] (print-ast-and-emitted-go cljs ast go nil))
-  ([cljs ast go gofmt]
-      (println "==================== ClojureScript")
-      (doseq [f cljs]
-        (pp/pprint f))
-      (println "==================== AST")
-      (pp/pprint ast)
-      (println "==================== Go")
-      (println (with-line-numbers go))
-      (when (seq gofmt)
-        (println "==================== gofmt")
-        (println gofmt))))
-
-(defn emit-go*
-  ([cljs] (emit-go* false cljs))
-  ([debug? cljs]
-     (let [ast (cljs->ast cljs)
-           go (ast->go ast)
-           {:keys [exit err out] :as result} (goimports go)
-           error? (pos? exit)
-           go (if error? go out)]
-       (when (or error? debug?)
-         (print-ast-and-emitted-go cljs ast go err))
-       result)))
-
-(defn emit-go [cljs]
-  (let [{:keys [out err exit]} (emit-go* cljs)]
-    (assert (zero? exit) err)
-    out))
-
-(comment
-  (cljs.closure/build '[(ns hello.core)
-                        (defn ^{:export greet} greet [n] (str "Hola " n))
-                        (defn ^:export sum [xs] 42)]
-                      {:optimizations :none})
-
-  (cljs.closure/build (str "checkouts/clojurescript/" "samples/hello/src")
-                      {:optimizations :none}))
+(defn -main [& args]
+  (println "ClojureScript to Go [clojure]"))
