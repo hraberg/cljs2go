@@ -50,13 +50,11 @@
   (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
 
 (def ^:dynamic *go-return* nil)
-(def ^:dynamic *go-current-line* (atom 0))
+(def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
 (defn emitln [& xs]
-  (when-let [line (apply max @*go-current-line* (filter number? (map (comp :line :env) xs)))]
-    (when (not= line @*go-current-line*)
-      (reset! *go-current-line* line)
-      (printf "//line %s:%d \n" ana/*cljs-file* line)))
+  (when-let [line (and *go-line-numbers* (some (comp :line :env) xs))]
+    (printf "\n//line %s:%d\n" ana/*cljs-file* line))
   (apply emits xs)
   (println)
   nil)

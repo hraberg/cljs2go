@@ -64,7 +64,8 @@
   (println"*/"))
 
 (defn testify [test & assertions]
-  (binding [cljs.analyzer/*cljs-file* (.getAbsolutePath (io/file (io/resource "cljs/go_test.clj")))]
+  (binding [cljs.analyzer/*cljs-file* (.getAbsolutePath (io/file (io/resource "cljs/go_test.clj")))
+            cljs.compiler/*go-line-numbers* true]
     (with-out-str
       (printf "func Test_%s(t *testing.T) {\n" (name test))
       (doseq [[expected actual setup message] assertions
