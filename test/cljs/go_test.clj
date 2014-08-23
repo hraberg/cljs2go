@@ -97,10 +97,9 @@
   (let [^File f (io/file (str "target/generated/" package) (str file ".go"))
         src (gofmt (apply str (testify-header package) tests))]
     (io/make-parents f)
-    (spit f src)
-    (go-test (io/file "." (.getParent f)))))
+    (spit f src)))
 
-(deftest constants
+(defn constants []
   (->>
    [(testify "Constants"
              ["nil" nil]
@@ -134,7 +133,7 @@
               :user/x])]
    (emit-test "go_test" "constants_test")))
 
-(deftest special-forms
+(defn special-forms []
   (->>
    [(testify "Let"
              [1 '(let [y 1]
@@ -252,4 +251,6 @@
    (emit-test "go_test" "special_forms_test")))
 
 (deftest go-all-tests
+  (constants)
+  (special-forms)
   (go-test "./..."))
