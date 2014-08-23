@@ -63,7 +63,7 @@
 (defmethod emit-constant Long [x] (emits "float64(" x ")"))
 (defmethod emit-constant Integer [x] (emits "float64(" x ")")) ; reader puts Integers in metadata
 (defmethod emit-constant String [x]
-  (emits "js.JSString(" (wrap-in-double-quotes (escape-string x)) ")"))
+  (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Character [x]
   (emits (str "'" (escape-char x) "'")))
 
@@ -222,14 +222,14 @@
   (emit-wrap env
     (if (= js-type :object)
       (do
-        (emits "js.JSObject{")
+        (emits "map[string]interface{}{")
         (when-let [items (seq items)]
           (let [[[k v] & r] items]
-            (emits "js.JSString(\"" (name k) "\"): " v)
+            (emits "\"" (name k) "\": " v)
             (doseq [[k v] r]
-              (emits ", js.JSString(\"" (name k) "\"): " v))))
+              (emits ", \"" (name k) "\": " v))))
         (emits "}"))
-      (emits "js.JSArray{" (comma-sep items) "}"))))
+      (emits "[]interface{}{" (comma-sep items) "}"))))
 
 (defmethod emit* :constant
   [{:keys [form env]}]

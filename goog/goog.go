@@ -1,25 +1,21 @@
 package goog
 
-import (
-	"reflect"
+import "reflect"
 
-	"github.com/hraberg/cljs.go/js"
-)
-
-func TypeOf(x interface{}) js.JSString {
-	return js.JSString(reflect.TypeOf(x).String())
+func TypeOf(x interface{}) string {
+	return reflect.TypeOf(x).String()
 }
 
 func IsArray(x interface{}) bool {
-	return TypeOf(x) == `js.JSArray`
+	return reflect.TypeOf(x).Kind() == reflect.Slice
 }
 
 func IsObject(x interface{}) bool {
-	return TypeOf(x) == `js.JSObject`
+	return reflect.TypeOf(x).Kind() == reflect.Map
 }
 
 func IsString(x interface{}) bool {
-	return TypeOf(x) == `js.JSString`
+	return reflect.TypeOf(x).Kind() == reflect.String
 }
 
 func IsFunction(x interface{}) bool {

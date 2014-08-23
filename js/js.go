@@ -31,11 +31,11 @@ func (e *TypeError) Error() string {
 var Undefined interface{} = nil
 
 type Object interface {
-	ToString() JSString
+	ToString() string
 	Equiv(other interface{}) bool
 }
 
-type JSObject map[JSString]interface{}
+type JSObject map[string]interface{}
 
 type JSBoolean bool
 type JSArray []interface{}
@@ -103,11 +103,11 @@ func (this *RegExp) compile() *regexp.Regexp {
 	return regexp.MustCompile(pattern)
 }
 
-func (this *RegExp) Exec(str JSString) []JSString {
+func (this *RegExp) Exec(str string) []interface{} {
 	if match := this.compile().FindAllString(string(str), -1); match != nil {
-		strs := make([]JSString, len(match))
+		strs := make([]interface{}, len(match))
 		for i, v := range match {
-			strs[i] = JSString(v)
+			strs[i] = v
 		}
 		return strs
 	}
@@ -126,15 +126,15 @@ func IsNAN(x float64) bool {
 	return math.IsNaN(x)
 }
 
-func ParseFloat(str JSString) float64 {
-	if val, ok := strconv.ParseFloat(string(str), 64); ok == nil {
+func ParseFloat(str string) float64 {
+	if val, ok := strconv.ParseFloat(str, 64); ok == nil {
 		return val
 	}
 	return math.NaN()
 }
 
-func ParseInt(str JSString, radix float64) float64 {
-	if val, ok := strconv.ParseInt(string(str), int(radix), 64); ok == nil {
+func ParseInt(str string, radix float64) float64 {
+	if val, ok := strconv.ParseInt(str, int(radix), 64); ok == nil {
 		return float64(val)
 	}
 	return math.NaN()
@@ -148,22 +148,22 @@ var Console = struct {
 }}
 
 var String = struct {
-	FromCharCode func(...float64) JSString
-}{func(num ...float64) JSString {
+	FromCharCode func(...float64) string
+}{func(num ...float64) string {
 	var buffer bytes.Buffer
 	for _, n := range num {
 		buffer.WriteRune(rune(int(n)))
 	}
-	return JSString(buffer.String())
+	return buffer.String()
 }}
 
 type JSString string
 
-func (this JSString) Replace(re *RegExp, f func(interface{}) interface{}) JSString {
-	return JSString(re.compile().ReplaceAllStringFunc(this.String(),
+func (this JSString) Replace(re *RegExp, f func(interface{}) interface{}) string {
+	return re.compile().ReplaceAllStringFunc(this.String(),
 		func(x string) string {
-			return fmt.Sprint(f(JSString(x)))
-		}))
+			return fmt.Sprint(f(x))
+		})
 }
 
 func (this JSString) Search(re *RegExp) float64 {
@@ -174,8 +174,8 @@ func (this JSString) Search(re *RegExp) float64 {
 	return float64(match[0])
 }
 
-func (this JSString) CharAt(index float64) JSString {
-	return JSString([]rune(this.String())[int(index)])
+func (this JSString) CharAt(index float64) string {
+	return string([]rune(this.String())[int(index)])
 }
 
 func (this JSString) CharCodeAt(index float64) float64 {

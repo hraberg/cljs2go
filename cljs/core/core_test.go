@@ -149,7 +149,7 @@ func Test_Protocols(t *testing.T) {
 }
 
 func Test_InteropViaReflection(t *testing.T) {
-	sb := &gstring.StringBuffer{js.JSString("foo")}
+	sb := &gstring.StringBuffer{"foo"}
 	assert.Equal(t, "foo", NativeGetInstanceField.Invoke_Arity2(sb, "Buffer"),
 		"(.-buffer sb)")
 	NativeSetInstanceField.Invoke_Arity3(sb, "Buffer", "bar")
@@ -159,6 +159,8 @@ func Test_InteropViaReflection(t *testing.T) {
 	assert.Equal(t, "barbaz", sb.String(),
 		"(.append sb \"baz\")")
 
+	assert.Equal(t, "H", NativeInvokeInstanceMethod.Invoke_Arity3("Hello", "CharAt", []interface{}{0.0}))
+
 	assert.Equal(t, js.Number.MAX_VALUE, NativeGetInstanceField.Invoke_Arity2(js.Number, "MAX_VALUE"),
 		"(.-MAX-VALUE js/Number)")
 
@@ -166,7 +168,7 @@ func Test_InteropViaReflection(t *testing.T) {
 		"(Math/floor 3.14)")
 	assert.Equal(t, "3.14", NativeInvokeFunc.Invoke_Arity2(fmt.Sprint, []interface{}{3.14}),
 		"(fmt/Sprint 3.14)")
-	assert.Equal(t, 3.14, NativeInvokeFunc.Invoke_Arity2(js.ParseFloat, []interface{}{js.JSString("3.14")}),
+	assert.Equal(t, 3.14, NativeInvokeFunc.Invoke_Arity2(js.ParseFloat, []interface{}{"3.14"}),
 		"(js/parseFloat \"3.14\")")
 
 	assert.Equal(t, "ABC", NativeInvokeFunc.Invoke_Arity2(js.String.FromCharCode, []interface{}{65.0, 66.0, 67.0}),

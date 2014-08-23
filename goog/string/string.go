@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"hash/fnv"
-
-	"github.com/hraberg/cljs.go/js"
 )
 
 type StringBuffer struct {
@@ -30,12 +28,12 @@ func (this *StringBuffer) Equiv(other interface{}) bool {
 	return *this == other
 }
 
-func (this *StringBuffer) ToString() js.JSString {
-	return js.JSString(this.buffer().String())
+func (this *StringBuffer) ToString() string {
+	return this.buffer().String()
 }
 
 func (this *StringBuffer) String() string {
-	return string(this.ToString())
+	return this.ToString()
 }
 
 func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {
@@ -43,7 +41,7 @@ func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {
 	return this
 }
 
-func HashCode(str js.JSString) float64 {
+func HashCode(str string) float64 {
 	h := fnv.New32a()
 	h.Write([]byte(str))
 	return float64(h.Sum32())

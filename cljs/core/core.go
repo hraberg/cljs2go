@@ -156,13 +156,13 @@ type CljsCoreSymbol struct {
 // While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
 // The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
 
-func (this *CljsCoreSymbol) ToString() js.JSString {
-	return js.JSString((this.Str).(string))
+func (this *CljsCoreSymbol) ToString() string {
+	return (this.Str).(string)
 }
 
 // Will be added automatically when implementing ToString
 func (this *CljsCoreSymbol) String() string {
-	return string(this.ToString())
+	return this.ToString()
 }
 
 func (this *CljsCoreSymbol) Equiv(other interface{}) bool {
@@ -328,6 +328,14 @@ var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
 })
 
 var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
+	switch object := target.(type) {
+	case string:
+		target = js.JSString(object)
+	case []interface{}:
+		target = js.JSArray(object)
+	case map[string]interface{}:
+		target = js.JSObject(object)
+	}
 	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(target).MethodByName(methodName.(string)), args)
 })
 

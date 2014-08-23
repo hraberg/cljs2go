@@ -113,10 +113,10 @@
              ["`foo`" "foo"]
              ["'x'" \x]
              (binding [*data-readers* *cljs-data-readers*]
-               ["js.JSObject{`foo`: `bar`}"
+               ["map[string]interface{}{`foo`: `bar`}"
                 (read-string "#js {:foo \"bar\"}")])
              (binding [*data-readers* *cljs-data-readers*]
-               ["js.JSArray{\"foo\", \"bar\"}"
+               ["[]interface{}{\"foo\", \"bar\"}"
                 (read-string "#js [\"foo\", \"bar\"])")])
              ["&js.Date{Millis: 1408642409602}"
               #inst "2014-08-21T17:33:29.602-00:00"]
@@ -146,7 +146,7 @@
     ;; func() interface{} {
     ;;  var foo IFn
     ;; 	foo = Fn(func() interface{} {
-    ;; 		return js.JSString("bar")
+    ;; 		return "bar"
     ;; 	})
     ;; 	return foo.Invoke_Arity0()
     ;; }()
@@ -232,14 +232,14 @@
                            e)
                          (finally
                            "Baz"))]
-             ["js.JSObject{`finally`: true}"
-              '(let [x (js* "js.JSObject{}")]
+             ["map[string]interface{}{`finally`: true}"
+              '(let [x (js* "map[string]interface{}{}")]
                  (try
                     x
                     (finally
                       (js* "x[`finally`] = true"))))]
-             ["js.JSObject{`catch`: true, `finally`: true, `last`: `finally`}"
-              '(let [x (js* "js.JSObject{}")]
+             ["map[string]interface{}{`catch`: true, `finally`: true, `last`: `finally`}"
+              '(let [x (js* "map[string]interface{}{}")]
                  (try
                    (throw (js/Error. "Foo"))
                    (catch js/Error _
