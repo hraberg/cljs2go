@@ -523,7 +523,9 @@
 (defn emit-let
   [{:keys [bindings expr env]} is-loop]
   (let [context (:context env)]
-    (when (= :expr context) (emits "func () interface{} {"))
+    (if (= :expr context)
+      (emits "func () interface{} {")
+      (emits "{"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
                                         (map #(vector (System/identityHashCode %)
@@ -536,7 +538,9 @@
       (when is-loop
         (emitln "return nil")
         (emitln "}")))
-    (when (= :expr context) (emits "}()"))))
+    (if (= :expr context)
+      (emits "}()")
+      (emits "}"))))
 
 (defmethod emit* :let [ast]
   (emit-let ast false))
