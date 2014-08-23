@@ -50,6 +50,16 @@
   (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
 
 (def ^:dynamic *go-return* nil)
+(def ^:dynamic *go-current-line* (atom 0))
+
+(defn emitln [& xs]
+  (when-let [line (apply max @*go-current-line* (filter number? (map (comp :line :env) xs)))]
+    (when (not= line @*go-current-line*)
+      (reset! *go-current-line* line)
+      (printf "//line %s:%d \n" ana/*cljs-file* line)))
+  (apply emits xs)
+  (println)
+  nil)
 
 (defmethod emit-constant nil [x] (emits "nil"))
 (defmethod emit-constant Long [x] (emits "float64(" x ")"))
@@ -281,11 +291,10 @@
       (emit-comment doc (:jsdoc init))
       (if (= :fn (:op init))
         (emits init)
-        (do
-          (emits "var " (last (string/split (str mname) #"\.")))
-          (when (= 'clj-nil (:tag init))
-            (emits " interface{}"))
-          (emitln " = " init)))
+        (emitln "var " (last (string/split (str mname) #"\."))
+                (when (= 'clj-nil (:tag init))
+                  " interface{}")
+                " = " init))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
@@ -523,9 +532,7 @@
                                                       (gensym (str (:name %) "-")))
                                              bindings)))]
       (doseq [{:keys [init] :as binding} bindings]
-        (emits "var ")
-        (emit binding) ; Binding will be treated as a var
-        (emitln " = " init))
+        (emitln "var " binding " = " init))  ; Binding will be treated as a var
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop

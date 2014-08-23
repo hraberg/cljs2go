@@ -64,23 +64,24 @@
   (println"*/"))
 
 (defn testify [test & assertions]
-  (with-out-str
-    (printf "func Test_%s(t *testing.T) {\n" (name test))
-    (doseq [[expected actual setup message] assertions
-            :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
-      (when setup
-        (printf "{\n")
-        (let [ast (-> [setup] cljs->ast)]
-          (comment setup ast)
-          (printf "\t%s\n" (ast->go ast))))
-      (test-comment actual (first ast))
-      (printf "\tassert.Equal(t%s, %s%s)\n"
-              (if (nil? expected) "" (str ", \n" expected))
-              (str "\n" (ast->go ast))
-              (if (nil? message) "" (str ", \n`" message "`")))
-      (when setup
-        (printf "}\n")))
-    (printf "}\n")))
+  (binding [cljs.analyzer/*cljs-file* (.getAbsolutePath (io/file (io/resource "cljs/go_test.clj")))]
+    (with-out-str
+      (printf "func Test_%s(t *testing.T) {\n" (name test))
+      (doseq [[expected actual setup message] assertions
+              :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
+        (when setup
+          (printf "{\n")
+          (let [ast (-> [setup] cljs->ast)]
+            (test-comment setup ast)
+            (printf "\t%s\n" (ast->go ast))))
+        (test-comment actual (first ast))
+        (printf "\tassert.Equal(t%s, %s%s)\n"
+                (if (nil? expected) "" (str ", \n" expected))
+                (str "\n" (ast->go ast))
+                (if (nil? message) "" (str ", \n`" message "`")))
+        (when setup
+          (printf "}\n")))
+      (printf "}\n"))))
 
 (defn emit-test [package file tests]
   (let [^File f (io/file (str "target/generated/" package) (str file ".go"))
