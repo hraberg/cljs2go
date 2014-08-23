@@ -24,9 +24,10 @@
     (println "package" package)
     (println "import (")
     (doseq [import (concat ["testing"
+                            "math"
+                            "reflect"
                             "github.com/stretchr/testify/assert"
-                            "github.com/hraberg/cljs.go/js"
-                            "github.com/hraberg/cljs.go/js/Math"]
+                            "github.com/hraberg/cljs.go/js"]
                            imports)]
       (println "\t" (pr-str import)))
     (println "\t" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))
