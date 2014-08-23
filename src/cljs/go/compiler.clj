@@ -730,7 +730,7 @@
 
 (def go-segs {["(" " instanceof " ")"]
               (fn [[o t]]
-                (emits "reflect.TypeOf(" o ").Elem().String() == `" t "`"))
+                (emits "_, instanceof := " o ".(*" t "); instanceof"))
               ["(" " === " ")"]
               (fn [[x y]]
                 (emits x " == " y))})
