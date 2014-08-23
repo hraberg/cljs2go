@@ -64,7 +64,7 @@
   (println"*/"))
 
 (defn test-setup [setup]
-  (let [ast (-> [setup] cljs->ast)]
+  (let [ast (-> setup cljs->ast)]
     (test-comment setup ast)
     (printf "\t%s\n" (ast->go ast))))
 
@@ -195,7 +195,7 @@
     (testify "Do"
              [3 '(do 1 2 3)])
     (test-setup-toplevel
-     '(def x 2))
+     '[(def x 2)])
     (testify "Def"
              [2 'x])
     (testify "New"
