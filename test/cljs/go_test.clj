@@ -130,6 +130,48 @@
    [(testify "Let"
              [1 '(let [y 1]
                    y)])
+    ;; (testify "Letfn"
+    ;;          ["`bar`" '(letfn [(foo [] "bar")]
+    ;;                      (foo))])
+
+    ;; func() interface{} {
+    ;;  var foo IFn
+    ;; 	foo = Fn(func() interface{} {
+    ;; 		return js.JSString("bar")
+    ;; 	})
+    ;; 	return foo.Invoke_Arity0()
+    ;; }()
+
+    ;; (testify "Letfn"
+    ;;          [true '(letfn [(even? [x]
+    ;;                           (or (zero? x)
+    ;;                               (odd? (dec x))))
+    ;;                         (odd? [x]
+    ;;                           (and (not (zero? x))
+    ;;                                (even? (dec x))))]
+    ;;                   (odd? 5))])
+
+    ;; func() interface{} {
+    ;;  var even_QMARK_, odd_QMARK_ IFn
+    ;;  even_QMARK_ = Fn(func(x interface{}) interface{} {
+    ;;  	var or__22923__auto__ = x == float64(0)
+    ;;  	if or__22923__auto__ {
+    ;;  		return or__22923__auto__
+    ;;  	} else {
+    ;;  		return odd_QMARK_.Invoke_Arity1((x.(float64) - float64(1)))
+    ;; 		}
+    ;; 	})
+    ;; 	odd_QMARK_ = Fn(func(x interface{}) interface{} {
+    ;; 		var and__22911__auto__ = Not.Invoke_Arity1(x == float64(0))
+    ;; 		if Truth_(and__22911__auto__) {
+    ;; 			return even_QMARK_.Invoke_Arity1((x.(float64) - float64(1)))
+    ;; 		} else {
+    ;; 			return and__22911__auto__
+    ;; 		}
+    ;; 	})
+    ;; 	return odd_QMARK_.Invoke_Arity1(float64(5))
+    ;; }()
+
     (testify "If"
              [true '(let [y :foo]
                       (if y true false))]

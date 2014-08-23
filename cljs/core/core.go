@@ -278,6 +278,10 @@ var Str = func(Str IFn) IFn {
 	})
 }(&AFn{})
 
+var Not = Fn(&AFnPrimtive{}, func(x interface{}) bool {
+	return !Truth_(x)
+})
+
 // cljs.reflect / clojure.lang.Reflector
 var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
 	tv := reflect.ValueOf(target)
