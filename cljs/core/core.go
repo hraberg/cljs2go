@@ -279,7 +279,11 @@ var Str = func(Str IFn) IFn {
 }(&AFn{})
 
 var Not = Fn(&AFnPrimtive{}, func(x interface{}) bool {
-	return !Truth_(x)
+	if Truth_(x) {
+		return false
+	} else {
+		return true
+	}
 }).(*AFnPrimtive)
 
 // cljs.reflect / clojure.lang.Reflector
@@ -331,8 +335,8 @@ type Arity5 func(_, _, _, _, _ interface{}) interface{}
 
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
-type Arity1FF func(float64) float64
 type Arity1FI func(float64) interface{}
+type Arity1FF func(float64) float64
 type Arity2IIF func(_, _ interface{}) float64
 type Arity2IFI func(interface{}, float64) interface{}
 type Arity2IFF func(interface{}, float64) float64
@@ -343,7 +347,15 @@ type Arity2FFF func(_, _ float64) float64
 
 type Arity0B func() bool
 type Arity1IB func(interface{}) bool
+type Arity1BI func(bool) interface{}
+type Arity1BB func(bool) bool
 type Arity2IIB func(_, _ interface{}) bool
+type Arity2IBI func(interface{}, bool) interface{}
+type Arity2IBB func(interface{}, bool) bool
+type Arity2BII func(bool, interface{}) interface{}
+type Arity2BIB func(bool, interface{}) bool
+type Arity2BBI func(_, _ bool) interface{}
+type Arity2BBB func(_, _ bool) bool
 
 // CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
@@ -367,8 +379,8 @@ type AFnPrimtive struct {
 	AFn
 	Arity0F
 	Arity1IF
-	Arity1FF
 	Arity1FI
+	Arity1FF
 	Arity2IIF
 	Arity2IFI
 	Arity2IFF
@@ -378,7 +390,15 @@ type AFnPrimtive struct {
 	Arity2FFF
 	Arity0B
 	Arity1IB
+	Arity1BI
+	Arity1BB
 	Arity2IIB
+	Arity2IBI
+	Arity2IBB
+	Arity2BII
+	Arity2BIB
+	Arity2BBI
+	Arity2BBB
 }
 
 func throwArity(f, arity interface{}) interface{} {
