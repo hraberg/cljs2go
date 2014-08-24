@@ -223,6 +223,15 @@ var Name = Fn(func(x interface{}) interface{} {
 		}
 	}
 })
+
+var Array_seq = func(Array_seq IFn) IFn {
+	return Fn(Array_seq, func(array interface{}) interface{} {
+		return Array_seq.Invoke_Arity2(array, 0)
+	}, func(array, i interface{}) interface{} {
+		return array
+	})
+}(&AFn{})
+
 var First = Fn(func(coll interface{}) interface{} {
 	seq := coll.([]interface{})
 	if seq != nil && len(seq) != 0 {

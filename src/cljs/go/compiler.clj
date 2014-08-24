@@ -506,19 +506,22 @@
     (when-not (= param (last params))
       (emits ","))))
 
+(defn emit-fn-body [type expr recurs]
+  ;; (when type
+  ;;   (emitln "var self__ = this"))
+  (when recurs (emitln "for {"))
+  (emits expr)
+  (when recurs
+    (emitln "break")
+    (emitln "}")))
+
 (defn emit-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
   (emit-wrap env
     (emits "func(")
     (emit-fn-params params)
     (emitln (when (seq params) " interface{}") ") interface{} {")
-    ;; (when type
-    ;;   (emitln "var self__ = this"))
-    (when recurs (emitln "for {"))
-    (emits expr)
-    (when recurs
-      (emitln "break")
-      (emitln "}"))
+    (emit-fn-body type expr recurs)
     (emits "}")))
 
 (defn emit-variadic-fn-method
@@ -527,19 +530,13 @@
     (emit-wrap env
       (emits "func(")
       (emitln varargs " ...interface{}" ") interface{} {")
-      ;; (when type
-      ;;   (emitln "var self__ = this"))
       (doseq [[idx p] (map-indexed vector (butlast params))]
         (emitln "var " p " = " varargs "[" idx "]"))
-      (emitln "var " (last params) " = " varargs "[" max-fixed-arity ":]") ;; this should be an ArraySeq
+      (emitln "var " (last params) " = Array_seq.Invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
       (emitln (string/join ", " (repeat (count params) "_"))
               " = "
               (string/join ", " (map :name params)))
-      (when recurs (emitln "for {"))
-      (emits expr)
-      (when recurs
-        (emitln "break")
-        (emitln "}"))
+      (emit-fn-body type expr recurs)
       (emits "}"))))
 
 (defmethod emit* :fn
