@@ -37,7 +37,7 @@
                             if-some when-some])
   (:require clojure.walk
             clojure.set
-            cljs.compiler
+            cljs.go.compiler
             [cljs.env :as env]))
 
 (alias 'core 'clojure.core)
