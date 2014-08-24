@@ -759,12 +759,30 @@
                       (comma-sep args)
                       ")"))))
 
-(def go-segs {["(" " instanceof " ")"]
-              (fn [[o t]]
-                (emits "_, instanceof := " o ".(*" t "); instanceof"))
-              ["(" " === " ")"]
-              (fn [[x y]]
-                (emits x " == " y))})
+(defn emit-go-unbox [x]
+  (emits x (when-not (= 'number (:tag x)) ".(float64)")))
+
+(defn emit-go-op [op [x y]]
+  (emit-go-unbox x)
+  (emits op)
+  (emit-go-unbox y)  )
+
+(def go-segs (merge
+              {["(" " instanceof " ")"]
+               (fn [[o t]]
+                 (emits "_, instanceof := " o ".(*" t "); instanceof"))
+               ["(" " === " ")"]
+               (partial emit-go-op "==")
+               ["(" " % " ")"]
+               (partial emit-go-op "%")
+               ["(-" ")"]
+               (fn [[x]]
+                 (emits "-")
+                 (emit-go-unbox x))}
+              (into {}
+                    (for [op ["+" "-" "*" "/" "divide" "<" "<=" ">" ">="]]
+                      [["(" (str " " op" ") ")"]
+                       (partial emit-go-op op)]))))
 
 (defmethod emit* :js
   [{:keys [env code segs args]}]
