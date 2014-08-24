@@ -6,7 +6,7 @@
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
--;; Go emitter. Forked from f0dcc75573a42758f8c39b57d1747a2b4967327e
+-;; Go emitter. Forked from f0dcc75573a42758f8c39b57d1747a2b4967327e, last update 562e6ccc9265979c586c2afc2f50a388e6c3c03e
 -;; References to js in the public API are retained.
 
 (ns cljs.compiler

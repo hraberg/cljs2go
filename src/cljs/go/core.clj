@@ -6,6 +6,8 @@
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
+-;; Go emitter macros. Forked from 562e6ccc9265979c586c2afc2f50a388e6c3c03e
+
 (ns cljs.core
   (:refer-clojure :exclude [-> ->> .. amap and areduce alength aclone assert binding bound-fn case comment cond condp
                             declare definline definterface defmethod defmulti defn defn- defonce
