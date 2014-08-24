@@ -585,72 +585,70 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep (map munge loop-locals)) " interface{}){")
+        (emitln "func (" (comma-sep (map munge loop-locals)) " *AFn){")
         (when-not (= :return (:context env))
           (emits "return ")))
-      (if (= 1 (count methods))
-        (if variadic
-          (emit-variadic-fn-method (assoc (first methods) :name name))
-          (emit-fn-method (assoc (first methods) :name name)))
-        (let [name (or name (gensym))
-              mname (go-public (munge name))
-              maxparams (apply max-key count (map :params methods))
-              mmap (into {}
-                         (map (fn [method]
-                                [(munge (symbol (str mname "__" (count (:params method)))))
-                                 method])
-                              methods))
-              ms (sort-by #(-> % second :params count) (seq mmap))]
-          (when (= :return (:context env))
-            (emits "return "))
-          (when (= :expr (:context env))
-            (emitln "func() {"))
-          (emitln "var " mname " = nil")
-          (doseq [[n meth] ms]
-            (emits "var " n " = ")
+      (let [name (or name (gensym))
+            mname (go-public (munge name))
+            maxparams (apply max-key count (map :params methods))
+            mmap (into {}
+                       (map (fn [method]
+                              [(munge (symbol (str mname "__" (count (:params method)))))
+                               method])
+                            methods))
+            ms (sort-by #(-> % second :params count) (seq mmap))]
+        (when (= :return (:context env))
+          (emits "return "))
+        (when (= :expr (:context env))
+          (emitln "func() *AFn {"))
+        (emitln "var " mname " *AFn")
+        (emits mname "= Fn(")
+        (doseq [[n meth] ms]
+          #_(emits "var " n " = ")
+          (if (:variadic meth)
+            (emit-variadic-fn-method meth)
+            (emit-fn-method meth))
+          (emitln ","))
+        (emitln ").(*AFn)")
+        #_ (emitln mname " = func(arguments ...interface{}) interface{} {" )
+        #_(emitln mname " = func(" (comma-sep
+                                    (if variadic
+                                      (butlast maxparams)
+                                      maxparams))
+                  (when (seq (if variadic
+                               (butlast maxparams)
+                               maxparams)) " interface{},")
+                  (when variadic " arguments ...interface{}") ") interface{} {")
+        #_ (when variadic
+          (emits "var ")
+          (emit (last maxparams))
+          (emitln " = var_args"))
+        #_(emitln "switch(len(arguments)){")
+        #_(doseq [[n meth] ms]
+          (if (:variadic meth)
+            (do (emitln "default:")
+                (emitln "return " n "_cljs__core__IFn___invoke__arity__variadic("
+                        (comma-sep (butlast maxparams))
+                        (when (> (count maxparams) 1) ", ")
+                        "Array_seq(arguments, " max-fixed-arity "))"))
+            (let [pcnt (count (:params meth))]
+              (emitln "case " pcnt ":")
+              (emitln "return " n "(" (if (zero? pcnt) nil
+                                          (list (comma-sep (take pcnt maxparams)))) ")"))))
+        #_(emitln "}")
+        #_(emitln "panic(js.Error{fmt.Sprint(\"Invalid arity: \", len(arguments))})")
+        #_(emitln "}")
+        #_(when variadic
+          (emitln mname "_cljs__lang__maxFixedArity = " max-fixed-arity)
+          (emitln mname "_cljs__lang__applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) "_cljs__lang__applyTo"))
+        #_(doseq [[n meth] ms]
+          (let [c (count (:params meth))]
             (if (:variadic meth)
-              (emit-variadic-fn-method meth)
-              (emit-fn-method meth))
-            (emitln))
-          (emitln mname " = func(arguments ...interface{}) interface{} {" )
-          #_(emitln mname " = func(" (comma-sep
-                                      (if variadic
-                                        (butlast maxparams)
-                                        maxparams))
-                    (when (seq (if variadic
-                                 (butlast maxparams)
-                                 maxparams)) " interface{},")
-                    (when variadic " arguments ...interface{}") ") interface{} {")
-          (when variadic
-            (emits "var ")
-            (emit (last maxparams))
-            (emitln " = var_args"))
-          (emitln "switch(len(arguments)){")
-          (doseq [[n meth] ms]
-            (if (:variadic meth)
-              (do (emitln "default:")
-                  (emitln "return " n "_cljs__core__IFn___invoke__arity__variadic("
-                          (comma-sep (butlast maxparams))
-                          (when (> (count maxparams) 1) ", ")
-                          "Array_seq(arguments, " max-fixed-arity "))"))
-              (let [pcnt (count (:params meth))]
-                (emitln "case " pcnt ":")
-                (emitln "return " n "(" (if (zero? pcnt) nil
-                                            (list (comma-sep (take pcnt maxparams)))) ")"))))
-          (emitln "}")
-          (emitln "panic(js.Error{fmt.Sprint(\"Invalid arity: \", len(arguments))})")
-          (emitln "}")
-          (when variadic
-            (emitln mname "_cljs__lang__maxFixedArity = " max-fixed-arity)
-            (emitln mname "_cljs__lang__applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) "_cljs__lang__applyTo"))
-          (doseq [[n meth] ms]
-            (let [c (count (:params meth))]
-              (if (:variadic meth)
-                (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n "_cljs__core__IFn___invoke__arity__variadic")
-                (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
-          (when (= :expr (:context env))
-            (emitln "return " mname)
-            (emitln "}()"))))
+              (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n "_cljs__core__IFn___invoke__arity__variadic")
+              (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
+        (when (= :expr (:context env))
+          (emitln "return " mname)
+          (emitln "}()")))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
@@ -821,7 +819,7 @@
        (if (and ana/*cljs-static-fns* (= (:op f) :var))
          (let [fprop (str "_cljs__core__IFn___invoke__arity__" (count args))]
            (emits "func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep args) ")}}()"))
-         (emits f "(" (comma-sep args) ")"))))))
+         (emits f ".Invoke_Arity" (count args) "(" (comma-sep args) ")"))))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]
