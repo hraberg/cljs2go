@@ -132,9 +132,12 @@
                  (recur (inc y)))))
     (test "Do"
           3 '(do 1 2 3))
-    (test-setup '[(def x 2)])
+    (test-setup '[(def x 2)
+                  (defn foo [] "bar")])
     (test "Def"
-          2 'x)
+          2 'x
+          "reflect.Func" '(js* "reflect.ValueOf(Foo).Kind()")
+          "`bar`" '(foo))
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0))
     (test "Dot"

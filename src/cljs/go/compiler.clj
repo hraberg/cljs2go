@@ -511,7 +511,7 @@
 (defn emit-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
   (emit-wrap env
-    (emits "func " (munge name) "(")
+    (emits "func " (go-public (munge name)) "(")
     (emit-fn-params params)
     (emitln (when (seq params) " interface{}") ") interface{} {")
     (when type
@@ -595,7 +595,7 @@
           (emit-variadic-fn-method (assoc (first methods) :name name))
           (emit-fn-method (assoc (first methods) :name name)))
         (let [name (or name (gensym))
-              mname (munge name)
+              mname (go-public (munge name))
               maxparams (apply max-key count (map :params methods))
               mmap (into {}
                          (map (fn [method]
