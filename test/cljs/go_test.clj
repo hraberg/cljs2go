@@ -128,7 +128,8 @@
           3.14 '(js/ParseFloat "3.14")
           3 '(Math/floor 3.14))
     (test "New"
-          "&js.Date{Millis: 0}" '(js/Date. 0))
+          "&js.Date{Millis: 0}" '(js/Date. 0)
+          "&js.Date{Millis: 0}" '(new js/Date 0))
     (test "Dot"
           1970 '(.getUTCFullYear (js/Date. 0))
           "`f`" '(.charAt "foo" 0))
