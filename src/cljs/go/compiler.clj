@@ -532,7 +532,7 @@
             (emits ", ")
             (recur methods)))
         (emitln ").(*AFn)")
-        (emitln "}(&AFn{})"))
+        (emits "}(&AFn{})"))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
