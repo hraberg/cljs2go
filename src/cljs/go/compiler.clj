@@ -464,41 +464,6 @@
         (when-not (= export mname)
           (emitln "var "export  " = " mname))))))
 
-(defn emit-apply-to
-  [{:keys [name params env]}]
-  (let [arglist (gensym "arglist__")
-        delegate-name (str (munge name) "__delegate")]
-    (emitln "func (" arglist " interface{}) interface{} {")
-    (doseq [[i param] (map-indexed vector (drop-last 2 params))]
-      (emits "var ")
-      (emit param)
-      (emits " = First(")
-      (emitln arglist ")")
-      (emitln arglist " = Next(" arglist ")"))
-    (if (< 1 (count params))
-      (do
-        (emits "var ")
-        (emit (last (butlast params)))
-        (emitln " = First(" arglist ")")
-        (emits "var ")
-        (emit (last params))
-        (emitln " = Rest(" arglist ")")
-        (emits "return " delegate-name "(")
-        (doseq [param params]
-          (emit param)
-          (when-not (= param (last params)) (emits ",")))
-        (emitln ")"))
-      (do
-        (emits "var ")
-        (emit (last params))
-        (emitln " = Seq(" arglist ")")
-        (emits "return " delegate-name "(")
-        (doseq [param params]
-          (emit param)
-          (when-not (= param (last params)) (emits ",")))
-        (emitln ")")))
-    (emits "}")))
-
 (defn emit-fn-params [params]
   (doseq [param params]
     (emit param)
