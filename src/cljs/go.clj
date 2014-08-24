@@ -24,6 +24,7 @@
   ([in env]
      (env/ensure
       (binding [ana/*cljs-ns* (or ana/*cljs-ns* 'cljs.user)
+                ana/*cljs-static-fns* true
                 ana/*passes* [elide-children simplify-env ana/infer-type]]
         (when-not (ana/get-namespace ana/*cljs-ns*)
           (ana/analyze env (list 'ns ana/*cljs-ns*)))

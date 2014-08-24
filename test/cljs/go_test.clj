@@ -80,15 +80,13 @@
     (test "Letfn"
           "`bar`" '(letfn [(foo [] "bar")]
                      (foo))
-          ;; Mutual recursion works here, but arithmetic needs unboxing or primtive fn.
           true '(letfn [(even? [x]
                           (or (zero? x)
                               (odd? (dec x))))
                         (odd? [x]
                           (and (not (zero? x))
                                (even? (dec x))))]
-                  (odd? 5))
-          )
+                  (odd? 5)))
     (test "If"
           true '(let [y :foo]
                   (if y true false))
@@ -192,7 +190,6 @@
 (deftest go-all-tests
   (cljs.env/ensure
    (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
-             cljs.analyzer/*cljs-static-fns* true
              cljs.compiler/*go-line-numbers* true
              *data-readers* cljs.tagged-literals/*cljs-data-readers*]
      (constants)
