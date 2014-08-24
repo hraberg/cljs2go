@@ -542,17 +542,17 @@
   (core/list 'js* "float64(int(~{}) >> int(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-shift-right-zero-fill [x n]
-  (core/list 'js* "float64(int(~{}) >>> int(~{}))" x n))
+  (core/list 'js* "float64(uint(~{}) >> int(~{}))" x n))
 
 (defmacro ^::ana/numeric unsigned-bit-shift-right [x n]
-  (core/list 'js* "float64(int(~{}) >>> int(~{}))" x n))
+  (core/list 'js* "float64(uint(~{}) >> int(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-set [x n]
   (core/list 'js* "float64(int(~{}) | (1 << int(~{})))" x n))
 
 ;; internal
 (defmacro mask [hash shift]
-  (core/list 'js* "float64((int(~{}) >>> int(~{})) & 0x01f)" hash shift))
+  (core/list 'js* "float64((uint(~{}) >> int(~{})) & 0x01f)" hash shift))
 
 ;; internal
 (defmacro bitpos [hash shift]
