@@ -134,10 +134,12 @@
           3 '(do 1 2 3))
     (test-setup '[(def x 2)
                   (defn foo [] "bar")])
+    ;; var Foo = Fn(func() interface{} {
+    ;; 	return "bar"
+    ;; })
     (test "Def"
           2 'x
-          "reflect.Func" '(js* "reflect.ValueOf(Foo).Kind()")
-          "`bar`" '(foo))
+          "`bar`" '(foo)) ;; Foo.Invoke_Arity0()
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0))
     (test "Dot"
