@@ -523,56 +523,75 @@
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
-  (emit-wrap env
-             (let [name (or name (gensym))
-                   mname (munge name)
-                   delegate-name (str mname "__delegate")]
-               (emitln "func() { ")
-               (emits "var " delegate-name " = func (")
-               (doseq [param params]
-                 (emit param)
-                 (when-not (= param (last params)) (emits ",")))
-               (emits " interface{}) interface{} {")
+  (let [varargs (string/join "_" (map :name params))]
+    (emit-wrap env
+               (emits "func(")
+               (emitln varargs " ...interface{}" ") interface{} {")
+               #_(when type
+                   (emitln "var self__ = this"))
+               (doseq [[idx p] (map-indexed vector (butlast params))]
+                 (emitln "var " p " = " varargs "[" idx "]"))
+               (emitln "var " (last params) " = " varargs "[" max-fixed-arity ":]") ;; this should be an ArraySeq
+               (emitln (string/join ", " (repeat (count params) "_"))
+                       " = "
+                       (string/join ", " (map :name params)))
                (when recurs (emitln "for {"))
                (emits expr)
                (when recurs
                  (emitln "break")
                  (emitln "}"))
-               (emitln "}")
+               (emits "}")))
 
-               (emitln "var " mname " = func (" (comma-sep
-                                                 (if variadic
-                                                   (butlast params)
-                                                   params))
-                       (when (seq (if variadic
-                                    (butlast params)
-                                    params)) " interface{},")
-                       (when variadic " arguments ...interface{}") ") interface{} {")
-               (when type
-                 (emitln "var self__ = this"))
-               (when variadic
-                 (emits "var ")
-                 (emit (last params))
-                 (emitln " = nil")
-                 (emitln "if (len(arguments) > 0) {")
-                 (emits "  ")
-                 (emit (last params))
-                 (emits " = Array_seq(arguments,0)")
-                 (emitln "} "))
-               (emits "return " delegate-name "(this,")
-               (doseq [param params]
-                 (emit param)
-                 (when-not (= param (last params)) (emits ",")))
-               (emits ")")
-               (emitln "}")
+  #_(emit-wrap env
+               (let [name (or name (gensym))
+                     mname (munge name)
+                     delegate-name (str mname "__delegate")]
+                 (emitln "func() { ")
+                 (emits "var " delegate-name " = func (")
+                 (doseq [param params]
+                   (emit param)
+                   (when-not (= param (last params)) (emits ",")))
+                 (emits " interface{}) interface{} {")
+                 (when recurs (emitln "for {"))
+                 (emits expr)
+                 (when recurs
+                   (emitln "break")
+                   (emitln "}"))
+                 (emitln "}")
 
-               (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
-               (emits mname ".cljs__lang__applyTo = ")
-               (emit-apply-to (assoc f :name name))
-               (emitln)
-               (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " delegate-name)
-               (emitln "return " mname)
-               (emitln "}()"))))
+                 (emitln "var " mname " = func (" (comma-sep
+                                                   (if variadic
+                                                     (butlast params)
+                                                     params))
+                         (when (seq (if variadic
+                                      (butlast params)
+                                      params)) " interface{},")
+                         (when variadic " arguments ...interface{}") ") interface{} {")
+                 (when type
+                   (emitln "var self__ = this"))
+                 (when variadic
+                   (emits "var ")
+                   (emit (last params))
+                   (emitln " = nil")
+                   (emitln "if (len(arguments) > 0) {")
+                   (emits "  ")
+                   (emit (last params))
+                   (emits " = Array_seq(arguments,0)")
+                   (emitln "} "))
+                 (emits "return " delegate-name "(this,")
+                 (doseq [param params]
+                   (emit param)
+                   (when-not (= param (last params)) (emits ",")))
+                 (emits ")")
+                 (emitln "}")
+
+                 (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
+                 (emits mname ".cljs__lang__applyTo = ")
+                 (emit-apply-to (assoc f :name name))
+                 (emitln)
+                 (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " delegate-name)
+                 (emitln "return " mname)
+                 (emitln "}()"))))
 
 (defmethod emit* :fn
   [{:keys [name env methods max-fixed-arity variadic recur-frames loop-lets]}]
@@ -607,7 +626,7 @@
             (emit-variadic-fn-method meth)
             (emit-fn-method meth))
           (when methods
-            (emitln ",")
+            (emits ", ")
             (recur methods)))
         (emitln ").(*AFn)")
         #_ (emitln mname " = func(arguments ...interface{}) interface{} {" )
@@ -727,19 +746,23 @@
 (defmethod emit* :letfn
   [{:keys [bindings expr env]}]
   (let [context (:context env)]
-    (when (= :expr context) (emits "func () interface{} {"))
+    (if (= :expr context)
+      (emits "func () interface{} {")
+      (emitln "{"))
+    (emitln "var " (string/join ", " (map munge bindings)) " *AFn")
     (doseq [{:keys [init] :as binding} bindings]
-      (emitln "var " (munge binding) " = " init))
+      (emitln (munge binding) " = " init))
     (emits expr)
-    (when (= :expr context) (emits "}()"))))
+    (if (= :expr context)
+      (emits "}()")
+      (emitln "}"))))
 
 (defn protocol-prefix [psym]
   (symbol (str (-> (str psym) (.replace \. \$) (.replace \/ \$)) "$")))
 
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
-  (let [f (update-in f [:info :name] go-public)
-        info (:info f)
+  (let [info (:info f)
         fn? (and ana/*cljs-static-fns*
                  (not (:dynamic info))
                  (:fn-var info))

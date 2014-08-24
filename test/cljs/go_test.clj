@@ -77,48 +77,18 @@
    [(test "Let"
           1 '(let [y 1]
                y))
-    ;; (test "Letfn"
-    ;;          ["`bar`" '(letfn [(foo [] "bar")]
-    ;;                      (foo))])
-
-    ;; func() interface{} {
-    ;;  var foo IFn
-    ;; 	foo = Fn(func() interface{} {
-    ;; 		return "bar"
-    ;; 	})
-    ;; 	return foo.Invoke_Arity0()
-    ;; }()
-
-    ;; (test "Letfn"
-    ;;          [true '(letfn [(even? [x]
-    ;;                           (or (zero? x)
-    ;;                               (odd? (dec x))))
-    ;;                         (odd? [x]
-    ;;                           (and (not (zero? x))
-    ;;                                (even? (dec x))))]
-    ;;                   (odd? 5))])
-
-    ;; func() interface{} {
-    ;;  var even_QMARK_, odd_QMARK_ IFn
-    ;;  even_QMARK_ = Fn(func(x interface{}) interface{} {
-    ;;  	var or__22923__auto__ = x == float64(0)
-    ;;  	if or__22923__auto__ {
-    ;;  		return or__22923__auto__
-    ;;  	} else {
-    ;;  		return odd_QMARK_.Invoke_Arity1((x.(float64) - float64(1)))
-    ;; 		}
-    ;; 	})
-    ;; 	odd_QMARK_ = Fn(func(x interface{}) interface{} {
-    ;; 		var and__22911__auto__ = Not.Invoke_Arity1(x == float64(0))
-    ;; 		if Truth_(and__22911__auto__) {
-    ;; 			return even_QMARK_.Invoke_Arity1((x.(float64) - float64(1)))
-    ;; 		} else {
-    ;; 			return and__22911__auto__
-    ;; 		}
-    ;; 	})
-    ;; 	return odd_QMARK_.Invoke_Arity1(float64(5))
-    ;; }()
-
+    (test "Letfn"
+          "`bar`" '(letfn [(foo [] "bar")]
+                     (foo))
+          ;; Mutual recursion works here, but arithmetic needs unboxing or primtive fn.
+          ;; true '(letfn [(even? [x]
+          ;;                 (or (zero? x)
+          ;;                     (odd? (dec x))))
+          ;;               (odd? [x]
+          ;;                 (and (not (zero? x))
+          ;;                      (even? (dec x))))]
+          ;;         (odd? 5))
+          )
     (test "If"
           true '(let [y :foo]
                   (if y true false))
@@ -132,11 +102,22 @@
                  (recur (inc y)))))
     (test "Do"
           3 '(do 1 2 3))
-    (test-setup '[(def x 2)
-                  (defn foo [] "bar")])
+    (test-setup '[(def x 2)])
     (test "Def"
-          2 'x
-          "`bar`" '(foo))
+          2 'x)
+    (test-setup '[(defn foo [] "bar")
+                  (defn bar
+                    ([x] x)
+                    ([x y] y))
+                  (defn baz
+                    ([x] x)
+                    ([x & ys] ys))])
+    (test "Defn"
+          "`bar`" '(foo)
+          1 '(bar 1)
+          2 '(bar 1 2)
+          1 '(baz 1)
+          "[]interface{}{2}" '(baz 1 2)) ;; this should be a seq
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0))
     (test "Dot"
