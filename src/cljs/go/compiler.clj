@@ -789,58 +789,30 @@
                       (= (get (string/split ns-str #"\.") 0 nil) "goog"))))
         keyword? (and (= (-> f :op) :constant)
                       (keyword? (-> f :form)))
-        [f variadic-invoke]
-        (if fn?
-          (let [arity (count args)
-                variadic? (:variadic info)
-                mps (:method-params info)
-                mfa (:max-fixed-arity info)]
-            (cond
-             ;; if only one method, no renaming needed
-             (and (not variadic?)
-                  (= (count mps) 1))
-             [f nil]
-
-             ;; direct dispatch to variadic case
-             (and variadic? (> arity mfa))
-             [(update-in f [:info :name]
-                             (fn [name] (symbol (str (munge info) "_cljs__core__IFn___invoke__arity__variadic"))))
-              {:max-fixed-arity mfa}]
-
-             ;; direct dispatch to specific arity case
-             :else
-             (let [arities (map count mps)]
-               (if (some #{arity} arities)
-                 [(update-in f [:info :name]
-                             (fn [name] (symbol (str (munge info) "_cljs__core__IFn___invoke__arity__" arity)))) nil]
-                 [f nil]))))
-          [f nil])]
+        arity (count args)
+        variadic-invoke (and (:variadic info)
+                             (> arity (:max-fixed-arity info)))
+        coerce? (:binding-form? info)]
     (emit-wrap env
       (cond
        opt-not?
        (emits "!(" (first args) ")")
        proto?
        (let [pimpl (str (munge (protocol-prefix protocol))
-                        (munge (name (:name info))) "__arity__" (count args))]
+                        (munge (name (:name info))) "_Arity" (count args))]
          (emits (first args) "_" pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
-       (emits f "_cljs__core__IFn___invoke__arity__" (count args) "(" (comma-sep args) ")")
+       (emits f ".Invoke_Arity" arity "(" (comma-sep args) ")")
 
        variadic-invoke
-       (let [mfa (:max-fixed-arity variadic-invoke)]
-        (emits f "(" (comma-sep (take mfa args))
-               (when-not (zero? mfa) ",")
-               "Array_seq([]interface{}{" (comma-sep (drop mfa args)) "}, 0))"))
+       (emits f ".Invoke_ArityVariadic(" (comma-sep args) ")")
 
-       (or fn? js? goog?)
+       (or js? goog?)
        (emits f "(" (comma-sep args)  ")")
 
        :else
-       (if (and ana/*cljs-static-fns* (= (:op f) :var))
-         (let [fprop (str "_cljs__core__IFn___invoke__arity__" (count args))]
-           (emits "func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep args) ")}}()"))
-         (emits f (when (:binding-form? info) ".(IFn)") ".Invoke_Arity" (count args) "(" (comma-sep args) ")"))))))
+       (emits f (when coerce? ".(IFn)") ".Invoke_Arity" arity "(" (comma-sep args) ")")))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]

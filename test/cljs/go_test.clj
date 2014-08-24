@@ -176,15 +176,15 @@
                  (js* "x[`last`] = `finally`")))))]
    (emit-test "go_test" "special_forms_test")))
 
-;; We need to maintain the same env for setup and tests.
 (deftest go-all-tests
-  (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
-            ;; cljs.analyzer/*cljs-static-fns* true ;; we probably want this as default behavior
-            cljs.compiler/*go-line-numbers* true
-            *data-readers* cljs.tagged-literals/*cljs-data-readers*]
-    (constants)
-    (special-forms)
-    (go-test "./...")))
+  (cljs.env/ensure
+   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
+             cljs.analyzer/*cljs-static-fns* true
+             cljs.compiler/*go-line-numbers* true
+             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
+     (constants)
+     (special-forms)
+     (go-test "./..."))))
 
 (defmethod print-method cljs.tagged_literals.JSValue
   [^JSValue d ^Writer w]
