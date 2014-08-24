@@ -840,7 +840,7 @@
        (if (and ana/*cljs-static-fns* (= (:op f) :var))
          (let [fprop (str "_cljs__core__IFn___invoke__arity__" (count args))]
            (emits "func() { if " f fprop " { return " f fprop "(" (comma-sep args) ") } else { return " f "(" (comma-sep args) ")}}()"))
-         (emits f ".Invoke_Arity" (count args) "(" (comma-sep args) ")"))))))
+         (emits f (when (:binding-form? info) ".(IFn)") ".Invoke_Arity" (count args) "(" (comma-sep args) ")"))))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]
