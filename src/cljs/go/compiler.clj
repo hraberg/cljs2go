@@ -713,55 +713,20 @@
 
 (defmethod emit* :deftype*
   [{:keys [t fields pmasks]}]
-  (let [fields (map munge fields)]
-    (emitln "")
-    (emitln "/**")
-    (emitln "* @constructor")
-    (emitln "*/")
-    (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (last (string/split (str (munge t)) #"\.")) " = func (" (comma-sep fields) "  interface{}){")
-    (emitln "var this = new(" t ")")
-    (doseq [fld fields]
-      (emitln "this." fld " = " fld))
-    (doseq [[pno pmask] pmasks]
-      (emitln "this.cljs__lang__protocol_mask__partition" pno "__ = " pmask))
-    (emitln "}")))
+  (let [fields (map (comp go-public munge) fields)]
+    (emitln "type " (-> t munge go-short-name go-public) " struct { " (comma-sep fields) " interface{} }")))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
-  (let [fields (map munge fields)]
-    (emitln "")
-    (emitln "/**")
-    (emitln "* @constructor")
-    (doseq [fld fields]
-      (emitln "* @param {*} " fld))
-    (emitln "* @param {*=} __meta ")
-    (emitln "* @param {*=} __extmap")
-    (emitln "*/")
-    (emitln "type " (last (string/split (str (munge t)) #"\.")) " struct {" (interleave fields (repeat  " interface{};")) "}")
-    (emitln (last (string/split (str (munge t)) #"\.")) " = func (" (comma-sep fields) (when (seq fields)  " interface{},") " arguments ...interface{}) " (munge t) "{")
-    (emitln "var this = new(" t ")")
-    (doseq [fld fields]
-      (emitln "this." fld " = " fld))
-    (doseq [[pno pmask] pmasks]
-      (emitln "this.cljs__lang__protocol_mask__partition" pno "__ = " pmask))
-    (emitln "switch len(arguments) {" )
-    (emitln "case 1:")
-    (emitln "this.__meta = arguments[0]")
-    (emitln "break")
-    (emitln "case 2:")
-    (emitln "this.__meta = arguments[0]")
-    (emitln "this.__extmap = arguments[1]")
-    (emitln "}")
-    (emitln "}")
-    (emitln "}")))
+  (let [fields (map (comp go-public munge) fields)]
+    (emitln "type " (-> t munge go-short-name go-public) " struct { " (comma-sep fields) ", Meta, Extmap interface{} }")))
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
   (let [js-string? (= 'string (:tag target))]
     (emit-wrap env
                (if field
-                 (emits target "." (munge field #{}))
+                 (emits target "." (munge (go-public field) #{}))
                  (emits (when js-string? "js.JSString(")
                         target
                         (when js-string? ")")

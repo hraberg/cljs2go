@@ -875,17 +875,17 @@
     (if (seq impls)
       `(do
          (deftype* ~t ~fields ~pmasks)
-         (set! (.-cljs$lang$type ~t) true)
-         (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
-         (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opt#] (-write writer# ~(core/str r))))
+         ;; (set! (.-cljs$lang$type ~t) true)
+         ;; (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
+         ;; (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opt#] (-write writer# ~(core/str r))))
          (extend-type ~t ~@(dt->et t impls fields true))
          ~(build-positional-factory t r fields)
          ~t)
       `(do
          (deftype* ~t ~fields ~pmasks)
-         (set! (.-cljs$lang$type ~t) true)
-         (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
-         (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opts#] (-write writer# ~(core/str r))))
+         ;; (set! (.-cljs$lang$type ~t) true)
+         ;; (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
+         ;; (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opts#] (-write writer# ~(core/str r))))
          ~(build-positional-factory t r fields)
          ~t))))
 
