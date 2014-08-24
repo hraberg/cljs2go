@@ -104,6 +104,9 @@
       (str "X" s)
       (str (string/upper-case (subs s 0 1)) (subs s 1)))))
 
+(defn go-type-fqn [s]
+  (apply str (map go-public (string/split (str s) #"[./]"))))
+
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
 
@@ -686,7 +689,9 @@
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-    (emits "(&" ctor "{"
+             (emits "(&" (if ('#{js goog.string} (-> ctor :info :ns))
+                           ctor
+                           (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
            (comma-sep args)
            "})")))
 
@@ -716,12 +721,12 @@
 (defmethod emit* :deftype*
   [{:keys [t fields pmasks]}]
   (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t munge go-short-name go-public) " struct { " (comma-sep fields) " interface{} }")))
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) " interface{} }")))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
   (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t munge go-short-name go-public) " struct { " (comma-sep fields) ", Meta, Extmap interface{} }")))
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) ", Meta, Extmap interface{} }")))
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]

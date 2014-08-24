@@ -133,11 +133,12 @@
           "`f`" '(.charAt "foo" 0)
           "`o`" '(let [x "foo"]
                    (.charAt x 1))
-          "`15c52219-a8fd-4771-87e2-42ee33b79bca`" '(.-uuid (CljsCoreUUID. "15c52219-a8fd-4771-87e2-42ee33b79bca")))
+          ;; As cljs.core isn't analyzed yet we need to ns qualify this so the type FQN resolves.
+          "`15c52219-a8fd-4771-87e2-42ee33b79bca`" '(.-uuid (cljs.core/UUID. "15c52219-a8fd-4771-87e2-42ee33b79bca")))
     (test-setup '[(deftype MyPoint [x y])])
     (test "Deftype"
-          "&MyPoint{X: 1, Y: 2}" '(MyPoint. 1 2) ;; should this compile to CljsUserMyPoint ?
-          "&MyPoint{X: 1, Y: 2}" '(->MyPoint 1 2) ;; we need a prefix for public vars starting with underscore.
+          "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
+          "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
           3 '(.-x (MyPoint. 3 4)))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
