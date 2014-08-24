@@ -176,6 +176,7 @@
                  (js* "x[`last`] = `finally`")))))]
    (emit-test "go_test" "special_forms_test")))
 
+;; We need to maintain the same env for setup and tests.
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
             ;; cljs.analyzer/*cljs-static-fns* true ;; we probably want this as default behavior
