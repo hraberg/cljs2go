@@ -684,13 +684,19 @@
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-             (emits "(&" ctor "{"
-                    (comma-sep args)
-                    "})")))
+    (emits "(&" ctor "{"
+           (comma-sep args)
+           "})")))
 
 (defmethod emit* :set!
   [{:keys [target val env]}]
-  (emit-wrap env (emits target " = " val)))
+  (emit-wrap env
+    (when (= :expr (:context env))
+      (emits "func () interface{} {"))
+    (emitln target " = " val)
+    (when (= :expr (:context env))
+      (emitln " return " target)
+      (emits "}()"))))
 
 (defmethod emit* :ns
   [{:keys [name requires uses require-macros env]}]

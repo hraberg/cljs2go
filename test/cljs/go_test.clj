@@ -135,6 +135,11 @@
           "`f`" '(.charAt "foo" 0))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
+    (test-setup '[(def y 2)])
+    (test "set_BANG_"
+          2 'y
+          3 '(do (set! y 3) y)
+          4 '(set! y 4))
     (test "Case"
           true '(let [x 2]
                   (case x
