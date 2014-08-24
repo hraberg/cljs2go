@@ -195,6 +195,7 @@
 
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
+            ;; cljs.analyzer/*cljs-static-fns* true ;; we probably want this as default behavior
             cljs.compiler/*go-line-numbers* true
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
     (constants)
