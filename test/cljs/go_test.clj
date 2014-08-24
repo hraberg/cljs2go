@@ -121,8 +121,8 @@
           2 '(bar 1 2)
           "`bar`" '(baz)
           1 '(baz 1)
-          "[]interface{}{2, 3}" '(baz 1 2 3)  ;; this should be a seq
-          "[]interface{}{2, 3, 4}" (read-string "(apply baz 1 2 #js [3 4])")) ;; last arg should be a seq
+          "[]interface{}{2, 3}" '(baz 1 2 3)  ;; this should return a seq
+          "[]interface{}{2, 3, 4}" (read-string "(apply baz 1 2 #js [3 4])")) ;; and last arg here should be a seq
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0))
     (test "Dot"
