@@ -110,12 +110,14 @@
                     ([x] x)
                     ([x y] y))
                   (defn baz
+                    ([] (foo))
                     ([x] x)
                     ([x & ys] ys))])
     (test "Defn"
           "`bar`" '(foo)
           1 '(bar 1)
           2 '(bar 1 2)
+          "`bar`" '(baz)
           1 '(baz 1)
           "[]interface{}{2}" '(baz 1 2)) ;; this should be a seq
     (test "New"
