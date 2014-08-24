@@ -585,7 +585,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep (map munge loop-locals)) " *AFn){")
+        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFn {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
@@ -599,16 +599,16 @@
             ms (sort-by #(-> % second :params count) (seq mmap))]
         (when (= :return (:context env))
           (emits "return "))
-        (when (= :expr (:context env))
-          (emitln "func() *AFn {"))
-        (emitln "var " mname " *AFn")
-        (emits mname "= Fn(")
-        (doseq [[n meth] ms]
+        (emitln "func(" mname " *AFn) *AFn {")
+        (emits "return Fn(" mname ", ")
+        (loop [[meth & methods] methods]
           #_(emits "var " n " = ")
           (if (:variadic meth)
             (emit-variadic-fn-method meth)
             (emit-fn-method meth))
-          (emitln ","))
+          (when methods
+            (emitln ",")
+            (recur methods)))
         (emitln ").(*AFn)")
         #_ (emitln mname " = func(arguments ...interface{}) interface{} {" )
         #_(emitln mname " = func(" (comma-sep
@@ -646,9 +646,7 @@
             (if (:variadic meth)
               (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n "_cljs__core__IFn___invoke__arity__variadic")
               (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
-        (when (= :expr (:context env))
-          (emitln "return " mname)
-          (emitln "}()")))
+        (emitln "}(&AFn{})"))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
