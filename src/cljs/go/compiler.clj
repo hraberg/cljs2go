@@ -102,6 +102,9 @@
 (defn go-public [s]
   (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
 
+(defn go-short-name [s]
+  (last (string/split (str s) #"\.")))
+
 (defn- comma-sep [xs]
   (interpose "," xs))
 
@@ -446,12 +449,12 @@
 
 (defmethod emit* :def
   [{:keys [name var init env doc export]}]
-  (let [mname (munge name)]
+  (let [mname (-> name munge go-short-name go-public)]
     (when init
       (emit-comment doc (:jsdoc init))
       (if (= :fn (:op init))
         (emits init)
-        (emitln "var " (last (string/split (str mname) #"\."))
+        (emitln "var " mname
                 (when (= 'clj-nil (:tag init))
                   " interface{}")
                 " = " init))
@@ -459,12 +462,9 @@
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
       (when-not (= :expr (:context env)) (emitln))
-      (let [short-name (last (string/split (str mname) #"\."))
-            export (or (and export (last (string/split (str (munge export)) #"\.")))
-                       short-name)
-            export (and export (go-public (munge export)))]
-        (when-not (= export short-name)
-          (emitln "var "export  " = " short-name))))))
+      (when-let [export (and export (-> export munge go-short-name go-public))]
+        (when-not (= export mname)
+          (emitln "var "export  " = " mname))))))
 
 (defn emit-apply-to
   [{:keys [name params env]}]
