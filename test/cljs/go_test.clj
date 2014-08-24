@@ -40,7 +40,7 @@
             :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
       (test-comment actual (first ast))
       (printf "\tassert.Equal(t,\n %s,\n %s)\n" expected (ast->go ast)))
-    (printf "}\n")))
+    (printf "}\n\n")))
 
 (defn emit-test [package file tests]
   (go-get "github.com/stretchr/testify/assert")
