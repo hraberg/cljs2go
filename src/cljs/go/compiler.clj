@@ -452,12 +452,10 @@
   (let [mname (-> name munge go-short-name go-public)]
     (when init
       (emit-comment doc (:jsdoc init))
-      (if (= :fn (:op init))
-        (emits init)
-        (emitln "var " mname
-                (when (= 'clj-nil (:tag init))
-                  " interface{}")
-                " = " init))
+      (emitln "var " mname
+              (when (= 'clj-nil (:tag init))
+                " interface{}")
+              " = " init)
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
@@ -511,11 +509,11 @@
 (defn emit-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
   (emit-wrap env
-    (emits "func " (go-public (munge name)) "(")
+    (emits "func(")
     (emit-fn-params params)
     (emitln (when (seq params) " interface{}") ") interface{} {")
-    (when type
-      (emitln "var self__ = this"))
+    #_(when type
+        (emitln "var self__ = this"))
     (when recurs (emitln "for {"))
     (emits expr)
     (when recurs
