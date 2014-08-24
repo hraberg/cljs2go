@@ -411,5 +411,5 @@ func Main() {
 	for i, a := range os.Args[1:] {
 		args[i] = a
 	}
-	STAR_main_cli_fn_STAR_.(IFn).Invoke_ArityVariadic(args...)
+	X_STAR_main_cli_fn_STAR_.(IFn).Invoke_ArityVariadic(args...)
 }

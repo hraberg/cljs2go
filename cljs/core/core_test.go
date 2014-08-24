@@ -42,7 +42,7 @@ import (
 
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
-	STAR_main_cli_fn_STAR_ = Fn(func(args ...interface{}) interface{} {
+	X_STAR_main_cli_fn_STAR_ = Fn(func(args ...interface{}) interface{} {
 		mainWasCalled = true
 		return nil
 	})

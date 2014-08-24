@@ -93,14 +93,16 @@
             ms (string/split (clojure.lang.Compiler/munge ss) #"\.")
             ms (if (butlast ms)
                  (str (string/join "_"(butlast ms)) "." (last ms))
-                 (str (last ms)))
-            ms (string/replace ms  #"^_STAR" "STAR")]
+                 (str (last ms)))]
         (if (symbol? s)
           (symbol ms)
           ms)))))
 
 (defn go-public [s]
-  (str (string/upper-case (subs (name s) 0 1)) (subs (name s) 1)))
+  (let [s (name s)]
+    (if (re-find #"^[-_]" s)
+      (str "X" s)
+      (str (string/upper-case (subs s 0 1)) (subs s 1)))))
 
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
@@ -275,7 +277,7 @@
       ; (prevents duplicate fn-param-names)
       (emits (munge arg))
       (when-not (= :statement (:context env))
-        (emit-wrap env (emits (munge (cond
+        (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
                                       ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
                                       (update-in info [:name] (comp go-public name))
                                       (:ns info)

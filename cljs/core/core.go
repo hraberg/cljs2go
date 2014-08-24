@@ -12,36 +12,36 @@ import "fmt"
 // Note that "source maps" are possible using //line cljs/core.cljs:1 directives (absolute or relative to package)
 // Also: packages can be imported relative to each other.
 
-var STAR_print_fn_STAR_ interface{} = Fn(func(_ interface{}) interface{} {
+var X_STAR_print_fn_STAR_ interface{} = Fn(func(_ interface{}) interface{} {
 	panic(&js.Error{"No *print-fn* fn set for evaluation environment"})
 })
 
-var STAR_print_newline_STAR_ interface{} = true
+var X_STAR_print_newline_STAR_ interface{} = true
 
 var Enable_console_print_BANG_ = Fn(func() interface{} {
-	STAR_print_newline_STAR_ = false
-	STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
+	X_STAR_print_newline_STAR_ = false
+	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
 		js.Console.Log(x)
 		return nil
 	})
 	return nil
 })
 
-var STAR_main_cli_fn_STAR_ interface{}
+var X_STAR_main_cli_fn_STAR_ interface{}
 
 var pr_opts = Fn(func() interface{} {
 	return nil
 })
 
 var Newline = Fn(func(opts interface{}) interface{} {
-	if Truth_(STAR_print_newline_STAR_) {
-		STAR_print_fn_STAR_.(IFn).Invoke_Arity1("\n")
+	if Truth_(X_STAR_print_newline_STAR_) {
+		X_STAR_print_fn_STAR_.(IFn).Invoke_Arity1("\n")
 	}
 	return nil
 })
 
 var Println = Fn(func(objs ...interface{}) interface{} {
-	STAR_print_fn_STAR_.(IFn).Invoke_Arity1(fmt.Sprint(objs...))
+	X_STAR_print_fn_STAR_.(IFn).Invoke_Arity1(fmt.Sprint(objs...))
 	Newline.Invoke_Arity1(pr_opts.Invoke_Arity0())
 	return nil
 })

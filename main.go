@@ -17,7 +17,7 @@ var _main = Fn(func(args ...interface{}) interface{} {
 })
 
 func init() {
-	STAR_main_cli_fn_STAR_ = _main
+	X_STAR_main_cli_fn_STAR_ = _main
 }
 
 func main() {
