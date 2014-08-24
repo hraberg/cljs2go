@@ -460,7 +460,7 @@
       (emitln "var " mname
               (when (= 'clj-nil (:tag init))
                 " interface{}")
-              " = " init)
+              " = " (assoc-in init [:name :name] mname))
       ;; NOTE: JavaScriptCore does not like this under advanced compilation
       ;; this change was primarily for REPL interactions - David
       ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
@@ -524,7 +524,7 @@
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
-            mname (go-public (munge name))]
+            mname (munge name)]
         (when (= :return (:context env))
           (emits "return "))
         (emitln "func(" mname " *AFn) *AFn {")
@@ -744,7 +744,9 @@
 (defn go-unbox [x]
   (when x
     (str (emit-str x)
-         (when-not (= 'number (:tag x)) ".(float64)"))))
+         (when (or (not= 'number (:tag x))
+                   (= :invoke (:op x))) ;; the type inference is good enough to know this, but our fns return interface{}
+           ".(float64)"))))
 
 (defmethod emit* :js
   [{:keys [env code segs args numeric]}]

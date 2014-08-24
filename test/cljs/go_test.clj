@@ -124,7 +124,11 @@
           "[]interface{}{2, 3, 4}" (read-string "(apply baz 1 2 #js [3 4])")  ;; and last arg here should be a seq
           "`bar`" '((fn [x] x) "bar")
           3.14 '(js/ParseFloat "3.14")
-          3 '(Math/floor 3.14))
+          3 '(Math/floor 3.14)
+          832040 '((fn fib [n]
+                     (cond (zero? n) 0
+                           (== 1 n) 1
+                           :else (+ (fib (dec n)) (fib (- n 2))))) 30))
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0)
           "&js.Date{Millis: 0}" '(new js/Date 0))
