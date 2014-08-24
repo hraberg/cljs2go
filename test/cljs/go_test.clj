@@ -132,7 +132,9 @@
           "&js.Date{Millis: 0}" '(new js/Date 0))
     (test "Dot"
           1970 '(.getUTCFullYear (js/Date. 0))
-          "`f`" '(.charAt "foo" 0))
+          "`f`" '(.charAt "foo" 0)
+          "`o`" '(let [x "foo"]
+                   (.charAt x 1)))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)])
