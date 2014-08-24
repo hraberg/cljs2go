@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.test :refer :all]
             [cljs.go :refer :all]
-            [cljs.tagged-literals ]
+            [cljs.tagged-literals]
             [clojure.pprint :as pp]
             [clojure.string :as s]
             [clojure.java.io :as io]
