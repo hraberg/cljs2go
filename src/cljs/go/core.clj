@@ -222,7 +222,7 @@
                                      (core/float? %) (core/true? %)
                                      (core/false? %))
                             "~{}"
-                            "cljs.core.str.cljs$core$IFn$_invoke$arity$1(~{})"))
+                            "Str.Invoke_Arity1(~{})"))
                   (interpose "+")
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
@@ -298,52 +298,50 @@
 ;; internal - do not use.
 (defmacro truth_ [x]
   (assert (clojure.core/symbol? x) "x is substituted twice")
-  (core/list 'js* "(~{} != null && ~{} !== false)" x x))
+  (core/list 'js* "(~{} != nil && ~{} != false)" x x))
 
 ;; internal - do not use
 (defmacro js-arguments []
   (core/list 'js* "arguments"))
 
 (defmacro js-delete [obj key]
-  (core/list 'js* "delete ~{}[~{}]" obj key))
+  (core/list 'js* "delete(~{}, ~{})" obj key))
 
 (defmacro true? [x]
-  (bool-expr (core/list 'js* "~{} === true" x)))
+  (bool-expr (core/list 'js* "~{} == true" x)))
 
 (defmacro false? [x]
-  (bool-expr (core/list 'js* "~{} === false" x)))
+  (bool-expr (core/list 'js* "~{} == false" x)))
 
 (defmacro array? [x]
-  (if (= :nodejs (:target @env/*compiler*))
-    (bool-expr `(.isArray js/Array ~x))
-    (bool-expr (core/list 'js* "~{} instanceof Array" x))))
+  (bool-expr `(.isArray js/Array ~x)))
 
 (defmacro string? [x]
-  (bool-expr (core/list 'js* "typeof ~{} === 'string'" x)))
+  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.String" x)))
 
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
   (bool-expr
-    (core/list 'js* "typeof ~{} !== 'undefined'"
+    (core/list 'js* "reflect.TypeOf(~{}).Kind() != reflect.Invalid"
       (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
-  (bool-expr (core/list 'js* "(void 0 === ~{})" x)))
+  (bool-expr (core/list 'js* "(nil == ~{})" x)))
 
 (defmacro identical? [a b]
-  (bool-expr (core/list 'js* "(~{} === ~{})" a b)))
+  (bool-expr (core/list 'js* "(~{} == ~{})" a b)))
 
 (defmacro instance? [t o]
   ;; Google Closure warns about some references to RegExp, so
   ;; (instance? RegExp ...) needs to be inlined, but the expansion
   ;; should preserve the order of argument evaluation.
   (bool-expr (if (clojure.core/symbol? t)
-               (core/list 'js* "(~{} instanceof ~{})" o t)
+               (core/list 'js* "_, instanceof := ~{}.(*~{}); instanceof" o t)
                `(let [t# ~t o# ~o]
-                  (~'js* "(~{} instanceof ~{})" o# t#)))))
+                  (~'js* "_, instanceof := ~{}.(*~{}); instanceof" o# t#)))))
 
 (defmacro number? [x]
-  (bool-expr (core/list 'js* "typeof ~{} === 'number'" x)))
+  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Float64" x)))
 
 (defmacro symbol? [x]
   (bool-expr `(instance? Symbol ~x)))
@@ -468,7 +466,7 @@
 
 (defmacro ^::ana/numeric ==
   ([x] true)
-  ([x y] (bool-expr (core/list 'js* "(~{} === ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "(~{} == ~{})" x y)))
   ([x y & more] `(and (== ~x ~y) (== ~y ~@more))))
 
 (defmacro ^::ana/numeric dec [x]
@@ -489,76 +487,76 @@
 (defmacro ^::ana/numeric max
   ([x] x)
   ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "((~{} > ~{}) ? ~{} : ~{})" x# y# x# y#)))
+            (~'js* "func() float64 { if ~{} > ~{} { return  ~{} } else { return ~{} } }()" x# y# x# y#)))
   ([x y & more] `(max (max ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric min
   ([x] x)
   ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "((~{} < ~{}) ? ~{} : ~{})" x# y# x# y#)))
+            (~'js* "func() float64 { if ~{} < ~{} { return  ~{} } else { return ~{} } }()" x# y# x# y#)))
   ([x y & more] `(min (min ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric js-mod [num div]
   (core/list 'js* "(~{} % ~{})" num div))
 
 (defmacro ^::ana/numeric bit-not [x]
-  (core/list 'js* "(~ ~{})" x))
+  (core/list 'js* "float64(^ int(~{}))" x))
 
 (defmacro ^::ana/numeric bit-and
-  ([x y] (core/list 'js* "(~{} & ~{})" x y))
+  ([x y] (core/list 'js* "float64(int(~{}) & int(~{}))" x y))
   ([x y & more] `(bit-and (bit-and ~x ~y) ~@more)))
 
 ;; internal do not use
 (defmacro ^::ana/numeric unsafe-bit-and
-  ([x y] (bool-expr (core/list 'js* "(~{} & ~{})" x y)))
+  ([x y] (bool-expr (core/list 'js* "float64(int(~{}) & int(~{}))" x y)))
   ([x y & more] `(unsafe-bit-and (unsafe-bit-and ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-or
-  ([x y] (core/list 'js* "(~{} | ~{})" x y))
+  ([x y] (core/list 'js* "float64(int(~{}) | int(~{}))" x y))
   ([x y & more] `(bit-or (bit-or ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric int [x]
   `(bit-or ~x 0))
 
 (defmacro ^::ana/numeric bit-xor
-  ([x y] (core/list 'js* "(~{} ^ ~{})" x y))
+  ([x y] (core/list 'js* "float64(int(~{}) ^ int(~{}))" x y))
   ([x y & more] `(bit-xor (bit-xor ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-and-not
-  ([x y] (core/list 'js* "(~{} & ~~{})" x y))
+  ([x y] (core/list 'js* "float64(int(~{}) &^ int(~{}))" x y))
   ([x y & more] `(bit-and-not (bit-and-not ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-clear [x n]
-  (core/list 'js* "(~{} & ~(1 << ~{}))" x n))
+  (core/list 'js* "float64(int(~{}) &^ (1 << int(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-flip [x n]
-  (core/list 'js* "(~{} ^ (1 << ~{}))" x n))
+  (core/list 'js* "float64(int(~{}) ^ (1 << int(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-test [x n]
-  (core/list 'js* "((~{} & (1 << ~{})) != 0)" x n))
+  (core/list 'js* "float64((int(~{}) & (1 << int(~{}))) != 0)" x n))
 
 (defmacro ^::ana/numeric bit-shift-left [x n]
-  (core/list 'js* "(~{} << ~{})" x n))
+  (core/list 'js* "float64(int(~{}) << int(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-shift-right [x n]
-  (core/list 'js* "(~{} >> ~{})" x n))
+  (core/list 'js* "float64(int(~{}) >> int(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-shift-right-zero-fill [x n]
-  (core/list 'js* "(~{} >>> ~{})" x n))
+  (core/list 'js* "float64(int(~{}) >>> int(~{}))" x n))
 
 (defmacro ^::ana/numeric unsigned-bit-shift-right [x n]
-  (core/list 'js* "(~{} >>> ~{})" x n))
+  (core/list 'js* "float64(int(~{}) >>> int(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-set [x n]
-  (core/list 'js* "(~{} | (1 << ~{}))" x n))
+  (core/list 'js* "float64(int(~{}) | (1 << int(~{})))" x n))
 
 ;; internal
 (defmacro mask [hash shift]
-  (core/list 'js* "((~{} >>> ~{}) & 0x01f)" hash shift))
+  (core/list 'js* "float64((int(~{}) >>> int(~{})) & 0x01f)" hash shift))
 
 ;; internal
 (defmacro bitpos [hash shift]
-  (core/list 'js* "(1 << ~{})" `(mask ~hash ~shift)))
+  (core/list 'js* "float64(1 << int(~{}))" `(mask ~hash ~shift)))
 
 ;; internal
 (defmacro caching-hash [coll hash-fn hash-key]
@@ -1373,15 +1371,13 @@
                     (interpose ",")
                     (apply core/str))]
     (vary-meta
-      (list* 'js* (core/str "[" xs-str "]") rest)
+      (list* 'js* (core/str "[]interface{}{" xs-str "}") rest)
       assoc :tag 'array)))
 
 (defmacro make-array
   [size]
   (vary-meta
-    (if (core/number? size)
-      `(array ~@(take size (repeat nil)))
-      `(js/Array. ~size))
+   `(~'js* "make([]interface{}, ~{})" ~size)
     assoc :tag 'array))
 
 (defmacro list
@@ -1441,12 +1437,12 @@
         assoc :tag 'cljs.core/PersistentHashSet))))
 
 (defn js-obj* [kvs]
-  (let [kvs-str (->> (repeat "~{}:~{}")
+  (let [kvs-str (->> (repeat "`~{}`:~{}")
                      (take (count kvs))
                      (interpose ",")
                      (apply core/str))]
     (vary-meta
-      (list* 'js* (core/str "{" kvs-str "}") (apply concat kvs))
+      (list* 'js* (core/str "map[string]interface{}{" kvs-str "}") (apply concat kvs))
       assoc :tag 'object)))
 
 (defmacro js-obj [& rest]
@@ -1469,7 +1465,7 @@
 
 (defmacro alength [a]
   (vary-meta
-    (core/list 'js* "~{}.length" a)
+    (core/list 'js* "len(~{})" a)
     assoc :tag 'number))
 
 (defmacro amap

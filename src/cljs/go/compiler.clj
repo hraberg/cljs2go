@@ -769,39 +769,18 @@
                         (comma-sep args)
                         ")")))))
 
-(defn emit-go-unbox [x]
-  (emits x (when-not (= 'number (:tag x)) ".(float64)")))
-
-(defn emit-go-op [op [x y]]
-  (emit-go-unbox x)
-  (emits op)
-  (emit-go-unbox y)  )
-
-(def go-segs (merge
-              {["(" " instanceof " ")"]
-               (fn [[o t]]
-                 (emits "_, instanceof := " o ".(*" t "); instanceof"))
-               ["(" " === " ")"]
-               (partial emit-go-op "==")
-               ["(" " % " ")"]
-               (partial emit-go-op "%")
-               ["(-" ")"]
-               (fn [[x]]
-                 (emits "-")
-                 (emit-go-unbox x))}
-              (into {}
-                    (for [op ["+" "-" "*" "/" "divide" "<" "<=" ">" ">="]]
-                      [["(" (str " " op" ") ")"]
-                       (partial emit-go-op op)]))))
+(defn go-unbox [x]
+  (when x
+    (str (emit-str x)
+         (when-not (= 'number (:tag x)) ".(float64)"))))
 
 (defmethod emit* :js
-  [{:keys [env code segs args]}]
+  [{:keys [env code segs args numeric]}]
   (emit-wrap env
              (cond
               code (emits code)
-              (go-segs segs) ((go-segs segs) args)
               :else (emits (interleave (concat segs (repeat nil))
-                                       (concat args [nil]))))))
+                                       (map (if numeric go-unbox identity) (concat args [nil])))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
