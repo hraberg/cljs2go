@@ -649,7 +649,7 @@
         opt-not? (and (= (:name info) 'cljs.core/not)
                       (= (ana/infer-tag env (first (:args expr))) 'boolean))
         ns (:ns info)
-        js? (= ns 'js)
+        js? ('#{js Math} ns)
         goog? (when ns
                 (or (= ns 'goog)
                     (when-let [ns-str (str ns)]
@@ -752,12 +752,16 @@
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
-  (emit-wrap env
-             (if field
-               (emits target "." (munge field #{}))
-               (emits target "." (munge (go-public method) #{}) "("
-                      (comma-sep args)
-                      ")"))))
+  (let [js-string? (= 'string (:tag target))]
+    (emit-wrap env
+               (if field
+                 (emits target "." (munge field #{}))
+                 (emits (when js-string? "js.JSString(")
+                        target
+                        (when js-string? ")")
+                        "." (munge (go-public method) #{}) "("
+                        (comma-sep args)
+                        ")")))))
 
 (defn emit-go-unbox [x]
   (emits x (when-not (= 'number (:tag x)) ".(float64)")))

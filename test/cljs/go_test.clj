@@ -124,11 +124,14 @@
           1 '(baz 1)
           "[]interface{}{2, 3}" '(baz 1 2 3) ;; this should return a seq
           "[]interface{}{2, 3, 4}" (read-string "(apply baz 1 2 #js [3 4])")  ;; and last arg here should be a seq
-          "`bar`" '((fn [x] x) "bar"))
+          "`bar`" '((fn [x] x) "bar")
+          3.14 '(js/ParseFloat "3.14")
+          3 '(Math/floor 3.14))
     (test "New"
           "&js.Date{Millis: 0}" '(js/Date. 0))
     (test "Dot"
-          1970 '(.getUTCFullYear (js/Date. 0)))
+          1970 '(.getUTCFullYear (js/Date. 0))
+          "`f`" '(.charAt "foo" 0))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test "Case"
