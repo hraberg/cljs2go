@@ -512,8 +512,8 @@
     (emits "func(")
     (emit-fn-params params)
     (emitln (when (seq params) " interface{}") ") interface{} {")
-    #_(when type
-        (emitln "var self__ = this"))
+    ;; (when type
+    ;;   (emitln "var self__ = this"))
     (when recurs (emitln "for {"))
     (emits expr)
     (when recurs
@@ -525,73 +525,22 @@
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
   (let [varargs (string/join "_" (map :name params))]
     (emit-wrap env
-               (emits "func(")
-               (emitln varargs " ...interface{}" ") interface{} {")
-               #_(when type
-                   (emitln "var self__ = this"))
-               (doseq [[idx p] (map-indexed vector (butlast params))]
-                 (emitln "var " p " = " varargs "[" idx "]"))
-               (emitln "var " (last params) " = " varargs "[" max-fixed-arity ":]") ;; this should be an ArraySeq
-               (emitln (string/join ", " (repeat (count params) "_"))
-                       " = "
-                       (string/join ", " (map :name params)))
-               (when recurs (emitln "for {"))
-               (emits expr)
-               (when recurs
-                 (emitln "break")
-                 (emitln "}"))
-               (emits "}")))
-
-  #_(emit-wrap env
-               (let [name (or name (gensym))
-                     mname (munge name)
-                     delegate-name (str mname "__delegate")]
-                 (emitln "func() { ")
-                 (emits "var " delegate-name " = func (")
-                 (doseq [param params]
-                   (emit param)
-                   (when-not (= param (last params)) (emits ",")))
-                 (emits " interface{}) interface{} {")
-                 (when recurs (emitln "for {"))
-                 (emits expr)
-                 (when recurs
-                   (emitln "break")
-                   (emitln "}"))
-                 (emitln "}")
-
-                 (emitln "var " mname " = func (" (comma-sep
-                                                   (if variadic
-                                                     (butlast params)
-                                                     params))
-                         (when (seq (if variadic
-                                      (butlast params)
-                                      params)) " interface{},")
-                         (when variadic " arguments ...interface{}") ") interface{} {")
-                 (when type
-                   (emitln "var self__ = this"))
-                 (when variadic
-                   (emits "var ")
-                   (emit (last params))
-                   (emitln " = nil")
-                   (emitln "if (len(arguments) > 0) {")
-                   (emits "  ")
-                   (emit (last params))
-                   (emits " = Array_seq(arguments,0)")
-                   (emitln "} "))
-                 (emits "return " delegate-name "(this,")
-                 (doseq [param params]
-                   (emit param)
-                   (when-not (= param (last params)) (emits ",")))
-                 (emits ")")
-                 (emitln "}")
-
-                 (emitln mname ".cljs__lang__maxFixedArity = " max-fixed-arity)
-                 (emits mname ".cljs__lang__applyTo = ")
-                 (emit-apply-to (assoc f :name name))
-                 (emitln)
-                 (emitln mname ".cljs__core__IFn___invoke__arity__variadic = " delegate-name)
-                 (emitln "return " mname)
-                 (emitln "}()"))))
+      (emits "func(")
+      (emitln varargs " ...interface{}" ") interface{} {")
+      ;; (when type
+      ;;   (emitln "var self__ = this"))
+      (doseq [[idx p] (map-indexed vector (butlast params))]
+        (emitln "var " p " = " varargs "[" idx "]"))
+      (emitln "var " (last params) " = " varargs "[" max-fixed-arity ":]") ;; this should be an ArraySeq
+      (emitln (string/join ", " (repeat (count params) "_"))
+              " = "
+              (string/join ", " (map :name params)))
+      (when recurs (emitln "for {"))
+      (emits expr)
+      (when recurs
+        (emitln "break")
+        (emitln "}"))
+      (emits "}"))))
 
 (defmethod emit* :fn
   [{:keys [name env methods max-fixed-arity variadic recur-frames loop-lets]}]
@@ -608,20 +557,12 @@
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
-            mname (go-public (munge name))
-            maxparams (apply max-key count (map :params methods))
-            mmap (into {}
-                       (map (fn [method]
-                              [(munge (symbol (str mname "__" (count (:params method)))))
-                               method])
-                            methods))
-            ms (sort-by #(-> % second :params count) (seq mmap))]
+            mname (go-public (munge name))]
         (when (= :return (:context env))
           (emits "return "))
         (emitln "func(" mname " *AFn) *AFn {")
         (emits "return Fn(" mname ", ")
         (loop [[meth & methods] methods]
-          #_(emits "var " n " = ")
           (if (:variadic meth)
             (emit-variadic-fn-method meth)
             (emit-fn-method meth))
@@ -629,42 +570,6 @@
             (emits ", ")
             (recur methods)))
         (emitln ").(*AFn)")
-        #_ (emitln mname " = func(arguments ...interface{}) interface{} {" )
-        #_(emitln mname " = func(" (comma-sep
-                                    (if variadic
-                                      (butlast maxparams)
-                                      maxparams))
-                  (when (seq (if variadic
-                               (butlast maxparams)
-                               maxparams)) " interface{},")
-                  (when variadic " arguments ...interface{}") ") interface{} {")
-        #_ (when variadic
-          (emits "var ")
-          (emit (last maxparams))
-          (emitln " = var_args"))
-        #_(emitln "switch(len(arguments)){")
-        #_(doseq [[n meth] ms]
-          (if (:variadic meth)
-            (do (emitln "default:")
-                (emitln "return " n "_cljs__core__IFn___invoke__arity__variadic("
-                        (comma-sep (butlast maxparams))
-                        (when (> (count maxparams) 1) ", ")
-                        "Array_seq(arguments, " max-fixed-arity "))"))
-            (let [pcnt (count (:params meth))]
-              (emitln "case " pcnt ":")
-              (emitln "return " n "(" (if (zero? pcnt) nil
-                                          (list (comma-sep (take pcnt maxparams)))) ")"))))
-        #_(emitln "}")
-        #_(emitln "panic(js.Error{fmt.Sprint(\"Invalid arity: \", len(arguments))})")
-        #_(emitln "}")
-        #_(when variadic
-          (emitln mname "_cljs__lang__maxFixedArity = " max-fixed-arity)
-          (emitln mname "_cljs__lang__applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) "_cljs__lang__applyTo"))
-        #_(doseq [[n meth] ms]
-          (let [c (count (:params meth))]
-            (if (:variadic meth)
-              (emitln mname "_cljs__core__IFn___invoke__arity__variadic = " n "_cljs__core__IFn___invoke__arity__variadic")
-              (emitln mname "_cljs__core__IFn___invoke__arity__" c " = " n))))
         (emitln "}(&AFn{})"))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
