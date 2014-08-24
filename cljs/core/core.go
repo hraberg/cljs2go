@@ -57,11 +57,11 @@ type INamed interface {
 	Namespace_Arity1() string
 }
 
-var Name_ = Fn(func(this interface{}) interface{} {
+var X_Name = Fn(func(this interface{}) interface{} {
 	return this.(INamed).Name_Arity1()
 })
 
-var Namespace_ = Fn(func(this interface{}) interface{} {
+var X_Namespace = Fn(func(this interface{}) interface{} {
 	return this.(INamed).Namespace_Arity1()
 })
 
@@ -80,7 +80,7 @@ type IFn interface {
 	Invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
 }
 
-var Invoke_ = Fn(func(this interface{}) interface{} {
+var X_Invoke = Fn(func(this interface{}) interface{} {
 	return this.(IFn).Invoke_Arity0()
 }, func(this, a interface{}) interface{} {
 	return this.(IFn).Invoke_Arity1(a)
@@ -104,7 +104,7 @@ type ILookup interface {
 	Lookup_Arity3(k, notFound interface{}) interface{}
 }
 
-var Lookup_ = Fn(func(this, k interface{}) interface{} {
+var X_Lookup = Fn(func(this, k interface{}) interface{} {
 	return this.(ILookup).Lookup_Arity2(k)
 }, func(this, k, notFound interface{}) interface{} {
 	return this.(ILookup).Lookup_Arity3(k, notFound)
@@ -162,11 +162,11 @@ func (this *CljsCoreSymbol) Namespace_Arity1() string {
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity1(coll interface{}) interface{} {
-	return Lookup_.Invoke_Arity2(coll, this)
+	return X_Lookup.Invoke_Arity2(coll, this)
 }
 
 func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{} {
-	return Lookup_.Invoke_Arity3(coll, this, notFound)
+	return X_Lookup.Invoke_Arity3(coll, this, notFound)
 }
 
 // Doesn't try to match cljs.core, just a temporary hack
@@ -206,7 +206,7 @@ var String_QMARK_ = Fn(&AFnPrimtive{}, func(x interface{}) bool {
 
 var Namespace = Fn(func(x interface{}) interface{} {
 	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return Namespace_.Invoke_Arity1(x)
+		return X_Namespace.Invoke_Arity1(x)
 	} else {
 		panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
 	}
@@ -214,7 +214,7 @@ var Namespace = Fn(func(x interface{}) interface{} {
 
 var Name = Fn(func(x interface{}) interface{} {
 	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return Name_.Invoke_Arity1(x)
+		return X_Name.Invoke_Arity1(x)
 	} else {
 		if Truth_(String_QMARK_.Invoke_Arity1(x)) {
 			return x

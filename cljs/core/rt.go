@@ -152,7 +152,7 @@ func (this *AFn) IsVariadic() bool {
 }
 
 func (this *AFn) Call(args ...interface{}) interface{} {
-	if this == Invoke_ {
+	if this == X_Invoke {
 		return args[0].(*AFn).Call(args[1:]...)
 	}
 	argc := len(args)
