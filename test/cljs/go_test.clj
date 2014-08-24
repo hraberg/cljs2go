@@ -136,17 +136,17 @@
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)])
-    (test "set_BANG_"
+    (test "Set_BANG_"
           2 'y
           3 '(do (set! y 3) y)
           4 '(set! y 4))
-    (test "Case"
+    (test "Case_STAR_"
           true '(let [x 2]
                   (case x
                     2 true
                     1 false
                     0)))
-    (test "JS"
+    (test "Js_STAR_"
           "reflect.Float64" '(let [x 1]
                                (js* "reflect.ValueOf(x).Kind()"))
           "reflect.Int" '(let [v (js* "reflect.ValueOf(1)")]
