@@ -305,19 +305,19 @@
     (emit-wrap env
       (cond
         (zero? (count keys))
-        (emits "PersistentArrayMap_EMPTY")
+        (emits "CljsCorePersistentArrayMap_EMPTY")
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "PersistentArrayMap{nil, " (count keys) ", []interface{}{"
+          (emits "CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil}")
-          (emits "PersistentArrayMap_fromArray([]interface{}{"
+          (emits "CljsCorePersistentArrayMap_fromArray([]interface{}{"
             (comma-sep (interleave keys vals))
             "}, true, false)"))
 
         :else
-        (emits "PersistentHashMap_fromArrays([]interface{}{"
+        (emits "CljsCorePersistentHashMap_fromArrays([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
@@ -327,19 +327,19 @@
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "List_EMPTY")
+      (emits "CljsCoreList_EMPTY")
       (emits "List(" (comma-sep items) ")"))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
-      (emits "PersistentVector_EMPTY")
+      (emits "CljsCorePersistentVector_EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "PersistentVector{nil, " cnt
-            ", 5, PersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
-          (emits "PersistentVector_fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
+          (emits "CljsCorePersistentVector{nil, " cnt
+            ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
+          (emits "CljsCorePersistentVector_fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -350,13 +350,13 @@
   (emit-wrap env
     (cond
       (empty? items)
-      (emits "PersistentHashSet_EMPTY")
+      (emits "CljsCorePersistentHashSet_EMPTY")
 
       (distinct-constants? items)
-      (emits "PersistentHashSet{nil, PersistentArrayMap{nil, " (count items) ", []interface{}{"
+      (emits "CljsCorePersistentHashSet{nil, CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
         (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "PersistentHashSet_fromArray([]interface{}{" (comma-sep items) "}, true)"))))
+      :else (emits "CljsCorePersistentHashSet_fromArray([]interface{}{" (comma-sep items) "}, true)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
