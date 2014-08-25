@@ -116,8 +116,8 @@ func init() {
 
 // These are overridden in rt.go
 var Apply IFn
-var NativeSatisifes_QMARK_ *AFnPrimtive
-var Implements_QMARK_ *AFnPrimtive
+var NativeSatisifes_QMARK_ *AFnPrimitive
+var Implements_QMARK_ *AFnPrimitive
 
 type CljsCoreUUID struct {
 	Uuid interface{}
@@ -200,9 +200,9 @@ var Symbol = func(Symbol IFn) IFn {
 	})
 }(&AFn{})
 
-var String_QMARK_ = Fn(&AFnPrimtive{}, func(x interface{}) bool {
+var String_QMARK_ = Fn(&AFnPrimitive{}, func(x interface{}) bool {
 	return goog.IsString(x)
-}).(*AFnPrimtive)
+}).(*AFnPrimitive)
 
 var Namespace = Fn(func(x interface{}) interface{} {
 	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
@@ -274,6 +274,6 @@ var Str = func(Str IFn) IFn {
 	})
 }(&AFn{})
 
-var Not = Fn(&AFnPrimtive{}, func(x interface{}) bool {
+var Not = Fn(&AFnPrimitive{}, func(x interface{}) bool {
 	return !Truth_(x)
-}).(*AFnPrimtive)
+}).(*AFnPrimitive)

@@ -114,7 +114,7 @@ type AFn struct {
 	Arity5
 }
 
-type AFnPrimtive struct {
+type AFnPrimitive struct {
 	AFn
 	Arity0F
 	Arity1IF
@@ -176,7 +176,7 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 	return throwArity(nil, argc)
 }
 
-func (this *AFnPrimtive) Call(args ...interface{}) interface{} {
+func (this *AFnPrimitive) Call(args ...interface{}) interface{} {
 	switch len(args) {
 	case 0:
 		switch {
@@ -287,7 +287,7 @@ func primtiveSignature(t reflect.Type) string {
 	return sig
 }
 
-func makePrimtiveBridge(f reflect.Value, from reflect.Type) reflect.Value {
+func makePrimitiveBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
 			in[i] = reflect.ValueOf(v.Interface())
@@ -323,7 +323,7 @@ func makeInvalidArity(from reflect.Type) reflect.Value {
 
 func Fn(fns ...interface{}) IFn {
 	var f *AFn = &AFn{}
-	var fp *AFnPrimtive
+	var fp *AFnPrimitive
 	var vp reflect.Value
 	if len(fns) > 0 {
 		switch reflect.ValueOf(fns[0]).Type() {
@@ -331,7 +331,7 @@ func Fn(fns ...interface{}) IFn {
 			f = fns[0].(*AFn)
 			fns = fns[1:]
 		case reflect.TypeOf(fp):
-			fp = fns[0].(*AFnPrimtive)
+			fp = fns[0].(*AFnPrimitive)
 			f = &fp.AFn
 			fns = fns[1:]
 			vp = reflect.ValueOf(fp).Elem()
@@ -355,7 +355,7 @@ func Fn(fns ...interface{}) IFn {
 			af := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
 			if sig := primtiveSignature(at); sig != "" {
 				vp.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
-				af.Set(makePrimtiveBridge(av, af.Type()))
+				af.Set(makePrimitiveBridge(av, af.Type()))
 			} else {
 				af.Set(av)
 			}
@@ -396,15 +396,15 @@ func init() {
 			throwArity(nil, argc)
 		}
 		var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-		if fp, ok := f.(*AFnPrimtive); ok {
+		if fp, ok := f.(*AFnPrimitive); ok {
 			return fp.AFn.Call(append(args[:argc-1], spread...)...)
 		}
 		return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 	})
 
-	NativeSatisifes_QMARK_ = Fn(&AFnPrimtive{}, func(p, x interface{}) bool {
+	NativeSatisifes_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
 		return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
-	}).(*AFnPrimtive)
+	}).(*AFnPrimitive)
 	Implements_QMARK_ = NativeSatisifes_QMARK_
 }
 

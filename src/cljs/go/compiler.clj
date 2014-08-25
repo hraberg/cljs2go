@@ -533,14 +533,14 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFnPrimtive {")
+        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFnPrimitive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
             mname (munge name)]
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" mname " *AFnPrimtive) *AFnPrimtive {")
+        (emitln "func(" mname " *AFnPrimitive) *AFnPrimitive {")
         (emits "return Fn(" mname ", ")
         (loop [[meth & methods] methods]
           (if (:variadic meth)
@@ -549,8 +549,8 @@
           (when methods
             (emits ", ")
             (recur methods)))
-        (emitln ").(*AFnPrimtive)")
-        (emits "}(&AFnPrimtive{})"))
+        (emitln ").(*AFnPrimitive)")
+        (emits "}(&AFnPrimitive{})"))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
@@ -634,7 +634,7 @@
     (if (= :expr context)
       (emits "func () interface{} {")
       (emitln "{"))
-    (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimtive")
+    (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimitive")
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
     (emits expr)
