@@ -685,10 +685,10 @@
       (cond
        opt-not?
        (emits "!(" (first args) ")")
-       proto?
-       (let [pimpl (str (munge (protocol-prefix protocol))
-                        (munge (name (:name info))) "_Arity" (count args))]
-         (emits (first args) "_" pimpl "(" (comma-sep (rest args)) ")"))
+       ;; proto?
+       ;; (let [pimpl (str (munge (protocol-prefix protocol))
+       ;;                  (munge (name (:name info))) "_Arity" (count args))]
+       ;;   (emits (first args) "_" pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
        (emits f ".Invoke_Arity" arity "(" (comma-sep args) ")")
