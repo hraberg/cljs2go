@@ -31,9 +31,9 @@
         (doall (map #(ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*)) %) in))))))
 
 (defn ast->go [in]
-  (with-out-str
-    (env/with-compiler-env (env/default-compiler-env)
-      (dorun (map cljs.compiler/emit in)))))
+  (env/ensure
+   (with-out-str
+     (dorun (map cljs.compiler/emit in)))))
 
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]

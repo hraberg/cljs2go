@@ -166,7 +166,8 @@
           3 '(do (set! y 3) y)
           4 '(set! y 4)
           0 '(.-ZERO HasStaticFields)
-          "`foo`" '(.newFoo HasStaticFields))
+          "`foo`" '(.newFoo HasStaticFields)
+          -1 '(set! (.-ZERO HasStaticFields) -1))
     (test "Case_STAR_"
           true '(let [x 2]
                   (case x
