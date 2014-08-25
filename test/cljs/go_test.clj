@@ -217,6 +217,11 @@
                       (cond (zero? n) 0
                             (== 1 n) 1
                             :else (+ (fib (dec n)) (fib (- n 2))))) 30))
+    (bench "FibonacciPrimtitves"
+           832040 '((fn ^number fib [^number n]
+                      (cond (zero? n) 0
+                            (== 1 n) 1
+                            :else (+ (fib (dec n)) (fib (- n 2))))) 30))
     (bench "Factorial"
            2432902008176640000
            '((fn fact

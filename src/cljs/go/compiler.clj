@@ -476,6 +476,20 @@
     (when-not (= param (last params))
       (emits ","))))
 
+(defn go-type [tag]
+  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag '"interface{}"))
+
+(defn go-short-type [tag]
+  ('{number "F" boolean "B" string "S" array "A"} tag '"I"))
+
+(defn go-type-suffix [params ret-tag]
+  (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
+
+(defn emit-fn-signature [params ret-tag]
+  (let [typed-params (for [{:keys [name tag]} params]
+                       (str name " "(go-type tag)))]
+    (emits "func(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
+
 (defn emit-fn-body [type expr recurs]
   ;; (when type
   ;;   (emitln "var self__ = this"))
@@ -486,11 +500,10 @@
     (emitln "}")))
 
 (defn emit-fn-method
-  [{:keys [type name variadic params expr env recurs max-fixed-arity]}]
+  [{:keys [type params expr env recurs]} ret-tag]
   (emit-wrap env
-    (emits "func(")
-    (emit-fn-params params)
-    (emitln (when (seq params) " interface{}") ") interface{} {")
+    (emit-fn-signature params ret-tag)
+    (emits "{")
     (emit-fn-body type expr recurs)
     (emits "}")))
 
@@ -520,24 +533,24 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFn {")
+        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFnPrimtive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
             mname (munge name)]
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" mname " *AFn) *AFn {")
+        (emitln "func(" mname " *AFnPrimtive) *AFnPrimtive {")
         (emits "return Fn(" mname ", ")
         (loop [[meth & methods] methods]
           (if (:variadic meth)
             (emit-variadic-fn-method meth)
-            (emit-fn-method meth))
+            (emit-fn-method meth (:ret-tag name)))
           (when methods
             (emits ", ")
             (recur methods)))
-        (emitln ").(*AFn)")
-        (emits "}(&AFn{})"))
+        (emitln ").(*AFnPrimtive)")
+        (emits "}(&AFnPrimtive{})"))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
@@ -621,7 +634,7 @@
     (if (= :expr context)
       (emits "func () interface{} {")
       (emitln "{"))
-    (emitln "var " (string/join ", " (map munge bindings)) " *AFn")
+    (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimtive")
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
     (emits expr)
@@ -662,6 +675,9 @@
         keyword? (and (= (-> f :op) :constant)
                       (keyword? (-> f :form)))
         arity (count args)
+        [params] ((group-by count (:method-params info)) arity)
+        primitive-sig (go-type-suffix params (-> f :info :ret-tag))
+        has-primitives? (not (re-find #"^I+$" primitive-sig))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
         coerce? (:binding-form? info)]
@@ -682,6 +698,9 @@
 
        (or js? goog?)
        (emits f "(" (comma-sep args)  ")")
+
+       has-primitives?
+       (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
        (emits f (when coerce? ".(IFn)") ".Invoke_Arity" arity "(" (comma-sep args) ")")))))
@@ -745,7 +764,8 @@
   (when x
     (str (emit-str x)
          (when (or (not= 'number (:tag x))
-                   (= :invoke (:op x))) ;; the type inference is good enough to know this, but our fns return interface{}
+                   (and (= :invoke (:op x))
+                        (not= 'number (-> x :f :info :ret-tag))))
            ".(float64)"))))
 
 (defmethod emit* :js

@@ -396,6 +396,9 @@ func init() {
 			throwArity(nil, argc)
 		}
 		var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
+		if fp, ok := f.(*AFnPrimtive); ok {
+			return fp.AFn.Call(append(args[:argc-1], spread...)...)
+		}
 		return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 	})
 
