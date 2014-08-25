@@ -110,6 +110,9 @@
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
 
+(defn go-native-decorator [tag]
+  ('{string js.JSString} tag))
+
 (defn- comma-sep [xs]
   (interpose "," xs))
 
@@ -751,14 +754,14 @@
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
-  (let [js-string? (= 'string (:tag target))
+  (let [decorator (go-native-decorator (:tag target))
         type? (-> target :info :type)]
     (emit-wrap env
                (if field
                  (emits target (if type? "_" ".") (munge (go-public field) #{}))
-                 (emits (when js-string? "js.JSString(")
+                 (emits (when decorator (str decorator "("))
                         target
-                        (when js-string? ")")
+                        (when decorator ")")
                         (if type? "_" ".")
                         (munge (go-public method) #{})
                         (when type?
