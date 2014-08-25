@@ -229,7 +229,7 @@
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
     ;; numbers at compilation time.
-    (list* 'js* (core/str (if (core/string? (first clean-xs)) "(" "(''+")
+    (list* 'js* (core/str (if (core/string? (first clean-xs)) "(" "(``+")
                           strs ")")
            clean-xs)))
 
