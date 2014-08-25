@@ -10,10 +10,12 @@
   (:import [java.io Writer]
            [cljs.tagged_literals JSValue]))
 
+(defn combined-output [out err]
+  (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
+
 (defn go-test [package]
-  (let [{:keys [out err exit]} (sh/sh "go" "test" (str package))
-        out (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" "")]
-    (is (zero? exit) out)))
+  (let [{:keys [out err exit]} (sh/sh "go" "test" (str package))]
+    (is (zero? exit) (combined-output out err))))
 
 (defn test-header [package & imports]
   (with-out-str
@@ -33,13 +35,22 @@
       (test-comment setup ast)
       (printf "\t%s\n" (ast->go ast)))))
 
+(defn test-assertions [assertions]
+  (doseq [[expected actual] (partition 2 assertions)
+          :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
+    (test-comment actual (first ast))
+    (printf "\tassert.Equal(t,\n %s,\n %s)\n" expected (ast->go ast))))
+
 (defn test [test & assertions]
   (with-out-str
     (printf "func Test_%s(t *testing.T) {\n" (name test))
-    (doseq [[expected actual] (partition 2 assertions)
-            :let [ast (-> [actual] (cljs->ast (assoc (cljs.analyzer/empty-env) :context :expr)))]]
-      (test-comment actual (first ast))
-      (printf "\tassert.Equal(t,\n %s,\n %s)\n" expected (ast->go ast)))
+    (test-assertions assertions)
+    (printf "}\n\n")))
+
+(defn bench [benchmark & assertions]
+  (with-out-str
+    (printf "func Benchmark_%s(t *testing.B) {\n" (name benchmark))
+    (test-assertions assertions)
     (printf "}\n\n")))
 
 (defn emit-test [package file tests]
@@ -198,6 +209,23 @@
                  (js* "x[`last`] = `finally`")))))]
    (emit-test "go_test" "special_forms_test")))
 
+(defn benchmarks []
+  (->>
+   [(bench "Fibonacci"
+           832040 '((fn fib [n]
+                      (cond (zero? n) 0
+                            (== 1 n) 1
+                            :else (+ (fib (dec n)) (fib (- n 2))))) 30))
+    (bench "Factorial"
+           2432902008176640000
+           '((fn fact
+               ([n] (fact n 1))
+               ([n f]
+                  (if (== n 1)
+                    f
+                    (recur (dec n) (* f n))))) 20))]
+   (emit-test "go_test" "benchmarks_test")))
+
 (deftest go-all-tests
   (cljs.env/ensure
    (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
@@ -205,7 +233,13 @@
              *data-readers* cljs.tagged-literals/*cljs-data-readers*]
      (constants)
      (special-forms)
+     (benchmarks) ;; these are generated and compiled, but not actually run during the tests
      (go-test "./..."))))
+
+(defn run-benchmarks []
+  (doseq [dir ["." "target/generated/go_test"]]
+    (let [{:keys [out err exit]} (sh/sh "go" "test" "-bench" "." :dir dir)]
+      (println (combined-output out err)))))
 
 (defmethod print-method cljs.tagged_literals.JSValue
   [^JSValue d ^Writer w]

@@ -482,7 +482,7 @@
   (when recurs (emitln "for {"))
   (emits expr)
   (when recurs
-    (emitln "break")
+    (emitln "panic(&js.Error{`Unreachable`})")
     (emitln "}")))
 
 (defn emit-fn-method
@@ -591,7 +591,7 @@
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop
-        (emitln "return nil")
+        (emitln "panic(&js.Error{`Unreachable`})")
         (emitln "}")))
     (if (= :expr context)
       (emits "}()")
