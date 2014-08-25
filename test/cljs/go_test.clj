@@ -209,6 +209,7 @@
                  (js* "x[`last`] = `finally`")))))]
    (emit-test "go_test" "special_forms_test")))
 
+;; these are generated and compiled, but not actually run during the tests
 (defn benchmarks []
   (->>
    [(bench "Fibonacci"
@@ -227,14 +228,13 @@
    (emit-test "go_test" "benchmarks_test")))
 
 (deftest go-all-tests
-  (cljs.env/ensure
-   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
-             cljs.compiler/*go-line-numbers* true
-             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
-     (constants)
-     (special-forms)
-     (benchmarks) ;; these are generated and compiled, but not actually run during the tests
-     (go-test "./..."))))
+  (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
+            cljs.compiler/*go-line-numbers* true
+            *data-readers* cljs.tagged-literals/*cljs-data-readers*]
+    (doseq [gen [constants special-forms benchmarks]]
+      (cljs.env/ensure
+       (gen)))
+    (go-test "./...")))
 
 (defn run-benchmarks []
   (doseq [dir ["." "target/generated/go_test"]]
