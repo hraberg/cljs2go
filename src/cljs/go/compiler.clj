@@ -700,6 +700,7 @@
        (emits f "(" (comma-sep args)  ")")
 
        has-primitives?
+       ;; We need to double check that our args match the receiver, otherwise fall down to :else, or convert them here.
        (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
