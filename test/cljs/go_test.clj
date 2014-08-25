@@ -157,11 +157,16 @@
           3 '(.-x (MyPoint. 3 4)))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
-    (test-setup '[(def y 2)])
+    (test-setup '[(def y 2)
+                  (deftype HasStaticFields [])
+                  (set! (.-ZERO HasStaticFields) 0)
+                  (set! (.-newFoo HasStaticFields) (fn [] "foo"))])
     (test "Set_BANG_"
           2 'y
           3 '(do (set! y 3) y)
-          4 '(set! y 4))
+          4 '(set! y 4)
+          0 '(.-ZERO HasStaticFields)
+          "`foo`" '(.newFoo HasStaticFields))
     (test "Case_STAR_"
           true '(let [x 2]
                   (case x

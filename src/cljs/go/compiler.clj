@@ -271,7 +271,7 @@
 
 (defmethod emit* :var
   [{:keys [info env] :as arg}]
-  (let [var-name (:name info)]
+  (let [info (cond-> info (:type info) (update-in [:name] go-type-fqn))]
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
     ; e.g. (function greet(return x, return y) {}).
@@ -720,7 +720,8 @@
   (emit-wrap env
     (when (= :expr (:context env))
       (emits "func () interface{} {"))
-    (emitln target " = " val)
+    (emitln (when (-> target :target :info :type) "var ") ;; this hack introduces a 'static final' var on a type.
+            target " = " val)
     (when (= :expr (:context env))
       (emitln " return " target)
       (emits "}()"))))
@@ -741,7 +742,7 @@
 (defmethod emit* :deftype*
   [{:keys [t fields pmasks]}]
   (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) " interface{} }")))
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) (when (seq fields) " interface{}") " }")))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
@@ -750,14 +751,19 @@
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
-  (let [js-string? (= 'string (:tag target))]
+  (let [js-string? (= 'string (:tag target))
+        type? (-> target :info :type)]
     (emit-wrap env
                (if field
-                 (emits target "." (munge (go-public field) #{}))
+                 (emits target (if type? "_" ".") (munge (go-public field) #{}))
                  (emits (when js-string? "js.JSString(")
                         target
                         (when js-string? ")")
-                        "." (munge (go-public method) #{}) "("
+                        (if type? "_" ".")
+                        (munge (go-public method) #{})
+                        (when type?
+                          (str ".Invoke_Arity" (count args)))
+                        "("
                         (comma-sep args)
                         ")")))))
 
