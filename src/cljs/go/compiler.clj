@@ -681,6 +681,7 @@
         [params] ((group-by count (:method-params info)) arity)
         primitive-sig (go-type-suffix params (-> f :info :ret-tag))
         has-primitives? (not (re-find #"^I+$" primitive-sig))
+        tags-match? (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
         coerce? (:binding-form? info)]
@@ -702,8 +703,7 @@
        (or js? goog?)
        (emits f "(" (comma-sep args)  ")")
 
-       has-primitives?
-       ;; We need to double check that our args match the receiver, otherwise fall down to :else, or convert them here.
+       (and has-primitives? tags-match?)
        (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
