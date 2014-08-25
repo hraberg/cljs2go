@@ -316,7 +316,7 @@
   (bool-expr (core/list 'js* "~{} == false" x)))
 
 (defmacro array? [x]
-  (bool-expr `(.isArray js/Array ~x)))
+  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Slice" x)))
 
 (defmacro string? [x]
   (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.String" x)))
