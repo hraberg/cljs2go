@@ -6,8 +6,6 @@
             [clojure.pprint :as pp]
             [clojure.java.shell :as sh]))
 
-(alter-var-root #'ana/*cljs-macros-path* (constantly "/cljs/go/core"))
-
 (defn elide-children [_ ast]
   (dissoc ast :children))
 
