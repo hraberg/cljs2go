@@ -293,7 +293,7 @@
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
-    (emits "With_meta(" expr "," meta ")")))
+    (emits "With_meta.Invoke_Arity2(" expr "," meta ")")))
 
 (def ^:private array-map-threshold 8)
 (def ^:private obj-map-threshold 8)
@@ -315,16 +315,16 @@
           (emits "CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil}")
-          (emits "CljsCorePersistentArrayMap_fromArray([]interface{}{"
+          (emits "CljsCorePersistentArrayMap_fromArray.Invoke_Arity3([]interface{}{"
             (comma-sep (interleave keys vals))
-            "}, true, false)"))
+            "}, true, false).(CljsCorePersistentArrayMap)"))
 
         :else
-        (emits "CljsCorePersistentHashMap_fromArrays([]interface{}{"
+        (emits "CljsCorePersistentHashMap_fromArrays.Invoke_Arity2([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
-               "})")))))
+               "}).(CljsCorePersistentHashMap)")))))
 
 (defmethod emit* :list
   [{:keys [items env]}]
@@ -342,7 +342,7 @@
         (if (< cnt 32)
           (emits "CljsCorePersistentVector{nil, " cnt
             ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
-          (emits "CljsCorePersistentVector_fromArray([]interface{}{" (comma-sep items) "}, true)"))))))
+          (emits "CljsCorePersistentVector_fromArray.Invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentVector)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -359,7 +359,7 @@
       (emits "CljsCorePersistentHashSet{nil, CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
         (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "CljsCorePersistentHashSet_fromArray([]interface{}{" (comma-sep items) "}, true)"))))
+      :else (emits "CljsCorePersistentHashSet_fromArray.Invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentHashSet)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
