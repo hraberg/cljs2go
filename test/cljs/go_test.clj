@@ -159,6 +159,10 @@
                   ;;   IFoo
                   ;;   (-bar [_ x] x))
 
+                  ;; func (_ *CljsUserMyFooWithArg) X_bar_Arity2(x interface{}) interface{} {
+                  ;; 	return x
+                  ;; }
+
                   ;; (deftype MyFooWithThis []
                   ;;   IFoo
                   ;;   (-bar [this _] this))
