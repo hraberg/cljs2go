@@ -451,18 +451,11 @@
         (when-not (= export mname)
           (emitln "var "export  " = " mname))))))
 
-(defn emit-fn-params [params]
-  (doseq [param params]
-    (emit param)
-    ; Avoid extraneous comma (function greet(x, y, z,)
-    (when-not (= param (last params))
-      (emits ","))))
-
 (defn go-type [tag]
-  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag '"interface{}"))
+  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}"))
 
 (defn go-short-type [tag]
-  ('{number "F" boolean "B" string "S" array "A"} tag '"I"))
+  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
 
 (defn go-type-suffix [params ret-tag]
   (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
@@ -528,7 +521,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep (map munge loop-locals)) ") *AFnPrimitive {")
+        (emitln "func (" (comma-sep loop-locals) ") *AFnPrimitive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
