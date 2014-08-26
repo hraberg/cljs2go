@@ -167,7 +167,7 @@
                   ;;   IFoo
                   ;;   (-bar [this _] this))
 
-                  ;; (def my-foo-with-this (MyFooWithThis.))
+                  ;; (def foo-with-this (MyFooWithThis.))
 
                   ;; (deftype MyFooWithField [field]
                   ;;   IFoo
@@ -180,7 +180,7 @@
           "`IFoo`" '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().Name()")
           1 '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().NumMethod()")
           ;; "`foo`" '(-bar (MyFooWithArg.) "foo")
-          ;; "My_Foo_With_This" '(-bar (MyFooWithThis.) "foo")
+          ;; "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
           ;; 0 '(-bar (MyFooWithField. 0) "foo")
           )
     (test "Var"
