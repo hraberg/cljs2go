@@ -521,7 +521,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func (" (comma-sep loop-locals) ") *AFnPrimitive {")
+        (emitln "func(" (comma-sep loop-locals) ") *AFnPrimitive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
@@ -553,12 +553,11 @@
 (defmethod emit* :do
   [{:keys [statements ret env]}]
   (let [context (:context env)]
-    (when (and statements (= :expr context)) (emits "func () interface{} {"))
+    (when (and statements (= :expr context)) (emits "func() interface{} {"))
     (when statements
       (emits statements))
     (emit ret)
     (when (and statements (= :expr context)) (emits "}()"))))
-
 
 (defmethod emit* :try
   [{:keys [env try catch name finally]}]
@@ -567,7 +566,7 @@
       (let [out (when name (gensym "return__"))]
         (when (= :return (:context env))
           (emits "return "))
-        (emits "func () (" out " interface{}) {")
+        (emits "func() (" out " interface{}) {")
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
           (emitln "defer func() {" finally "}()"))
@@ -583,7 +582,7 @@
   [{:keys [bindings expr env]} is-loop]
   (let [context (:context env)]
     (if (= :expr context)
-      (emits "func () interface{} {")
+      (emits "func() interface{} {")
       (emits "{"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
@@ -624,7 +623,7 @@
   [{:keys [bindings expr env]}]
   (let [context (:context env)]
     (if (= :expr context)
-      (emits "func () interface{} {")
+      (emits "func() interface{} {")
       (emitln "{"))
     (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimitive")
     (doseq [{:keys [init] :as binding} bindings]
@@ -719,7 +718,7 @@
   [{:keys [target val env]}]
   (emit-wrap env
     (when (= :expr (:context env))
-      (emits "func () interface{} {"))
+      (emits "func() interface{} {"))
     (maybe-define-static-field-var target)
     (emitln target " = " val)
     (when (= :expr (:context env))
