@@ -473,10 +473,10 @@
     (emits "(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
 
 (defn assign-to-blank [bindings]
-  (when-let [bindings (seq (remove (comp #{'_} :name) bindings))]
+  (when-let [bindings (seq (remove '#{_} (map munge bindings)))]
     (emitln (comma-sep (repeat (count bindings) "_"))
             " = "
-            (comma-sep (map (comp munge :name) bindings)))))
+            (comma-sep bindings))))
 
 (defn emit-fn-body [type expr recurs]
   (when recurs (emitln "for {"))
@@ -501,10 +501,6 @@
            (-> name munge go-short-name go-public) "_Arity" (count params))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")
-    (let [this (first params)]
-      (when (not= '_ (:name this))
-        (emitln this " := self__")
-        (emitln "_ = " this)))
     (emit-fn-body type expr recurs)
     (emits "}")))
 

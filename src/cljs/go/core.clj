@@ -653,7 +653,7 @@
      ~@impls))
 
 (defmacro ^:private js-this []
-  (core/list 'js* "this"))
+  (core/list 'js* "self__"))
 
 (defmacro this-as
   "Defines a scope where JavaScript's implicit \"this\" is bound to the name provided."
@@ -734,8 +734,8 @@
 
 (defn adapt-proto-params [type [[this & args :as sig] & body]]
   `(~(vec (cons (vary-meta this assoc :tag type) args))
-    ;; this-as ~this
-    ~@body))
+    (this-as ~this
+      ~@body)))
 
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]

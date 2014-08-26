@@ -27,7 +27,7 @@
 (defn test-comment [code ast]
   (println "/*")
   (pp/pprint code)
-  (when (or *ast-debug* (-> code meta :ast-debug))
+  (when *ast-debug*
     (println)
     (pp/pprint ast))
   (println"*/"))
@@ -178,6 +178,7 @@
           "`IFoo`" '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().Name()")
           1 '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().NumMethod()")
           "`foo`" '(-bar (MyFooWithArg.) "foo")
+          "`foo`" (read-string "(apply -bar (MyFooWithArg.) #js [\"foo\"])")
           "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
           0 '(-bar (MyFooWithField. 0) nil)
           true '(satisfies? cljs.user/IFoo foo-with-this)
