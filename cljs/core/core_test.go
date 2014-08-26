@@ -60,7 +60,7 @@ var Baz = Fn(func(args ...interface{}) interface{} {
 })
 
 func Test_Invoke(t *testing.T) {
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
+	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.(*AFn).Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, 1, Baz.(*AFn).MaxFixedArity)
@@ -115,9 +115,9 @@ func Test_Protocols(t *testing.T) {
 	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
 	assert.True(t, symbol.(js.Object).Equiv(Symbol.Invoke_Arity2("foo", "bar")))
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("js", "Object"), symbol).(bool))
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("js", "Object"), symbol).(bool))
+	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
+	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
 	assert.Equal(t, "foo", X_Namespace.Invoke_Arity1(symbol))
 	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).Invoke_Arity0() })
@@ -137,7 +137,7 @@ func Test_Protocols(t *testing.T) {
 	foo, bar := Symbol.Invoke_Arity1("foo"), Symbol.Invoke_Arity1("bar")
 	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	assert.True(t, NativeSatisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
+	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
 	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
 	assert.Nil(t, X_Lookup.(*AFn).Call(m, bar))
 	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))

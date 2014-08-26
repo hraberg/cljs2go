@@ -402,10 +402,10 @@ func init() {
 		return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 	})
 
-	NativeSatisifes_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
+	Native_satisifes_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
 		return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 	}).(*AFnPrimitive)
-	Implements_QMARK_ = NativeSatisifes_QMARK_
+	Implements_QMARK_ = Native_satisifes_QMARK_
 }
 
 func Main() {

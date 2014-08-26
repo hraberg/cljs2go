@@ -116,7 +116,7 @@ func init() {
 
 // These are overridden in rt.go
 var Apply IFn
-var NativeSatisifes_QMARK_ *AFnPrimitive
+var Native_satisifes_QMARK_ *AFnPrimitive
 var Implements_QMARK_ *AFnPrimitive
 
 type CljsCoreUUID struct {
