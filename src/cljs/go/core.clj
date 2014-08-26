@@ -786,8 +786,8 @@
     (if (= p 'Object)
       (add-obj-methods type type-sym sigs)
       (concat
-        (when-not (skip-flag psym)
-          [`(set! ~(extend-prefix type-sym pprefix) true)])
+        ;; (when-not (skip-flag psym)
+        ;;   [`(set! ~(extend-prefix type-sym pprefix) true)])
         (mapcat
           (fn [sig]
             (if (= psym 'cljs.core/IFn)

@@ -739,7 +739,7 @@
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
   (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) ", Meta, Extmap interface{} }")))
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) ", X__meta, X__extmap interface{} }")))
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
