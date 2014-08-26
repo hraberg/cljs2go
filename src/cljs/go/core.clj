@@ -808,28 +808,6 @@
           {:current-symbol type-sym :suggested-symbol (js-base-type type-sym)}))
     `(do ~@(mapcat #(assign-impls env resolve type-sym type %) impl-map))))
 
-(defn- prepare-protocol-masks [env impls]
-  (let [resolve  (partial resolve-var env)
-        impl-map (->impl-map impls)
-        fpp-pbs  (seq
-                   (keep fast-path-protocols
-                     (map resolve
-                       (keys impl-map))))]
-    (if fpp-pbs
-      (let [fpps  (into #{}
-                    (filter (partial contains? fast-path-protocols)
-                      (map resolve (keys impl-map))))
-            parts (as-> (group-by first fpp-pbs) parts
-                    (into {}
-                      (map (juxt key (comp (partial map peek) val))
-                        parts))
-                    (into {}
-                      (map (juxt key (comp (partial reduce core/bit-or) val))
-                        parts)))]
-        [fpps (reduce (fn [ps p] (update-in ps [p] (fnil identity 0)))
-                parts
-                (range fast-path-protocol-partitions-count))]))))
-
 (defn annotate-specs [annots v [f sigs]]
   (conj v
     (vary-meta (cons f (map #(cons (second %) (nnext %)) sigs))
@@ -867,25 +845,17 @@
 
 (defmacro deftype [t fields & impls]
   (let [r (:name (cljs.analyzer/resolve-var (dissoc &env :locals) t))
-        [fpps pmasks] (prepare-protocol-masks &env impls)
         protocols (collect-protocols impls &env)
         t (vary-meta t assoc
-            :protocols protocols
-            :skip-protocol-flag fpps) ]
+            :protocols protocols) ]
     (if (seq impls)
       `(do
-         (deftype* ~t ~fields ~pmasks)
-         ;; (set! (.-cljs$lang$type ~t) true)
-         ;; (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
-         ;; (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opt#] (-write writer# ~(core/str r))))
+         (deftype* ~t ~fields nil)
          (extend-type ~t ~@(dt->et t impls fields true))
          ~(build-positional-factory t r fields)
          ~t)
       `(do
-         (deftype* ~t ~fields ~pmasks)
-         ;; (set! (.-cljs$lang$type ~t) true)
-         ;; (set! (.-cljs$lang$ctorStr ~t) ~(core/str r))
-         ;; (set! (.-cljs$lang$ctorPrWriter ~t) (fn [this# writer# opts#] (-write writer# ~(core/str r))))
+         (deftype* ~t ~fields nil)
          ~(build-positional-factory t r fields)
          ~t))))
 
@@ -958,13 +928,11 @@
                                     (concat [~@(map #(core/list `vector (keyword %) %) base-fields)]
                                             ~'__extmap))))
                   ])
-          [fpps pmasks] (prepare-protocol-masks env impls)
           protocols (collect-protocols impls env)
           tagname (vary-meta tagname assoc
-                    :protocols protocols
-                    :skip-protocol-flag fpps)]
+                    :protocols protocols)]
       `(do
-         (~'defrecord* ~tagname ~hinted-fields ~pmasks)
+         (~'defrecord* ~tagname ~hinted-fields nil)
          (extend-type ~tagname ~@(dt->et tagname impls fields true))))))
 
 (defn- build-map-factory [rsym rname fields]
@@ -982,9 +950,6 @@
                assoc :internal-ctor true)]
     `(let []
        ~(emit-defrecord &env rsym r fields impls)
-       (set! (.-cljs$lang$type ~r) true)
-       (set! (.-cljs$lang$ctorPrSeq ~r) (fn [this#] (core/list ~(core/str r))))
-       (set! (.-cljs$lang$ctorPrWriter ~r) (fn [this# writer#] (-write writer# ~(core/str r))))
        ~(build-positional-factory rsym r fields)
        ~(build-map-factory rsym r fields)
        ~r)))
@@ -1032,42 +997,16 @@
   [psym x]
   (let [p          (:name
                     (cljs.analyzer/resolve-var
-                      (dissoc &env :locals) psym))
-        prefix     (protocol-prefix p)
-        xsym       (bool-expr (gensym))
-        [part bit] (fast-path-protocols p)
-        msym       (symbol
-                      (core/str "-cljs$lang$protocol_mask$partition" part "$"))]
-    `(let [~xsym ~x]
-       (if ~xsym
-         (let [bit# ~(if bit `(unsafe-bit-and (. ~xsym ~msym) ~bit))]
-           (if (or bit#
-                 ~(bool-expr `(. ~xsym ~(symbol (core/str "-" prefix)))))
-             true
-             false))
-         false))))
+                      (dissoc &env :locals) psym))]
+    `(cljs.core/native-satisfies? ~psym ~x)))
 
 (defmacro satisfies?
   "Returns true if x satisfies the protocol"
   [psym x]
   (let [p          (:name
                      (cljs.analyzer/resolve-var
-                       (dissoc &env :locals) psym))
-         prefix     (protocol-prefix p)
-         xsym       (bool-expr (gensym))
-         [part bit] (fast-path-protocols p)
-         msym       (symbol
-                      (core/str "-cljs$lang$protocol_mask$partition" part "$"))]
-    `(let [~xsym ~x]
-       (if ~xsym
-         (let [bit# ~(if bit `(unsafe-bit-and (. ~xsym ~msym) ~bit))]
-           (if (or bit#
-                 ~(bool-expr `(. ~xsym ~(symbol (core/str "-" prefix)))))
-             true
-             (if (coercive-not (. ~xsym ~msym))
-               (cljs.core/native-satisfies? ~psym ~xsym)
-               false)))
-         (cljs.core/native-satisfies? ~psym ~xsym)))))
+                       (dissoc &env :locals) psym))]
+    `(cljs.core/native-satisfies? ~psym ~x)))
 
 (defmacro lazy-seq [& body]
   `(new cljs.core/LazySeq nil (fn [] ~@body) nil nil))
