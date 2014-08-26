@@ -994,11 +994,9 @@
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
-        native-dispatch? (fn [fname] (not= \- (-> fname core/str first)))
         slot-name (fn [fname sig]
                     (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
-                              (when-not (native-dispatch? fname)
-                                (core/str "_Arity" (count sig)))))
+                              "_Arity" (count sig)))
         expand-sig (fn [fname sig]
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
@@ -1007,8 +1005,7 @@
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)
                        fname (vary-meta fname assoc :protocol p)]
-                   (when-not (native-dispatch? fname)
-                     `(defn ~fname ~@(map (partial expand-sig fname) sigs)))))
+                   `(defn ~fname ~@(map (partial expand-sig fname) sigs))))
         method-decl (fn [[fname & sigs]]
                       (->>
                        (for [sig (take-while vector? sigs)]
