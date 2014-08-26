@@ -470,7 +470,7 @@
 (defn emit-fn-signature [params ret-tag]
   (let [typed-params (for [{:keys [name tag]} params]
                        (str (munge name) " " (go-type tag)))]
-    (emits "(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
+    (emits "(" (comma-sep typed-params) ") " (go-type ret-tag))))
 
 (defn assign-to-blank [bindings]
   (when-let [bindings (seq (remove '#{_} (map munge bindings)))]
