@@ -469,14 +469,14 @@
 
 (defn emit-fn-signature [params ret-tag]
   (let [typed-params (for [{:keys [name tag]} params]
-                       (str name " "(go-type tag)))]
+                       (str (munge name) " " (go-type tag)))]
     (emits "(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
 
 (defn assign-to-blank [bindings]
   (when-let [bindings (seq (remove (comp #{'_} :name) bindings))]
-    (emitln (string/join ", " (repeat (count bindings) "_"))
+    (emitln (comma-sep (repeat (count bindings) "_"))
             " = "
-            (string/join ", " (map (comp munge :name) bindings)))))
+            (comma-sep (map (comp munge :name) bindings)))))
 
 (defn emit-fn-body [type expr recurs]
   (when recurs (emitln "for {"))

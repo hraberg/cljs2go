@@ -22,17 +22,20 @@
   ([in env]
      (env/ensure
       (binding [ana/*cljs-ns* (or ana/*cljs-ns* 'cljs.user)
-                ana/*cljs-static-fns* true
                 ana/*passes* [elide-children simplify-env ana/infer-type]]
         (when-not (ana/get-namespace ana/*cljs-ns*)
           (ana/analyze env (list 'ns ana/*cljs-ns*)))
         (doall (map #(ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*)) %) in))))))
 
 (defn ast->go [in]
-  (env/ensure
-   (with-out-str
-     (binding [ana/*cljs-static-fns* true]
-       (dorun (map cljs.compiler/emit in))))))
+  (try
+    (env/ensure
+     (with-out-str
+       (binding [ana/*cljs-static-fns* true]
+         (dorun (map cljs.compiler/emit in)))))
+    (catch Throwable t
+      (.printStackTrace t)
+      (throw t))))
 
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]

@@ -22,11 +22,14 @@
     (println "package" package)
     (println "import" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))))
 
+(def ^:dynamic *ast-debug* false)
+
 (defn test-comment [code ast]
   (println "/*")
   (pp/pprint code)
-  (println)
-  (pp/pprint ast)
+  (when (or *ast-debug* (-> code meta :ast-debug))
+    (println)
+    (pp/pprint ast))
   (println"*/"))
 
 (defn test-setup [setup]
@@ -266,6 +269,7 @@
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
             cljs.compiler/*go-line-numbers* true
+            *ast-debug* false
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
     (doseq [gen [constants special-forms benchmarks]]
       (cljs.env/ensure
