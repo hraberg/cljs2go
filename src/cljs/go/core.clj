@@ -993,34 +993,39 @@
   (let [p (:name (cljs.analyzer/resolve-var (dissoc &env :locals) psym))
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
-        fqn (fn [n] (symbol (core/str ns-name "." n)))
-        prefix (protocol-prefix p)
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
-        expand-sig (fn [fname slot sig]
+        slot-name (fn [fname sig]
+                    (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
+                              "_Arity" (count sig)))
+        expand-sig (fn [fname sig]
                      `(~sig
-                       (if (and ~(first sig) (. ~(first sig) ~(symbol (core/str "-" slot)))) ;; Property access needed here.
-                         (. ~(first sig) ~slot ~@sig)
-                         (let [x# (if (nil? ~(first sig)) nil ~(first sig))]
-                           ((or
-                             (aget ~(fqn fname) (goog/typeOf x#))
-                             (aget ~(fqn fname) "_")
-                             (throw (missing-protocol
-                                     ~(core/str psym "." fname) ~(first sig))))
-                            ~@sig)))))
+                       ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
+                       (~'js* ~(core/str (first sig) ".(" psym ")." (slot-name fname sig)
+                                         (or (seq (interpose "," (rest sig))) "()")))))
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)
-                       slot (symbol (core/str prefix (name fname)))
                        fname (vary-meta fname assoc :protocol p)]
-                   `(defn ~fname ~@(map (fn [sig]
-                                          (expand-sig fname
-                                                      (symbol (core/str slot "$arity$" (count sig)))
-                                                      sig))
-                                        sigs))))]
+                   `(defn ~fname ~@(map (partial expand-sig fname) sigs))))
+        method-decl (fn [[fname & sigs]]
+                      (->>
+                       (for [sig (take-while vector? sigs)]
+                         (core/str "\t"
+                                   (slot-name fname sig)
+                                   "("
+                                   (->> (rest sig)
+                                        (map #(core/str % " " (cljs.compiler/go-type (-> % meta :tag))))
+                                        (interpose ", ")
+                                        (apply core/str))
+                                   ")"
+                                   " " (cljs.compiler/go-type (-> fname meta :tag))
+                                   "\n"))
+                       (apply core/str)))]
     `(do
-       (set! ~'*unchecked-if* true)
-       (def ~psym (js-obj))
-       ~@(map method methods)
-       (set! ~'*unchecked-if* false))))
+       (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
+              ~psym)
+       (~'js* "func init() {\n\tRegisterProtocol(~{}, (*~{})(nil))\n}"
+              ~(core/str (symbol (name ns-name) (name psym))) ~psym)
+       ~@(map method methods))))
 
 (defmacro implements?
   "EXPERIMENTAL"

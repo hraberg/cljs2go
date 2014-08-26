@@ -150,11 +150,35 @@
                    (.charAt x 1))
           ;; As cljs.core isn't analyzed yet we need to ns qualify this so the type FQN resolves.
           "`15c52219-a8fd-4771-87e2-42ee33b79bca`" '(.-uuid (cljs.core/UUID. "15c52219-a8fd-4771-87e2-42ee33b79bca")))
-    (test-setup '[(deftype MyPoint [x y])])
+    (test-setup '[(deftype MyPoint [x y])
+
+                  (defprotocol IFoo
+                    (-bar [foo x]))
+
+                  ;; (deftype MyFooWithArg []
+                  ;;   IFoo
+                  ;;   (-bar [_ x] x))
+
+                  ;; (deftype MyFooWithThis []
+                  ;;   IFoo
+                  ;;   (-bar [this _] this))
+
+                  ;; (def my-foo-with-this (MyFooWithThis.))
+
+                  ;; (deftype MyFooWithField [field]
+                  ;;   IFoo
+                  ;;   (-bar [_ _] field))
+                  ])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
-          3 '(.-x (MyPoint. 3 4)))
+          3 '(.-x (MyPoint. 3 4))
+          "`IFoo`" '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().Name()")
+          1 '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().NumMethod()")
+          ;; "`foo`" '(-bar (MyFooWithArg.) "foo")
+          ;; "My_Foo_With_This" '(-bar (MyFooWithThis.) "foo")
+          ;; 0 '(-bar (MyFooWithField. 0) "foo")
+          )
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)
