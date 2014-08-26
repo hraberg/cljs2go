@@ -177,8 +177,9 @@
           "`foo`" '(-bar (MyFooWithArg.) "foo")
           "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
           0 '(-bar (MyFooWithField. 0) nil)
-          true '(native-satisfies? 'cljs.user/IFoo foo-with-this) ;; quote shouldn't be necessary
-          false '(native-satisfies? 'cljs.user/IFoo (MyPoint. 0 0)))
+          true '(satisfies? cljs.user/IFoo foo-with-this)
+          true '(satisfies? IFoo foo-with-this)
+          false '(satisfies? cljs.user/IFoo (MyPoint. 0 0)))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)

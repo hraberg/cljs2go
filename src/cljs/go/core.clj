@@ -993,7 +993,7 @@
   (let [p          (:name
                     (cljs.analyzer/resolve-var
                       (dissoc &env :locals) psym))]
-    `(cljs.core/native-satisfies? ~psym ~x)))
+    `(cljs.core/native-satisfies? '~p ~x)))
 
 (defmacro satisfies?
   "Returns true if x satisfies the protocol"
@@ -1001,7 +1001,7 @@
   (let [p          (:name
                      (cljs.analyzer/resolve-var
                        (dissoc &env :locals) psym))]
-    `(cljs.core/native-satisfies? ~psym ~x)))
+    `(cljs.core/native-satisfies? '~p ~x)))
 
 (defmacro lazy-seq [& body]
   `(new cljs.core/LazySeq nil (fn [] ~@body) nil nil))
