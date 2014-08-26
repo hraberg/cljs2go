@@ -60,7 +60,7 @@ var Baz = Fn(func(args ...interface{}) interface{} {
 })
 
 func Test_Invoke(t *testing.T) {
-	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
+	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.(*AFn).Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, 1, Baz.(*AFn).MaxFixedArity)
@@ -115,9 +115,9 @@ func Test_Protocols(t *testing.T) {
 	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
 	assert.True(t, symbol.(js.Object).Equiv(Symbol.Invoke_Arity2("foo", "bar")))
-	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("js", "Object"), symbol).(bool))
-	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
-	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("js", "Object"), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
 	assert.Equal(t, "foo", X_Namespace.Invoke_Arity1(symbol))
 	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).Invoke_Arity0() })
@@ -137,7 +137,7 @@ func Test_Protocols(t *testing.T) {
 	foo, bar := Symbol.Invoke_Arity1("foo"), Symbol.Invoke_Arity1("bar")
 	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	assert.True(t, Native_satisifes_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
+	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
 	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
 	assert.Nil(t, X_Lookup.(*AFn).Call(m, bar))
 	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
@@ -150,28 +150,28 @@ func Test_Protocols(t *testing.T) {
 
 func Test_InteropViaReflection(t *testing.T) {
 	sb := &gstring.StringBuffer{"foo"}
-	assert.Equal(t, "foo", NativeGetInstanceField.Invoke_Arity2(sb, "Buffer"),
+	assert.Equal(t, "foo", Native_get_instance_field.Invoke_Arity2(sb, "Buffer"),
 		"(.-buffer sb)")
-	NativeSetInstanceField.Invoke_Arity3(sb, "Buffer", "bar")
+	Native_set_instance_field.Invoke_Arity3(sb, "Buffer", "bar")
 	assert.Equal(t, "bar", sb.Buffer,
 		"(set! (.-buffer sb) \"bar\")")
-	assert.Equal(t, sb, NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append", []interface{}{"baz"}))
+	assert.Equal(t, sb, Native_invoke_instance_method.Invoke_Arity3(sb, "Append", []interface{}{"baz"}))
 	assert.Equal(t, "barbaz", sb.String(),
 		"(.append sb \"baz\")")
 
-	assert.Equal(t, "H", NativeInvokeInstanceMethod.Invoke_Arity3("Hello", "CharAt", []interface{}{0.0}))
+	assert.Equal(t, "H", Native_invoke_instance_method.Invoke_Arity3("Hello", "CharAt", []interface{}{0.0}))
 
-	assert.Equal(t, js.Number.MAX_VALUE, NativeGetInstanceField.Invoke_Arity2(js.Number, "MAX_VALUE"),
+	assert.Equal(t, js.Number.MAX_VALUE, Native_get_instance_field.Invoke_Arity2(js.Number, "MAX_VALUE"),
 		"(.-MAX-VALUE js/Number)")
 
-	assert.Equal(t, 3, NativeInvokeFunc.Invoke_Arity2(Math.Floor, []interface{}{3.14}),
+	assert.Equal(t, 3, Native_invoke_func.Invoke_Arity2(Math.Floor, []interface{}{3.14}),
 		"(Math/floor 3.14)")
-	assert.Equal(t, "3.14", NativeInvokeFunc.Invoke_Arity2(fmt.Sprint, []interface{}{3.14}),
+	assert.Equal(t, "3.14", Native_invoke_func.Invoke_Arity2(fmt.Sprint, []interface{}{3.14}),
 		"(fmt/Sprint 3.14)")
-	assert.Equal(t, 3.14, NativeInvokeFunc.Invoke_Arity2(js.ParseFloat, []interface{}{"3.14"}),
+	assert.Equal(t, 3.14, Native_invoke_func.Invoke_Arity2(js.ParseFloat, []interface{}{"3.14"}),
 		"(js/parseFloat \"3.14\")")
 
-	assert.Equal(t, "ABC", NativeInvokeFunc.Invoke_Arity2(js.String.FromCharCode, []interface{}{65.0, 66.0, 67.0}),
+	assert.Equal(t, "ABC", Native_invoke_func.Invoke_Arity2(js.String.FromCharCode, []interface{}{65.0, 66.0, 67.0}),
 		"(.fromCharCode js/String 65 66 67)")
 }
 

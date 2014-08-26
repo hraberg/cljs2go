@@ -66,7 +66,7 @@ var X_Namespace = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	RegisterProtocol("cljs.core/INamed", (*INamed)(nil))
+	Native_register_protocol("cljs.core/INamed", (*INamed)(nil))
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
@@ -96,7 +96,7 @@ var X_Invoke = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	RegisterProtocol("cljs.core/IFn", (*IFn)(nil))
+	Native_register_protocol("cljs.core/IFn", (*IFn)(nil))
 }
 
 type ILookup interface {
@@ -111,12 +111,12 @@ var X_Lookup = Fn(func(this, k interface{}) interface{} {
 })
 
 func init() {
-	RegisterProtocol("cljs.core/ILookup", (*ILookup)(nil))
+	Native_register_protocol("cljs.core/ILookup", (*ILookup)(nil))
 }
 
 // These are overridden in rt.go
 var Apply IFn
-var Native_satisifes_QMARK_ *AFnPrimitive
+var Native_satisfies_QMARK_ *AFnPrimitive
 var Implements_QMARK_ *AFnPrimitive
 
 type CljsCoreUUID struct {
@@ -263,7 +263,7 @@ var Str = func(Str IFn) IFn {
 		var sb, more interface{} = &goog_string.StringBuffer{Str.Invoke_Arity1(x)}, ys
 		for {
 			if Truth_(more) {
-				sb = NativeInvokeInstanceMethod.Invoke_Arity3(sb, "Append",
+				sb = Native_invoke_instance_method.Invoke_Arity3(sb, "Append",
 					[]interface{}{Str.Invoke_Arity1(First.Invoke_Arity1(more))})
 				more = Next.Invoke_Arity1(more)
 				continue

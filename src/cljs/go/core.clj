@@ -983,7 +983,7 @@
        (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
        (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
               ~psym)
-       (~'js* "func init() {\n\tRegisterProtocol(~{}, (*~{})(nil))\n}"
+       (~'js* "func init() {\n\tNative_register_protocol(~{}, (*~{})(nil))\n}"
               ~(core/str (symbol (name ns-name) (name psym))) ~psym)
        ~@(map method methods))))
 

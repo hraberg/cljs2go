@@ -17,11 +17,11 @@ func element(x interface{}) reflect.Value {
 	}
 }
 
-var NativeGetInstanceField = Fn(func(target, fieldName interface{}) interface{} {
+var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface{} {
 	return element(target).FieldByName(fieldName.(string)).Interface()
 })
 
-var NativeSetInstanceField = Fn(func(target, fieldName, val interface{}) interface{} {
+var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
 	element(target).FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
 	return val
 })
@@ -33,7 +33,7 @@ func value(x interface{}) reflect.Value {
 	return reflect.ValueOf(x)
 }
 
-var NativeInvokeFunc = Fn(func(f, args interface{}) interface{} {
+var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 	in := make([]reflect.Value, len(args.([]interface{})))
 	for i, a := range args.([]interface{}) {
 		in[i] = reflect.ValueOf(a)
@@ -54,13 +54,13 @@ func decorate(target interface{}) interface{} {
 	}
 }
 
-var NativeInvokeInstanceMethod = Fn(func(target, methodName, args interface{}) interface{} {
-	return NativeInvokeFunc.Invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
+var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}) interface{} {
+	return Native_invoke_func.Invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
 })
 
 var protocols = map[string]reflect.Type{}
 
-func RegisterProtocol(name string, p interface{}) {
+func Native_register_protocol(name string, p interface{}) {
 	protocols[name] = reflect.TypeOf(p).Elem()
 }
 
@@ -387,7 +387,7 @@ func Truth_(x interface{}) bool {
 }
 
 func init() {
-	RegisterProtocol("js/Object", (*js.Object)(nil))
+	Native_register_protocol("js/Object", (*js.Object)(nil))
 
 	Apply = Fn(func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]
@@ -402,10 +402,10 @@ func init() {
 		return f.(*AFn).Call(append(args[:argc-1], spread...)...)
 	})
 
-	Native_satisifes_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
+	Native_satisfies_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
 		return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 	}).(*AFnPrimitive)
-	Implements_QMARK_ = Native_satisifes_QMARK_
+	Implements_QMARK_ = Native_satisfies_QMARK_
 }
 
 func Main() {
