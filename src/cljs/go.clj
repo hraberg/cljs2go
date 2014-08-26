@@ -31,7 +31,8 @@
 (defn ast->go [in]
   (env/ensure
    (with-out-str
-     (dorun (map cljs.compiler/emit in)))))
+     (binding [ana/*cljs-static-fns* true]
+       (dorun (map cljs.compiler/emit in))))))
 
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]

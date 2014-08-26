@@ -624,9 +624,6 @@
       (emits "}()")
       (emitln "}"))))
 
-(defn protocol-prefix [psym]
-  (symbol (str (-> (str psym) (.replace \. \$) (.replace \/ \$)) "$")))
-
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
   (let [info (:info f)
@@ -668,10 +665,10 @@
       (cond
        opt-not?
        (emits "!(" (first args) ")")
-       ;; proto?
-       ;; (let [pimpl (str (munge (protocol-prefix protocol))
-       ;;                  (munge (name (:name info))) "_Arity" (count args))]
-       ;;   (emits (first args) "_" pimpl "(" (comma-sep (rest args)) ")"))
+
+       proto? ;; needs to take the imported name of protocols into account.
+       (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
+         (emits (first args) ".(" (name protocol) ")." pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
        (emits f ".Invoke_Arity" arity "(" (comma-sep args) ")")
