@@ -94,7 +94,7 @@
       (let [{:keys [name field] :as info} s
             depth (shadow-depth s)
             renamed (*lexical-renames* (System/identityHashCode s))
-            munged-name (munge (cond field (str "self__."  (go-public name)) ;; note use of go-public, needs to be consolidated.
+            munged-name (munge (cond field (str "self__." name)
                                      renamed renamed
                                      :else name)
                                reserved)]
@@ -263,7 +263,8 @@
       (emits (munge arg))
       (when-not (= :statement (:context env))
         (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
-                                      ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
+                                      (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
+                                          (:field info))
                                       (update-in info [:name] (comp go-public name))
                                       (:ns info)
                                       (update-in info [:name] #(str (namespace %) "." (go-public %)))
