@@ -717,11 +717,11 @@
 (defmethod emit* :set!
   [{:keys [target val env]}]
   (emit-wrap env
-    (when (= :expr (:context env))
+    (when (#{:expr :return} (:context env))
       (emits "func() interface{} {"))
     (maybe-define-static-field-var target)
     (emitln target " = " val)
-    (when (= :expr (:context env))
+    (when (#{:expr :return} (:context env))
       (emitln " return " target)
       (emits "}()"))))
 

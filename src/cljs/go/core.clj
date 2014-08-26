@@ -766,7 +766,7 @@
              (meta form)))]
       (ifn-invoke-methods type type-sym form))))
 
-(defn slot-name [fname sig]
+(defn proto-slot-name [fname sig]
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
             "_Arity" (count sig)))
 
@@ -959,8 +959,8 @@
         expand-sig (fn [fname sig]
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
-                       (~'js* ~(core/str (first sig) ".(" psym ")." (slot-name fname sig)
-                                         (or (seq (interpose "," (rest sig))) "()")))))
+                       (~'js* ~(core/str (first sig) ".(" psym ")." (proto-slot-name fname sig)
+                                         "(" (apply core/str (interpose ", " (rest sig))) ")"))))
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)
                        fname (vary-meta fname assoc :protocol p)]
@@ -969,7 +969,7 @@
                       (->>
                        (for [sig (take-while vector? sigs)]
                          (core/str "\t"
-                                   (slot-name fname sig)
+                                   (proto-slot-name fname sig)
                                    "("
                                    (->> (rest sig)
                                         (map #(core/str % " " (cljs.compiler/go-type (-> % meta :tag))))
