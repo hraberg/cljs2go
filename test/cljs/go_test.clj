@@ -155,33 +155,28 @@
                   (defprotocol IFoo
                     (-bar [foo x]))
 
-                  ;; (deftype MyFooWithArg []
-                  ;;   IFoo
-                  ;;   (-bar [_ x] x))
+                  (deftype MyFooWithArg []
+                    IFoo
+                    (-bar [_ x] x))
 
-                  ;; func (_ *CljsUserMyFooWithArg) X_bar_Arity2(x interface{}) interface{} {
-                  ;; 	return x
-                  ;; }
+                  (deftype MyFooWithThis []
+                    IFoo
+                    (-bar [this _] this))
 
-                  ;; (deftype MyFooWithThis []
-                  ;;   IFoo
-                  ;;   (-bar [this _] this))
+                  (def foo-with-this (MyFooWithThis.))
 
-                  ;; (def foo-with-this (MyFooWithThis.))
-
-                  ;; (deftype MyFooWithField [field]
-                  ;;   IFoo
-                  ;;   (-bar [_ _] field))
-                  ])
+                  (deftype MyFooWithField [field]
+                    IFoo
+                    (-bar [_ _] field))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
           3 '(.-x (MyPoint. 3 4))
           "`IFoo`" '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().Name()")
           1 '(js* "reflect.TypeOf((*IFoo)(nil)).Elem().NumMethod()")
-          ;; "`foo`" '(-bar (MyFooWithArg.) "foo")
-          ;; "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
-          ;; 0 '(-bar (MyFooWithField. 0) "foo")
+          "`foo`" '(-bar (MyFooWithArg.) "foo")
+          "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
+          0 '(-bar (MyFooWithField. 0) nil)
           )
     (test "Var"
           "math.Inf(1)" 'js/Infinity)

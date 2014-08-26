@@ -734,8 +734,8 @@
 
 (defn adapt-proto-params [type [[this & args :as sig] & body]]
   `(~(vec (cons (vary-meta this assoc :tag type) args))
-     (this-as ~this
-       ~@body)))
+    ;; this-as ~this
+    ~@body))
 
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
@@ -766,17 +766,16 @@
              (meta form)))]
       (ifn-invoke-methods type type-sym form))))
 
+(defn slot-name [fname sig]
+  (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
+            "_Arity" (count sig)))
+
 (defn add-proto-methods* [pprefix type type-sym [f & meths :as form]]
-  (let [pf (core/str pprefix f)]
-    (if (vector? (first meths))
-      ;; single method case
-      (let [meth meths]
-        [`(set! ~(extend-prefix type-sym (core/str pf "$arity$" (count (first meth))))
-            ~(with-meta `(fn ~@(adapt-proto-params type meth)) (meta form)))])
-      (map (fn [[sig & body :as meth]]
-             `(set! ~(extend-prefix type-sym (core/str pf "$arity$" (count sig)))
-                ~(with-meta `(fn ~(adapt-proto-params type meth)) (meta form))))
-        meths))))
+  (let [pf f]
+    (map (fn [[sig & body :as meth]]
+           `(do
+              ~(with-meta `(fn ~f ~(adapt-proto-params type meth)) (meta form))))
+         (cond-> meths (vector? (first meths)) core/vector))))
 
 (defn proto-assign-impls [env resolve type-sym type [p sigs]]
   (warn-and-update-protocol p type env)
@@ -786,8 +785,6 @@
     (if (= p 'Object)
       (add-obj-methods type type-sym sigs)
       (concat
-        ;; (when-not (skip-flag psym)
-        ;;   [`(set! ~(extend-prefix type-sym pprefix) true)])
         (mapcat
           (fn [sig]
             (if (= psym 'cljs.core/IFn)
@@ -959,9 +956,6 @@
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
-        slot-name (fn [fname sig]
-                    (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
-                              "_Arity" (count sig)))
         expand-sig (fn [fname sig]
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
@@ -986,6 +980,7 @@
                                    "\n"))
                        (apply core/str)))]
     `(do
+       (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
        (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
               ~psym)
        (~'js* "func init() {\n\tRegisterProtocol(~{}, (*~{})(nil))\n}"

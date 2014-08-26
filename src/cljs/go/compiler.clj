@@ -71,6 +71,21 @@
        (some #{(str name)} (ns-first-segments)) (inc d)
        :else d))))
 
+(defn go-public [s]
+  (let [s (name s)]
+    (if (re-find #"^[-_]" s)
+      (str "X" s)
+      (str (string/upper-case (subs s 0 1)) (subs s 1)))))
+
+(defn go-type-fqn [s]
+  (apply str (map go-public (string/split (str s) #"[./]"))))
+
+(defn go-short-name [s]
+  (last (string/split (str s) #"\.")))
+
+(defn go-native-decorator [tag]
+  ('{string js.JSString} tag))
+
 (defn munge
   ([s] (munge s js-reserved))
   ([s reserved]
@@ -79,7 +94,7 @@
       (let [{:keys [name field] :as info} s
             depth (shadow-depth s)
             renamed (*lexical-renames* (System/identityHashCode s))
-            munged-name (munge (cond field (str "self__." name)
+            munged-name (munge (cond field (str "self__."  (go-public name)) ;; note use of go-public, needs to be consolidated.
                                      renamed renamed
                                      :else name)
                                reserved)]
@@ -97,21 +112,6 @@
         (if (symbol? s)
           (symbol ms)
           ms)))))
-
-(defn go-public [s]
-  (let [s (name s)]
-    (if (re-find #"^[-_]" s)
-      (str "X" s)
-      (str (string/upper-case (subs s 0 1)) (subs s 1)))))
-
-(defn go-type-fqn [s]
-  (apply str (map go-public (string/split (str s) #"[./]"))))
-
-(defn go-short-name [s]
-  (last (string/split (str s) #"\.")))
-
-(defn go-native-decorator [tag]
-  ('{string js.JSString} tag))
 
 (defn- comma-sep [xs]
   (interpose "," xs))
@@ -470,11 +470,15 @@
 (defn emit-fn-signature [params ret-tag]
   (let [typed-params (for [{:keys [name tag]} params]
                        (str name " "(go-type tag)))]
-    (emits "func(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
+    (emits "(" (apply str (interpose ", " typed-params)) ") " (go-type ret-tag))))
+
+(defn assign-to-blank [bindings]
+  (when-let [bindings (seq (remove (comp #{'_} :name) bindings))]
+    (emitln (string/join ", " (repeat (count bindings) "_"))
+            " = "
+            (string/join ", " (map (comp munge :name) bindings)))))
 
 (defn emit-fn-body [type expr recurs]
-  ;; (when type
-  ;;   (emitln "var self__ = this"))
   (when recurs (emitln "for {"))
   (emits expr)
   (when recurs
@@ -484,8 +488,23 @@
 (defn emit-fn-method
   [{:keys [type params expr env recurs]} ret-tag]
   (emit-wrap env
+    (emits "func")
     (emit-fn-signature params ret-tag)
     (emits "{")
+    (emit-fn-body type expr recurs)
+    (emits "}")))
+
+(defn emit-protocol-method
+  [name {:keys [type params expr env recurs]} ret-tag]
+  (emit-wrap env
+    (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
+           (-> name munge go-short-name go-public) "_Arity" (count params))
+    (emit-fn-signature (rest params) ret-tag)
+    (emits "{")
+    (let [this (first params)]
+      (when (not= '_ (:name this))
+        (emitln this " := self__")
+        (emitln "_ = " this)))
     (emit-fn-body type expr recurs)
     (emits "}")))
 
@@ -498,16 +517,14 @@
       (doseq [[idx p] (map-indexed vector (butlast params))]
         (emitln "var " p " = " varargs "[" idx "]"))
       (emitln "var " (last params) " = Array_seq.Invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
-      (emitln (string/join ", " (repeat (count params) "_"))
-              " = "
-              (string/join ", " (map :name params)))
+      (assign-to-blank params)
       (emit-fn-body type expr recurs)
       (emits "}"))))
 
 (defmethod emit* :fn
-  [{:keys [name env methods max-fixed-arity variadic recur-frames loop-lets]}]
+  [{:keys [name env methods protocol-impl max-fixed-arity variadic recur-frames loop-lets]}]
   ;;fn statements get erased, serve no purpose and can pollute scope if named
-  (when-not (= :statement (:context env))
+  (when (or (not= :statement (:context env)) protocol-impl)
     (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
                                    (mapcat :params loop-lets))
                            (map munge)
@@ -522,17 +539,20 @@
             mname (munge name)]
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" mname " *AFnPrimitive) *AFnPrimitive {")
-        (emits "return Fn(" mname ", ")
+        (when-not protocol-impl
+          (emitln "func(" mname " *AFnPrimitive) *AFnPrimitive {")
+          (emits "return Fn(" mname ", "))
         (loop [[meth & methods] methods]
-          (if (:variadic meth)
-            (emit-variadic-fn-method meth)
-            (emit-fn-method meth (:ret-tag name)))
+          (cond
+           protocol-impl (emit-protocol-method mname meth (:ret-tag name))
+           (:variadic meth) (emit-variadic-fn-method meth)
+           :else (emit-fn-method meth (:ret-tag name)))
           (when methods
             (emits ", ")
             (recur methods)))
-        (emitln ").(*AFnPrimitive)")
-        (emits "}(&AFnPrimitive{})"))
+        (when-not protocol-impl
+          (emitln ").(*AFnPrimitive)")
+          (emits "}(&AFnPrimitive{})")))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))
@@ -583,6 +603,7 @@
                                              bindings)))]
       (doseq [{:keys [init] :as binding} bindings]
         (emitln "var " binding " = " init))  ; Binding will be treated as a var
+      (assign-to-blank bindings)
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop
@@ -619,6 +640,7 @@
     (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimitive")
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
+    (assign-to-blank bindings)
     (emits expr)
     (if (= :expr context)
       (emits "}()")
@@ -668,7 +690,7 @@
 
        proto? ;; needs to take the imported name of protocols into account.
        (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
-         (emits (first args) ".(" (name protocol) ")." pimpl "(" (comma-sep (rest args)) ")"))
+         (emits (first args) "." pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
        (emits f ".Invoke_Arity" arity "(" (comma-sep args) ")")
