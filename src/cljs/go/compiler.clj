@@ -85,8 +85,12 @@
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
 
-(defn go-native-decorator [tag]
-  ('{string js.JSString} tag))
+(def go-native-decorator '{string js.JSString})
+(def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
+                                    cljs$lang$applyTo NativeCljsLangFn
+                                    cljs$lang$type NativeCljsLangType
+                                    cljs$lang$ctorStr NativeCljsLangType
+                                    cljs$lang$ctorPrWriter NativeCljsLangType})
 
 (defn munge
   ([s] (munge s js-reserved))
@@ -767,16 +771,17 @@
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
-  (let [decorator (go-native-decorator (:tag target))
+  (let [decorator (or (go-native-decorator (:tag target))
+                      (some go-native-property-decorator [field method]))
         type? (-> target :info :type)]
     (emit-wrap env
+               (emits (when decorator (str decorator "("))
+                      target
+                      (when decorator ")")
+                      (if type? "_" "."))
                (if field
-                 (emits target (if type? "_" ".") (munge (go-public field) #{}))
-                 (emits (when decorator (str decorator "("))
-                        target
-                        (when decorator ")")
-                        (if type? "_" ".")
-                        (munge (go-public method) #{})
+                 (emits (munge (go-public field) #{}))
+                 (emits (munge (go-public method) #{})
                         (when type?
                           (str ".Invoke_Arity" (count args)))
                         "("
