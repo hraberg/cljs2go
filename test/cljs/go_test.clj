@@ -170,7 +170,12 @@
 
                   (deftype MyFooWithField [field]
                     IFoo
-                    (-bar [_ _] field))])
+                    (-bar [_ _] field))
+
+                  (deftype AnObject []
+                    Object
+                    (^string toString [_] "baz")
+                    (^boolean equiv [this other] false))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
@@ -183,7 +188,12 @@
           0 '(-bar (MyFooWithField. 0) nil)
           true '(satisfies? cljs.user/IFoo foo-with-this)
           true '(satisfies? IFoo foo-with-this)
-          false '(satisfies? cljs.user/IFoo (MyPoint. 0 0)))
+          false '(satisfies? cljs.user/IFoo (MyPoint. 0 0))
+          "`baz`" '(.toString (AnObject.))
+          "`baz`" '(.string (AnObject.))
+          false '(.equiv (AnObject.) "foo")
+          true '(native-satisfies? 'Object (AnObject.)) ;; cljs.core/Object isn't known by the analyzer
+          )
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)

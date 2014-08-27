@@ -491,10 +491,12 @@
     (emits "}")))
 
 (defn emit-protocol-method
-  [name {:keys [type params expr env recurs]} ret-tag]
+  [protocol name {:keys [type params expr env recurs]} ret-tag]
   (emit-wrap env
     (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
-           (-> name munge go-short-name go-public) "_Arity" (count params))
+           (-> name munge go-short-name go-public)
+           (when-not ('#{Object} protocol)
+             (str "_Arity" (count params))))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")
     (emit-fn-body type expr recurs)
@@ -536,7 +538,7 @@
           (emits "return Fn(" mname ", "))
         (loop [[meth & methods] methods]
           (cond
-           protocol-impl (emit-protocol-method mname meth (:ret-tag name))
+           protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
            (:variadic meth) (emit-variadic-fn-method meth)
            :else (emit-fn-method meth (:ret-tag name)))
           (when methods

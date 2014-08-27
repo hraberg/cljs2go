@@ -740,7 +740,11 @@
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
          `(do
-            ~(with-meta `(fn ~@(map #(adapt-obj-params type %) meths)) (meta form))))
+            ~(when (= 'toString f)
+               (with-meta `(fn ~'^string String
+                             ~(adapt-proto-params type '[[this] (.toString this)])) (meta form)))
+            ~(with-meta `(fn ~f
+                           ~@(map #(adapt-proto-params type %) meths)) (meta form))))
     sigs))
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
@@ -820,8 +824,10 @@
                   :protocol-inline inline}]
       (loop [ret [] specs specs]
         (if (seq specs)
-          (let [ret (-> (conj ret (first specs))
-                      (into (reduce (partial annotate-specs annots) []
+          (let [protocol (first specs)
+                ret (-> (conj ret protocol)
+                        (into (reduce (partial annotate-specs
+                                               (assoc annots :protocol-impl protocol)) []
                               (group-by first (take-while seq? (next specs))))))
                 specs (drop-while seq? (next specs))]
             (recur ret specs))
@@ -829,9 +835,9 @@
 
 (defn collect-protocols [impls env]
   (->> impls
-      (filter core/symbol?)
-      (map #(:name (cljs.analyzer/resolve-var (dissoc env :locals) %)))
-      (into #{})))
+       (filter core/symbol?)
+       (map #(:name (cljs.analyzer/resolve-var (dissoc env :locals) %)))
+       (into #{})))
 
 (defn- build-positional-factory
   [rsym rname fields]
