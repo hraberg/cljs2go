@@ -51,6 +51,7 @@
 
 (def cljs-reserved-file-names #{"deps.cljs"})
 
+(def ^:dynamic *go-import-prefix* "github.com/hraberg/cljs.go/")
 (def ^:dynamic *go-return* nil)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
@@ -73,9 +74,10 @@
 
 (defn go-public [s]
   (let [s (name s)]
-    (if (re-find #"^[-_]" s)
-      (str "X" s)
-      (str (string/upper-case (subs s 0 1)) (subs s 1)))))
+    (when (seq s)
+      (if (= \_ (first s))
+        (str "X" s)
+        (str (string/upper-case (subs s 0 1)) (when (next s) (subs s 1)))))))
 
 (defn go-type-fqn [s]
   (apply str (map go-public (string/split (str s) #"[./]"))))
@@ -734,9 +736,15 @@
   (emitln)
   (emitln "import (")
   (when-not (= name 'cljs.core)
-    (emitln "\t" "." " " (wrap-in-double-quotes "github.com/hraberg/cljs.go/cljs/core")))
+    (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
+  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
+  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
   (doseq [lib (distinct (into (vals requires) (vals uses)))]
-    (emitln "\t" (string/replace (munge lib) "." "_") " " (wrap-in-double-quotes (string/replace (munge lib) #"[._]" "/"))))
+    (emitln "\t" (string/replace (munge lib) "." "_") " "
+            (wrap-in-double-quotes
+             (str (when (re-find #"^goog\." (str lib))
+                    *go-import-prefix*)
+                  (string/replace (munge lib) #"[._]" "/")))))
   (emitln ")")
   (emitln))
 
