@@ -265,9 +265,9 @@
         (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
                                       (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
                                           (:field info))
-                                      (update-in info [:name] (comp go-public name))
+                                      (update-in info [:name] (comp go-public munge name))
                                       (:ns info)
-                                      (update-in info [:name] #(str (namespace %) "." (go-public %)))
+                                      (update-in info [:name] #(str (namespace %) "." (-> % name munge go-public)))
                                       :else info))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
