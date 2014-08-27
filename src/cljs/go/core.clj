@@ -743,7 +743,7 @@
             ~(when (= 'toString f)
                (with-meta `(fn ~'^string String
                              ~(adapt-proto-params type '[[this] (.toString this)])) (meta form)))
-            ~(with-meta `(fn ~f
+            ~(with-meta `(fn ~(vary-meta f assoc :tag ('{toString string equiv boolean} f))
                            ~@(map #(adapt-proto-params type %) meths)) (meta form))))
     sigs))
 

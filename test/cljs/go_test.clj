@@ -174,8 +174,8 @@
 
                   (deftype AnObject []
                     Object
-                    (^string toString [_] "baz")
-                    (^boolean equiv [this other] false))])
+                    (toString [_] "baz")
+                    (equiv [this other] false))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
