@@ -745,7 +745,7 @@
          (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
            `(do
               ~(when (= 'toString f)
-                 (with-meta `(fn ~(with-meta 'String {:tag (:ret-tag proto-fn)})
+                 (with-meta `(fn ~(with-meta 'string {:tag (:ret-tag proto-fn)})
                                ~(adapt-proto-params type proto-fn '[[this] (.toString this)])) (meta form)))
               ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
                              ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form)))))
