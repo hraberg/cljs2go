@@ -386,8 +386,13 @@ func Truth_(x interface{}) bool {
 	return x != nil && x != false
 }
 
+type Object interface {
+	ToString_Arity1() string
+	Equiv_Arity2(other interface{}) bool
+}
+
 func init() {
-	Native_register_protocol("js/Object", (*js.Object)(nil))
+	Native_register_protocol("Object", (*Object)(nil))
 
 	Apply = Fn(func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]
