@@ -817,6 +817,20 @@
 (defn url-path [^File f]
   (.getPath (.toURL (.toURI f))))
 
+(defn ensure-ns-exist
+  ([env] (ensure-ns-exist ana/*cljs-ns* env))
+  ([ns env]
+     (when-not (ana/get-namespace ns)
+       (ana/analyze env (list 'ns ns)))
+     (assoc env :ns (ana/get-namespace ns))))
+
+(defn setup-native-defs [env]
+  (binding [ana/*cljs-ns* 'cljs.core]
+    (ana/analyze (ensure-ns-exist env)
+                 '(defprotocol Object
+                    (^string toString [this])
+                    (^boolean equiv [this other])))))
+
 (defn compile-file*
   ([src dest] (compile-file* src dest nil))
   ([src dest opts]
@@ -828,6 +842,7 @@
                     ana/*cljs-file* (.getPath ^File src)
                     reader/*alias-map* (or reader/*alias-map* {})
                     *go-line-numbers* (boolean (:source-map opts))]
+            (setup-native-defs (ana/empty-env))
             (emitln "// Compiled by ClojureScript to Go " (clojurescript-version))
             (loop [forms (ana/forms-seq src)
                    ns-name nil
