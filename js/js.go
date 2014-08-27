@@ -136,9 +136,17 @@ func ParseInt(str string, radix float64) float64 {
 	return math.NaN()
 }
 
-var Console = struct {
-	Log func(...interface{}) interface{}
-}{func(obj ...interface{}) interface{} {
+type JSFn func(...interface{}) interface{}
+
+func (this JSFn) Apply(_ interface{}, args []interface{}) interface{} {
+	return this(args...)
+}
+
+type JSConsole struct {
+	Log JSFn
+}
+
+var Console = JSConsole{func(obj ...interface{}) interface{} {
 	fmt.Println(obj...)
 	return nil
 }}

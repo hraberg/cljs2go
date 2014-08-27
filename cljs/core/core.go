@@ -21,8 +21,7 @@ var X_STAR_print_newline_STAR_ interface{} = true
 var Enable_console_print_BANG_ = Fn(func() interface{} {
 	X_STAR_print_newline_STAR_ = false
 	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
-		js.Console.Log(x)
-		return nil
+		return js.Console.Log.Apply(js.Console, []interface{}{x})
 	})
 	return nil
 })
