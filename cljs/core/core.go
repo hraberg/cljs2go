@@ -136,16 +136,16 @@ type CljsCoreSymbol struct {
 // While Object is provided by rt, the same technique applies for interop with normal Go interfaces.
 // The naming convetion is (-equiv ) for IEquiv ClojureScript dispatch, and (equiv ) for Go dispatch.
 
-func (this *CljsCoreSymbol) ToString_Arity1() string {
+func (this *CljsCoreSymbol) ToString() string {
 	return (this.Str).(string)
 }
 
 // Will be added automatically when implementing ToString
 func (this *CljsCoreSymbol) String() string {
-	return this.ToString_Arity1()
+	return this.ToString()
 }
 
-func (this *CljsCoreSymbol) Equiv_Arity2(other interface{}) bool {
+func (this *CljsCoreSymbol) Equiv(other interface{}) bool {
 	if ptr, instanceof := other.(*CljsCoreSymbol); instanceof {
 		other = *ptr
 	}

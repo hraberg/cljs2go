@@ -114,7 +114,7 @@ func Test_PrimitiveFn(t *testing.T) {
 func Test_Protocols(t *testing.T) {
 	symbol := Symbol.Invoke_Arity2("foo", "bar")
 
-	assert.True(t, symbol.(Object).Equiv_Arity2(Symbol.Invoke_Arity2("foo", "bar")))
+	assert.True(t, symbol.(Object).Equiv(Symbol.Invoke_Arity2("foo", "bar")))
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity1("Object"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))

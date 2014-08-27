@@ -387,8 +387,8 @@ func Truth_(x interface{}) bool {
 }
 
 type Object interface {
-	ToString_Arity1() string
-	Equiv_Arity2(other interface{}) bool
+	ToString() string
+	Equiv(other interface{}) bool
 }
 
 func init() {
