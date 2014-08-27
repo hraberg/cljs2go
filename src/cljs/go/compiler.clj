@@ -267,7 +267,8 @@
                                           (:field info))
                                       (update-in info [:name] (comp go-public munge name))
                                       (:ns info)
-                                      (update-in info [:name] #(str (namespace %) "." (-> % name munge go-public)))
+                                      (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
+                                                                    "." (-> % name munge go-public)))
                                       :else info))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
@@ -936,8 +937,8 @@
                           (str (:ns (parse-ns cljs-file)))) #"\.")
         parents (butlast relative-path)]
     (io/file
-      (io/file (to-path (cons target parents)))
-      (str (last relative-path) ".go"))))
+     (io/file (to-path (concat (cons target parents) [(last relative-path)])))
+     (str (last relative-path) ".go"))))
 
 (defn cljs-files-in
   "Return a sequence of all .cljs files in the given directory."

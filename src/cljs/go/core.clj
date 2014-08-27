@@ -739,7 +739,7 @@
 
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
-         `(set! ~(extend-prefix type-sym f)
+         `(do
             ~(with-meta `(fn ~@(map #(adapt-obj-params type %) meths)) (meta form))))
     sigs))
 
@@ -747,7 +747,7 @@
   (map
     (fn [meth]
       (let [arity (count (first meth))]
-        `(set! ~(extend-prefix type-sym (symbol (core/str "cljs$core$IFn$_invoke$arity$" arity)))
+        `(do
            ~(with-meta `(fn ~meth) (meta form)))))
     (map #(adapt-ifn-invoke-params type %) meths)))
 
@@ -756,14 +756,14 @@
         this-sym (with-meta 'self__ {:tag type})
         argsym   (gensym "args")]
     (concat
-      [`(set! ~(extend-prefix type-sym 'call) ~(with-meta `(fn ~@meths) (meta form)))
-       `(set! ~(extend-prefix type-sym 'apply)
-          ~(with-meta
-             `(fn ~[this-sym argsym]
-                (this-as ~this-sym
-                  (.apply (.-call ~this-sym) ~this-sym
-                    (.concat (array ~this-sym) (aclone ~argsym)))))
-             (meta form)))]
+      ;; [`(set! ~(extend-prefix type-sym 'call) ~(with-meta `(fn ~@meths) (meta form)))
+      ;;  `(set! ~(extend-prefix type-sym 'apply)
+      ;;     ~(with-meta
+      ;;        `(fn ~[this-sym argsym]
+      ;;           (this-as ~this-sym
+      ;;             (.apply (.-call ~this-sym) ~this-sym
+      ;;               (.concat (array ~this-sym) (aclone ~argsym)))))
+      ;;        (meta form)))]
       (ifn-invoke-methods type type-sym form))))
 
 (defn proto-slot-name [fname sig]
@@ -972,7 +972,7 @@
                                    (proto-slot-name fname sig)
                                    "("
                                    (->> (rest sig)
-                                        (map #(core/str % " " (cljs.compiler/go-type (-> % meta :tag))))
+                                        (map #(core/str (cljs.compiler/munge %) " " (cljs.compiler/go-type (-> % meta :tag))))
                                         (interpose ", ")
                                         (apply core/str))
                                    ")"
@@ -1553,11 +1553,11 @@
 (defmacro gen-apply-to []
   `(do
      (set! ~'*unchecked-if* true)
-     (defn ~'apply-to [~'f ~'argc ~'args]
-       (let [~'args (seq ~'args)]
-         (if (zero? ~'argc)
-           (~'f)
-           ~(gen-apply-to-helper))))
+     ;; (defn ~'apply-to [~'f ~'argc ~'args]
+     ;;   (let [~'args (seq ~'args)]
+     ;;     (if (zero? ~'argc)
+     ;;       (~'f)
+     ;;       ~(gen-apply-to-helper))))
      (set! ~'*unchecked-if* false)))
 
 (defmacro with-out-str

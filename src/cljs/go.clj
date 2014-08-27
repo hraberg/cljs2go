@@ -4,6 +4,7 @@
             [cljs.go.compiler]
             [clojure.string :as s]
             [clojure.pprint :as pp]
+            [clojure.java.io :as io]
             [clojure.java.shell :as sh]))
 
 (defn elide-children [_ ast]
@@ -47,6 +48,15 @@
     (if (zero? exit)
       out
       (do (println err) in))))
+
+(defn compile-file
+  ([] (compile-file "target" (io/resource "cljs/core.cljs")))
+  ([target-dir src]
+     (let [src (io/file src)
+           target (cljs.compiler/to-target-file target-dir src)]
+       (env/ensure
+        (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
+          (cljs.compiler/compile-file src target))))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
