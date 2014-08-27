@@ -495,7 +495,7 @@
   (emit-wrap env
     (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
            (-> name munge go-short-name go-public)
-           (when-not ('#{Object} protocol)
+           (when-not ('#{cljs.core/Object} protocol)
              (str "_Arity" (count params))))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")

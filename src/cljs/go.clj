@@ -22,11 +22,18 @@
   ([in] (cljs->ast in (ana/empty-env)))
   ([in env]
      (env/ensure
-      (binding [ana/*cljs-ns* (or ana/*cljs-ns* 'cljs.user)
-                ana/*passes* [elide-children simplify-env ana/infer-type]]
-        (when-not (ana/get-namespace ana/*cljs-ns*)
-          (ana/analyze env (list 'ns ana/*cljs-ns*)))
-        (doall (map #(ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*)) %) in))))))
+      (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
+        (binding [ana/*cljs-ns* 'cljs.core]
+          (when-not (ana/get-namespace ana/*cljs-ns*)
+            (ana/analyze env (list 'ns ana/*cljs-ns*)))
+          (ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*))
+                       '(defprotocol Object
+                          (^string toString [this])
+                          (^boolean equiv [this other]))))
+        (binding [ana/*cljs-ns* (or ana/*cljs-ns* 'cljs.user)]
+          (when-not (ana/get-namespace ana/*cljs-ns*)
+            (ana/analyze env (list 'ns ana/*cljs-ns*)))
+          (doall (map #(ana/analyze (assoc env :ns (ana/get-namespace ana/*cljs-ns*)) %) in)))))))
 
 (defn ast->go [in]
   (try

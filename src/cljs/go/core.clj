@@ -732,20 +732,24 @@
      (this-as ~(vary-meta this assoc :tag type)
        ~@body)))
 
-(defn adapt-proto-params [type [[this & args :as sig] & body]]
-  `(~(vec (cons (vary-meta this assoc :tag type) args))
-    (this-as ~this
-      ~@body)))
+(defn adapt-proto-params [type proto-fn [[this & args :as sig] & body]]
+  (let [[proto-method] ((group-by count (:method-params proto-fn)) (count sig))]
+    `(~(vec (cons (vary-meta this assoc :tag type)
+                  (map #(vary-meta % assoc :tag (-> %2 meta :tag))
+                       args (next proto-method))))
+      (this-as ~this
+        ~@body))))
 
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
-         `(do
-            ~(when (= 'toString f)
-               (with-meta `(fn ~'^string String
-                             ~(adapt-proto-params type '[[this] (.toString this)])) (meta form)))
-            ~(with-meta `(fn ~(vary-meta f assoc :tag ('{toString string equiv boolean} f))
-                           ~@(map #(adapt-proto-params type %) meths)) (meta form))))
-    sigs))
+         (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
+           `(do
+              ~(when (= 'toString f)
+                 (with-meta `(fn ~(with-meta 'String {:tag (:ret-tag proto-fn)})
+                               ~(adapt-proto-params type proto-fn '[[this] (.toString this)])) (meta form)))
+              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
+                             ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form)))))
+       sigs))
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
   (map
@@ -774,11 +778,11 @@
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
             "_Arity" (count sig)))
 
-(defn add-proto-methods* [pprefix type type-sym [f & meths :as form]]
-  (let [pf f]
+(defn add-proto-methods* [psym type type-sym [f & meths :as form]]
+  (let [proto-fn (get-in (ana/get-namespace (symbol (namespace psym))) [:defs f])]
     (map (fn [[sig & body :as meth]]
            `(do
-              ~(with-meta `(fn ~f ~(adapt-proto-params type meth)) (meta form))))
+              ~(with-meta `(fn ~f ~(adapt-proto-params type proto-fn meth)) (meta form))))
          (cond-> meths (vector? (first meths)) core/vector))))
 
 (defn proto-assign-impls [env resolve type-sym type [p sigs]]
@@ -793,7 +797,7 @@
           (fn [sig]
             (if (= psym 'cljs.core/IFn)
               (add-ifn-methods type type-sym sig)
-              (add-proto-methods* pprefix type type-sym sig)))
+              (add-proto-methods* psym type type-sym sig)))
           sigs)))))
 
 (defmacro extend-type [type-sym & impls]
@@ -821,13 +825,15 @@
     (let [annots {:cljs.analyzer/type type
                   :cljs.analyzer/fields fields
                   :protocol-impl true
-                  :protocol-inline inline}]
+                  :protocol-inline inline}
+          protocols (group-by (comp symbol name) (:protocols (meta type)))]
       (loop [ret [] specs specs]
         (if (seq specs)
           (let [protocol (first specs)
                 ret (-> (conj ret protocol)
                         (into (reduce (partial annotate-specs
-                                               (assoc annots :protocol-impl protocol)) []
+                                               (assoc annots :protocol-impl
+                                                      (first (protocols protocol)))) []
                               (group-by first (take-while seq? (next specs))))))
                 specs (drop-while seq? (next specs))]
             (recur ret specs))
@@ -990,7 +996,7 @@
        (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
               ~psym)
        (~'js* "func init() {\n\tNative_register_protocol(~{}, (*~{})(nil))\n}"
-              ~(core/str (symbol (name ns-name) (name psym))) ~psym)
+              ~(core/str (symbol (some-> ns-name name) (name psym))) ~psym)
        ~@(map method methods))))
 
 (defmacro implements?
