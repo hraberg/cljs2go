@@ -269,7 +269,6 @@
                                       (:ns info)
                                       (update-in info [:name] #(str (namespace %) "." (go-public %)))
                                       :else info))))))))
-
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
@@ -718,9 +717,10 @@
 (defmethod emit* :set!
   [{:keys [target val env]}]
   (emit-wrap env
+    (when (= :statement (:context env))
+      (maybe-define-static-field-var target))
     (when (#{:expr :return} (:context env))
       (emits "func() interface{} {"))
-    (maybe-define-static-field-var target)
     (emitln target " = " val)
     (when (#{:expr :return} (:context env))
       (emitln " return " target)
