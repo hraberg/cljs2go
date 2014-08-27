@@ -49,6 +49,17 @@
       out
       (do (println err) in))))
 
+(defmacro with-fresh-ids [& body]
+  `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
+                                                                (.setAccessible true))
+                                                              nil)
+         current-id# (.get id#)]
+     (try
+       (.set id# 1)
+       ~@body
+       (finally
+         (.set id# current-id#) ))))
+
 (defn compile-file
   ([] (compile-file "target" (io/resource "cljs/core.cljs")))
   ([target-dir src]
@@ -56,7 +67,8 @@
            target (cljs.compiler/to-target-file target-dir src)]
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
-          (cljs.compiler/compile-file src target))))))
+          (with-fresh-ids
+            (cljs.compiler/compile-file src target)))))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))

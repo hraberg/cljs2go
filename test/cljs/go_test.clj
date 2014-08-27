@@ -272,9 +272,10 @@
             cljs.compiler/*go-line-numbers* true
             *ast-debug* false
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
-    (doseq [gen [constants special-forms benchmarks]]
-      (cljs.env/ensure
-       (gen)))
+    (with-fresh-ids
+      (doseq [gen [constants special-forms benchmarks]]
+        (cljs.env/ensure
+         (gen))))
     (go-test "./...")))
 
 (defn run-benchmarks []
