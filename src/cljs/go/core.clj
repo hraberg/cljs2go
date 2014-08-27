@@ -752,12 +752,13 @@
        sigs))
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
-  (map
-    (fn [meth]
-      (let [arity (count (first meth))]
-        `(do
-           ~(with-meta `(fn ~meth) (meta form)))))
-    (map #(adapt-ifn-invoke-params type %) meths)))
+  (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
+    (map
+     (fn [meth]
+       (let [arity (count (first meth))]
+         `(do
+            ~(with-meta `(fn ~f ~meth) (meta form)))))
+     (map #(adapt-proto-params type proto-fn %) meths))))
 
 (defn add-ifn-methods [type type-sym [f & meths :as form]]
   (let [meths    (map #(adapt-ifn-params type %) meths)
@@ -776,7 +777,7 @@
 
 (defn proto-slot-name [fname sig]
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
-            "_Arity" (count sig)))
+            "_Arity" (cond-> (count sig) (= '-invoke fname) core/dec)))
 
 (defn add-proto-methods* [psym type type-sym [f & meths :as form]]
   (let [proto-fn (get-in (ana/get-namespace (symbol (namespace psym))) [:defs f])]
@@ -995,7 +996,7 @@
                        (apply core/str)))]
     `(do
        (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
-       (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
+       (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}\n")
               ~go-psym)
        (~'js* "func init() {\n\tNative_register_protocol(~{}, (*~{})(nil))\n}"
               ~(core/str fq-psym) ~go-psym)

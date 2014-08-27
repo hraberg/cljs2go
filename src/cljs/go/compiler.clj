@@ -496,7 +496,9 @@
     (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
            (-> name munge go-short-name go-public)
            (when-not ('#{cljs.core/Object} protocol)
-             (str "_Arity" (count params))))
+             (str "_Arity" (cond-> (count params)
+                                   (and (= 'cljs.core/IFn protocol)
+                                        (= '-invoke (:name name))) dec))))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")
     (emit-fn-body type expr recurs)
