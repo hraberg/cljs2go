@@ -51,21 +51,21 @@ var Println = Fn(func(objs ...interface{}) interface{} {
 // In cljs.core, only IFn, IReduce, IIndexed, ILookup, and ISwap have overloaded arities.
 // IFn is a special case which drops the receiver arg.
 
-type INamed interface {
-	Name_Arity1() string
-	Namespace_Arity1() string
+type CljsCoreINamed interface {
+	X_name_Arity1() string
+	X_namespace_Arity1() string
 }
 
-var X_Name = Fn(func(this interface{}) interface{} {
-	return this.(INamed).Name_Arity1()
+var X_name = Fn(func(this interface{}) interface{} {
+	return this.(CljsCoreINamed).X_name_Arity1()
 })
 
-var X_Namespace = Fn(func(this interface{}) interface{} {
-	return this.(INamed).Namespace_Arity1()
+var X_namespace = Fn(func(this interface{}) interface{} {
+	return this.(CljsCoreINamed).X_namespace_Arity1()
 })
 
 func init() {
-	Native_register_protocol("cljs.core/INamed", (*INamed)(nil))
+	Native_register_protocol("cljs.core/INamed", (*CljsCoreINamed)(nil))
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
@@ -98,19 +98,19 @@ func init() {
 	Native_register_protocol("cljs.core/IFn", (*IFn)(nil))
 }
 
-type ILookup interface {
-	Lookup_Arity2(k interface{}) interface{}
-	Lookup_Arity3(k, notFound interface{}) interface{}
+type CljsCoreILookup interface {
+	X_lookup_Arity2(k interface{}) interface{}
+	X_lookup_Arity3(k, notFound interface{}) interface{}
 }
 
 var X_Lookup = Fn(func(this, k interface{}) interface{} {
-	return this.(ILookup).Lookup_Arity2(k)
+	return this.(CljsCoreILookup).X_lookup_Arity2(k)
 }, func(this, k, notFound interface{}) interface{} {
-	return this.(ILookup).Lookup_Arity3(k, notFound)
+	return this.(CljsCoreILookup).X_lookup_Arity3(k, notFound)
 })
 
 func init() {
-	Native_register_protocol("cljs.core/ILookup", (*ILookup)(nil))
+	Native_register_protocol("cljs.core/ILookup", (*CljsCoreILookup)(nil))
 }
 
 // These are overridden in rt.go
@@ -152,11 +152,11 @@ func (this *CljsCoreSymbol) Equiv(other interface{}) bool {
 	return *this == other
 }
 
-func (this *CljsCoreSymbol) Name_Arity1() string {
+func (this *CljsCoreSymbol) X_name_Arity1() string {
 	return this.Name.(string)
 }
 
-func (this *CljsCoreSymbol) Namespace_Arity1() string {
+func (this *CljsCoreSymbol) X_namespace_Arity1() string {
 	return this.Ns.(string)
 }
 
@@ -171,11 +171,11 @@ func (this *CljsCoreSymbol) Invoke_Arity2(coll, notFound interface{}) interface{
 // Doesn't try to match cljs.core, just a temporary hack
 type ObjMap map[interface{}]interface{}
 
-func (coll ObjMap) Lookup_Arity2(k interface{}) interface{} {
-	return coll.Lookup_Arity3(k, nil)
+func (coll ObjMap) X_lookup_Arity2(k interface{}) interface{} {
+	return coll.X_lookup_Arity3(k, nil)
 }
 
-func (coll ObjMap) Lookup_Arity3(k, notFound interface{}) interface{} {
+func (coll ObjMap) X_lookup_Arity3(k, notFound interface{}) interface{} {
 	val := coll[k]
 	if val == nil {
 		return notFound
@@ -205,7 +205,7 @@ var String_QMARK_ = Fn(&AFnPrimitive{}, func(x interface{}) bool {
 
 var Namespace = Fn(func(x interface{}) interface{} {
 	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return X_Namespace.Invoke_Arity1(x)
+		return X_namespace.Invoke_Arity1(x)
 	} else {
 		panic(&js.Error{Str.Invoke_ArityVariadic("Doesn't support namespace: ", x)})
 	}
@@ -213,7 +213,7 @@ var Namespace = Fn(func(x interface{}) interface{} {
 
 var Name = Fn(func(x interface{}) interface{} {
 	if Truth_(Implements_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), x)) {
-		return X_Name.Invoke_Arity1(x)
+		return X_name.Invoke_Arity1(x)
 	} else {
 		if Truth_(String_QMARK_.Invoke_Arity1(x)) {
 			return x

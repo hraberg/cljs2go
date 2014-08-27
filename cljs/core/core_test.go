@@ -118,8 +118,8 @@ func Test_Protocols(t *testing.T) {
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity1("Object"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
-	assert.Equal(t, "foo", symbol.(INamed).Namespace_Arity1())
-	assert.Equal(t, "foo", X_Namespace.Invoke_Arity1(symbol))
+	assert.Equal(t, "foo", symbol.(CljsCoreINamed).X_namespace_Arity1())
+	assert.Equal(t, "foo", X_namespace.Invoke_Arity1(symbol))
 	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).Invoke_Arity0() })
 	PanicsWith(t, "Invalid arity: 0", func() { X_Invoke.Invoke_Arity1(symbol) })
 
@@ -130,17 +130,17 @@ func Test_Protocols(t *testing.T) {
 	PanicsWith(t, "Doesn't support name: 2", func() { Name.Invoke_Arity1(2) })
 	assert.Equal(t, "baz", Name.Invoke_Arity1("baz"))
 
-	assert.Equal(t, "foo", X_Invoke.Invoke_Arity2(X_Namespace, symbol))
-	assert.Equal(t, "bar", symbol.(INamed).Name_Arity1())
+	assert.Equal(t, "foo", X_Invoke.Invoke_Arity2(X_namespace, symbol))
+	assert.Equal(t, "bar", symbol.(CljsCoreINamed).X_name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
 
 	foo, bar := Symbol.Invoke_Arity1("foo"), Symbol.Invoke_Arity1("bar")
 	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
 	assert.True(t, Native_satisfies_QMARK_.Invoke_Arity2(Symbol.Invoke_Arity2("cljs.core", "ILookup"), m).(bool))
-	assert.Equal(t, "bar", m.Lookup_Arity2(foo))
+	assert.Equal(t, "bar", m.X_lookup_Arity2(foo))
 	assert.Nil(t, X_Lookup.(*AFn).Call(m, bar))
-	assert.Equal(t, "baz", m.Lookup_Arity3(bar, "baz"))
+	assert.Equal(t, "baz", m.X_lookup_Arity3(bar, "baz"))
 
 	assert.Equal(t, "bar", foo.(IFn).Invoke_Arity1(m))
 	assert.Equal(t, "bar", X_Invoke.Invoke_Arity2(foo, m))

@@ -967,11 +967,13 @@
   (let [p (:name (cljs.analyzer/resolve-var (dissoc &env :locals) psym))
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
+        fq-psym (symbol (some-> ns-name name) (name psym))
+        go-psym (symbol (cljs.compiler/go-type-fqn fq-psym))
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
         expand-sig (fn [fname sig]
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
-                       (~'js* ~(core/str (first sig) ".(" psym ")." (proto-slot-name fname sig)
+                       (~'js* ~(core/str (first sig) ".(" go-psym ")." (proto-slot-name fname sig)
                                          "(" (apply core/str (interpose ", " (rest sig))) ")"))))
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)
@@ -994,9 +996,9 @@
     `(do
        (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
        (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}")
-              ~psym)
+              ~go-psym)
        (~'js* "func init() {\n\tNative_register_protocol(~{}, (*~{})(nil))\n}"
-              ~(core/str (symbol (some-> ns-name name) (name psym))) ~psym)
+              ~(core/str fq-psym) ~go-psym)
        ~@(map method methods))))
 
 (defmacro implements?
