@@ -975,7 +975,7 @@
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
                        (~'js* ~(core/str (first sig) ".(" go-psym ")." (proto-slot-name fname sig)
-                                         "(" (apply core/str (interpose ", " (rest sig))) ")"))))
+                                         "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)
                        fname (vary-meta fname assoc :protocol p)]
