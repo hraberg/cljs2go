@@ -544,9 +544,11 @@
           (when methods
             (emits ", ")
             (recur methods)))
-        (when-not protocol-impl
-          (emitln ").(*AFnPrimitive)")
-          (emits "}(&AFnPrimitive{})")))
+        (if protocol-impl
+          (emitln)
+          (do
+            (emitln ").(*AFnPrimitive)")
+            (emits "}(&AFnPrimitive{})"))))
       (when loop-locals
         (emitln "}(" (comma-sep loop-locals) "))"))))
   (when (= '-main (:name name))

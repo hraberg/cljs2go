@@ -175,7 +175,10 @@
                   (deftype AnObject []
                     Object
                     (toString [_] "baz")
-                    (equiv [this other] false))])
+                    (equiv [this other] false)
+
+                    IFoo
+                    (-bar [this x] (str this x)))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
@@ -193,6 +196,7 @@
           "`baz`" '(.string (AnObject.))
           false '(.equiv (AnObject.) "foo")
           true '(native-satisfies? 'Object (AnObject.)) ;; cljs.core/Object isn't known by the analyzer
+          "`bazbar`" '(-bar (AnObject.) "bar")
           )
     (test "Var"
           "math.Inf(1)" 'js/Infinity)

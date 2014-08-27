@@ -224,7 +224,7 @@
                                      (core/float? %) (core/true? %)
                                      (core/false? %))
                             "~{}"
-                            "Str.Invoke_Arity1(~{})"))
+                            "Str.Invoke_Arity1(~{}).(string)"))
                   (interpose "+")
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
