@@ -105,11 +105,12 @@
           (symbol (str munged-name "___" depth))))
       ; String munging
       (let [ss (string/replace (str s) #"\/(.)" ".$1") ; Division is special
+            ss (string/replace ss "$" "_")
             ss (apply str (map #(if (reserved %) (str % "_") %)
                                (string/split ss #"(?<=\.)|(?=\.)")))
             ms (string/split (clojure.lang.Compiler/munge ss) #"\.")
             ms (if (butlast ms)
-                 (str (string/join "_"(butlast ms)) "." (last ms))
+                 (str (string/join "_" (butlast ms)) "." (last ms))
                  (str (last ms)))]
         (if (symbol? s)
           (symbol ms)
