@@ -6,5 +6,5 @@
   :main cljs.go
   :dependencies [[org.clojure/clojure "1.7.0-alpha1"]
                  [org.clojure/clojurescript "0.0-2322"]
-                 [org.clojure/tools.analyzer "0.5.2"]
+                 [org.clojure/tools.analyzer.js "0.1.0-beta3"]
                  [org.clojure/core.async "0.1.319.0-6b1aca-alpha"]])
