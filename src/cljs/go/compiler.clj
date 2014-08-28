@@ -661,7 +661,7 @@
     (if (= :expr context)
       (emits "func() interface{} {")
       (emitln "{"))
-    (emitln "var " (string/join ", " (map munge bindings)) " *AFnPrimitive")
+    (emitln "var " (comma-sep (map munge bindings)) " *AFnPrimitive")
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
     (assign-to-blank bindings)
