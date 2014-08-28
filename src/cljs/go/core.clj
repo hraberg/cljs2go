@@ -747,11 +747,11 @@
   (map (fn [[f & meths :as form]]
          (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
            `(do
+              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
+                             ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form))
               ~(when (= 'toString f)
                  (with-meta `(fn ~(with-meta 'string {:tag (:ret-tag proto-fn)})
-                               ~(adapt-proto-params type proto-fn '[[this] (.toString this)])) (meta form)))
-              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
-                             ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form)))))
+                               ~(adapt-proto-params type proto-fn '[[this] ^string (.toString this)])) (meta form))))))
        sigs))
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]

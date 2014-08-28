@@ -52,7 +52,8 @@
 (def cljs-reserved-file-names #{"deps.cljs"})
 
 (def ^:dynamic *go-import-prefix* "github.com/hraberg/cljs.go/")
-(def ^:dynamic *go-return* nil)
+(def ^:dynamic *go-return-name* nil)
+(def ^:dynamic *go-return-tag* nil)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
 (defmacro ^:private debug-prn
@@ -84,6 +85,15 @@
 
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
+
+(defn go-type [tag]
+  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}"))
+
+(defn go-short-type [tag]
+  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
+
+(defn go-type-suffix [params ret-tag]
+  (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
 
 (def go-native-decorator '{string js.JSString})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
@@ -250,10 +260,14 @@
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
-     (when (= :return (:context env#)) (if-let [out# *go-return*]
-                                         (emits out# " = ")
-                                         (emits "return ")))
+     (when (= :return (:context env#))
+       (if-let [out# *go-return-name*]
+         (emits out# " = ")
+         (emits "return ")))
      ~@body
+     (when (= :return (:context env#))
+       (when-let [tag# *go-return-tag*]
+         (emits ".(" (go-type tag#) ")")))
      (when-not (= :expr (:context env#)) (emitln))))
 
 (defmethod emit* :no-op [m])
@@ -463,15 +477,6 @@
         (when-not (= export mname)
           (emitln "var "export  " = " mname))))))
 
-(defn go-type [tag]
-  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}"))
-
-(defn go-short-type [tag]
-  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
-
-(defn go-type-suffix [params ret-tag]
-  (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
-
 (defn emit-fn-signature [params ret-tag]
   (let [typed-params (for [{:keys [name tag]} params]
                        (str (munge name) " " (go-type tag)))]
@@ -496,7 +501,9 @@
     (emits "func")
     (emit-fn-signature params ret-tag)
     (emits "{")
-    (emit-fn-body type expr recurs)
+    (binding [*go-return-tag* (when (not= (:tag expr) ret-tag)
+                                ret-tag)]
+      (emit-fn-body type expr recurs))
     (emits "}")))
 
 (defn emit-protocol-method
@@ -510,7 +517,9 @@
                                         (= '-invoke (:name name))) dec))))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")
-    (emit-fn-body type expr recurs)
+    (binding [*go-return-tag* (when (not= (:tag expr) ret-tag)
+                                ret-tag)]
+      (emit-fn-body type expr recurs))
     (emits "}")))
 
 (defn emit-variadic-fn-method
@@ -580,17 +589,19 @@
 
 (defmethod emit* :try
   [{:keys [env try catch name finally]}]
-  (let [context (:context env)]
+  (let [context (:context env)
+        ret-tag (when ((hash-set (:tag try) 'ignore) (:tag catch))
+                  (:tag try))]
     (if (or name finally)
       (let [out (when name (gensym "return__"))]
         (when (= :return (:context env))
           (emits "return "))
-        (emits "func() (" out " interface{}) {")
+        (emits "func() (" out " " (go-type ret-tag) " ) {")
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
           (emitln "defer func() {" finally "}()"))
         (when name
-          (binding [*go-return* (or out *go-return*)]
+          (binding [*go-return-name* (or out *go-return-name*)]
             (emitln "defer func() { if " (munge name) " := recover(); "
                     (munge name) " != nil {" catch "}}()")))
         (emits "{" try "}")
