@@ -338,9 +338,9 @@
   ;; (instance? RegExp ...) needs to be inlined, but the expansion
   ;; should preserve the order of argument evaluation.
   (bool-expr (if (clojure.core/symbol? t)
-               (core/list 'js* "_, instanceof := ~{}.(*~{}); instanceof" o t)
+               (core/list 'js* "func() bool { _, instanceof := ~{}.(*~{}); return instanceof }()" o t)
                `(let [t# ~t o# ~o]
-                  (~'js* "_, instanceof := ~{}.(*~{}); instanceof" o# t#)))))
+                  (~'js* "func() bool { _, instanceof := ~{}.(*~{}); return instanceof }()" o# t#)))))
 
 (defmacro number? [x]
   (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Float64" x)))
@@ -360,11 +360,11 @@
 
 (defmacro aset
   ([a i v]
-    (core/list 'js* "(~{}[~{}] = ~{})" a i v))
+    (core/list 'js* "~{}[~{}] = ~{}" a i v))
   ([a idx idx2 & idxv]
     (let [n    (core/dec (count idxv))
           astr (apply core/str (repeat n "[~{}]"))]
-      `(~'js* ~(core/str "(~{}[~{}][~{}]" astr " = ~{})") ~a ~idx ~idx2 ~@idxv))))
+      `(~'js* ~(core/str "~{}[~{}][~{}]" astr " = ~{}") ~a ~idx ~idx2 ~@idxv))))
 
 (defmacro ^::ana/numeric +
   ([] 0)

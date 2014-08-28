@@ -48,6 +48,13 @@
       out
       (do (println err) in))))
 
+(defn goimports-file [file]
+  (go-get "code.google.com/p/go.tools/cmd/goimports")
+  (let [{:keys [exit out err]} (sh/sh "goimports" "-e=true" (str file))]
+    (when-not (zero? exit)
+      (println err)
+      {:file file :errors (count (s/split-lines err))})))
+
 (defmacro with-fresh-ids [& body]
   `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
                                                                 (.setAccessible true))
@@ -67,7 +74,8 @@
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
           (with-fresh-ids
-            (cljs.compiler/compile-file src target)))))))
+            (cljs.compiler/compile-file src target))
+          (goimports-file target))))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))
