@@ -41,16 +41,19 @@
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]
     (assert (zero? exit) err)))
 
+(defn get-goimports []
+  (go-get "code.google.com/p/go.tools/cmd/goimports"))
+
 (defn goimports [in]
-  (go-get "code.google.com/p/go.tools/cmd/goimports")
+  (get-goimports)
   (let [{:keys [exit out err]} (sh/sh "goimports" :in in)]
     (if (zero? exit)
       out
       (do (println err) in))))
 
 (defn goimports-file [file]
-  (go-get "code.google.com/p/go.tools/cmd/goimports")
-  (let [{:keys [exit out err]} (sh/sh "goimports" "-e=true" (str file))]
+  (get-goimports)
+  (let [{:keys [exit out err]} (sh/sh "goimports" "-e=true" "-w=true" (str file))]
     (when-not (zero? exit)
       (println err)
       {:file file :errors (count (s/split-lines err))})))

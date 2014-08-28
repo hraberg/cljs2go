@@ -714,11 +714,19 @@
        :else
        (emits f (when coerce? ".(IFn)") ".Invoke_Arity" arity "(" (comma-sep args) ")")))))
 
+(defn normalize-goog-ctor [ctor]
+  (let [parts (string/split (-> ctor :info :name str) #"\.")
+        ns (string/replace (apply str (butlast parts)) "/" ".")]
+    (-> ctor
+        (assoc-in [:info :name] (symbol ns (last parts)))
+        (assoc-in [:info :ns] (symbol ns)))))
+
 (defmethod emit* :new
   [{:keys [ctor args env]}]
   (emit-wrap env
-             (emits "(&" (if ('#{js goog.string} (-> ctor :info :ns))
-                           ctor
+             (emits "(&" (case (-> ctor :info :ns)
+                           js ctor
+                           goog (normalize-goog-ctor ctor)
                            (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
            (comma-sep args)
            "})")))
@@ -750,7 +758,7 @@
         (emits "}()")))))
 
 (defmethod emit* :ns
-  [{:keys [name requires uses require-macros env]}]
+  [{:keys [name requires uses imports require-macros env]}]
   (emitln "// " name)
   (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
@@ -759,7 +767,8 @@
     (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
-  (doseq [lib (distinct (into (vals requires) (vals uses)))]
+  (doseq [lib (distinct (concat (map #(symbol (string/replace %  #"(.+)(\..+)$" "$1")) (vals imports))
+                                (vals (apply dissoc requires (keys imports))) (vals uses)))]
     (emitln "\t" (string/replace (munge lib) "." "_") " "
             (wrap-in-double-quotes
              (str (when (re-find #"^goog\." (str lib))
@@ -816,7 +825,7 @@
        :else (emits (interleave (concat segs (repeat nil))
                                 (map (if numeric go-unbox identity) (concat args [nil])))))
       (when aset-return?
-        (emits "; return " (first args) "[" (second args) " ] }()")))))
+        (emits "; return " (first args) "[" (second args) "] }()")))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a

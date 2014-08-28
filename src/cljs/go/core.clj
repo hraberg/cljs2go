@@ -529,36 +529,36 @@
   ([x y & more] `(bit-and-not (bit-and-not ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-clear [x n]
-  (core/list 'js* "float64(int(~{}) &^ (1 << int(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) &^ (1 << uint(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-flip [x n]
-  (core/list 'js* "float64(int(~{}) ^ (1 << int(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) ^ (1 << uint(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-test [x n]
-  (core/list 'js* "float64((int(~{}) & (1 << int(~{}))) != 0)" x n))
+  (core/list 'js* "float64((int(~{}) & (1 << uint(~{}))) != 0)" x n))
 
 (defmacro ^::ana/numeric bit-shift-left [x n]
-  (core/list 'js* "float64(int(~{}) << int(~{}))" x n))
+  (core/list 'js* "float64(int(~{}) << uint(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-shift-right [x n]
-  (core/list 'js* "float64(int(~{}) >> int(~{}))" x n))
+  (core/list 'js* "float64(int(~{}) >> uint(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-shift-right-zero-fill [x n]
-  (core/list 'js* "float64(uint(~{}) >> int(~{}))" x n))
+  (core/list 'js* "float64(uint(~{}) >> uint(~{}))" x n))
 
 (defmacro ^::ana/numeric unsigned-bit-shift-right [x n]
-  (core/list 'js* "float64(uint(~{}) >> int(~{}))" x n))
+  (core/list 'js* "float64(uint(~{}) >> uint(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-set [x n]
-  (core/list 'js* "float64(int(~{}) | (1 << int(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) | (1 << iint(~{})))" x n))
 
 ;; internal
 (defmacro mask [hash shift]
-  (core/list 'js* "float64((uint(~{}) >> int(~{})) & 0x01f)" hash shift))
+  (core/list 'js* "float64((uint(~{}) >> uint(~{})) & 0x01f)" hash shift))
 
 ;; internal
 (defmacro bitpos [hash shift]
-  (core/list 'js* "float64(1 << int(~{}))" `(mask ~hash ~shift)))
+  (core/list 'js* "float64(1 << uint(~{}))" `(mask ~hash ~shift)))
 
 ;; internal
 (defmacro caching-hash [coll hash-fn hash-key]
