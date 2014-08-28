@@ -495,10 +495,10 @@
             (comma-sep bindings))))
 
 (defn emit-fn-body [type expr recurs]
-  (when recurs (emitln "for {"))
+  (when recurs
+    (emitln "for {"))
   (emits expr)
   (when recurs
-    (emitln "panic(&js.Error{`Unreachable`})")
     (emitln "}")))
 
 (defn emit-fn-method
@@ -630,7 +630,8 @@
       (when is-loop (emitln "for {"))
       (emits expr)
       (when is-loop
-        (emitln "panic(&js.Error{`Unreachable`})")
+        (when (= :statement (:context env))
+          (emitln "break"))
         (emitln "}")))
     (if (= :expr context)
       (emits "}()")
