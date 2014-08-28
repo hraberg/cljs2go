@@ -144,7 +144,7 @@
 
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
-    (munge (if (#{'cljs.core ana/*cljs-ns*} (symbol ns))
+    (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) (symbol ns))
              (go-type-fqn tag)
              (str ns "." (go-type-fqn tag))))
     ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}")))
@@ -547,12 +547,11 @@
   (when (or (not= :statement (:context env)) protocol-impl)
     (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
                                    (mapcat :params loop-lets))
-                           (map munge)
                            seq)]
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" (comma-sep loop-locals) " interface{}) *AFnPrimitive {")
+        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *AFnPrimitive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
