@@ -478,8 +478,8 @@
           (emitln "var "export  " = " mname))))))
 
 (defn emit-fn-signature [params ret-tag]
-  (let [typed-params (for [{:keys [name tag]} params]
-                       (str (munge name) " " (go-type tag)))]
+  (let [typed-params (for [param params]
+                       (str (emit-str param) " " (-> param :tag go-type)))]
     (emits "(" (comma-sep typed-params) ") " (go-type ret-tag))))
 
 (defn assign-to-blank [bindings]
@@ -817,26 +817,38 @@
                         (comma-sep args)
                         ")")))))
 
-(defn go-unbox [x]
-  (when x
-    (str (emit-str x)
-         (when (or (not= 'number (:tag x))
-                   (and (= :invoke (:op x))
-                        (not= 'number (-> x :f :info :ret-tag))))
-           ".(float64)"))))
+(defn go-unbox
+  ([from x] (go-unbox from (go-type from) x))
+  ([from to x]
+     (when x
+       (str (emit-str x)
+            (when (or (not= from (:tag x))
+                      (and (= :invoke (:op x))
+                           (not= from (-> x :f :info :ret-tag))))
+              (str ".(" to ")"))))))
 
 (defmethod emit* :js
   [{:keys [env code js-op segs args numeric]}]
-  (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))]
+  (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
+        args (case js-op
+               cljs.core/make-array [(go-unbox 'number (first args))]
+               cljs.core/alength [(go-unbox 'array (first args))]
+               cljs.core/aget (cons (go-unbox 'array (first args))
+                                    (map (partial go-unbox 'number) (rest args)))
+               cljs.core/aset (concat [(go-unbox 'array (first args))]
+                                      (map (partial go-unbox 'number) (butlast (rest args)))
+                                      [(last args)])
+               args)]
     (emit-wrap env
       (when aset-return?
         (emits "func() " (go-type (:tag (last args))) "{ "))
       (cond
        code (emits code)
        :else (emits (interleave (concat segs (repeat nil))
-                                (map (if numeric go-unbox identity) (concat args [nil])))))
+                                (map (if numeric (partial go-unbox 'number) identity)
+                                     (concat args [nil])))))
       (when aset-return?
-        (emits "; return " (first args) "[" (second args) "] }()")))))
+        (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()")))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
