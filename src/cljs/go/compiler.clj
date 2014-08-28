@@ -73,35 +73,6 @@
        (some #{(str name)} (ns-first-segments)) (inc d)
        :else d))))
 
-(defn go-public [s]
-  (let [s (name s)]
-    (when (seq s)
-      (if (= \_ (first s))
-        (str "X" s)
-        (str (string/upper-case (subs s 0 1)) (when (next s) (subs s 1)))))))
-
-(defn go-type-fqn [s]
-  (apply str (map go-public (string/split (str s) #"[./]"))))
-
-(defn go-short-name [s]
-  (last (string/split (str s) #"\.")))
-
-(defn go-type [tag]
-  ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}"))
-
-(defn go-short-type [tag]
-  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
-
-(defn go-type-suffix [params ret-tag]
-  (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
-
-(def go-native-decorator '{string js.JSString})
-(def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
-                                    cljs$lang$applyTo NativeCljsLangFn
-                                    cljs$lang$type NativeCljsLangType
-                                    cljs$lang$ctorStr NativeCljsLangType
-                                    cljs$lang$ctorPrWriter NativeCljsLangType})
-
 (defn munge
   ([s] (munge s js-reserved))
   ([s reserved]
@@ -157,6 +128,39 @@
 
 (defn- wrap-in-double-quotes [x]
   (str \" x \"))
+
+(defn go-public [s]
+  (let [s (name s)]
+    (when (seq s)
+      (if (= \_ (first s))
+        (str "X" s)
+        (str (string/upper-case (subs s 0 1)) (when (next s) (subs s 1)))))))
+
+(defn go-type-fqn [s]
+  (apply str (map go-public (string/split (str s) #"[./]"))))
+
+(defn go-short-name [s]
+  (last (string/split (str s) #"\.")))
+
+(defn go-type [tag]
+  (if-let [ns (and (symbol? tag) (namespace tag))]
+    (munge (if (#{'cljs.core ana/*cljs-ns*} (symbol ns))
+             (go-type-fqn tag)
+             (str ns "." (go-type-fqn tag))))
+    ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}")))
+
+(defn go-short-type [tag]
+  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
+
+(defn go-type-suffix [params ret-tag]
+  (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
+
+(def go-native-decorator '{string js.JSString})
+(def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
+                                    cljs$lang$applyTo NativeCljsLangFn
+                                    cljs$lang$type NativeCljsLangType
+                                    cljs$lang$ctorStr NativeCljsLangType
+                                    cljs$lang$ctorPrWriter NativeCljsLangType})
 
 (defmulti emit* :op)
 
@@ -477,10 +481,12 @@
         (when-not (= export mname)
           (emitln "var "export  " = " mname))))))
 
+(defn typed-params [params]
+  (for [param params]
+    (str (emit-str param) " " (-> param :tag go-type))))
+
 (defn emit-fn-signature [params ret-tag]
-  (let [typed-params (for [param params]
-                       (str (emit-str param) " " (-> param :tag go-type)))]
-    (emits "(" (comma-sep typed-params) ") " (go-type ret-tag))))
+  (emits "(" (comma-sep (typed-params params)) ") " (go-type ret-tag)))
 
 (defn assign-to-blank [bindings]
   (when-let [bindings (seq (remove '#{_} (map munge bindings)))]
@@ -788,15 +794,19 @@
   (emitln ")")
   (emitln))
 
+(defn typed-fields [fields]
+  (for [field fields]
+    (str (go-public (munge field)) " " (-> field meta :tag go-type))))
+
 (defmethod emit* :deftype*
   [{:keys [t fields pmasks]}]
-  (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) (when (seq fields) " interface{}") " }")))
+  (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields)) " }"))
 
 (defmethod emit* :defrecord*
   [{:keys [t fields pmasks]}]
   (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (comma-sep fields) ", X__meta, X__extmap interface{} }")))
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields))
+            "\nX__meta interface{}\nX__extmap interface{} }")))
 
 (defmethod emit* :dot
   [{:keys [target field method args env]}]
