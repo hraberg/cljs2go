@@ -632,14 +632,15 @@
         ns     (-> &env :ns :name)
         munge  cljs.compiler/munge]
     `(do
-       (when-not (exists? ~(symbol (core/str ns) (core/str t)))
-         (deftype ~t [~@locals ~meta-sym]
-           IWithMeta
-           (~'-with-meta [~this-sym ~meta-sym]
-             (new ~t ~@locals ~meta-sym))
-           IMeta
-           (~'-meta [~this-sym] ~meta-sym)
-           ~@impls))
+       ;; this needs to happen on top-level
+       ;; (when-not (exists? ~(symbol (core/str ns) (core/str t)))
+       ;;   (deftype ~t [~@locals ~meta-sym]
+       ;;     IWithMeta
+       ;;     (~'-with-meta [~this-sym ~meta-sym]
+       ;;       (new ~t ~@locals ~meta-sym))
+       ;;     IMeta
+       ;;     (~'-meta [~this-sym] ~meta-sym)
+       ;;     ~@impls))
        (new ~t ~@locals nil))))
 
 (defmacro specify! [expr & impls]
@@ -696,16 +697,18 @@
         (drop-while seq? (next s)))
       ret)))
 
+;; For core.cljs we can do this manually as native overrides for now
 (defn base-assign-impls [env resolve tsym type [p sigs]]
   (warn-and-update-protocol p tsym env)
   (let [psym       (resolve p)
         pfn-prefix (subs (core/str psym) 0
                      (clojure.core/inc (.indexOf (core/str psym) "/")))]
-    (cons `(aset ~psym ~type true)
-      (map (fn [[f & meths :as form]]
-             `(aset ~(symbol (core/str pfn-prefix f))
-                ~type ~(with-meta `(fn ~@meths) (meta form))))
-        sigs))))
+    ;; (cons `(aset ~psym ~type true)
+    ;;   (map (fn [[f & meths :as form]]
+    ;;          `(aset ~(symbol (core/str pfn-prefix f))
+    ;;             ~type ~(with-meta `(fn ~@meths) (meta form))))
+    ;;     sigs))
+    ))
 
 (core/defmulti extend-prefix (fn [tsym sym] (-> tsym meta :extend)))
 

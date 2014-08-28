@@ -55,6 +55,12 @@
       (println err)
       {:file file :errors (count (s/split-lines err))})))
 
+(defn go-build [dir]
+  (let [{:keys [exit out err]} (sh/sh "go" "build" :dir dir)]
+    (when-not (zero? exit)
+      (println err)
+      {:dir dir :errors (count (remove #(= \tab (first %)) (s/split-lines err)))})))
+
 (defmacro with-fresh-ids [& body]
   `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
                                                                 (.setAccessible true))
@@ -75,7 +81,8 @@
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
           (with-fresh-ids
             (cljs.compiler/compile-file src target))
-          (goimports-file target))))))
+          (goimports-file target)
+          (go-build (.getParentFile target)))))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))

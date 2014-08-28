@@ -188,9 +188,9 @@
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
-    (emits "(&js.RegExp{Pattern: \"\", Flags: \"\"})")
+    (emits "(&js.RegExp{Pattern:``, Flags: ``})")
     (let [[_ flags pattern] (re-find #"^(?:\(\?([idmsux]*)\))?(.*)" (str x))]
-      (emits "(&js.RegExp{Pattern: \"" (.replaceAll (re-matcher #"/" pattern) "\\\\/") "\", Flags: \"" flags "\"})"))))
+      (emits "(&js.RegExp{Pattern: `" (.replaceAll (re-matcher #"/" pattern) "\\\\/") "`, Flags: `" flags "`})"))))
 
 (defn emits-keyword [kw]
   (let [ns   (namespace kw)
@@ -381,13 +381,17 @@
   (let [tag (ana/infer-tag env e)]
     (or (#{'boolean 'seq} tag) (truthy-constant? e))))
 
+(def top-level-then '#{(and (exists? Math/imul)
+                            (not (zero? (Math/imul 0xffffffff 5))))})
+
 (defmethod emit* :if
-  [{:keys [test then else env unchecked]}]
+  [{:keys [test then else env form unchecked]}]
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))]
     (cond
       (truthy-constant? test) (emitln then)
       (falsey-constant? test) (emitln else)
+      (top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
         (emits "func() interface{} { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} }()")
@@ -511,7 +515,7 @@
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
-  (let [varargs (string/join "_" (map :name params))]
+  (let [varargs (str (string/join "_" (map :name params)) "__")]
     (emit-wrap env
       (emits "func(")
       (emitln varargs " ...interface{}" ") interface{} {")
@@ -533,7 +537,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" (comma-sep loop-locals) ") *AFnPrimitive {")
+        (emitln "func(" (comma-sep loop-locals) " interface{}) *AFnPrimitive {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
@@ -544,10 +548,11 @@
           (emitln "func(" mname " *AFnPrimitive) *AFnPrimitive {")
           (emits "return Fn(" mname ", "))
         (loop [[meth & methods] methods]
-          (cond
-           protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
-           (:variadic meth) (emit-variadic-fn-method meth)
-           :else (emit-fn-method meth (:ret-tag name)))
+          (let [meth (assoc-in meth [:env :context] :expr)]
+            (cond
+             protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
+             (:variadic meth) (emit-variadic-fn-method meth)
+             :else (emit-fn-method meth (:ret-tag name))))
           (when methods
             (emits ", ")
             (recur methods)))
@@ -557,7 +562,7 @@
             (emitln ").(*AFnPrimitive)")
             (emits "}(&AFnPrimitive{})"))))
       (when loop-locals
-        (emitln "}(" (comma-sep loop-locals) "))"))))
+        (emits "}(" (comma-sep loop-locals) ")"))))
   (when (= '-main (:name name))
     (emitln)
     (emitln"func init() {")
@@ -613,7 +618,7 @@
         (emitln "}")))
     (if (= :expr context)
       (emits "}()")
-      (emits "}"))))
+      (emitln "}"))))
 
 (defmethod emit* :let [ast]
   (emit-let ast false))
@@ -728,17 +733,21 @@
         (swap! env/*compiler* assoc-in ks {:name (symbol (name ns) (name field))})
         (emits "var ")))))
 
+(def skipped-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
+                     (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
+
 (defmethod emit* :set!
-  [{:keys [target val env]}]
-  (emit-wrap env
-    (when (= :statement (:context env))
-      (maybe-define-static-field-var target))
-    (when (#{:expr :return} (:context env))
-      (emits "func() interface{} {"))
-    (emitln target " = " val)
-    (when (#{:expr :return} (:context env))
-      (emitln " return " target)
-      (emits "}()"))))
+  [{:keys [target val env form]}]
+  (when-not (skipped-set! form)
+    (emit-wrap env
+      (when (= :statement (:context env))
+        (maybe-define-static-field-var target))
+      (when (#{:expr :return} (:context env))
+        (emits "func() interface{} {"))
+      (emitln target " = " val)
+      (when (#{:expr :return} (:context env))
+        (emitln " return " target)
+        (emits "}()")))))
 
 (defmethod emit* :ns
   [{:keys [name requires uses require-macros env]}]
@@ -797,12 +806,17 @@
            ".(float64)"))))
 
 (defmethod emit* :js
-  [{:keys [env code segs args numeric]}]
-  (emit-wrap env
-             (cond
-              code (emits code)
-              :else (emits (interleave (concat segs (repeat nil))
-                                       (map (if numeric go-unbox identity) (concat args [nil])))))))
+  [{:keys [env code js-op segs args numeric]}]
+  (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))]
+    (emit-wrap env
+      (when aset-return?
+        (emits "func() " (go-type (:tag (last args))) "{ "))
+      (cond
+       code (emits code)
+       :else (emits (interleave (concat segs (repeat nil))
+                                (map (if numeric go-unbox identity) (concat args [nil])))))
+      (when aset-return?
+        (emits "; return " (first args) "[" (second args) " ] }()")))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
