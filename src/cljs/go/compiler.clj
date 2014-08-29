@@ -510,7 +510,7 @@
         (emit-comment doc (:jsdoc init))
         (emitln (when-not redefine? "var ")
                 mname
-                (when (or (= 'clj-nil (:tag init)) (not init))
+                (when (or (= 'clj-nil (:tag init)) (nil? init))
                   " interface{}")
                 " = " (or init "nil"))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
