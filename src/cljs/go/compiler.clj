@@ -30,14 +30,10 @@
 (defn clojurescript-version
   "Returns clojurescript version as a printable string."
   []
-  ('org.clojure/clojurescript
-   (->> "project.clj"
-        slurp
-        read-string
-        (drop-while (complement keyword?))
-        (apply hash-map)
-        :dependencies
-        (into {}))))
+  (-> (System/getProperty "java.class.path")
+      (string/split #":")
+      (->> (some #(re-find #"clojurescript-(.+)\.jar" %))
+           second)))
 
 (def go-reserved
   #{"break" "case" "chan" "const" "continue" "default"
