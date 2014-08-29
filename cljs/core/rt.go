@@ -49,6 +49,8 @@ func decorate(target interface{}) interface{} {
 		return js.JSArray(object)
 	case map[string]interface{}:
 		return js.JSObject(object)
+	case nil:
+		return js.JSNil(object)
 	default:
 		return object
 	}

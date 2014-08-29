@@ -7,15 +7,16 @@
             [clojure.java.io :as io]
             [clojure.java.shell :as sh]))
 
+(set! *warn-on-reflection* true)
+
 (defn elide-children [_ ast]
   (dissoc ast :children))
 
 (defn simplify-env [_ {:keys [op] :as ast}]
   (let [env (:env ast)
-        ast (if (= op :fn)
-              (assoc ast :methods
-                (map #(simplify-env nil %) (:methods ast)))
-              ast)]
+        ast (cond-> ast
+                    (= op :fn) (update-in [:methods] #(map (partial simplify-env nil) %))
+                    (= op :set!) (update-in [:target] (partial simplify-env nil)))]
     (update-in ast [:env] #(select-keys % [:context :column :line]))))
 
 (defn cljs->ast

@@ -179,6 +179,16 @@
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
 
+(defn warn-on-reflection [{:keys [env field method]}]
+  (when *warn-on-reflection*
+    (binding [*out* *err*]
+      (let [{:keys [file column line] :or {file "-"}} (ana/source-info env)]
+        (cond
+         field (printf "Reflection warning, %s:%d:%d - reference to field %s can't be resolved.\n"
+                       file line column field)
+         method (printf "Reflection warning, %s:%d:%d - call to method %s can't be resolved (target class is unknown).\n"
+                        file line column method))))))
+
 (defmulti emit* :op)
 
 (defn emit [ast]
@@ -787,14 +797,28 @@
   [{:keys [target val env form]}]
   (when-not (go-skip-set! form)
     (emit-wrap env
-      (when (= :statement (:context env))
-        (maybe-define-static-field-var target))
-      (when (#{:expr :return} (:context env))
-        (emits "func() interface{} {"))
-      (emitln target " = " val)
-      (when (#{:expr :return} (:context env))
-        (emitln " return " target)
-        (emits "}()")))))
+      (let [return (when (#{:expr :return} (:context env))
+                     (gensym "return__"))]
+        (when return
+          (emits "func() " (go-type (:tag val)) " {")
+          (emitln "var " return " = " val))
+        (let [val (or return val)
+              static? (-> target :target :info :type)]
+          (if-let [reflective-field (and (#{nil 'any} (:tag target))
+                                         (not static?)
+                                         (:field target))]
+            (do
+              (warn-on-reflection target)
+              (emitln "Native_set_instance_field.Invoke_Arirty3(" (:target target) ","
+                      (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
+                      ","  val ")"))
+            (do
+              (when (= :statement (:context env))
+                (maybe-define-static-field-var target))
+              (emitln target " = " val)))
+          (when return
+            (emitln " return " return)
+            (emits "}()")))))))
 
 (defmethod emit* :ns
   [{:keys [name requires uses imports require-macros env]}]
@@ -831,23 +855,35 @@
             "\nX__meta interface{}\nX__extmap interface{} }")))
 
 (defmethod emit* :dot
-  [{:keys [target field method args env]}]
-  (let [decorator (or (go-native-decorator (:tag target))
+  [{:keys [target field method args env] :as dot}]
+  (let [tag (:tag target)
+        static? (-> target :info :type)
+        decorator (or (go-native-decorator tag)
                       (some go-native-property-decorator [field method]))
-        type? (-> target :info :type)]
+        reflection? (not (or tag static?))]
     (emit-wrap env
-               (emits (when decorator (str decorator "("))
-                      target
-                      (when decorator ")")
-                      (if type? "_" "."))
-               (if field
-                 (emits (munge (go-public field) #{}))
-                 (emits (munge (go-public method) #{})
-                        (when type?
-                          (str ".Invoke_Arity" (count args)))
-                        "("
-                        (comma-sep args)
-                        ")")))))
+      (if reflection?
+        (do
+          (warn-on-reflection dot)
+          (if field
+            (emits "Native_get_instance_field.Invoke_Arirty2(" target ","
+                   (wrap-in-double-quotes (munge (go-public field) #{})) ")")
+            (emits "Native_invoke_instance_method.Invoke_Arity3(" target ","
+                   (wrap-in-double-quotes (munge (go-public method) #{})) ","
+                   "[]interface{}{" (comma-sep args) "})")))
+        (do
+          (emits (when decorator (str decorator "("))
+                 target
+                 (when decorator ")")
+                 (if static? "_" "."))
+          (if field
+            (emits (munge (go-public field) #{}))
+            (emits (munge (go-public method) #{})
+                   (when static?
+                     (str ".Invoke_Arity" (count args)))
+                   "("
+                   (comma-sep args)
+                   ")")))))))
 
 (defn go-unbox
   ([from x] (go-unbox from (go-type from) x))
