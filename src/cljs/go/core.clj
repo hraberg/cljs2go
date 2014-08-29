@@ -966,12 +966,13 @@
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
         fq-psym (symbol (some-> ns-name name) (name psym))
-        go-psym (symbol (cljs.compiler/go-type-fqn fq-psym))
+        go-psym (symbol (cljs.compiler/go-type fq-psym))
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
         expand-sig (fn [fname sig]
                      `(~sig
-                       ;; this should really just be a protocol call emitted by :invoke, (~fname ~@sig)
-                       (~'js* ~(core/str (first sig) ".(" go-psym ")." (proto-slot-name fname sig)
+                       ;; this should really just be a protocol call emitted by :invoke,
+                       ;; (~fname ~(vary-meta (first sig) assoc :tag fq-psym) ~@(rest sig))
+                       (~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                          "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
         method (fn [[fname & sigs]]
                  (let [sigs (take-while vector? sigs)

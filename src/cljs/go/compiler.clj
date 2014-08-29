@@ -97,7 +97,8 @@
             ms (string/split (clojure.lang.Compiler/munge ss) #"\.")
             ms (if (butlast ms)
                  (str (string/join "_" (butlast ms)) "." (last ms))
-                 (str (last ms)))]
+                 (str (last ms)))
+            ms (cond-> ms (= "_" ms) (str "__"))]
         (if (symbol? s)
           (symbol ms)
           ms)))))
@@ -484,7 +485,7 @@
                   mname
                   (when (= 'clj-nil (:tag init))
                     " interface{}")
-                  " = " (assoc-in init [:name :name] mname))
+                  " = " init)
           ;; NOTE: JavaScriptCore does not like this under advanced compilation
           ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
