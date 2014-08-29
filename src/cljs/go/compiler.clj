@@ -179,8 +179,6 @@
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
 
-
-
 (defmulti emit* :op)
 
 (defn emit [ast]

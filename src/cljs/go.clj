@@ -41,10 +41,11 @@
 (defn godef
   ([var] (godef nil var))
   ([package var]
-     (let [in (str "package _;" (when (seq (str package))
-                                  (str "import \"" package "\";"))
+     (let [in (str "package _;"
+                   (when (seq (str package))
+                     (str "import \"" package "\";"))
                    "var _ = " (cond->> var package (str package ".")))
-           {:keys [exit err out]} (sh/sh "godef" "-a" "-i" "-t" "-o" (str (count in)) :in in)]
+           {:keys [exit err out]} (sh/sh "godef" "-i" "-t" "-o" (str (count in)) :in in)]
        (when (zero? exit)
          (let [[loc & def] (s/split-lines out)
                [file line col] (s/split loc #":")]
