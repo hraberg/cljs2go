@@ -490,7 +490,6 @@
         (some-> *go-defs* (swap! conj name))
         (when redefine?
           (emitln "func init() {"))
-        (println "//" doc)
         (emit-comment doc (:jsdoc init))
         (emitln (when-not redefine? "var ")
                 mname
