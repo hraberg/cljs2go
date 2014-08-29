@@ -30,16 +30,14 @@
 (defn clojurescript-version
   "Returns clojurescript version as a printable string."
   []
-  (str
-    (:major *clojurescript-version*)
-    "."
-    (:minor *clojurescript-version*)
-    (when-let [i (:incremental *clojurescript-version*)]
-      (str "." i))
-    (when-let [q (:qualifier *clojurescript-version*)]
-      (str "-" q))
-    (when (:interim *clojurescript-version*)
-      "-SNAPSHOT")))
+  ('org.clojure/clojurescript
+   (->> "project.clj"
+        slurp
+        read-string
+        (drop-while (complement keyword?))
+        (apply hash-map)
+        :dependencies
+        (into {}))))
 
 (def go-reserved
   #{"break" "case" "chan" "const" "continue" "default"
