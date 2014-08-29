@@ -38,6 +38,21 @@
       (.printStackTrace t)
       (throw t))))
 
+(defn godef
+  ([var] (godef nil var))
+  ([package var]
+     (let [in (str "package _;" (when (seq (str package))
+                                  (str "import \"" package "\";"))
+                   "var _ = " (cond->> var package (str package ".")))
+           {:keys [exit err out]} (sh/sh "godef" "-a" "-i" "-t" "-o" (str (count in)) :in in)]
+       (when (zero? exit)
+         (let [[loc & def] (s/split-lines out)
+               [file line col] (s/split loc #":")]
+           (merge
+            {:file file :def (s/trim (s/join "\n" (remove (comp empty? s/trim) def)))}
+            (when (and line col)
+              {:line (biginteger line) :col (biginteger col)}) ))))))
+
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]
     (assert (zero? exit) err)))

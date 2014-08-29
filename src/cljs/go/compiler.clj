@@ -717,6 +717,8 @@
         opt-not? (and (= (:name info) 'cljs.core/not)
                       (= (ana/infer-tag env (first (:args expr))) 'boolean))
         ns (:ns info)
+        go? (and ns (not (ana/get-namespace ns))
+                 (some #(get (% (ana/get-namespace ana/*cljs-ns*)) ns) [:requires :uses]))
         js? ('#{js Math} ns)
         goog? (when ns
                 (or (= ns 'goog)
@@ -747,7 +749,7 @@
        variadic-invoke
        (emits f ".Invoke_ArityVariadic(" (comma-sep args) ")")
 
-       (or js? goog?)
+       (or js? goog? go?)
        (emits f "(" (comma-sep args)  ")")
 
        (and has-primitives? tags-match?)
@@ -806,13 +808,13 @@
     (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
-  (doseq [lib (distinct (concat (map #(symbol (string/replace %  #"(.+)(\..+)$" "$1")) (vals imports))
+  (doseq [lib (distinct (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
                                 (vals (apply dissoc requires (keys imports))) (vals uses)))]
     (emitln "\t" (string/replace (munge lib) "." "_") " "
             (wrap-in-double-quotes
              (str (when (re-find #"^goog\." (str lib))
                     *go-import-prefix*)
-                  (string/replace (munge lib) #"[._]" "/")))))
+                  (string/replace lib #"[._]" "/")))))
   (emitln ")")
   (emitln))
 
