@@ -764,21 +764,12 @@
             ~(with-meta `(fn ~f ~meth) (meta form)))))
      (map #(adapt-proto-params type proto-fn %) meths))))
 
-;; This generates off-by-one arities, needs fixing.
+;; This generates off-by-one arities, needs fixing. It should also add the missing arities which throws arity.
 (defn add-ifn-methods [type type-sym [f & meths :as form]]
   (let [meths    (map #(adapt-ifn-params type %) meths)
         this-sym (with-meta 'self__ {:tag type})
         argsym   (gensym "args")]
-    (concat
-      ;; [`(set! ~(extend-prefix type-sym 'call) ~(with-meta `(fn ~@meths) (meta form)))
-      ;;  `(set! ~(extend-prefix type-sym 'apply)
-      ;;     ~(with-meta
-      ;;        `(fn ~[this-sym argsym]
-      ;;           (this-as ~this-sym
-      ;;             (.apply (.-call ~this-sym) ~this-sym
-      ;;               (.concat (array ~this-sym) (aclone ~argsym)))))
-      ;;        (meta form)))]
-      (ifn-invoke-methods type type-sym form))))
+    (ifn-invoke-methods type type-sym form)))
 
 (defn proto-slot-name [fname sig]
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
