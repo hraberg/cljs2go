@@ -720,7 +720,7 @@
         tags-match? (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
-        coerce? (:binding-form? info)]
+        coerce? (and (or (:field info) (:binding-form? info)) (not fn?))]
     (emit-wrap env
       (cond
        opt-not?

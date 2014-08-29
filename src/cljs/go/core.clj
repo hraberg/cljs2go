@@ -736,10 +736,10 @@
        ~@body)))
 
 (defn adapt-proto-params [type proto-fn [[this & args :as sig] & body]]
-  (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))]
-    `(~(vec (cons (vary-meta this assoc :tag type)
-                  (map #(vary-meta % assoc :tag (-> %2 meta :tag))
-                       args (or (next proto-params) args))))
+  (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))
+        this (vary-meta this assoc :tag type)]
+    `(~(vec (cons this (map #(vary-meta % assoc :tag (-> %2 meta :tag))
+                            args (or (next proto-params) args))))
       (this-as ~this
         ~@body))))
 
