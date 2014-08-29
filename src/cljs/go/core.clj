@@ -324,7 +324,7 @@
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
   (bool-expr
-    (core/list 'js* "reflect.TypeOf(~{}).Kind() != reflect.Invalid"
+    (core/list 'js* "reflect.TypeOf(~{}).Kind() != reflect.Invalid" ;; this is wrong
       (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
@@ -633,14 +633,14 @@
         munge  cljs.compiler/munge]
     `(do
        ;; this needs to happen on top-level
-       ;; (when-not (exists? ~(symbol (core/str ns) (core/str t)))
-       ;;   (deftype ~t [~@locals ~meta-sym]
-       ;;     IWithMeta
-       ;;     (~'-with-meta [~this-sym ~meta-sym]
-       ;;       (new ~t ~@locals ~meta-sym))
-       ;;     IMeta
-       ;;     (~'-meta [~this-sym] ~meta-sym)
-       ;;     ~@impls))
+       (when-not (exists? ~(symbol (core/str ns) (core/str t)))
+         (deftype ~t [~@locals ~meta-sym]
+           IWithMeta
+           (~'-with-meta [~this-sym ~meta-sym]
+             (new ~t ~@locals ~meta-sym))
+           IMeta
+           (~'-meta [~this-sym] ~meta-sym)
+           ~@impls))
        (new ~t ~@locals nil))))
 
 (defmacro specify! [expr & impls]
@@ -743,6 +743,7 @@
       (this-as ~this
         ~@body))))
 
+;; In ClojureScript, Object isn't really a protocol per-se, but a way of attaching native fns to a type.
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
          (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
@@ -763,6 +764,7 @@
             ~(with-meta `(fn ~f ~meth) (meta form)))))
      (map #(adapt-proto-params type proto-fn %) meths))))
 
+;; This generates off-by-one arities, needs fixing.
 (defn add-ifn-methods [type type-sym [f & meths :as form]]
   (let [meths    (map #(adapt-ifn-params type %) meths)
         this-sym (with-meta 'self__ {:tag type})
@@ -1334,10 +1336,11 @@
       assoc :tag 'array)))
 
 (defmacro make-array
-  [size]
-  (vary-meta
-   `(~'js* "make([]interface{}, int(~{}))" ~size)
-    assoc :tag 'array))
+  ([size] `(make-array nil ~size))
+  ([type size]
+      (vary-meta
+       `(~'js* "make([]interface{}, int(~{}))" ~size)
+       assoc :tag 'array)))
 
 (defmacro list
   ([] '(.-EMPTY cljs.core/List))

@@ -54,6 +54,7 @@
 (def ^:dynamic *go-import-prefix* "github.com/hraberg/cljs.go/")
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
+(def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
 (defmacro ^:private debug-prn
@@ -162,11 +163,19 @@
                                     cljs$lang$ctorStr NativeCljsLangType
                                     cljs$lang$ctorPrWriter NativeCljsLangType})
 
+(def go-top-level-then '#{(and (exists? Math/imul)
+                               (not (zero? (Math/imul 0xffffffff 5))))})
+
+(def go-skip-def '#{cljs.core/native-satisfies?
+                    cljs.core/missing-protocol
+                    cljs.core/make-array
+                    cljs.core/nil-iter})
+
 (defmulti emit* :op)
 
 (defn emit [ast]
   (env/ensure
-    (emit* ast)))
+   (emit* ast)))
 
 (defn emits [& xs]
   (doseq [x xs]
@@ -399,9 +408,6 @@
   (let [tag (ana/infer-tag env e)]
     (or (#{'boolean 'seq} tag) (truthy-constant? e))))
 
-(def top-level-then '#{(and (exists? Math/imul)
-                            (not (zero? (Math/imul 0xffffffff 5))))})
-
 (defmethod emit* :if
   [{:keys [test then else env form unchecked]}]
   (let [context (:context env)
@@ -409,7 +415,7 @@
     (cond
       (truthy-constant? test) (emitln then)
       (falsey-constant? test) (emitln else)
-      (top-level-then (second form)) (emitln then)
+      (go-top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
         (emits "func() interface{} { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} }()")
@@ -466,20 +472,28 @@
 
 (defmethod emit* :def
   [{:keys [name var init env doc export]}]
-  (let [mname (-> name munge go-short-name go-public)]
-    (when init
-      (emit-comment doc (:jsdoc init))
-      (emitln "var " mname
-              (when (= 'clj-nil (:tag init))
-                " interface{}")
-              " = " (assoc-in init [:name :name] mname))
-      ;; NOTE: JavaScriptCore does not like this under advanced compilation
-      ;; this change was primarily for REPL interactions - David
-      ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
-      (when-not (= :expr (:context env)) (emitln))
-      (when-let [export (and export (-> export munge go-short-name go-public))]
-        (when-not (= export mname)
-          (emitln "var "export  " = " mname))))))
+  (let [redefine? (some-> *go-defs* deref (get name))]
+    (when-not (go-skip-def name)
+      (let [mname (-> name munge go-short-name go-public)]
+        (when init
+          (some-> *go-defs* (swap! conj name))
+          (when redefine?
+            (emitln "func init() {"))
+          (emit-comment doc (:jsdoc init))
+          (emitln (when-not redefine? "var ")
+                  mname
+                  (when (= 'clj-nil (:tag init))
+                    " interface{}")
+                  " = " (assoc-in init [:name :name] mname))
+          ;; NOTE: JavaScriptCore does not like this under advanced compilation
+          ;; this change was primarily for REPL interactions - David
+                                        ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
+          (when-not (= :expr (:context env)) (emitln))
+          (when redefine?
+            (emitln "}"))
+          (when-let [export (and export (-> export munge go-short-name go-public))]
+            (when-not (= export mname)
+              (emitln "var "export  " = " mname))))))))
 
 (defn typed-params [params]
   (for [param params]

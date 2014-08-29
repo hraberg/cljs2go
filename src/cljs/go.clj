@@ -31,7 +31,8 @@
   (try
     (env/ensure
      (with-out-str
-       (binding [ana/*cljs-static-fns* true]
+       (binding [ana/*cljs-static-fns* true
+                 cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
          (dorun (map cljs.compiler/emit in)))))
     (catch Throwable t
       (.printStackTrace t)
@@ -81,7 +82,8 @@
      (let [src (io/file src)
            target (cljs.compiler/to-target-file target-dir src)]
        (env/ensure
-        (binding [ana/*passes* [elide-children simplify-env ana/infer-type]]
+        (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
+                  cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
           (with-fresh-ids
             (cljs.compiler/compile-file src target))
           (goimports-file target)
