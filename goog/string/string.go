@@ -37,12 +37,12 @@ func (this *StringBuffer) String() string {
 }
 
 func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {
-	this.buffer().WriteString(fmt.Sprint(a1))
+	_, _ = this.buffer().WriteString(fmt.Sprint(a1))
 	return this
 }
 
 func HashCode(str string) float64 {
 	h := fnv.New32a()
-	h.Write([]byte(str))
+	_, _ = h.Write([]byte(str))
 	return float64(h.Sum32())
 }

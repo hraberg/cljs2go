@@ -158,7 +158,7 @@ var String = struct {
 }{func(num ...float64) string {
 	var buffer bytes.Buffer
 	for _, n := range num {
-		buffer.WriteRune(rune(int(n)))
+		_, _ = buffer.WriteRune(rune(int(n)))
 	}
 	return buffer.String()
 }}
