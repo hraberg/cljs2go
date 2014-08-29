@@ -756,7 +756,9 @@
        sigs))
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
-  (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
+  (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])
+        ;; we don't support varargs here for now, so we drop the last rest fn.
+        meths (remove #(core/> (core/dec (count (first %))) 20) meths)]
     (map
      (fn [meth]
        (let [arity (count (first meth))]
