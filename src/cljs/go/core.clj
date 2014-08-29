@@ -739,7 +739,7 @@
   (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))]
     `(~(vec (cons (vary-meta this assoc :tag type)
                   (map #(vary-meta % assoc :tag (-> %2 meta :tag))
-                       args (next proto-params))))
+                       args (or (next proto-params) args))))
       (this-as ~this
         ~@body))))
 
@@ -757,21 +757,20 @@
 
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
   (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])
-        ;; we don't support varargs here for now, so we drop the last rest fn.
-        meths (remove #(core/> (core/dec (count (first %))) 20) meths)]
-    (map
-     (fn [meth]
-       (let [arity (count (first meth))]
-         `(do
-            ~(with-meta `(fn ~f ~meth) (meta form)))))
-     (map #(adapt-proto-params type proto-fn %) meths))))
+        ;; we don't support provided varargs here for now, so we drop the last rest fn.
+        meths (remove #(core/> (core/dec (count (first %))) 20) meths)
+        f (with-meta f {:tag (:ret-tag proto-fn)})
+        missing (for [params (:method-params proto-fn)
+                      :let [body `(throw (js/Error. ~(core/str "Invalid arity: " (core/dec (count params)))))]]
+                  [(count params)
+                   (with-meta `(fn ~f ~(adapt-proto-params type proto-fn `[~params ~body])) (meta form))])
+        provided (for [meth meths]
+                   [(count (first meth))
+                    (with-meta `(fn ~f ~(adapt-proto-params type proto-fn meth)) (meta form))])]
+    (vals (merge (into (sorted-map) missing) (into {} provided)))))
 
-;; This generates off-by-one arities, needs fixing. It should also add the missing arities which throws arity.
 (defn add-ifn-methods [type type-sym [f & meths :as form]]
-  (let [meths    (map #(adapt-ifn-params type %) meths)
-        this-sym (with-meta 'self__ {:tag type})
-        argsym   (gensym "args")]
-    (ifn-invoke-methods type type-sym form)))
+  (ifn-invoke-methods type type-sym form))
 
 (defn proto-slot-name [fname sig]
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
