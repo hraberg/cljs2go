@@ -41,7 +41,7 @@
     (when (:interim *clojurescript-version*)
       "-SNAPSHOT")))
 
-(def js-reserved
+(def go-reserved
   #{"break" "case" "chan" "const" "continue" "default"
     "defer" "else" "fallthrough" "for" "func" "go" "goto"
     "if" "import" "interface" "map" "package" "range"
@@ -75,7 +75,7 @@
        :else d))))
 
 (defn munge
-  ([s] (munge s js-reserved))
+  ([s] (munge s go-reserved))
   ([s reserved]
     (if (map? s)
       ; Unshadowing
@@ -169,8 +169,17 @@
 
 (def go-skip-def '#{cljs.core/native-satisfies?
                     cljs.core/missing-protocol
+                    cljs.core/truth_
+                    cljs.core/object?
+                    cljs.core/is_proto_
+                    cljs.core/type
                     cljs.core/make-array
                     cljs.core/nil-iter})
+
+(def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
+                     (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
+
+
 
 (defmulti emit* :op)
 
@@ -472,29 +481,31 @@
         (emitln "*/")))))
 
 (defmethod emit* :def
-  [{:keys [name var init env doc export]}]
-  (let [redefine? (some-> *go-defs* deref (get name))]
-    (when-not (go-skip-def name)
+  [{:keys [name var init env doc export form]}]
+  (let [redefine? (some-> *go-defs* deref (get name))
+        protocol-symbol? (-> form second meta :protocol-symbol)
+        declared? (-> form second meta :declared)]
+    (when-not (or (go-skip-def name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)]
-        (when init
-          (some-> *go-defs* (swap! conj name))
-          (when redefine?
-            (emitln "func init() {"))
-          (emit-comment doc (:jsdoc init))
-          (emitln (when-not redefine? "var ")
-                  mname
-                  (when (= 'clj-nil (:tag init))
-                    " interface{}")
-                  " = " init)
-          ;; NOTE: JavaScriptCore does not like this under advanced compilation
-          ;; this change was primarily for REPL interactions - David
+        (some-> *go-defs* (swap! conj name))
+        (when redefine?
+          (emitln "func init() {"))
+        (println "//" doc)
+        (emit-comment doc (:jsdoc init))
+        (emitln (when-not redefine? "var ")
+                mname
+                (when (or (= 'clj-nil (:tag init)) (not init))
+                  " interface{}")
+                " = " (or init "nil"))
+        ;; NOTE: JavaScriptCore does not like this under advanced compilation
+        ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
-          (when-not (= :expr (:context env)) (emitln))
-          (when redefine?
-            (emitln "}"))
-          (when-let [export (and export (-> export munge go-short-name go-public))]
-            (when-not (= export mname)
-              (emitln "var "export  " = " mname))))))))
+        (when-not (= :expr (:context env)) (emitln))
+        (when redefine?
+          (emitln "}"))
+        (when-let [export (and export (-> export munge go-short-name go-public))]
+          (when-not (= export mname)
+            (emitln "var "export  " = " mname)))))))
 
 (defn typed-params [params]
   (for [param params]
@@ -773,12 +784,9 @@
         (swap! env/*compiler* assoc-in ks {:name (symbol (name ns) (name field))})
         (emits "var ")))))
 
-(def skipped-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
-                     (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
-
 (defmethod emit* :set!
   [{:keys [target val env form]}]
-  (when-not (skipped-set! form)
+  (when-not (go-skip-set! form)
     (emit-wrap env
       (when (= :statement (:context env))
         (maybe-define-static-field-var target))

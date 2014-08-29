@@ -33,6 +33,8 @@ var Undefined interface{} = nil
 type JSObject map[string]interface{}
 type Object struct{}
 
+type JSNil interface{}
+
 type JSBoolean bool
 type JSArray []interface{}
 
