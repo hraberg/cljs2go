@@ -151,6 +151,21 @@
 (defn go-type-suffix [params ret-tag]
   (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
 
+;; this is vastly oversimplistic.
+(defn go-needs-coercion? [from to]
+  (not (or (set? from)
+           ((hash-set to 'clj-nil) from))))
+
+(defn go-unbox
+  ([from x] (go-unbox from (go-type from) x))
+  ([from to x]
+     (when x
+       (str (emit-str x)
+            (when (or (go-needs-coercion? from (:tag x))
+                      (and (= :invoke (:op x))
+                           (go-needs-coercion? from (-> x :f :info :ret-tag))))
+              (str ".(" to ")"))))))
+
 (def go-native-decorator '{string js.JSString})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
                                     cljs$lang$applyTo NativeCljsLangFn
@@ -534,7 +549,7 @@
     (emits "func")
     (emit-fn-signature params ret-tag)
     (emits "{")
-    (binding [*go-return-tag* (when (not= (:tag expr) ret-tag)
+    (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
                                 ret-tag)]
       (emit-fn-body type expr recurs))
     (emits "}")))
@@ -550,7 +565,7 @@
                                         (= '-invoke (:name name))) dec))))
     (emit-fn-signature (rest params) ret-tag)
     (emits "{")
-    (binding [*go-return-tag* (when (not= (:tag expr) ret-tag)
+    (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
                                 ret-tag)]
       (emit-fn-body type expr recurs))
     (emits "}")))
@@ -868,16 +883,6 @@
                    "("
                    (comma-sep args)
                    ")")))))))
-
-(defn go-unbox
-  ([from x] (go-unbox from (go-type from) x))
-  ([from to x]
-     (when x
-       (str (emit-str x)
-            (when (or (not= from (:tag x))
-                      (and (= :invoke (:op x))
-                           (not= from (-> x :f :info :ret-tag))))
-              (str ".(" to ")"))))))
 
 (defmethod emit* :js
   [{:keys [env code js-op segs args numeric]}]
