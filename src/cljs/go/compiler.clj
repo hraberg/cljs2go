@@ -783,16 +783,6 @@
            (comma-sep args)
            "})")))
 
-;; This is a hack that tracks static fields on types, like (set! (.-EMPTY PeristentVector) ...)
-(defn maybe-define-static-field-var [{:keys [target field]}]
-  (when (-> target :info :type)
-    (let [field (symbol (str (-> target :info :name go-type-fqn) "_" field))
-          ns (-> target :info :ns)
-          ks [::ana/namespaces ns :defs field]]
-      (when (and (not (get-in @env/*compiler* ks)) (= ns ana/*cljs-ns*))
-        (swap! env/*compiler* assoc-in ks {:name (symbol (name ns) (name field))})
-        (emits "var ")))))
-
 (defmethod emit* :set!
   [{:keys [target val env form]}]
   (when-not (go-skip-set! form)
@@ -813,8 +803,8 @@
                       (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
                       ","  val ")"))
             (do
-              (when (= :statement (:context env))
-                (maybe-define-static-field-var target))
+              (when (and static? (= :statement (:context env)))
+                (emits "var "))
               (emitln target " = " val)))
           (when return
             (emitln " return " return)
