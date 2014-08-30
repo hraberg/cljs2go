@@ -46,7 +46,7 @@ func Test_Main(t *testing.T) {
 		mainWasCalled = true
 		return nil
 	})
-	Main()
+	Main_()
 	assert.True(t, mainWasCalled)
 }
 
@@ -64,7 +64,7 @@ func Test_Invoke(t *testing.T) {
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.(*AFn).Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Invoke_Arity0() })
 	assert.Equal(t, 1, Baz.(*AFn).MaxFixedArity)
-	assert.True(t, Baz.(*AFn).IsVariadic())
+	assert.True(t, Baz.(*AFn).isVariadic())
 	assert.Equal(t, "Hello", Baz.Invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", X_Invoke.Invoke_Arity2(Baz, "Hello"))
 	assert.Equal(t, []interface{}{"World"}, Baz.(*AFn).Call("Hello", "World"))

@@ -6,5 +6,5 @@ import . "github.com/hraberg/cljs.go/cljs/core"
 import _ "."
 
 func main() {
-	Main()
+	Main_()
 }

@@ -62,7 +62,7 @@ var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}
 
 var protocols = map[string]reflect.Type{}
 
-func Native_register_protocol(name string, p interface{}) {
+func RegisterProtocol_(name string, p interface{}) {
 	protocols[name] = reflect.TypeOf(p).Elem()
 }
 
@@ -184,7 +184,7 @@ func throwArity(f, arity interface{}) interface{} {
 	return f
 }
 
-func (this *AFn) IsVariadic() bool {
+func (this *AFn) isVariadic() bool {
 	return this.MaxFixedArity >= 0 && this.ArityVariadic != nil
 }
 
@@ -193,7 +193,7 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 		return args[0].(*AFn).Call(args[1:]...)
 	}
 	argc := len(args)
-	if argc > this.MaxFixedArity && this.IsVariadic() {
+	if argc > this.MaxFixedArity && this.isVariadic() {
 		return this.Invoke_ArityVariadic(args...)
 	}
 	switch argc {
@@ -433,7 +433,7 @@ type CljsLangFn struct {
 	Cljs_lang_applyTo       Arity1
 }
 
-func NativeCljsLangFn(fn interface{}) *CljsLangFn {
+func CljsLangFn_(fn interface{}) *CljsLangFn {
 	f := fn.(*AFn)
 	return &CljsLangFn{float64(f.MaxFixedArity), func(args interface{}) interface{} {
 		return f.Call(args.([]interface{})...)
@@ -446,7 +446,7 @@ type CljsLangType struct {
 	Cljs_lang_ctorPrWriter Arity3
 }
 
-func NativeCljsLangType(x interface{}) *CljsLangType {
+func CljsLangType_(x interface{}) *CljsLangType {
 	t := reflect.TypeOf(x)
 	return &CljsLangType{t, t.Name(), func(obj, writer, opts interface{}) interface{} {
 		panic(&js.Error{"Not implemented"})
@@ -454,7 +454,7 @@ func NativeCljsLangType(x interface{}) *CljsLangType {
 }
 
 func init() {
-	Native_register_protocol("Object", (*Object)(nil))
+	RegisterProtocol_("Object", (*Object)(nil))
 
 	Apply = Fn(func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]
@@ -475,7 +475,7 @@ func init() {
 	Implements_QMARK_ = Native_satisfies_QMARK_
 }
 
-func Main() {
+func Main_() {
 	Enable_console_print_BANG_.Invoke_Arity0()
 	args := make([]interface{}, len(os.Args[1:]))
 	for i, a := range os.Args[1:] {

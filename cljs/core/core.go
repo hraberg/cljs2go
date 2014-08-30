@@ -65,7 +65,7 @@ var X_namespace = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	Native_register_protocol("cljs.core/INamed", (*CljsCoreINamed)(nil))
+	RegisterProtocol_("cljs.core/INamed", (*CljsCoreINamed)(nil))
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
@@ -95,7 +95,7 @@ var X_Invoke = Fn(func(this interface{}) interface{} {
 })
 
 func init() {
-	Native_register_protocol("cljs.core/IFn", (*IFn)(nil))
+	RegisterProtocol_("cljs.core/IFn", (*IFn)(nil))
 }
 
 type CljsCoreILookup interface {
@@ -110,7 +110,7 @@ var X_Lookup = Fn(func(this, k interface{}) interface{} {
 })
 
 func init() {
-	Native_register_protocol("cljs.core/ILookup", (*CljsCoreILookup)(nil))
+	RegisterProtocol_("cljs.core/ILookup", (*CljsCoreILookup)(nil))
 }
 
 // These are overridden in rt.go

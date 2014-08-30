@@ -160,11 +160,11 @@
            ((hash-set to 'clj-nil) from))))
 
 (def go-native-decorator '{string js.JSString})
-(def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
-                                    cljs$lang$applyTo NativeCljsLangFn
-                                    cljs$lang$type NativeCljsLangType
-                                    cljs$lang$ctorStr NativeCljsLangType
-                                    cljs$lang$ctorPrWriter NativeCljsLangType})
+(def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
+                                    cljs$lang$applyTo CljsLangFn_
+                                    cljs$lang$type CljsLangType_
+                                    cljs$lang$ctorStr CljsLangType_
+                                    cljs$lang$ctorPrWriter CljsLangType_})
 
 (def go-top-level-then '#{(and (exists? Math/imul)
                                (not (zero? (Math/imul 0xffffffff 5))))})
