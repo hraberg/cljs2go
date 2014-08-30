@@ -147,6 +147,7 @@
     ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}")))
 
 (defn go-short-type [tag]
+  ;;  seq "Q"
   ('{number "F" boolean "B" string "S" array "A"} tag "I"))
 
 (defn go-type-suffix [params ret-tag]

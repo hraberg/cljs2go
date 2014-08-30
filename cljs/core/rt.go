@@ -99,9 +99,14 @@ Arity2IIF
  ^number
  ^seq
  ^string
+
+ ^seq is also used for normal fns, we can add ClsjCoreISeq, with short type Q:
+ Arity1IQ
 */
 
 type Arity1IA func(interface{}) []interface{}
+
+// type Arity1IQ func(interface{}) ClsjCoreISeq
 
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
