@@ -798,13 +798,28 @@
               (add-proto-methods* psym type type-sym sig)))
           sigs)))))
 
+(declare dt->et collect-protocols)
+
+;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
+(defn fields-of-type [type]
+  (first (:method-params (get-in (ana/get-namespace (symbol (namespace type)))
+                                 [:defs (symbol (core/str '-> (name type)))]))))
+
 (defmacro extend-type [type-sym & impls]
   (let [env &env
         resolve (partial resolve-var env)
-        impl-map (->impl-map impls)
         [type assign-impls] (if-let [type (base-type type-sym)]
                               [type base-assign-impls]
-                              [(resolve type-sym) proto-assign-impls])]
+                              [(resolve type-sym) proto-assign-impls])
+        fq-type-sym (symbol type)
+        extending-existing-type? (not (some (comp :protocol-impl meta) impls))
+        real-type-in-current-ns? (= ana/*cljs-ns* (some-> fq-type-sym namespace symbol))
+        impls (if (and extending-existing-type? real-type-in-current-ns?)
+                ;; we need to enrich here, but JS ClojureScript doesn't.
+                (dt->et (vary-meta type-sym assoc :protocols (collect-protocols impls env))
+                        impls (fields-of-type fq-type-sym) true)
+                impls)
+        impl-map (->impl-map impls)]
     (when (core/and (:extending-base-js-type cljs.analyzer/*cljs-warnings*)
                     (js-base-type type-sym))
       (cljs.analyzer/warning :extending-base-js-type env

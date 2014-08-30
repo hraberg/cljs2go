@@ -156,16 +156,6 @@
   (not (or (set? from)
            ((hash-set to 'clj-nil) from))))
 
-(defn go-unbox
-  ([from x] (go-unbox from (go-type from) x))
-  ([from to x]
-     (when x
-       (str (emit-str x)
-            (when (or (go-needs-coercion? from (:tag x))
-                      (and (= :invoke (:op x))
-                           (go-needs-coercion? from (-> x :f :info :ret-tag))))
-              (str ".(" to ")"))))))
-
 (def go-native-decorator '{string js.JSString})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity NativeCljsLangFn
                                     cljs$lang$applyTo NativeCljsLangFn
@@ -883,6 +873,16 @@
                    "("
                    (comma-sep args)
                    ")")))))))
+
+(defn go-unbox
+  ([from x] (go-unbox from (go-type from) x))
+  ([from to x]
+     (when x
+       (str (emit-str x)
+            (when (or (go-needs-coercion? from (:tag x))
+                      (and (= :invoke (:op x))
+                           (go-needs-coercion? from (-> x :f :info :ret-tag))))
+              (str ".(" to ")"))))))
 
 (defmethod emit* :js
   [{:keys [env code js-op segs args numeric]}]
