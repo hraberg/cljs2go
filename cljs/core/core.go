@@ -34,13 +34,13 @@ var pr_opts = Fn(func() interface{} {
 
 var Newline = Fn(func(opts interface{}) interface{} {
 	if Truth_(X_STAR_print_newline_STAR_) {
-		X_STAR_print_fn_STAR_.(IFn).X_invoke_Arity1("\n")
+		X_STAR_print_fn_STAR_.(CljsCoreIFn).X_invoke_Arity1("\n")
 	}
 	return nil
 })
 
 var Println = Fn(func(objs ...interface{}) interface{} {
-	X_STAR_print_fn_STAR_.(IFn).X_invoke_Arity1(fmt.Sprint(objs...))
+	X_STAR_print_fn_STAR_.(CljsCoreIFn).X_invoke_Arity1(fmt.Sprint(objs...))
 	Newline.X_invoke_Arity1(pr_opts.X_invoke_Arity0())
 	return nil
 })
@@ -69,34 +69,77 @@ func init() {
 }
 
 // Note the arity difference here, starting with 0 unlike other protocols
-type IFn interface {
+type CljsCoreIFn interface {
 	X_invoke_Arity0() interface{}
 	X_invoke_Arity1(a interface{}) interface{}
-	X_invoke_Arity2(a, b interface{}) interface{}
-	X_invoke_Arity3(a, b, c interface{}) interface{}
-	X_invoke_Arity4(a, b, c, d interface{}) interface{}
-	X_invoke_Arity5(a, b, c, d, e interface{}) interface{}
-	X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{}
+	X_invoke_Arity2(a interface{}, b interface{}) interface{}
+	X_invoke_Arity3(a interface{}, b interface{}, c interface{}) interface{}
+	X_invoke_Arity4(a interface{}, b interface{}, c interface{}, d interface{}) interface{}
+	X_invoke_Arity5(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}) interface{}
+	X_invoke_Arity6(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}) interface{}
+	X_invoke_Arity7(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}) interface{}
+	X_invoke_Arity8(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}) interface{}
+	X_invoke_Arity9(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}) interface{}
+	X_invoke_Arity10(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}) interface{}
+	X_invoke_Arity11(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}) interface{}
+	X_invoke_Arity12(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}) interface{}
+	X_invoke_Arity13(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}) interface{}
+	X_invoke_Arity14(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}) interface{}
+	X_invoke_Arity15(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}) interface{}
+	X_invoke_Arity16(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}) interface{}
+	X_invoke_Arity17(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}) interface{}
+	X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{}
+	X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{}
+	X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{}
 }
-
-var X_invoke = Fn(func(this interface{}) interface{} {
-	return this.(IFn).X_invoke_Arity0()
-}, func(this, a interface{}) interface{} {
-	return this.(IFn).X_invoke_Arity1(a)
-}, func(this, a, b interface{}) interface{} {
-	return this.(IFn).X_invoke_Arity2(a, b)
-}, func(this, a, b, c interface{}) interface{} {
-	return this.(IFn).X_invoke_Arity3(a, b, c)
-}, func(this, a, b, c, d interface{}) interface{} {
-	return this.(IFn).X_invoke_Arity4(a, b, c, d)
-}, func(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	return this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[0].(IFn).
-		X_invoke_ArityVariadic(this_a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest[1:]...)
-})
 
 func init() {
-	RegisterProtocol_("cljs.core/IFn", (*IFn)(nil))
+	RegisterProtocol_("cljs.core/IFn", (*CljsCoreIFn)(nil))
 }
+
+var X_invoke = func(_invoke *AFn) *AFn {
+	return Fn(_invoke, func(this interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity0()
+	}, func(this interface{}, a interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity1(a)
+	}, func(this interface{}, a interface{}, b interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity2(a, b)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity3(a, b, c)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity4(a, b, c, d)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity5(a, b, c, d, e)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity6(a, b, c, d, e, f)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity7(a, b, c, d, e, f, g)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity8(a, b, c, d, e, f, g, h)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity9(a, b, c, d, e, f, g, h, i)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity10(a, b, c, d, e, f, g, h, i, j)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity11(a, b, c, d, e, f, g, h, i, j, k)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity12(a, b, c, d, e, f, g, h, i, j, k, l)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity13(a, b, c, d, e, f, g, h, i, j, k, l, m)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity14(a, b, c, d, e, f, g, h, i, j, k, l, m, n)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity15(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity16(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity17(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity18(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s)
+	}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+		return this.(CljsCoreIFn).X_invoke_Arity19(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t)
+	})
+}(&AFn{})
 
 type CljsCoreILookup interface {
 	X_lookup_Arity2(k interface{}) interface{}
@@ -113,23 +156,16 @@ func init() {
 	RegisterProtocol_("cljs.core/ILookup", (*CljsCoreILookup)(nil))
 }
 
-// These are overridden in rt.go
-var Apply IFn
-var Native_satisfies_QMARK_ *AFnPrimitive
-var Implements_QMARK_ *AFnPrimitive
-
 type CljsCoreUUID struct {
 	Uuid interface{}
 }
 
 type CljsCoreKeyword struct {
 	Ns, Name, Fqn, Hash interface{}
-	AbstractIFn
 }
 
 type CljsCoreSymbol struct {
 	Ns, Name, Str, Hash, Meta interface{}
-	AbstractIFn
 }
 
 // This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.
@@ -184,7 +220,7 @@ func (coll ObjMap) X_lookup_Arity3(k, notFound interface{}) interface{} {
 	}
 }
 
-var Symbol = func(Symbol IFn) IFn {
+var Symbol = func(Symbol *AFn) *AFn {
 	return Fn(Symbol, func(name interface{}) interface{} {
 		return Symbol.X_invoke_Arity2(nil, name)
 	}, func(ns, name interface{}) interface{} {
@@ -199,12 +235,12 @@ var Symbol = func(Symbol IFn) IFn {
 	})
 }(&AFn{})
 
-var String_QMARK_ = Fn(&AFnPrimitive{}, func(x interface{}) bool {
+var String_QMARK_ = Fn(&AFn{}, func(x interface{}) bool {
 	return goog.IsString(x)
-}).(*AFnPrimitive)
+})
 
 var Namespace = Fn(func(x interface{}) interface{} {
-	if Truth_(Implements_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), x)) {
+	if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), x)) {
 		return X_namespace.X_invoke_Arity1(x)
 	} else {
 		panic(&js.Error{Str.X_invoke_ArityVariadic("Doesn't support namespace: ", x)})
@@ -212,7 +248,7 @@ var Namespace = Fn(func(x interface{}) interface{} {
 })
 
 var Name = Fn(func(x interface{}) interface{} {
-	if Truth_(Implements_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), x)) {
+	if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), x)) {
 		return X_name.X_invoke_Arity1(x)
 	} else {
 		if Truth_(String_QMARK_.X_invoke_Arity1(x)) {
@@ -223,7 +259,7 @@ var Name = Fn(func(x interface{}) interface{} {
 	}
 })
 
-var Array_seq = func(Array_seq IFn) IFn {
+var Array_seq = func(Array_seq *AFn) *AFn {
 	return Fn(Array_seq, func(array interface{}) interface{} {
 		return Array_seq.X_invoke_Arity2(array, 0)
 	}, func(array, i interface{}) interface{} {
@@ -247,7 +283,7 @@ var Next = Fn(func(coll interface{}) interface{} {
 	return nil
 })
 
-var Str = func(Str IFn) IFn {
+var Str = func(Str *AFn) *AFn {
 	return Fn(Str, func() interface{} {
 		return ""
 	}, func(x interface{}) interface{} {
@@ -273,6 +309,8 @@ var Str = func(Str IFn) IFn {
 	})
 }(&AFn{})
 
-var Not = Fn(&AFnPrimitive{}, func(x interface{}) bool {
+var Not = Fn(func(x interface{}) bool {
 	return !Truth_(x)
-}).(*AFnPrimitive)
+})
+
+type CljsCoreISeq interface{}

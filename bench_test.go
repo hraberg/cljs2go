@@ -7,7 +7,7 @@ import "github.com/stretchr/testify/assert"
 import . "github.com/hraberg/cljs.go/cljs/core"
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
-	fib := func(this IFn) IFn {
+	fib := func(this *AFn) *AFn {
 		return Fn(this, func(n interface{}) interface{} {
 			if n == 0.0 {
 				return 0.0
@@ -23,7 +23,7 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
-	fib := func(this *AFnPrimitive) IFn {
+	fib := func(this *AFn) *AFn {
 		return Fn(this, func(n float64) float64 {
 			if n == 0.0 {
 				return 0.0
@@ -33,12 +33,12 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 				return this.Arity1FF(n-1.0) + this.Arity1FF(n-2.0)
 			}
 		})
-	}(&AFnPrimitive{})
+	}(&AFn{})
 	assert.Equal(t, 832040, fib.X_invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
-	fib := func(this *AFn) IFn {
+	fib := func(this *AFn) *AFn {
 		return Fn(this, func(a interface{}) interface{} {
 			var n = a.(float64)
 			if n == 0.0 {
@@ -50,7 +50,7 @@ func Benchmark_RecursiveDispatch(t *testing.B) {
 			}
 		})
 	}(&AFn{})
-	assert.Equal(t, 832040, fib.(*AFn).Call(30.0))
+	assert.Equal(t, 832040, fib.Call(30.0))
 }
 
 func Benchmark_RecursiveGo(t *testing.B) {

@@ -143,12 +143,10 @@
     (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) (symbol ns))
              (go-type-fqn tag)
              (str ns "." (go-type-fqn tag))))
-    ;;  seq "CljsCoreISeq"
-    ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}")))
+    ('{number "float64" boolean "bool" string "string" array "[]interface{}" seq "CljsCoreISeq"} tag "interface{}")))
 
 (defn go-short-type [tag]
-  ;;  seq "Q"
-  ('{number "F" boolean "B" string "S" array "A"} tag "I"))
+  ('{number "F" boolean "B" string "S" array "A" seq "Q"} tag "I"))
 
 (defn go-type-suffix [params ret-tag]
   (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
@@ -171,6 +169,7 @@
 
 (def go-skip-def '#{cljs.core/native-satisfies?
                     cljs.core/missing-protocol
+                    cljs.core/apply
                     cljs.core/truth_
                     cljs.core/object?
                     cljs.core/is_proto_
@@ -589,7 +588,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *AFnPrimitive {")
+        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *AFn {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
@@ -597,7 +596,7 @@
         (when (= :return (:context env))
           (emits "return "))
         (when-not protocol-impl
-          (emitln "func(" mname " *AFnPrimitive) *AFnPrimitive {")
+          (emitln "func(" mname " *AFn) *AFn {")
           (emits "return Fn(" mname ", "))
         (loop [[meth & methods] methods]
           (let [meth (assoc-in meth [:env :context] :expr)]
@@ -611,8 +610,8 @@
         (if protocol-impl
           (emitln)
           (do
-            (emitln ").(*AFnPrimitive)")
-            (emits "}(&AFnPrimitive{})"))))
+            (emitln ")")
+            (emits "}(&AFn{})"))))
       (when loop-locals
         (emits "}(" (comma-sep loop-locals) ")"))))
   (when (= '-main (:name name))
@@ -699,7 +698,7 @@
     (if (= :expr context)
       (emits "func() interface{} {")
       (emitln "{"))
-    (emitln "var " (comma-sep (map munge bindings)) " *AFnPrimitive")
+    (emitln "var " (comma-sep (map munge bindings)) " *AFn")
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
     (assign-to-blank bindings)
@@ -769,7 +768,7 @@
        (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
-       (emits f (when coerce? ".(IFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")")))))
+       (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")")))))
 
 (defn normalize-goog-ctor [ctor]
   (let [parts (string/split (-> ctor :info :name str) #"\.")

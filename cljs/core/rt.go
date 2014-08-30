@@ -68,11 +68,26 @@ func RegisterProtocol_(name string, p interface{}) {
 
 type ArityVariadic func(...interface{}) interface{}
 type Arity0 func() interface{}
-type Arity1 func(interface{}) interface{}
+type Arity1 func(_ interface{}) interface{}
 type Arity2 func(_, _ interface{}) interface{}
 type Arity3 func(_, _, _ interface{}) interface{}
 type Arity4 func(_, _, _, _ interface{}) interface{}
 type Arity5 func(_, _, _, _, _ interface{}) interface{}
+type Arity6 func(_, _, _, _, _, _ interface{}) interface{}
+type Arity7 func(_, _, _, _, _, _, _ interface{}) interface{}
+type Arity8 func(_, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity9 func(_, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity10 func(_, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity11 func(_, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity12 func(_, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity13 func(_, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity14 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity15 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity16 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity17 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity18 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity19 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+type Arity20 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
 
 /*
  Primitive signatures used by ClojureScript itself, but it only ever type hints the return tag.
@@ -106,7 +121,7 @@ Arity2IIF
 
 type Arity1IA func(interface{}) []interface{}
 
-// type Arity1IQ func(interface{}) ClsjCoreISeq
+type Arity1IQ func(interface{}) CljsCoreISeq
 
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
@@ -122,15 +137,9 @@ type Arity2FFF func(_, _ float64) float64
 
 type Arity0B func() bool
 type Arity1IB func(interface{}) bool
-type Arity1BI func(bool) interface{}
-type Arity1BB func(bool) bool
+type Arity1FB func(float64) bool
 type Arity2IIB func(_, _ interface{}) bool
-type Arity2IBI func(interface{}, bool) interface{}
-type Arity2IBB func(interface{}, bool) bool
-type Arity2BII func(bool, interface{}) interface{}
-type Arity2BIB func(bool, interface{}) bool
-type Arity2BBI func(_, _ bool) interface{}
-type Arity2BBB func(_, _ bool) bool
+type Arity2FFB func(_, _ float64) bool
 
 // CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
@@ -142,17 +151,29 @@ type Arity2BBB func(_, _ bool) bool
 type AFn struct {
 	MaxFixedArity int
 	ArityVariadic
+
 	Arity0
 	Arity1
 	Arity2
 	Arity3
 	Arity4
 	Arity5
-}
+	Arity6
+	Arity7
+	Arity8
+	Arity9
+	Arity10
+	Arity11
+	Arity12
+	Arity13
+	Arity14
+	Arity15
+	Arity16
+	Arity17
+	Arity18
+	Arity19
+	Arity20
 
-type AFnPrimitive struct {
-	AFn
-	Arity1IA
 	Arity0F
 	Arity1IF
 	Arity1FI
@@ -164,17 +185,15 @@ type AFnPrimitive struct {
 	Arity2FIF
 	Arity2FFI
 	Arity2FFF
+
 	Arity0B
+	Arity1FB
 	Arity1IB
-	Arity1BI
-	Arity1BB
 	Arity2IIB
-	Arity2IBI
-	Arity2IBB
-	Arity2BII
-	Arity2BIB
-	Arity2BBI
-	Arity2BBB
+	Arity2FFB
+
+	Arity1IA
+	Arity1IQ
 }
 
 func throwArity(f, arity interface{}) interface{} {
@@ -198,27 +217,13 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 	}
 	switch argc {
 	case 0:
-		return this.X_invoke_Arity0()
-	case 1:
-		return this.X_invoke_Arity1(args[0])
-	case 2:
-		return this.X_invoke_Arity2(args[0], args[1])
-	case 3:
-		return this.X_invoke_Arity3(args[0], args[1], args[2])
-	case 4:
-		return this.X_invoke_Arity4(args[0], args[1], args[2], args[3])
-	case 5:
-		return this.X_invoke_Arity5(args[0], args[1], args[2], args[3], args[4])
-	}
-	return throwArity(nil, argc)
-}
-
-func (this *AFnPrimitive) Call(args ...interface{}) interface{} {
-	switch len(args) {
-	case 0:
 		switch {
 		case this.Arity0F != nil:
 			return this.Arity0F()
+		case this.Arity0B != nil:
+			return this.Arity0B()
+		default:
+			return this.Arity0()
 		}
 	case 1:
 		switch {
@@ -228,6 +233,16 @@ func (this *AFnPrimitive) Call(args ...interface{}) interface{} {
 			return this.Arity1FI(args[0].(float64))
 		case this.Arity1FF != nil:
 			return this.Arity1FF(args[0].(float64))
+		case this.Arity1IB != nil:
+			return this.Arity1IB(args[0])
+		case this.Arity1FB != nil:
+			return this.Arity1FB(args[0].(float64))
+		case this.Arity1IA != nil:
+			return this.Arity1IA(args[0])
+		case this.Arity1IQ != nil:
+			return this.Arity1IQ(args[0])
+		default:
+			return this.Arity1(args[0])
 		}
 	case 2:
 		switch {
@@ -245,13 +260,51 @@ func (this *AFnPrimitive) Call(args ...interface{}) interface{} {
 			return this.Arity2FFI(args[0].(float64), args[1].(float64))
 		case this.Arity2FFF != nil:
 			return this.Arity2FFF(args[0].(float64), args[1].(float64))
+		case this.Arity2IIB != nil:
+			return this.Arity2IIB(args[0], args[1])
+		case this.Arity2FFB != nil:
+			return this.Arity2FFB(args[0].(float64), args[1].(float64))
+		default:
+			return this.Arity2(args[0], args[1])
 		}
+	case 3:
+		return this.Arity3(args[0], args[1], args[2])
+	case 4:
+		return this.Arity4(args[0], args[1], args[2], args[3])
+	case 5:
+		return this.Arity5(args[0], args[1], args[2], args[3], args[4])
+	case 6:
+		return this.Arity6(args[0], args[1], args[2], args[3], args[4], args[5])
+	case 7:
+		return this.Arity7(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+	case 8:
+		return this.Arity8(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+	case 9:
+		return this.Arity9(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+	case 10:
+		return this.Arity10(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
+	case 11:
+		return this.Arity11(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10])
+	case 12:
+		return this.Arity12(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11])
+	case 13:
+		return this.Arity13(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12])
+	case 14:
+		return this.Arity14(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13])
+	case 15:
+		return this.Arity15(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14])
+	case 16:
+		return this.Arity16(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15])
+	case 17:
+		return this.Arity17(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16])
+	case 18:
+		return this.Arity18(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17])
+	case 19:
+		return this.Arity19(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18])
+	case 20:
+		return this.Arity20(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18], args[19])
 	}
-	return this.AFn.Call(args...)
-}
-
-func (this ArityVariadic) X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+	return throwArity(nil, argc)
 }
 
 func (this Arity0) X_invoke_Arity0() interface{} {
@@ -278,45 +331,89 @@ func (this Arity5) X_invoke_Arity5(a, b, c, d, e interface{}) interface{} {
 	return this(a, b, c, d, e)
 }
 
-type AbstractIFn struct{}
-
-func (this AbstractIFn) X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
-	return throwArity(nil, len(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest))
+func (this Arity6) X_invoke_Arity6(a, b, c, d, e, f interface{}) interface{} {
+	return this(a, b, c, d, e, f)
 }
 
-func (this AbstractIFn) X_invoke_Arity0() interface{} {
-	return throwArity(nil, 0)
+func (this Arity7) X_invoke_Arity7(a, b, c, d, e, f, g interface{}) interface{} {
+	return this(a, b, c, d, e, f, g)
 }
 
-func (this AbstractIFn) X_invoke_Arity1(a interface{}) interface{} {
-	return throwArity(nil, 1)
+func (this Arity8) X_invoke_Arity8(a, b, c, d, e, f, g, h interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h)
 }
 
-func (this AbstractIFn) X_invoke_Arity2(a, b interface{}) interface{} {
-	return throwArity(nil, 2)
+func (this Arity9) X_invoke_Arity9(a, b, c, d, e, f, g, h, i interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i)
 }
 
-func (this AbstractIFn) X_invoke_Arity3(a, b, c interface{}) interface{} {
-	return throwArity(nil, 3)
+func (this Arity10) X_invoke_Arity10(a, b, c, d, e, f, g, h, i, j interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j)
 }
 
-func (this AbstractIFn) X_invoke_Arity4(a, b, c, d interface{}) interface{} {
-	return throwArity(nil, 4)
+func (this Arity11) X_invoke_Arity11(a, b, c, d, e, f, g, h, i, j, k interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k)
 }
 
-func (this AbstractIFn) X_invoke_Arity5(a, b, c, d, e interface{}) interface{} {
-	return throwArity(nil, 4)
+func (this Arity12) X_invoke_Arity12(a, b, c, d, e, f, g, h, i, j, k, l interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l)
 }
 
-var type2sig = map[reflect.Kind]string{reflect.Interface: "I", reflect.Slice: "I", reflect.Float64: "F", reflect.Bool: "B"}
+func (this Arity13) X_invoke_Arity13(a, b, c, d, e, f, g, h, i, j, k, l, m interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m)
+}
 
-func primtiveSignature(t reflect.Type) string {
+func (this Arity14) X_invoke_Arity14(a, b, c, d, e, f, g, h, i, j, k, l, m, n interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n)
+}
+
+func (this Arity15) X_invoke_Arity15(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o)
+}
+
+func (this Arity16) X_invoke_Arity16(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p)
+}
+
+func (this Arity17) X_invoke_Arity17(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q)
+}
+
+// IFn skips r
+func (this Arity18) X_invoke_Arity18(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s)
+}
+
+func (this Arity19) X_invoke_Arity19(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t)
+}
+
+func (this Arity20) X_invoke_Arity20(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t, rest interface{}) interface{} {
+	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t, rest)
+}
+
+func (this ArityVariadic) X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
+	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
+}
+
+var type2sig = map[string]string{
+	"interface {}":      "I",
+	"[]interface {}":    "A",
+	"float64":           "F",
+	"bool":              "B",
+	"string":            "S",
+	"core.CljsCoreISeq": "Q"}
+
+func typedSignature(t reflect.Type) string {
 	sig := ""
+	if t.IsVariadic() {
+		return sig
+	}
 	for i := 0; i < t.NumIn(); i++ {
-		sig += type2sig[t.In(i).Kind()]
+		sig += type2sig[t.In(i).String()]
 	}
 	for i := 0; i < t.NumOut(); i++ {
-		sig += type2sig[t.Out(i).Kind()]
+		sig += type2sig[t.Out(i).String()]
 	}
 	if strings.Replace(sig, "I", "", -1) == "" {
 		return ""
@@ -324,7 +421,7 @@ func primtiveSignature(t reflect.Type) string {
 	return sig
 }
 
-func makePrimitiveBridge(f reflect.Value, from reflect.Type) reflect.Value {
+func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
 			in[i] = reflect.ValueOf(v.Interface())
@@ -358,20 +455,13 @@ func makeInvalidArity(from reflect.Type) reflect.Value {
 	})
 }
 
-func Fn(fns ...interface{}) IFn {
+func Fn(fns ...interface{}) *AFn {
 	var f *AFn = &AFn{}
-	var fp *AFnPrimitive
-	var vp reflect.Value
 	if len(fns) > 0 {
 		switch reflect.ValueOf(fns[0]).Type() {
 		case reflect.TypeOf(f):
 			f = fns[0].(*AFn)
 			fns = fns[1:]
-		case reflect.TypeOf(fp):
-			fp = fns[0].(*AFnPrimitive)
-			f = &fp.AFn
-			fns = fns[1:]
-			vp = reflect.ValueOf(fp).Elem()
 		}
 	}
 	v := reflect.ValueOf(f).Elem()
@@ -390,9 +480,9 @@ func Fn(fns ...interface{}) IFn {
 				maxFixedArity = at.NumIn()
 			}
 			af := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
-			if sig := primtiveSignature(at); sig != "" {
-				vp.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
-				af.Set(makePrimitiveBridge(av, af.Type()))
+			if sig := typedSignature(at); sig != "" {
+				v.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
+				af.Set(makeTypedBridge(av, af.Type()))
 			} else {
 				af.Set(av)
 			}
@@ -405,16 +495,14 @@ func Fn(fns ...interface{}) IFn {
 	}
 	for i := 0; i < v.Type().NumField(); i++ {
 		vf := v.Field(i)
+		vt := vf.Type()
 		if vf.Kind() == reflect.Func && vf.IsNil() {
-			if variadic && vf.Type().NumIn() > maxFixedArity {
+			if variadic && vt.NumIn() > maxFixedArity {
 				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vf.Type()))
-			} else {
+			} else if sig := typedSignature(vt); sig == "" {
 				vf.Set(makeInvalidArity(vf.Type()))
 			}
 		}
-	}
-	if fp != nil {
-		return fp
 	}
 	return f
 }
@@ -453,26 +541,30 @@ func CljsLangType_(x interface{}) *CljsLangType {
 	}}
 }
 
+var Apply = Fn(func(f_args ...interface{}) interface{} {
+	f, args := f_args[0], f_args[1:]
+	argc := len(args)
+	if argc < 1 {
+		throwArity(nil, argc)
+	}
+	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
+	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
+})
+
+var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
+	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
+})
+
 func init() {
 	RegisterProtocol_("Object", (*Object)(nil))
 
-	Apply = Fn(func(f_args ...interface{}) interface{} {
+	X_invoke.ArityVariadic = func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]
-		argc := len(args)
-		if argc < 1 {
-			throwArity(nil, argc)
+		if f, ok := f.(*AFn); ok {
+			return f.X_invoke_ArityVariadic(args...)
 		}
-		var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-		if fp, ok := f.(*AFnPrimitive); ok {
-			return fp.AFn.Call(append(args[:argc-1], spread...)...)
-		}
-		return f.(*AFn).Call(append(args[:argc-1], spread...)...)
-	})
-
-	Native_satisfies_QMARK_ = Fn(&AFnPrimitive{}, func(p, x interface{}) bool {
-		return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
-	}).(*AFnPrimitive)
-	Implements_QMARK_ = Native_satisfies_QMARK_
+		return throwArity(nil, len(args)-1)
+	}
 }
 
 func Main_() {
@@ -481,5 +573,5 @@ func Main_() {
 	for i, a := range os.Args[1:] {
 		args[i] = a
 	}
-	X_STAR_main_cli_fn_STAR_.(IFn).X_invoke_ArityVariadic(args...)
+	X_STAR_main_cli_fn_STAR_.(*AFn).X_invoke_ArityVariadic(args...)
 }

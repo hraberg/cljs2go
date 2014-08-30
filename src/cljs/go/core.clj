@@ -990,7 +990,7 @@
                        (~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                          "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
         method (fn [[fname & sigs]]
-                 (let [sigs (take-while vector? sigs)
+                 (let [sigs (take 20 (sort-by count (take-while vector? sigs)))
                        fname (vary-meta fname assoc :protocol p)]
                    `(defn ~fname ~@(map (partial expand-sig fname) sigs))))
         method-decl (fn [[fname & sigs]]
