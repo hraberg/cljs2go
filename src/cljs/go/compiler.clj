@@ -803,7 +803,7 @@
                                          (:field target))]
             (do
               (warn-on-reflection target)
-              (emitln "Native_set_instance_field.X_invoke_Arirty3(" (:target target) ","
+              (emitln "Native_set_instance_field.X_invoke_Arity3(" (:target target) ","
                       (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
                       ","  val ")"))
             (do
@@ -866,7 +866,7 @@
         (do
           (warn-on-reflection dot)
           (if field
-            (emits "Native_get_instance_field.X_invoke_Arirty2(" target ","
+            (emits "Native_get_instance_field.X_invoke_Arity2(" target ","
                    (wrap-in-double-quotes (munge (go-public field) #{})) ")")
             (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
                    (wrap-in-double-quotes (munge (go-public method) #{})) ","
