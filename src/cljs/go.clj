@@ -95,7 +95,7 @@
          (.set id# current-id#) ))))
 
 (defn compile-file
-  ([] (compile-file "target" (io/resource "cljs/core.cljs")))
+  ([] (compile-file "." (io/resource "cljs/core.cljs")))
   ([target-dir src]
      (let [src (io/file src)
            target (cljs.compiler/to-target-file target-dir src)]
@@ -108,7 +108,7 @@
           (go-build (.getParentFile target)))))))
 
 (defn compile-clojurescript
-  ([] (compile-clojurescript "target"))
+  ([] (compile-clojurescript "."))
   ([target-dir]
      (env/ensure
       (doseq [ns '[cljs.core cljs.reader

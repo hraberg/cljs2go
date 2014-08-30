@@ -161,11 +161,11 @@ type CljsCoreUUID struct {
 }
 
 type CljsCoreKeyword struct {
-	Ns, Name, Fqn, Hash interface{}
+	Ns, Name, Fqn, X_hash interface{}
 }
 
 type CljsCoreSymbol struct {
-	Ns, Name, Str, Hash, Meta interface{}
+	Ns, Name, Str, X_hash, X_meta interface{}
 }
 
 // This is a "Go" protocol which compiles to real type hinted methods without IFn dispatch.

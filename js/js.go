@@ -120,7 +120,7 @@ var Number = struct{ MAX_VALUE float64 }{math.MaxFloat64}
 
 var Infinity = math.Inf(1)
 
-func IsNAN(x float64) bool {
+func IsNaN(x float64) bool {
 	return math.IsNaN(x)
 }
 

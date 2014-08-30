@@ -80,10 +80,10 @@
           "&CljsCoreUUID{Uuid: `15c52219-a8fd-4771-87e2-42ee33b79bca`}" #uuid "15c52219-a8fd-4771-87e2-42ee33b79bca"
           "&js.RegExp{Pattern: `x`, Flags: ``}" #"x"
           "&js.RegExp{Pattern: ``, Flags: ``}" #""
-          "&CljsCoreSymbol{Ns: nil, Name: `x`, Str: `x`, Hash: float64(-555367584), Meta: nil}" ''x
-          "&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, Hash: float64(-568535109), Meta: nil}" ''user/x
-          "&CljsCoreKeyword{Ns: nil, Name: `x`, Fqn: `x`, Hash: float64(2099068185)}" :x
-          "&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, Hash: float64(2085900660)}" :user/x)]
+          "&CljsCoreSymbol{Ns: nil, Name: `x`, Str: `x`, X_hash: float64(-555367584), X_meta: nil}" ''x
+          "&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, X_hash: float64(-568535109), X_meta: nil}" ''user/x
+          "&CljsCoreKeyword{Ns: nil, Name: `x`, Fqn: `x`, X_hash: float64(2099068185)}" :x
+          "&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, X_hash: float64(2085900660)}" :user/x)]
    (emit-test "go_test" "constants_test")))
 
 (defn special-forms []

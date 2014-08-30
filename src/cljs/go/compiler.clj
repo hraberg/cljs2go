@@ -252,7 +252,7 @@
                      (str ns "/" name)
                      name))
     (emits ",")
-    (emits "Hash: ")
+    (emits "X_hash: ")
     (emit-constant (hash kw))
     (emits "})")))
 
@@ -278,10 +278,10 @@
     (emits "Str: ")
     (emit-constant symstr)
     (emits ",")
-    (emits "Hash: ")
+    (emits "X_hash: ")
     (emit-constant (hash x))
     (emits ",")
-    (emits "Meta: ")
+    (emits "X_meta: ")
     (emit-constant nil)
     (emits "})")))
 
@@ -348,15 +348,15 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
+          (emits "&CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil}")
-          (emits "CljsCorePersistentArrayMap_fromArray.X_invoke_Arity3([]interface{}{"
+          (emits "CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3([]interface{}{"
             (comma-sep (interleave keys vals))
-            "}, true, false).(CljsCorePersistentArrayMap)"))
+            "}, true, false).(*CljsCorePersistentArrayMap)"))
 
         :else
-        (emits "CljsCorePersistentHashMap_fromArrays.X_invoke_Arity2([]interface{}{"
+        (emits "CljsCorePersistentHashMap_FromArrays.X_invoke_Arity2([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
@@ -376,9 +376,9 @@
       (emits "CljsCorePersistentVector_EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "CljsCorePersistentVector{nil, " cnt
+          (emits "&CljsCorePersistentVector{nil, " cnt
             ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
-          (emits "CljsCorePersistentVector_fromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentVector)"))))))
+          (emits "CljsCorePersistentVector_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentVector)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -392,10 +392,10 @@
       (emits "CljsCorePersistentHashSet_EMPTY")
 
       (distinct-constants? items)
-      (emits "CljsCorePersistentHashSet{nil, CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
+      (emits "&CljsCorePersistentHashSet{nil, &CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
         (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "CljsCorePersistentHashSet_fromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentHashSet)"))))
+      :else (emits "CljsCorePersistentHashSet_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentHashSet)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
