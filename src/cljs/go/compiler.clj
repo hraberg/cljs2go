@@ -812,6 +812,10 @@
             (emitln " return " return)
             (emits "}()")))))))
 
+(def provided-libs '#{goog goog.string goog.array goog.object
+                      cljs.core cljs.reder
+                      clojure.data clojure.set clojure.walk clojure.zip})
+
 (defmethod emit* :ns
   [{:keys [name requires uses imports require-macros env]}]
   (emitln "// " name)
@@ -827,7 +831,7 @@
                                         (vals (apply dissoc requires (keys imports))) (vals uses))))]
     (emitln "\t" (string/replace (munge lib) "." "_") " "
             (wrap-in-double-quotes
-             (str (when (re-find #"^goog\." (str lib))
+             (str (when (some #(re-find % (str lib)) [#"^goog\." #"^clojure\." #"^cljs\." ])
                     *go-import-prefix*)
                   (string/replace lib #"[._]" "/")))))
   (emitln ")")
