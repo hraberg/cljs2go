@@ -107,5 +107,17 @@
           (goimports-file target)
           (go-build (.getParentFile target)))))))
 
+(defn compile-clojurescript
+  ([] (compile-clojurescript "target"))
+  ([target-dir]
+     (env/ensure
+      (doseq [ns '[cljs.core cljs.reader
+                   clojure.set clojure.data clojure.string clojure.walk clojure.zip]
+              :let [resource (io/resource (str (s/replace (str ns) "." "/") ".cljs"))]]
+        (time
+         (do
+           (println "compiling" (str resource))
+           (compile-file target-dir resource)))))))
+
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]"))

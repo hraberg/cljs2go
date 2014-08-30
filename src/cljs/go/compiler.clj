@@ -224,7 +224,10 @@
   (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Boolean [x] (emits (if x "true" "false")))
 (defmethod emit-constant Character [x]
-  (emits (str "'" (escape-char x) "'")))
+  (emits (str "'" (case x
+                    \' "\\'"
+                    \" "\""
+                    (escape-char x)) "'")))
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
@@ -819,8 +822,9 @@
     (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
-  (doseq [lib (distinct (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
-                                (vals (apply dissoc requires (keys imports))) (vals uses)))]
+  (doseq [lib (distinct (remove '#{cljs.core}
+                                (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
+                                        (vals (apply dissoc requires (keys imports))) (vals uses))))]
     (emitln "\t" (string/replace (munge lib) "." "_") " "
             (wrap-in-double-quotes
              (str (when (re-find #"^goog\." (str lib))
