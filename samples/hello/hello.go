@@ -3,7 +3,7 @@ package hello
 import . "github.com/hraberg/cljs.go/cljs/core"
 
 var _main = Fn(func(args ...interface{}) interface{} {
-	Println.Invoke_ArityVariadic("Hello World")
+	Println.X_invoke_ArityVariadic("Hello World")
 	return nil
 })
 

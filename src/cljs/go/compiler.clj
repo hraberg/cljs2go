@@ -330,7 +330,7 @@
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
-    (emits "With_meta.Invoke_Arity2(" expr "," meta ")")))
+    (emits "With_meta.X_invoke_Arity2(" expr "," meta ")")))
 
 (def ^:private array-map-threshold 8)
 (def ^:private obj-map-threshold 8)
@@ -352,12 +352,12 @@
           (emits "CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil}")
-          (emits "CljsCorePersistentArrayMap_fromArray.Invoke_Arity3([]interface{}{"
+          (emits "CljsCorePersistentArrayMap_fromArray.X_invoke_Arity3([]interface{}{"
             (comma-sep (interleave keys vals))
             "}, true, false).(CljsCorePersistentArrayMap)"))
 
         :else
-        (emits "CljsCorePersistentHashMap_fromArrays.Invoke_Arity2([]interface{}{"
+        (emits "CljsCorePersistentHashMap_fromArrays.X_invoke_Arity2([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
@@ -379,7 +379,7 @@
         (if (< cnt 32)
           (emits "CljsCorePersistentVector{nil, " cnt
             ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
-          (emits "CljsCorePersistentVector_fromArray.Invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentVector)"))))))
+          (emits "CljsCorePersistentVector_fromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentVector)"))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -396,7 +396,7 @@
       (emits "CljsCorePersistentHashSet{nil, CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
         (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
 
-      :else (emits "CljsCorePersistentHashSet_fromArray.Invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentHashSet)"))))
+      :else (emits "CljsCorePersistentHashSet_fromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(CljsCorePersistentHashSet)"))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
@@ -574,7 +574,7 @@
       (emitln varargs " ...interface{}" ") interface{} {")
       (doseq [[idx p] (map-indexed vector (butlast params))]
         (emitln "var " p " = " varargs "[" idx "]"))
-      (emitln "var " (last params) " = Array_seq.Invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
+      (emitln "var " (last params) " = Array_seq.X_invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
       (assign-to-blank params)
       (emit-fn-body type expr recurs)
       (emits "}"))))
@@ -757,10 +757,10 @@
          (emits (first args) "." pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
-       (emits f ".Invoke_Arity" arity "(" (comma-sep args) ")")
+       (emits f ".X_invoke_Arity" arity "(" (comma-sep args) ")")
 
        variadic-invoke
-       (emits f ".Invoke_ArityVariadic(" (comma-sep args) ")")
+       (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
 
        (or js? goog? go?)
        (emits f "(" (comma-sep args)  ")")
@@ -769,7 +769,7 @@
        (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
-       (emits f (when coerce? ".(IFn)") ".Invoke_Arity" arity "(" (comma-sep args) ")")))))
+       (emits f (when coerce? ".(IFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")")))))
 
 (defn normalize-goog-ctor [ctor]
   (let [parts (string/split (-> ctor :info :name str) #"\.")
@@ -804,7 +804,7 @@
                                          (:field target))]
             (do
               (warn-on-reflection target)
-              (emitln "Native_set_instance_field.Invoke_Arirty3(" (:target target) ","
+              (emitln "Native_set_instance_field.X_invoke_Arirty3(" (:target target) ","
                       (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
                       ","  val ")"))
             (do
@@ -867,9 +867,9 @@
         (do
           (warn-on-reflection dot)
           (if field
-            (emits "Native_get_instance_field.Invoke_Arirty2(" target ","
+            (emits "Native_get_instance_field.X_invoke_Arirty2(" target ","
                    (wrap-in-double-quotes (munge (go-public field) #{})) ")")
-            (emits "Native_invoke_instance_method.Invoke_Arity3(" target ","
+            (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
                    (wrap-in-double-quotes (munge (go-public method) #{})) ","
                    "[]interface{}{" (comma-sep args) "})")))
         (do
@@ -881,7 +881,7 @@
             (emits (munge (go-public field) #{}))
             (emits (munge (go-public method) #{})
                    (when static?
-                     (str ".Invoke_Arity" (count args)))
+                     (str ".X_invoke_Arity" (count args)))
                    "("
                    (comma-sep args)
                    ")")))))))

@@ -14,12 +14,12 @@ func Benchmark_RecursiveDirectCall(t *testing.B) {
 			} else if n == 1.0 {
 				return 1.0
 			} else {
-				return this.Invoke_Arity1(n.(float64)-1.0).(float64) +
-					this.Invoke_Arity1(n.(float64)-2.0).(float64)
+				return this.X_invoke_Arity1(n.(float64)-1.0).(float64) +
+					this.X_invoke_Arity1(n.(float64)-2.0).(float64)
 			}
 		})
 	}(&AFn{})
-	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
+	assert.Equal(t, 832040, fib.X_invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
@@ -34,7 +34,7 @@ func Benchmark_RecursiveDirectPrimitiveCall(t *testing.B) {
 			}
 		})
 	}(&AFnPrimitive{})
-	assert.Equal(t, 832040, fib.Invoke_Arity1(30.0))
+	assert.Equal(t, 832040, fib.X_invoke_Arity1(30.0))
 }
 
 func Benchmark_RecursiveDispatch(t *testing.B) {
