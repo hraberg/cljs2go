@@ -74,6 +74,35 @@ type Arity3 func(_, _, _ interface{}) interface{}
 type Arity4 func(_, _, _, _ interface{}) interface{}
 type Arity5 func(_, _, _, _, _ interface{}) interface{}
 
+/*
+ Primitive signatures used by ClojureScript itself, but it only ever type hints the return tag.
+Arity0F
+Arity1IA
+Arity1IB
+Arity1IF
+Arity2IIB
+Arity2IIF
+
+ We might want to propagate :cljs.analyzer/numeric from the macros to the fns for arity 1 and 2.
+ These would be:
+ Arity1FF
+ Arity2FFF
+ Arity1FB
+ Arity2FFB
+
+ The full list of tags used for returns on protocols are:
+ ^array
+ ^boolean
+ ^clj
+ ^clj-or-nil
+ ^not-native
+ ^number
+ ^seq
+ ^string
+*/
+
+type Arity1IA func(interface{}) []interface{}
+
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
 type Arity1FI func(float64) interface{}
@@ -118,6 +147,7 @@ type AFn struct {
 
 type AFnPrimitive struct {
 	AFn
+	Arity1IA
 	Arity0F
 	Arity1IF
 	Arity1FI

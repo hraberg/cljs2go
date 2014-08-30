@@ -143,6 +143,7 @@
     (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) (symbol ns))
              (go-type-fqn tag)
              (str ns "." (go-type-fqn tag))))
+    ;;  seq "CljsCoreISeq"
     ('{number "float64" boolean "bool" string "string" array "[]interface{}"} tag "interface{}")))
 
 (defn go-short-type [tag]
@@ -154,6 +155,7 @@
 ;; this is vastly oversimplistic.
 (defn go-needs-coercion? [from to]
   (not (or (set? from)
+           (and (= 'string from) (= 'array to)) ;; strings are indexable
            ((hash-set to 'clj-nil) from))))
 
 (def go-native-decorator '{string js.JSString})
