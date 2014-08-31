@@ -160,7 +160,7 @@
   (not (or (set? from)
            (and (= 'string from) (= 'array to)) ;; strings are indexable
            ('#{clj-nil clj clj-or-nil} to)
-           (contains? (hash-set to 'any 'clj-nil) from))))
+           (contains? (hash-set to 'clj-nil) from))))
 
 (declare emit-str)
 
@@ -795,7 +795,7 @@
        (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
       ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-      (when-not (= (:tag expr) (-> f :info :ret-tag))
+      (when-not (or native? has-primitives? (= :statement (:context env)) (= (:tag expr) (-> f :info :ret-tag)))
         (emits (go-unbox-no-emit (:tag expr) nil))))))
 
 (defn normalize-goog-ctor [ctor]
