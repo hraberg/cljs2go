@@ -229,9 +229,11 @@
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
     ;; numbers at compilation time.
-    (list* 'js* (core/str (if (core/string? (first clean-xs)) "(" "(``+")
-                          strs ")")
-           clean-xs)))
+    (with-meta
+     (list* 'js* (core/str (if (core/string? (first clean-xs)) "(" "(``+")
+                           strs ")")
+            clean-xs)
+     {:tag 'string})))
 
 (defn bool-expr [e]
   (vary-meta e assoc :tag 'boolean))
