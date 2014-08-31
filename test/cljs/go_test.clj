@@ -193,7 +193,20 @@
                     (equiv [this other] false)
 
                     IFoo
-                    (-bar [this x] (str this x)))])
+                    (-bar [this x] (str this x)))
+
+                  (defprotocol MyIEquiv
+                    (^boolean -my-equiv [o other]))
+
+                  (deftype MyFooEquiv [str]
+                    Object
+                    (toString [_] str)
+                    (equiv [this other]
+                      (-my-equiv this other))
+
+                    MyIEquiv
+                    (-my-equiv [_ _]
+                      false))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
@@ -212,6 +225,9 @@
           false '(.equiv (AnObject.) "foo")
           true '(satisfies? Object (AnObject.))
           "`bazbar`" '(-bar (AnObject.) "bar")
+
+          "`bar`" '(str (MyFooEquiv. "bar"))
+          false '(-my-equiv (MyFooEquiv. "bar") nil)
           )
     (test "Var"
           "math.Inf(1)" 'js/Infinity)

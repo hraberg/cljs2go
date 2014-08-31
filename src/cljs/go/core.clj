@@ -782,7 +782,8 @@
   (let [proto-fn (get-in (ana/get-namespace (symbol (namespace psym))) [:defs f])]
     (map (fn [[sig & body :as meth]]
            `(do
-              ~(with-meta `(fn ~f ~(adapt-proto-params type proto-fn meth)) (meta form))))
+              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
+                             ~(adapt-proto-params type proto-fn meth)) (meta form))))
          (cond-> meths (vector? (first meths)) core/vector))))
 
 (defn proto-assign-impls [env resolve type-sym type [p sigs]]
@@ -989,8 +990,10 @@
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke,
                        ;; (~fname ~(vary-meta (first sig) assoc :tag fq-psym) ~@(rest sig))
-                       (~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
-                                         "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
+                       ~(vary-meta
+                         `(~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
+                                            "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))
+                         assoc :tag (-> fname meta :tag))))
         method-sigs (fn [arity-limit sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
                  (let [fname (vary-meta fname assoc :protocol p)]
