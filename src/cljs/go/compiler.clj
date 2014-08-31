@@ -508,6 +508,9 @@
             (print-comment-lines e)))
         (emitln "*/")))))
 
+(defn untyped-nil-needs-type? [init]
+  (or (= 'clj-nil (:tag init)) (nil? init)))
+
 (defmethod emit* :def
   [{:keys [name var init env doc export form]}]
   (let [redefine? (some-> *go-defs* deref (get name))
@@ -521,7 +524,7 @@
         (emit-comment doc (:jsdoc init))
         (emitln (when-not redefine? "var ")
                 mname
-                (when (or (= 'clj-nil (:tag init)) (nil? init))
+                (when (untyped-nil-needs-type? init)
                   " interface{}")
                 " = " (or init "nil"))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
@@ -678,7 +681,10 @@
                                                       (gensym (str (:name %) "-")))
                                              bindings)))]
       (doseq [{:keys [init] :as binding} bindings]
-        (emitln "var " binding " = " init))  ; Binding will be treated as a var
+        (emitln "var " binding
+                (when (untyped-nil-needs-type? init)
+                  " interface{}")
+                " = " init))  ; Binding will be treated as a var
       (assign-to-blank bindings)
       (when is-loop (emitln "for {"))
       (emits expr)
@@ -759,7 +765,7 @@
         [params] ((group-by count (:method-params info)) arity)
         primitive-sig (go-type-suffix params (-> f :info :ret-tag))
         has-primitives? (not (re-find #"^I+$" primitive-sig))
-        tags-match? (= (map :tag params) (map :tag args))
+        tags-match? true ; (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
         coerce? (and (or (:field info) (:binding-form? info)) (not fn?))]

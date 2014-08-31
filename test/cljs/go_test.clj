@@ -101,7 +101,9 @@
   (->>
    [(test "Let"
           1 '(let [y 1]
-               y))
+               y)
+          "nil" '(let [x nil]
+                   x))
     (test "Letfn"
           "`bar`" '(letfn [(foo [] "bar")]
                      (foo))
