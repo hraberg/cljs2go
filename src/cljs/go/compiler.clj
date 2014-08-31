@@ -140,9 +140,13 @@
 
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
-    (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) (symbol ns))
-             (go-type-fqn tag)
-             (str ns "." (go-type-fqn tag))))
+    (let [ns (symbol ns)
+          type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
+      (str
+       (when type? "*")
+       (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) ns)
+                (go-type-fqn tag)
+                (str ns "." (go-type-fqn tag))))))
     ('{number "float64" boolean "bool" string "string" array "[]interface{}" seq "CljsCoreISeq"} tag "interface{}")))
 
 (defn go-short-type [tag]
@@ -155,20 +159,22 @@
 (defn go-needs-coercion? [from to]
   (not (or (set? from)
            (and (= 'string from) (= 'array to)) ;; strings are indexable
-           ((hash-set 'clj-nil 'clj) to)
+           ('#{clj-nil clj clj-or-nil} to)
            ((hash-set to 'clj-nil) from))))
 
 (declare emit-str)
+
+(defn go-unbox-no-emit
+  ([from x] (go-unbox-no-emit from (go-type from) x))
+  ([from to x]
+     (when (go-needs-coercion? from (:tag x))
+       (str ".(" to ")"))))
 
 (defn go-unbox
   ([from x] (go-unbox from (go-type from) x))
   ([from to x]
      (when x
-       (str (emit-str x)
-            (when (or (go-needs-coercion? from (:tag x))
-                      (and (= :invoke (:op x))
-                           (go-needs-coercion? from (-> x :f :info :ret-tag))))
-              (str ".(" to ")"))))))
+       (str (emit-str x) (go-unbox-no-emit from to x)))))
 
 (def go-native-decorator '{string js.JSString})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
@@ -761,9 +767,10 @@
        opt-not?
        (emits "!(" (first args) ")")
 
-       proto? ;; needs to take the imported name of protocols into account.
+       protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
        (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
-         (emits (first args) "." pimpl "(" (comma-sep (rest args)) ")"))
+         (emits (if tag (first args) (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")"))
+                "." pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
        (emits f ".X_invoke_Arity" arity "(" (comma-sep args) ")")
@@ -778,7 +785,12 @@
        (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
        :else
-       (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")")))))
+       (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
+
+      ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
+      (when (and (not (or js? goog? go?))
+                 (not= (:tag expr) (-> f :info :ret-tag)))
+        (emits (go-unbox-no-emit (:tag expr) nil))))))
 
 (defn normalize-goog-ctor [ctor]
   (let [parts (string/split (-> ctor :info :name str) #"\.")

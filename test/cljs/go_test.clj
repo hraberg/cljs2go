@@ -213,7 +213,14 @@
 
                     MyIEquiv
                     (-my-equiv [_ _]
-                      false))])
+                      false))
+
+                  (defn foo-str [x]
+                    (str "foo" x))
+
+                  (deftype MyInferenceType []
+                    Object
+                    (toString [this] (foo-str "bar")))])
     (test "Deftype"
           "&CljsUserMyPoint{X: 1, Y: 2}" '(MyPoint. 1 2)
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
@@ -236,7 +243,8 @@
 
           "`bar`" '(str (MyFooEquiv. "bar"))
           false '(-my-equiv (MyFooEquiv. "bar") nil)
-          true '(satisfies? IMarker (MyFooEquiv. "bar")))
+          true '(satisfies? IMarker (MyFooEquiv. "bar"))
+          "`foobar`" '(str (MyInferenceType.)))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)
