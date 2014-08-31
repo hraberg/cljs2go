@@ -795,7 +795,9 @@
        (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
       ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-      (when-not (or native? has-primitives? (= :statement (:context env)) (= (:tag expr) (-> f :info :ret-tag)))
+      (when-not (or native? has-primitives?
+                    (= :statement (:context env))
+                    (= "interface{}" (-> expr :tag go-type)))
         (emits (go-unbox-no-emit (:tag expr) nil))))))
 
 (defn normalize-goog-ctor [ctor]
