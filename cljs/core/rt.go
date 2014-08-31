@@ -556,7 +556,7 @@ var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
 })
 
 func init() {
-	RegisterProtocol_("Object", (*Object)(nil))
+	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
 
 	X_invoke.ArityVariadic = func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]

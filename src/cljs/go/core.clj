@@ -1015,21 +1015,23 @@
               ~(core/str fq-psym) ~go-psym)
        ~@(map method methods))))
 
-(defmacro implements?
+(defmacro native-satisfies?
   "EXPERIMENTAL"
   [psym x]
   (let [p          (:name
                     (cljs.analyzer/resolve-var
-                      (dissoc &env :locals) psym))]
-    `(cljs.core/native-satisfies? '~p ~x)))
+                     (dissoc &env :locals) psym))]
+    `(~'js* "Native_satisfies_QMARK_.X_invoke_Arity2(~{}, ~{})" '~p ~x)))
+
+(defmacro implements?
+  "EXPERIMENTAL"
+  [psym x]
+  `(cljs.core/native-satisfies? ~psym ~x))
 
 (defmacro satisfies?
   "Returns true if x satisfies the protocol"
   [psym x]
-  (let [p          (:name
-                     (cljs.analyzer/resolve-var
-                       (dissoc &env :locals) psym))]
-    `(cljs.core/native-satisfies? '~p ~x)))
+  `(cljs.core/native-satisfies? ~psym ~x))
 
 (defmacro lazy-seq [& body]
   `(new cljs.core/LazySeq nil (fn [] ~@body) nil nil))

@@ -113,7 +113,7 @@ func Test_Protocols(t *testing.T) {
 	symbol := Symbol.X_invoke_Arity2("foo", "bar")
 
 	assert.True(t, symbol.(Object).Equiv(Symbol.X_invoke_Arity2("foo", "bar")))
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity1("Object"), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "Object"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
 	//	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(CljsCoreINamed).X_namespace_Arity1())

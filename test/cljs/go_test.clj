@@ -210,7 +210,7 @@
           "`baz`" '(.toString (AnObject.))
           "`baz`" '(.string (AnObject.))
           false '(.equiv (AnObject.) "foo")
-          true '(native-satisfies? 'Object (AnObject.)) ;; cljs.core/Object isn't known by the analyzer
+          true '(satisfies? Object (AnObject.))
           "`bazbar`" '(-bar (AnObject.) "bar")
           )
     (test "Var"
