@@ -572,7 +572,7 @@
     (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
                                 ret-tag)]
       (emit-fn-body type expr recurs))
-    (emits "}")))
+    (emitln "}")))
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]

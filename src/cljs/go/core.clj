@@ -755,10 +755,12 @@
                                ~(adapt-proto-params type proto-fn '[[this] ^string (.toString this)])) (meta form))))))
        sigs))
 
+(def ^:private arity-limit 20)
+
 (defn ifn-invoke-methods [type type-sym [f & meths :as form]]
   (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])
         ;; we don't support provided varargs here for now, so we drop the last rest fn.
-        meths (remove #(core/> (core/dec (count (first %))) 20) meths)
+        meths (remove #(core/> (core/dec (count (first %))) arity-limit) meths)
         f (with-meta f {:tag (:ret-tag proto-fn)})
         missing (for [params (:method-params proto-fn)
                       :let [body `(throw (js/Error. ~(core/str "Invalid arity: " (core/dec (count params)))))]]
@@ -989,13 +991,13 @@
                        ;; (~fname ~(vary-meta (first sig) assoc :tag fq-psym) ~@(rest sig))
                        (~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                          "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
+        method-sigs (fn [sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
-                 (let [sigs (take 20 (sort-by count (take-while vector? sigs)))
-                       fname (vary-meta fname assoc :protocol p)]
-                   `(defn ~fname ~@(map (partial expand-sig fname) sigs))))
+                 (let [fname (vary-meta fname assoc :protocol p)]
+                   `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs sigs)))))
         method-decl (fn [[fname & sigs]]
                       (->>
-                       (for [sig (take-while vector? sigs)]
+                       (for [sig (method-sigs sigs)]
                          (core/str "\t"
                                    (proto-slot-name fname sig)
                                    "("
@@ -1566,30 +1568,8 @@
 
 (def cs (into [] (map (comp gensym core/str core/char) (range 97 118))))
 
-(defn gen-apply-to-helper
-  ([] (gen-apply-to-helper 1))
-  ([n]
-     (let [prop (symbol (core/str "-cljs$core$IFn$_invoke$arity$" n))
-           f (symbol (core/str "cljs$core$IFn$_invoke$arity$" n))]
-       (if (core/<= n 20)
-         `(let [~(cs (core/dec n)) (-first ~'args)
-                ~'args (-rest ~'args)]
-            (if (core/== ~'argc ~n)
-              (if (. ~'f ~prop)
-                (. ~'f (~f ~@(take n cs)))
-                (~'f ~@(take n cs)))
-              ~(gen-apply-to-helper (core/inc n))))
-         `(throw (js/Error. "Only up to 20 arguments supported on functions"))))))
-
 (defmacro gen-apply-to []
-  `(do
-     (set! ~'*unchecked-if* true)
-     ;; (defn ~'apply-to [~'f ~'argc ~'args]
-     ;;   (let [~'args (seq ~'args)]
-     ;;     (if (zero? ~'argc)
-     ;;       (~'f)
-     ;;       ~(gen-apply-to-helper))))
-     (set! ~'*unchecked-if* false)))
+  `(do ))
 
 (defmacro with-out-str
   "Evaluates exprs in a context in which *print-fn* is bound to .append
