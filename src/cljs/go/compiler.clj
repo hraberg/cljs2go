@@ -752,6 +752,7 @@
                 (or (= ns 'goog)
                     (when-let [ns-str (str ns)]
                       (= (get (string/split ns-str #"\.") 0 nil) "goog"))))
+        native? (or js? goog? go?)
         keyword? (and (= (-> f :op) :constant)
                       (keyword? (-> f :form)))
         arity (count args)
@@ -778,7 +779,7 @@
        variadic-invoke
        (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
 
-       (or js? goog? go?)
+       native?
        (emits f "(" (comma-sep args)  ")")
 
        (and has-primitives? tags-match?)
@@ -788,8 +789,7 @@
        (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
       ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-      (when (and (not (or js? goog? go?))
-                 (not= (:tag expr) (-> f :info :ret-tag)))
+      (when (and (not native?) (not= (:tag expr) (-> f :info :ret-tag)))
         (emits (go-unbox-no-emit (:tag expr) nil))))))
 
 (defn normalize-goog-ctor [ctor]
@@ -851,6 +851,7 @@
     (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
+  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "goog"))) ;; gets imported indirectly in JS I think?
   (doseq [lib (distinct (remove '#{cljs.core}
                                 (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
                                         (vals (apply dissoc requires (keys imports))) (vals uses))))]
