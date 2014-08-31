@@ -13,11 +13,10 @@
   (dissoc ast :children))
 
 (defn simplify-env [_ {:keys [op] :as ast}]
-  (let [env (:env ast)
-        ast (cond-> ast
-                    (= op :fn) (update-in [:methods] #(map (partial simplify-env nil) %))
-                    (= op :set!) (update-in [:target] (partial simplify-env nil)))]
-    (update-in ast [:env] #(select-keys % [:context :column :line]))))
+  (cond-> ast
+          (= op :fn) (update-in [:methods] #(map (partial simplify-env nil) %))
+          (= op :set!) (update-in [:target] (partial simplify-env nil))
+          :then (update-in [:env] #(select-keys % [:context :column :line]))))
 
 (defn cljs->ast
   ([in] (cljs->ast in (ana/empty-env)))
