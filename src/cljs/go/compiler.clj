@@ -708,7 +708,10 @@
         params (:params frame)]
     (emitln "{")
     (dotimes [i (count exprs)]
-      (emitln "var " (temps i) " = " (exprs i)))
+      (emitln "var " (temps i)
+              (when (untyped-nil-needs-type? (exprs i))
+                " interface{}")
+              " = " (exprs i)))
     (dotimes [i (count exprs)]
       (emitln (munge (params i)) " = " (temps i)))
     (emitln "continue")
