@@ -614,7 +614,9 @@
       'array "array"
       'function "function"
       'boolean "boolean"
-      'default "_"})
+      'default "_"
+      'js/Date "date" ;; hack
+      })
 
 (def #^:private js-base-type
      {'js/Boolean "boolean"
