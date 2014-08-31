@@ -10,6 +10,13 @@
   (:import [java.io Writer]
            [cljs.tagged_literals JSValue]))
 
+(defmacro tdd [& body]
+  `(do (def *ast (cljs->ast '[~@body]))
+       (def *go (s/trim (goimports (ast->go *ast))))
+       (pp/pprint *ast)
+       (println)
+       (println *go)))
+
 (defn combined-output [out err]
   (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
 
