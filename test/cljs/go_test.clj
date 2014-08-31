@@ -113,7 +113,15 @@
                   (if y true false))
           1 '(let [y true
                    z (if y 1 0)]
-               z))
+               z)
+          1 '(letfn [(y [] true)]
+               (if (y) 1 2))
+          1 '(letfn [(y [] "")]
+               (if (y) 1 2))
+          2 (letfn [(^seq y [])]
+              (if (y) 1 2))
+          2 (letfn [(y [])]
+              (if (y) 1 2)))
     (test "Loop"
           5 '(loop [y 0]
                (if (== y 5)

@@ -417,18 +417,13 @@
     (emit-wrap env (emit-constant form))))
 
 (defn truthy-constant? [{:keys [op form]}]
-  (and (= op :constant)
-       form
-       (not (or (and (string? form) (= form ""))
-                (and (number? form) (zero? form))))))
+  (and (#{:constant :list :vector :set :map} op) form))
 
 (defn falsey-constant? [{:keys [op form]}]
-  (and (= op :constant)
-       (or (false? form) (nil? form))))
+  (and (= op :constant) (not form)))
 
 (defn safe-test? [env e]
-  (let [tag (ana/infer-tag env e)]
-    (or (#{'boolean 'seq} tag) (truthy-constant? e))))
+  (= 'boolean (ana/infer-tag env e)))
 
 (defmethod emit* :if
   [{:keys [test then else env form unchecked]}]
@@ -440,11 +435,13 @@
       (go-top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
-        (emits "func() interface{} { if " (when checked "Truth_") "(" test ") { return " then "} else { return " else "} }()")
+        (emits "func() interface{} { if " (when checked "Truth_") "("
+               (cond->> test checked (go-unbox 'boolean))
+               ") { return " then "} else { return " else "} }()")
         (do
           (if checked
             (emitln "if Truth_(" test ") {")
-            (emitln "if " test " {"))
+            (emitln "if " (go-unbox 'boolean test) " {"))
           (emitln then "} else {")
           (emitln else "}"))))))
 
