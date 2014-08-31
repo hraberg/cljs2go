@@ -788,18 +788,18 @@
 
 (defn proto-assign-impls [env resolve type-sym type [p sigs]]
   (warn-and-update-protocol p type env)
-  (let [psym      (resolve p)
-        pprefix   (protocol-prefix psym)
-        skip-flag (set (-> type-sym meta :skip-protocol-flag))]
-    (if (= p 'Object)
-      (add-obj-methods type type-sym sigs)
-      (concat
+  (let [psym      (resolve p)]
+    (cons
+     `(do (~'js* "func (_ *~{})~{}Marker() {}" ~type-sym ~psym))
+     (if (= p 'Object)
+       (add-obj-methods type type-sym sigs)
+       (concat
         (mapcat
-          (fn [sig]
-            (if (= psym 'cljs.core/IFn)
-              (add-ifn-methods type type-sym sig)
-              (add-proto-methods* psym type type-sym sig)))
-          sigs)))))
+         (fn [sig]
+           (if (= psym 'cljs.core/IFn)
+             (add-ifn-methods type type-sym sig)
+             (add-proto-methods* psym type type-sym sig)))
+         sigs))))))
 
 (declare dt->et collect-protocols)
 
@@ -1014,7 +1014,8 @@
                        (apply core/str)))]
     `(do
        (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
-       (~'js* ~(core/str "type ~{} interface{\n" (apply core/str (map method-decl methods)) "}\n")
+       (~'js* ~(core/str "type ~{} interface{\n" (core/str psym "Marker()\n")
+                         (apply core/str (map method-decl methods)) "}\n")
               ~go-psym)
        (~'js* "func init() {\n\tRegisterProtocol_(~{}, (*~{})(nil))\n}"
               ~(core/str fq-psym) ~go-psym)

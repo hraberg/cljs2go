@@ -2,6 +2,8 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.test :refer :all]
             [cljs.go :refer :all]
+            [cljs.analyzer :as ana]
+            [cljs.env :as env]
             [cljs.tagged-literals]
             [clojure.pprint :as pp]
             [clojure.string :as s]
@@ -11,11 +13,13 @@
            [cljs.tagged_literals JSValue]))
 
 (defmacro tdd [& body]
-  `(do (def *ast (cljs->ast '[~@body]))
-       (def *go (s/trim (goimports (ast->go *ast))))
-       (pp/pprint *ast)
-       (println)
-       (println *go)))
+  `(env/ensure
+    (def *ast (cljs->ast '[~@body]))
+    (def *go (s/trim (goimports (ast->go *ast))))
+    (def *ns (ana/get-namespace ana/*cljs-ns*))
+    (pp/pprint *ast)
+    (println)
+    (println *go)))
 
 (defn combined-output [out err]
   (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
@@ -198,7 +202,10 @@
                   (defprotocol MyIEquiv
                     (^boolean -my-equiv [o other]))
 
+                  (defprotocol IMarker)
+
                   (deftype MyFooEquiv [str]
+                    IMarker
                     Object
                     (toString [_] str)
                     (equiv [this other]
@@ -212,7 +219,7 @@
           "&CljsUserMyPoint{X: 1, Y: 2}" '(->MyPoint 1 2)
           3 '(.-x (MyPoint. 3 4))
           "`CljsUserIFoo`" '(js* "reflect.TypeOf((*CljsUserIFoo)(nil)).Elem().Name()")
-          1 '(js* "reflect.TypeOf((*CljsUserIFoo)(nil)).Elem().NumMethod()")
+          2 '(js* "reflect.TypeOf((*CljsUserIFoo)(nil)).Elem().NumMethod()")
           "`foo`" '(-bar (MyFooWithArg.) "foo")
           "`foo`" (read-string "(apply -bar (MyFooWithArg.) #js [\"foo\"])")
           "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
@@ -225,10 +232,11 @@
           false '(.equiv (AnObject.) "foo")
           true '(satisfies? Object (AnObject.))
           "`bazbar`" '(-bar (AnObject.) "bar")
+          false '(satisfies? IMarker (AnObject.))
 
           "`bar`" '(str (MyFooEquiv. "bar"))
           false '(-my-equiv (MyFooEquiv. "bar") nil)
-          )
+          true '(satisfies? IMarker (MyFooEquiv. "bar")))
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)
@@ -322,7 +330,7 @@
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
     (doseq [gen [constants special-forms benchmarks]]
       (with-fresh-ids
-        (cljs.env/ensure
+        (env/ensure
          (gen))))
     (go-test "./...")))
 
