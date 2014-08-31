@@ -807,7 +807,7 @@
           (emitln "var " return " = " val))
         (let [val (or return val)
               static? (-> target :target :info :type)]
-          (if-let [reflective-field (and (#{nil 'any} (:tag target))
+          (if-let [reflective-field (and (contains? #{nil 'any} (:tag target))
                                          (not static?)
                                          (:field target))]
             (do

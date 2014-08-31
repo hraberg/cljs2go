@@ -216,6 +216,7 @@
     (test "Var"
           "math.Inf(1)" 'js/Infinity)
     (test-setup '[(def y 2)
+                  (deftype HasFields [x])
                   (deftype HasStaticFields [])
                   (set! (.-ZERO HasStaticFields) 0)
                   (set! (.-newFoo HasStaticFields) (fn [] "foo"))])
@@ -223,6 +224,8 @@
           2 'y
           3 '(do (set! y 3) y)
           4 '(set! y 4)
+          "`foo`" '(set! (.-x (HasFields. "bar")) "foo")
+          "`foo`" '((fn [o] (set! (.-x o) "foo")) (HasFields. "bar"))
           0 '(.-ZERO HasStaticFields)
           "`foo`" '(.newFoo HasStaticFields)
           -1 '(set! (.-ZERO HasStaticFields) -1))
