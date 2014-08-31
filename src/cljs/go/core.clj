@@ -750,7 +750,9 @@
 ;; In ClojureScript, Object isn't really a protocol per-se, but a way of attaching native fns to a type.
 (defn add-obj-methods [type type-sym sigs]
   (map (fn [[f & meths :as form]]
-         (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])]
+         (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])
+               proto-fn (when (= (:protocol proto-fn) 'cljs.core/Object)
+                          proto-fn)]
            `(do
               ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
                              ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form))
