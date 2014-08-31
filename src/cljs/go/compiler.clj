@@ -155,6 +155,7 @@
 (defn go-needs-coercion? [from to]
   (not (or (set? from)
            (and (= 'string from) (= 'array to)) ;; strings are indexable
+           ((hash-set 'clj-nil 'clj) to)
            ((hash-set to 'clj-nil) from))))
 
 (declare emit-str)
