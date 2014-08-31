@@ -991,13 +991,13 @@
                        ;; (~fname ~(vary-meta (first sig) assoc :tag fq-psym) ~@(rest sig))
                        (~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                          "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))))
-        method-sigs (fn [sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
+        method-sigs (fn [arity-limit sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
                  (let [fname (vary-meta fname assoc :protocol p)]
-                   `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs sigs)))))
+                   `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs arity-limit sigs)))))
         method-decl (fn [[fname & sigs]]
                       (->>
-                       (for [sig (method-sigs sigs)]
+                       (for [sig (method-sigs (core/inc arity-limit) sigs)]
                          (core/str "\t"
                                    (proto-slot-name fname sig)
                                    "("
