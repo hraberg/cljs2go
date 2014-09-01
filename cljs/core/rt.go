@@ -516,31 +516,6 @@ type Object interface {
 	Equiv(other interface{}) bool
 }
 
-type CljsLangFn struct {
-	Cljs_lang_maxFixedArity float64
-	Cljs_lang_applyTo       Arity1
-}
-
-func CljsLangFn_(fn interface{}) *CljsLangFn {
-	f := fn.(*AFn)
-	return &CljsLangFn{float64(f.MaxFixedArity), func(args interface{}) interface{} {
-		return f.Call(args.([]interface{})...)
-	}}
-}
-
-type CljsLangType struct {
-	Cljs_lang_type         reflect.Type
-	Cljs_lang_ctorStr      string
-	Cljs_lang_ctorPrWriter Arity3
-}
-
-func CljsLangType_(x interface{}) *CljsLangType {
-	t := reflect.TypeOf(x)
-	return &CljsLangType{t, t.Name(), func(obj, writer, opts interface{}) interface{} {
-		panic(&js.Error{"Not implemented"})
-	}}
-}
-
 var Apply = Fn(func(f_args ...interface{}) interface{} {
 	f, args := f_args[0], f_args[1:]
 	argc := len(args)

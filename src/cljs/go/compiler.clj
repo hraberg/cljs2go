@@ -174,24 +174,29 @@
 
 (def go-native-decorator {'string (fn [s] (str "js.JSString_(" (emit-str s) ")"))
                           'array (fn [a] (str "js.JSArray_(&" (emit-str a) ")"))})
-(def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
-                                    cljs$lang$applyTo CljsLangFn_
-                                    cljs$lang$type CljsLangType_
-                                    cljs$lang$ctorStr CljsLangType_
-                                    cljs$lang$ctorPrWriter CljsLangType_})
 
 (def go-top-level-then '#{(and (exists? Math/imul)
                                (not (zero? (Math/imul 0xffffffff 5))))})
 
-(def go-skip-def '#{cljs.core/native-satisfies?
+(def go-skip-def '#{cljs.core/enable-console-print!
+                    cljs.core/object?
+                    cljs.core/native-satisfies?
                     cljs.core/missing-protocol
+                    cljs.core/make-array
+                    cljs.core/array
+                    cljs.core/string?
+                    cljs.core/integer?
+                    cljs.core/fn?
+                    cljs.core/char
                     cljs.core/apply
                     cljs.core/truth_
-                    cljs.core/object?
                     cljs.core/is_proto_
                     cljs.core/type
-                    cljs.core/array
-                    cljs.core/make-array
+                    cljs.core/type->str
+                    cljs.core/pr-writer
+                    cljs.core/js-obj
+                    cljs.core/js-keys
+                    cljs.core/js->clj
                     cljs.core/nil-iter})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
@@ -890,8 +895,7 @@
   [{:keys [target field method args env] :as dot}]
   (let [tag (:tag target)
         static? (-> target :info :type)
-        decorator (or (go-native-decorator tag)
-                      (some go-native-property-decorator [field method]))
+        decorator (go-native-decorator tag)
         reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
     (emit-wrap env
       (if reflection?
