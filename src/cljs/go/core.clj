@@ -333,7 +333,7 @@
   (bool-expr (core/list 'js* "(nil == ~{})" x)))
 
 (defmacro identical? [a b]
-  (bool-expr (core/list 'js* "(~{} == ~{})" a b)))
+  (bool-expr (core/list 'js* "reflect.DeepEqual(~{}, ~{})" a b))) ;; this is wrong, but kind of works
 
 (defmacro instance? [t o]
   ;; Google Closure warns about some references to RegExp, so
