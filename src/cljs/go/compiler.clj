@@ -157,24 +157,20 @@
 
 ;; this is vastly oversimplistic.
 (defn go-needs-coercion? [from to]
-  (not (or (set? from)
-           (and (= 'string from) (= 'array to)) ;; strings are indexable
-           ('#{clj-nil clj clj-or-nil} to)
-           (contains? (hash-set to 'clj-nil) from))))
+  (and (not (= (go-type to) "interface{}"))
+       (not= (go-type from) (go-type to))
+       ;; strings are indexable, but this is a dubious way to deal with it
+       (not (and (= 'string from) (= 'array to)))))
 
 (declare emit-str)
 
-(defn go-unbox-no-emit
-  ([from x] (go-unbox-no-emit from (go-type from) x))
-  ([from to x]
-     (when (go-needs-coercion? from (:tag x))
-       (str ".(" to ")"))))
+(defn go-unbox-no-emit [to x]
+  (when (go-needs-coercion? (:tag x) to)
+    (str ".(" (go-type to) ")")))
 
-(defn go-unbox
-  ([from x] (go-unbox from (go-type from) x))
-  ([from to x]
-     (when x
-       (str (emit-str x) (go-unbox-no-emit from to x)))))
+(defn go-unbox [to x]
+  (when x
+    (str (emit-str x) (go-unbox-no-emit to x))))
 
 (def go-native-decorator '{string js.JSString})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
@@ -799,8 +795,7 @@
 
       ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
       (when-not (or native? has-primitives?
-                    (= :statement (:context env))
-                    (= "interface{}" (-> expr :tag go-type)))
+                    (= :statement (:context env)))
         (emits (go-unbox-no-emit (:tag expr) nil))))))
 
 (defn normalize-goog-ctor [ctor]
