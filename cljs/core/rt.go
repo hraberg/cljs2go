@@ -516,6 +516,14 @@ type Object interface {
 	Equiv(other interface{}) bool
 }
 
+var Enable_console_print_BANG_ = Fn(func() interface{} {
+	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
+		fmt.Print(x)
+		return nil
+	})
+	return nil
+})
+
 var Apply = Fn(func(f_args ...interface{}) interface{} {
 	f, args := f_args[0], f_args[1:]
 	argc := len(args)
