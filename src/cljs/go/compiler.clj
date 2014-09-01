@@ -831,9 +831,11 @@
                                          (:field target))]
             (do
               (warn-on-reflection target)
-              (emitln "Native_set_instance_field.X_invoke_Arity3(" (:target target) ","
+              (emits "Native_set_instance_field.X_invoke_Arity3(" (:target target) ","
                       (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
-                      ","  val ")"))
+                      ","  val ")")
+              (when-not (= :statement (:context env))
+                (emitln (go-unbox-no-emit (:tag val) nil))))
             (do
               (when (and static? (= :statement (:context env)))
                 (emits "var "))
@@ -899,7 +901,9 @@
                    (wrap-in-double-quotes (munge (go-public field) #{})) ")")
             (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
                    (wrap-in-double-quotes (munge (go-public method) #{})) ","
-                   "[]interface{}{" (comma-sep args) "})")))
+                   "[]interface{}{" (comma-sep args) "})"))
+          (when-not (= :statement (:context env))
+            (emits (go-unbox-no-emit (:tag dot) nil))))
         (do
           (emits (when decorator (str decorator "("))
                  target
