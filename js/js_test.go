@@ -48,8 +48,6 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, "l", (JSString_("Hello").CharAt(2)))
 	assert.Equal(t, 108, (JSString_("Hello").CharCodeAt(2)))
-	assert.True(t, Array.IsArray([]interface{}{"Hello", "World"}))
-	assert.False(t, Array.IsArray("Hello"))
 
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1, 2, "Hyper", "Space"))

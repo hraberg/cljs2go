@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"reflect"
 	"regexp"
 	"strconv"
 	"time"
@@ -28,20 +27,9 @@ func (e *TypeError) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
-var Undefined interface{} = nil
-
 type JSObject map[string]interface{}
-type Object struct{}
-
 type JSNil interface{}
-
 type JSBoolean bool
-
-var Array = struct {
-	IsArray func(interface{}) bool
-}{func(x interface{}) bool {
-	return reflect.TypeOf(x).Kind() == reflect.Slice
-}}
 
 type Date struct {
 	Millis float64
@@ -136,21 +124,6 @@ func ParseInt(str string, radix float64) float64 {
 	}
 	return math.NaN()
 }
-
-type JSFn func(...interface{}) interface{}
-
-func (this JSFn) Apply(_ interface{}, args []interface{}) interface{} {
-	return this(args...)
-}
-
-type JSConsole struct {
-	Log JSFn
-}
-
-var Console = JSConsole{func(obj ...interface{}) interface{} {
-	fmt.Println(obj...)
-	return nil
-}}
 
 var String = struct {
 	FromCharCode func(...float64) string
