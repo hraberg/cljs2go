@@ -759,7 +759,8 @@
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
         coerce? (and (or (:field info) (:binding-form? info))
-                     (not (or fn? (= 'function (:tag info)))))]
+                     (not (or fn? (= 'function (:tag info)))))
+        static-field-receiver? (-> expr :args first :target :info :type)]
     (emit-wrap env
       (cond
        opt-not?
@@ -767,7 +768,10 @@
 
        protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
        (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
-         (emits (if tag (first args) (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")"))
+         (emits (if (and (= (go-type tag) "interface{}")
+                         (not static-field-receiver?))
+                  (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")")
+                  (first args) )
                 "." pimpl "(" (comma-sep (rest args)) ")"))
 
        keyword?
@@ -818,7 +822,7 @@
           (emitln "var " return " = " val))
         (let [val (or return val)
               static? (-> target :target :info :type)]
-          (if-let [reflective-field (and (contains? #{nil 'any} (:tag target))
+          (if-let [reflective-field (and (= "interface{}" (-> target :target :tag go-type))
                                          (not static?)
                                          (:field target))]
             (do
