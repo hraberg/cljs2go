@@ -700,18 +700,11 @@
 
 (defmethod emit* :recur
   [{:keys [frame exprs env]}]
-  (let [temps (vec (take (count exprs) (repeatedly gensym)))
-        params (:params frame)]
-    (emitln "{")
-    (dotimes [i (count exprs)]
-      (emitln "var " (temps i)
-              (when (untyped-nil-needs-type? (exprs i))
-                " interface{}")
-              " = " (exprs i)))
-    (dotimes [i (count exprs)]
-      (emitln (munge (params i)) " = " (temps i)))
-    (emitln "continue")
-    (emitln "}")))
+  (emitln "{")
+  (when-let [params (seq (:params frame))]
+    (emitln (comma-sep params) " = " (comma-sep exprs)))
+  (emitln "continue")
+  (emitln "}"))
 
 (defmethod emit* :letfn
   [{:keys [bindings expr env]}]
@@ -731,9 +724,9 @@
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
   (let [info (:info f)
-        fn? (and ana/*cljs-static-fns*
-                 (not (:dynamic info))
-                 (:fn-var info))
+       fn? (and ana/*cljs-static-fns*
+                (not (:dynamic info))
+                (:fn-var info))
         protocol (:protocol info)
         tag      (ana/infer-tag env (first (:args expr)))
         proto? (and protocol tag
@@ -767,7 +760,8 @@
         tags-match? true ; (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
-        coerce? (and (or (:field info) (:binding-form? info)) (not fn?))]
+        coerce? (and (or (:field info) (:binding-form? info))
+                     (not (or fn? (= 'function (:tag info)))))]
     (emit-wrap env
       (cond
        opt-not?
@@ -891,7 +885,7 @@
         static? (-> target :info :type)
         decorator (or (go-native-decorator tag)
                       (some go-native-property-decorator [field method]))
-        reflection? (not (or tag static?))]
+        reflection? (and (= "interface{}" (go-type tag)) (not static?))]
     (emit-wrap env
       (if reflection?
         (do
