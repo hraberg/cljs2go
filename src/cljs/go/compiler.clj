@@ -699,12 +699,10 @@
   (emit-let ast true))
 
 (defmethod emit* :recur
-  [{:keys [frame exprs env]}]
-  (emitln "{")
+  [{:keys [frame exprs]}]
   (when-let [params (seq (:params frame))]
     (emitln (comma-sep params) " = " (comma-sep exprs)))
-  (emitln "continue")
-  (emitln "}"))
+  (emitln "continue"))
 
 (defmethod emit* :letfn
   [{:keys [bindings expr env]}]
