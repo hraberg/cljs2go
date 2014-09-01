@@ -36,7 +36,6 @@ type Object struct{}
 type JSNil interface{}
 
 type JSBoolean bool
-type JSArray []interface{}
 
 var Array = struct {
 	IsArray func(interface{}) bool
@@ -163,16 +162,23 @@ var String = struct {
 	return buffer.String()
 }}
 
-type JSString string
+type JSString struct {
+	Length float64
+	str    string
+}
 
-func (this JSString) Replace(re *RegExp, f func(interface{}) interface{}) string {
+func JSString_(str string) *JSString {
+	return &JSString{float64(len(str)), str}
+}
+
+func (this *JSString) Replace(re *RegExp, f func(interface{}) interface{}) string {
 	return re.compile().ReplaceAllStringFunc(this.String(),
 		func(x string) string {
 			return fmt.Sprint(f(x))
 		})
 }
 
-func (this JSString) Search(re *RegExp) float64 {
+func (this *JSString) Search(re *RegExp) float64 {
 	match := re.compile().FindStringIndex(this.String())
 	if match == nil {
 		return -1
@@ -180,21 +186,55 @@ func (this JSString) Search(re *RegExp) float64 {
 	return float64(match[0])
 }
 
-func (this JSString) CharAt(index float64) string {
+func (this *JSString) CharAt(index float64) string {
 	return string([]rune(this.String())[int(index)])
 }
 
-func (this JSString) CharCodeAt(index float64) float64 {
+func (this *JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(this.String())[int(index)])
 }
 
-func (this JSString) String() string {
-	return string(this)
+func (this *JSString) String() string {
+	return this.str
 }
 
-func (this JSArray) Splice(index, howMany float64, elements ...interface{}) []interface{} {
+type JSArray struct {
+	Length float64
+	array  *[]interface{}
+}
+
+func JSArray_(a *[]interface{}) *JSArray {
+	return &JSArray{float64(len(*a)), a}
+}
+
+func (this *JSArray) Splice(index, howMany float64, elements ...interface{}) []interface{} {
+	if index < 0 {
+		index = this.Length + index
+	}
 	removed := make([]interface{}, int(howMany))
-	copy(removed, this[int(index):int(index+howMany)])
-	_ = append(this[:int(index)], append(elements, this[int(index+howMany):]...)...)
+	copy(removed, (*this.array)[int(index):int(index+howMany)])
+	*this.array = append((*this.array)[:int(index)], append(elements, (*this.array)[int(index+howMany):]...)...)
+	this.Length = float64(len(*this.array))
 	return removed
+}
+
+func (this *JSArray) Slice(index, end float64) []interface{} {
+	if end < 0 {
+		end = float64(len(*this.array)) + end
+	}
+	return (*this.array)[int(index):int(end)]
+}
+
+func (this *JSArray) Pop() interface{} {
+	idx := len(*this.array) - 1
+	x := (*this.array)[idx]
+	*this.array = (*this.array)[:idx]
+	this.Length -= 1
+	return x
+}
+
+func (this *JSArray) Push(x interface{}) float64 {
+	*this.array = append(*this.array, x)
+	this.Length += 1
+	return this.Length
 }

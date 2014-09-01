@@ -44,9 +44,9 @@ var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 func decorate(target interface{}) interface{} {
 	switch object := target.(type) {
 	case string:
-		return js.JSString(object)
+		return js.JSString_(object)
 	case []interface{}:
-		return js.JSArray(object)
+		return js.JSArray_(&object)
 	case map[string]interface{}:
 		return js.JSObject(object)
 	case nil:

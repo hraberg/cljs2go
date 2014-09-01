@@ -170,6 +170,7 @@
     (test "Dot"
           1970 '(.getUTCFullYear (js/Date. 0))
           "`f`" '(.charAt "foo" 0)
+          3 '(.-length "foo")
           "`o`" '(let [x "foo"]
                    (.charAt x 1))
           ;; As cljs.core isn't analyzed yet we need to ns qualify this so the type FQN resolves.

@@ -172,7 +172,8 @@
   (when x
     (str (emit-str x) (go-unbox-no-emit to x))))
 
-(def go-native-decorator '{string js.JSString array js.JSArray})
+(def go-native-decorator {'string (fn [s] (str "js.JSString_(" (emit-str s) ")"))
+                          'array (fn [a] (str "js.JSArray_(&" (emit-str a) ")"))})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
                                     cljs$lang$applyTo CljsLangFn_
                                     cljs$lang$type CljsLangType_
@@ -890,7 +891,7 @@
         static? (-> target :info :type)
         decorator (or (go-native-decorator tag)
                       (some go-native-property-decorator [field method]))
-        reflection? (and (= "interface{}" (go-type tag)) (not static?))]
+        reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
     (emit-wrap env
       (if reflection?
         (do
@@ -904,9 +905,10 @@
           (when-not (or (= :statement (:context env)) static?)
             (emits (go-unbox-no-emit (:tag dot) nil))))
         (do
-          (emits (when decorator (str decorator "("))
-                 target
-                 (when decorator ")")
+          (emits (cond
+                  (fn? decorator) (decorator target)
+                  (symbol? decorator) (str decorator "(" (emit-str target) ")")
+                  :else target)
                  (if static? "_" "."))
           (if field
             (emits (munge (go-public field) #{}))
