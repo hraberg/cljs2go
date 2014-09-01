@@ -44,7 +44,7 @@
      (let [in (str "package _;"
                    (when (seq (str package))
                      (str "import \"" package "\";"))
-                   "var _ = " (cond->> var package (str package ".")))
+                   "var _ = " (cond->> var package (str (last (s/split package #"\.")) ".")))
            {:keys [exit err out]} (sh/sh "godef" "-i" "-t" "-o" (str (count in)) :in in)]
        (if (zero? exit)
          (let [[loc & def] (s/split-lines out)
