@@ -191,3 +191,10 @@ func (this JSString) CharCodeAt(index float64) float64 {
 func (this JSString) String() string {
 	return string(this)
 }
+
+func (this JSArray) Splice(index, howMany float64, elements ...interface{}) []interface{} {
+	removed := make([]interface{}, int(howMany))
+	copy(removed, this[int(index):int(index+howMany)])
+	_ = append(this[:int(index)], append(elements, this[int(index+howMany):]...)...)
+	return removed
+}

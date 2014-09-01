@@ -172,7 +172,7 @@
   (when x
     (str (emit-str x) (go-unbox-no-emit to x))))
 
-(def go-native-decorator '{string js.JSString})
+(def go-native-decorator '{string js.JSString array js.JSArray})
 (def go-native-property-decorator '{cljs$lang$maxFixedArity CljsLangFn_
                                     cljs$lang$applyTo CljsLangFn_
                                     cljs$lang$type CljsLangType_
