@@ -190,6 +190,7 @@
                     cljs.core/object?
                     cljs.core/is_proto_
                     cljs.core/type
+                    cljs.core/array
                     cljs.core/make-array
                     cljs.core/nil-iter})
 
