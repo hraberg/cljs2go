@@ -901,7 +901,7 @@
             (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
                    (wrap-in-double-quotes (munge (go-public method) #{})) ","
                    "[]interface{}{" (comma-sep args) "})"))
-          (when-not (= :statement (:context env))
+          (when-not (or (= :statement (:context env)) static?)
             (emits (go-unbox-no-emit (:tag dot) nil))))
         (do
           (emits (when decorator (str decorator "("))

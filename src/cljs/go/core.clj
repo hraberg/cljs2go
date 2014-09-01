@@ -309,7 +309,8 @@
   (core/list 'js* "arguments"))
 
 (defmacro js-delete [obj key]
-  (core/list 'js* "delete(~{}, ~{})" obj key))
+  (core/list 'js* "func(obj, key interface{}) interface{} { delete(obj.(map[string]interface{}), key.(string)); return obj }(~{}, ~{})"
+             obj key))
 
 (defmacro true? [x]
   (bool-expr (core/list 'js* "~{} == true" x)))
@@ -490,14 +491,12 @@
 
 (defmacro ^::ana/numeric max
   ([x] x)
-  ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "func() float64 { if ~{} > ~{} { return  ~{} } else { return ~{} } }()" x# y# x# y#)))
+  ([x y] `(~'js* "func(x, y float64) float64 { if x > y { return x } else { return y } }(~{}, ~{})" ~x ~y))
   ([x y & more] `(max (max ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric min
   ([x] x)
-  ([x y] `(let [x# ~x, y# ~y]
-            (~'js* "func() float64 { if ~{} < ~{} { return  ~{} } else { return ~{} } }()" x# y# x# y#)))
+  ([x y] `(~'js* "func(x, y float64) float64 { if x < y { return x } else { return y } }(~{}, ~{})" ~x ~y))
   ([x y & more] `(min (min ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric js-mod [num div]
