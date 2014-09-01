@@ -55,6 +55,22 @@
               {:line (biginteger line) :col (biginteger col)}) ))
          (println err)))))
 
+(defn godoc [package name]
+  (let [{:keys [exit err out]} (sh/sh "godoc" package name)
+        out (s/trim out)]
+    (if (and (zero? exit) (not= "No match found." out))
+      (->> (s/split out #"\n\n+")
+           (group-by #(let [[what name s-or-i method ] (s/split % #" ")
+                            name (-> (if (= \( (first name)) method name)
+                                     (s/split #"\(")
+                                     first
+                                     symbol)]
+                        (or
+                         (when (= "type" what)
+                           (some->> s-or-i keyword #{:struct :interface} (vector name)))
+                         [name (keyword what)]))))
+      (println err))))
+
 (defn go-get [package]
   (let [{:keys [exit err]} (sh/sh "go" "get" package)]
     (assert (zero? exit) err)))
