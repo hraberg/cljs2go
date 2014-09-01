@@ -701,7 +701,10 @@
 (defmethod emit* :recur
   [{:keys [frame exprs]}]
   (when-let [params (seq (:params frame))]
-    (emitln (comma-sep params) " = " (comma-sep exprs)))
+    (emitln (comma-sep params)
+            " = "
+            (comma-sep (for [[e p] (map vector exprs params)]
+                         (str (emit-str e) (go-unbox-no-emit (:tag p) e))))))
   (emitln "continue"))
 
 (defmethod emit* :letfn
