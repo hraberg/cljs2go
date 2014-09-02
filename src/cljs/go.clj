@@ -93,7 +93,7 @@
       {:file file :errors (count (s/split-lines err))})))
 
 (defn go-build [dir]
-  (let [{:keys [exit out err]} (sh/sh "go" "build" :dir dir)]
+  (let [{:keys [exit out err]} (sh/sh "go" "build" "--gcflags" "-e" :dir dir)]
     (when-not (zero? exit)
       (println err)
       {:dir dir :errors (count (remove #(= \tab (first %)) (s/split-lines err)))})))
