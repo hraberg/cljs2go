@@ -190,6 +190,8 @@
 (def go-skip-def '#{cljs.core/enable-console-print!
                     cljs.core/object?
                     cljs.core/native-satisfies?
+                    cljs.core/instance?
+                    cljs.core/symbol?
                     cljs.core/missing-protocol
                     cljs.core/make-array
                     cljs.core/array

@@ -553,7 +553,7 @@ var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
 })
 
 // unimplemented
-var Pr_writer, Type_, Type__GT_str, Fn_QMARK_, Integer_QMARK_, Array, Nil_iter *AFn
+var Symbol_QMARK_, Pr_writer, Type_, Type__GT_str, Fn_QMARK_, Integer_QMARK_, Array, Nil_iter *AFn
 
 func init() {
 	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
