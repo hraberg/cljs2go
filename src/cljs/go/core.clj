@@ -241,7 +241,7 @@
 (defn simple-test-expr? [env ast]
   (core/and
     (#{:var :invoke :constant :dot :js} (:op ast))
-    ('#{boolean seq} (cljs.analyzer/infer-tag env ast))))
+    (= 'boolean (cljs.analyzer/infer-tag env ast))))
 
 (defmacro and
   "Evaluates exprs one at a time, from left to right. If a form
