@@ -17,29 +17,12 @@ func element(x interface{}) reflect.Value {
 	}
 }
 
-var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface{} {
-	return element(target).FieldByName(fieldName.(string)).Interface()
-})
-
-var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
-	element(target).FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
-	return val
-})
-
 func value(x interface{}) reflect.Value {
 	if v, ok := x.(reflect.Value); ok {
 		return v
 	}
 	return reflect.ValueOf(x)
 }
-
-var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
-	in := make([]reflect.Value, len(args.([]interface{})))
-	for i, a := range args.([]interface{}) {
-		in[i] = reflect.ValueOf(a)
-	}
-	return value(f).Call(in)[0].Interface()
-})
 
 func decorate(target interface{}) interface{} {
 	switch object := target.(type) {
@@ -55,6 +38,23 @@ func decorate(target interface{}) interface{} {
 		return object
 	}
 }
+
+var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface{} {
+	return element(decorate(target)).FieldByName(fieldName.(string)).Interface()
+})
+
+var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
+	element(decorate(target)).FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+	return val
+})
+
+var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
+	in := make([]reflect.Value, len(args.([]interface{})))
+	for i, a := range args.([]interface{}) {
+		in[i] = reflect.ValueOf(a)
+	}
+	return value(f).Call(in)[0].Interface()
+})
 
 var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}) interface{} {
 	return Native_invoke_func.X_invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
@@ -89,36 +89,6 @@ type Arity18 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface
 type Arity19 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
 type Arity20 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
 
-/*
- Primitive signatures used by ClojureScript itself, but it only ever type hints the return tag.
-Arity0F
-Arity1IA
-Arity1IB
-Arity1IF
-Arity2IIB
-Arity2IIF
-
- We might want to propagate :cljs.analyzer/numeric from the macros to the fns for arity 1 and 2.
- These would be:
- Arity1FF
- Arity2FFF
- Arity1FB
- Arity2FFB
-
- The full list of tags used for returns on protocols are:
- ^array
- ^boolean
- ^clj
- ^clj-or-nil
- ^not-native
- ^number
- ^seq
- ^string
-
- ^seq is also used for normal fns, we can add ClsjCoreISeq, with short type Q:
- Arity1IQ
-*/
-
 type Arity1IA func(interface{}) []interface{}
 type Arity2IIA func(_, _ interface{}) []interface{}
 
@@ -143,13 +113,6 @@ type Arity2IIB func(_, _ interface{}) bool
 type Arity2FFB func(_, _ float64) bool
 type Arity3IIIB func(_, _, _ interface{}) bool
 
-// CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
-// The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
-// Then there's the issue of other protocols and how to represent them, as we prefer to keep them as Go interfaces.
-// As can be seen above regarding IFn, it would be nice to ensure that IFn is just a special case that emit* :invoke knows about.
-// IFn -invoke is like any other protocol in JS. There's a dispatch fn setup which looks for an implementation on the receiver.
-// That is, cljs.core._invoke will call  receiver.cljs$core$IFn$_invoke$arity$1(receiver, x)
-// My impression is that this is how CLJS does it. To reiterate - the reason this becomes extra messy in Go is lack of overloading.
 type AFn struct {
 	MaxFixedArity int
 	ArityVariadic
@@ -527,33 +490,6 @@ type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool
 }
-
-// core.cljs overrides
-
-var Enable_console_print_BANG_ = Fn(func() interface{} {
-	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
-		fmt.Print(x)
-		return nil
-	})
-	return nil
-})
-
-var Apply = Fn(func(f_args ...interface{}) interface{} {
-	f, args := f_args[0], f_args[1:]
-	argc := len(args)
-	if argc < 1 {
-		throwArity(nil, argc)
-	}
-	var spread = args[argc-1].([]interface{}) // This will be a seq in real life.
-	return f.(*AFn).Call(append(args[:argc-1], spread...)...)
-})
-
-var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
-	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
-})
-
-// unimplemented
-var Symbol_QMARK_, Complement, Iter, Pr_writer, Type_, Type__GT_str, Fn_QMARK_, Integer_QMARK_, Array, Nil_iter *AFn
 
 func init() {
 	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
