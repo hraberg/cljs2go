@@ -383,14 +383,14 @@
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
-               "}).(CljsCorePersistentHashMap)")))))
+               "}).(*CljsCorePersistentHashMap)")))))
 
 (defmethod emit* :list
   [{:keys [items env]}]
   (emit-wrap env
     (if (empty? items)
       (emits "CljsCoreList_EMPTY")
-      (emits "List(" (comma-sep items) ")"))))
+      (emits "List.X_invoke_ArityVariadic(" (comma-sep items) ").(*CljsCoreList)"))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
