@@ -530,13 +530,13 @@
   ([x y & more] `(bit-and-not (bit-and-not ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-clear [x n]
-  (core/list 'js* "float64(int(~{}) &^ (1 << uint(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) &^ (int(1) << uint(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-flip [x n]
-  (core/list 'js* "float64(int(~{}) ^ (1 << uint(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) ^ (int(1) << uint(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-test [x n]
-  (core/list 'js* "float64((int(~{}) & (1 << uint(~{}))) != 0)" x n))
+  (core/list 'js* "float64((int(~{}) & (int(1) << uint(~{}))) != 0)" x n))
 
 (defmacro ^::ana/numeric bit-shift-left [x n]
   (core/list 'js* "float64(int(~{}) << uint(~{}))" x n))
@@ -551,7 +551,7 @@
   (core/list 'js* "float64(uint(~{}) >> uint(~{}))" x n))
 
 (defmacro ^::ana/numeric bit-set [x n]
-  (core/list 'js* "float64(int(~{}) | (1 << iint(~{})))" x n))
+  (core/list 'js* "float64(int(~{}) | (int(1) << uint(~{})))" x n))
 
 ;; internal
 (defmacro ^::ana/numeric mask [hash shift]
@@ -559,7 +559,7 @@
 
 ;; internal
 (defmacro ^::ana/numeric bitpos [hash shift]
-  (core/list 'js* "float64(1 << uint(~{}))" `(mask ~hash ~shift)))
+  (core/list 'js* "float64(int(1) << uint(~{}))" `(mask ~hash ~shift)))
 
 ;; internal
 (defmacro caching-hash [coll hash-fn hash-key]
