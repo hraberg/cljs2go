@@ -590,19 +590,18 @@
 
 (defn emit-protocol-method
   [protocol name {:keys [type params expr env recurs]} ret-tag]
-  (emit-wrap env
-    (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
-           (-> name munge go-short-name go-public)
-           (when-not ('#{cljs.core/Object} protocol)
-             (str "_Arity" (cond-> (count params)
-                                   (and (= 'cljs.core/IFn protocol)
-                                        (= '-invoke (:name name))) dec))))
-    (emit-fn-signature (rest params) ret-tag)
-    (emits "{")
-    (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
-                                ret-tag)]
-      (emit-fn-body type expr recurs))
-    (emitln "}")))
+  (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
+         (-> name munge go-short-name go-public)
+         (when-not ('#{cljs.core/Object} protocol)
+           (str "_Arity" (cond-> (count params)
+                                 (and (= 'cljs.core/IFn protocol)
+                                      (= '-invoke (:name name))) dec))))
+  (emit-fn-signature (rest params) ret-tag)
+  (emits "{")
+  (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
+                              ret-tag)]
+    (emit-fn-body type expr recurs))
+  (emitln "}"))
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
