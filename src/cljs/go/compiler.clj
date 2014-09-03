@@ -41,8 +41,7 @@
     "float32" "float64"
     "complex64" "complex128"
     "byte" "rune"
-    "int" "float"
-    "string"})
+    "int" "float"})
 
 (def go-reserved
   (into go-types
@@ -213,7 +212,7 @@
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
 
-(defn warn-on-reflection [{:keys [env field method]}]
+(defn warn-on-reflection [{:keys [env field method f]}]
   (when *warn-on-reflection*
     (binding [*out* *err*]
       (let [{:keys [file column line] :or {file "-"}} (ana/source-info env)]
@@ -221,7 +220,9 @@
          field (printf "Reflection warning, %s:%d:%d - reference to field %s can't be resolved.\n"
                        file line column field)
          method (printf "Reflection warning, %s:%d:%d - call to method %s can't be resolved (target class is unknown).\n"
-                        file line column method))))))
+                        file line column method)
+         f (printf "Reflection warning, %s:%d:%d - call to method %s can't be resolved (target class is unknown).\n"
+                   file line column (-> f :info :name)))))))
 
 (defmulti emit* :op)
 
@@ -808,7 +809,10 @@
          (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
 
          native?
-         (emits f "(" (comma-sep args)  ")")
+         (do
+           (warn-on-reflection expr)
+           (emits "Native_invoke_func.X_invoke_Arity2(" f ","
+                  "[]interface{}{" (comma-sep args) "})"))
 
          (and has-primitives? tags-match?)
          (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
@@ -817,7 +821,7 @@
          (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
         ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-        (when-not (or native? has-primitives?
+        (when-not (or has-primitives?
                       (= :statement (:context env)))
           (emits (go-unbox-no-emit ret-tag nil)))))))
 
