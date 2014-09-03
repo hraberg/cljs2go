@@ -435,9 +435,12 @@
       (emits "[]interface{}{" (comma-sep items) "}"))))
 
 (defmethod emit* :constant
-  [{:keys [form env]}]
+  [{:keys [form env tag]}]
   (when-not (= :statement (:context env))
-    (emit-wrap env (emit-constant form))))
+    (binding [*go-return-tag* (when (and (go-needs-coercion? tag *go-return-tag*)
+                                         (not (nil? form)))
+                                *go-return-tag*)]
+      (emit-wrap env (emit-constant form)))))
 
 (defn truthy-constant? [{:keys [op form]}]
   (and (#{:constant :list :vector :set :map} op) form))
@@ -771,39 +774,42 @@
                              (> arity (:max-fixed-arity info)))
         coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
                      (not (or fn? (= 'function (:tag info)))))
-        static-field-receiver? (-> expr :args first :target :info :type)]
-    (emit-wrap env
-      (cond
-       opt-not?
-       (emits "!(" (first args) ")")
+        static-field-receiver? (-> expr :args first :target :info :type)
+        ret-tag (:tag expr)]
+    (binding [*go-return-tag* (when (go-needs-coercion? ret-tag *go-return-tag*)
+                                *go-return-tag*)]
+      (emit-wrap env
+        (cond
+         opt-not?
+         (emits "!(" (first args) ")")
 
-       protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
-       (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
-         (emits (if (and (= (go-type tag) "interface{}")
-                         (not static-field-receiver?))
-                  (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")")
-                  (first args) )
-                "." pimpl "(" (comma-sep (rest args)) ")"))
+         protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
+         (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
+           (emits (if (and (= (go-type tag) "interface{}")
+                           (not static-field-receiver?))
+                    (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")")
+                    (first args) )
+                  "." pimpl "(" (comma-sep (rest args)) ")"))
 
-       keyword?
-       (emits f ".X_invoke_Arity" arity "(" (comma-sep args) ")")
+         keyword?
+         (emits f ".X_invoke_Arity" arity "(" (comma-sep args) ")")
 
-       variadic-invoke
-       (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
+         variadic-invoke
+         (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
 
-       native?
-       (emits f "(" (comma-sep args)  ")")
+         native?
+         (emits f "(" (comma-sep args)  ")")
 
-       (and has-primitives? tags-match?)
-       (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
+         (and has-primitives? tags-match?)
+         (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
-       :else
-       (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
+         :else
+         (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
-      ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-      (when-not (or native? has-primitives?
-                    (= :statement (:context env)))
-        (emits (go-unbox-no-emit (:tag expr) nil))))))
+        ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
+        (when-not (or native? has-primitives?
+                      (= :statement (:context env)))
+          (emits (go-unbox-no-emit ret-tag nil)))))))
 
 (defn normalize-goog-ctor [ctor]
   (let [parts (string/split (-> ctor :info :name str) #"\.")
