@@ -342,7 +342,7 @@
 (defmethod emit* :no-op [m])
 
 (defmethod emit* :var
-  [{:keys [info env] :as arg}]
+  [{:keys [info env tag] :as arg}]
   (let [info (cond-> info (:type info) (update-in [:name] go-type-fqn))]
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
@@ -352,14 +352,16 @@
       ; (prevents duplicate fn-param-names)
       (emits (munge arg))
       (when-not (= :statement (:context env))
-        (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
-                                      (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
-                                          (:field info))
-                                      (update-in info [:name] (comp go-public munge name))
-                                      (:ns info)
-                                      (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
-                                                                    "." (-> % name munge go-public)))
-                                      :else info))))))))
+        (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
+                                    *go-return-tag*)]
+          (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
+                                        (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
+                                            (:field info))
+                                        (update-in info [:name] (comp go-public munge name))
+                                        (:ns info)
+                                        (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
+                                                                      "." (-> % name munge go-public)))
+                                        :else info)))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
