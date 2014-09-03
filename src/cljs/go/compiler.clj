@@ -193,6 +193,7 @@
                     cljs.core/is_proto_
                     cljs.core/type
                     cljs.core/type->str
+                    cljs.core/quote-string
                     cljs.core/pr-writer
                     cljs.core/js-obj
                     cljs.core/js-keys
