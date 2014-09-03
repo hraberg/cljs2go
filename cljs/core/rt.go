@@ -528,6 +528,8 @@ type Object interface {
 	Equiv(other interface{}) bool
 }
 
+// core.cljs overrides
+
 var Enable_console_print_BANG_ = Fn(func() interface{} {
 	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
 		fmt.Print(x)
@@ -549,6 +551,9 @@ var Apply = Fn(func(f_args ...interface{}) interface{} {
 var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
 	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
 })
+
+// unimplemented
+var Pr_writer, Type_, Type__GT_str, Fn_QMARK_, Integer_QMARK_, Array, Nil_iter *AFn
 
 func init() {
 	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
