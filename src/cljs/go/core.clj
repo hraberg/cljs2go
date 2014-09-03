@@ -59,7 +59,7 @@
 
 (import-macros clojure.core
  [-> ->> .. assert comment cond
-  declare defn defn-
+  defn defn-
   doto
   extend-protocol fn for
   if-let if-not letfn
@@ -67,6 +67,8 @@
   when when-first when-let when-not while
   cond-> cond->> as-> some-> some->>
   if-some when-some])
+
+(defmacro declare [& names])
 
 (defmacro defonce [x init]
   `(when-not (exists? ~x)
