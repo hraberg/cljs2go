@@ -35,11 +35,21 @@
       (->> (some #(re-find #"clojurescript-(.+)\.jar" %))
            second)))
 
+(def go-types
+  #{"uint8" "uint16" "uint32" "uint64"
+    "int8" "int16" "int32" "int64"
+    "float32" "float64"
+    "complex64" "complex128"
+    "byte" "rune"
+    "int" "float"
+    "string"})
+
 (def go-reserved
-  #{"break" "case" "chan" "const" "continue" "default"
-    "defer" "else" "fallthrough" "for" "func" "go" "goto"
-    "if" "import" "interface" "map" "package" "range"
-    "return" "select" "struct" "switch" "type" "var"})
+  (into go-types
+   #{"break" "case" "chan" "const" "continue" "default"
+     "defer" "else" "fallthrough" "for" "func" "go" "goto"
+     "if" "import" "interface" "map" "package" "range"
+     "return" "select" "struct" "switch" "type" "var"}))
 
 (def ^:dynamic *lexical-renames* {})
 

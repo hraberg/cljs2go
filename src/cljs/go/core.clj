@@ -292,7 +292,7 @@
 
 ;; internal - do not use.
 (defmacro coercive-= [x y]
-  (bool-expr (core/list 'js* "(~{} == ~{})" x y)))
+  (bool-expr (core/list 'js* "reflect.DeepEqual(~{}, ~{})" x y)))
 
 ;; internal - do not use.
 (defmacro coercive-boolean [x]
