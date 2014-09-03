@@ -120,6 +120,7 @@ Arity2IIF
 */
 
 type Arity1IA func(interface{}) []interface{}
+type Arity2IIA func(_, _ interface{}) []interface{}
 
 type Arity1IQ func(interface{}) CljsCoreISeq
 
@@ -140,6 +141,7 @@ type Arity1IB func(interface{}) bool
 type Arity1FB func(float64) bool
 type Arity2IIB func(_, _ interface{}) bool
 type Arity2FFB func(_, _ float64) bool
+type Arity3IIIB func(_, _, _ interface{}) bool
 
 // CLJS also (among other things) adds .call and .apply when implementing the IFn protocol, see cljs.core/add-ifn-methods, clj
 // The easiest way to acheive this is renaming (and hide) the fields, and make CljsCoreIFn_InvokeArity1 an interface method.
@@ -191,8 +193,11 @@ type AFn struct {
 	Arity1IB
 	Arity2IIB
 	Arity2FFB
+	Arity3IIIB
 
 	Arity1IA
+	Arity2IIA
+
 	Arity1IQ
 }
 
@@ -264,11 +269,18 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 			return this.Arity2IIB(args[0], args[1])
 		case this.Arity2FFB != nil:
 			return this.Arity2FFB(args[0].(float64), args[1].(float64))
+		case this.Arity2IIA != nil:
+			return this.Arity2IIA(args[0], args[1])
 		default:
 			return this.Arity2(args[0], args[1])
 		}
 	case 3:
-		return this.Arity3(args[0], args[1], args[2])
+		switch {
+		case this.Arity3IIIB != nil:
+			return this.Arity3IIIB(args[0], args[1], args[2])
+		default:
+			return this.Arity3(args[0], args[1], args[2])
+		}
 	case 4:
 		return this.Arity4(args[0], args[1], args[2], args[3])
 	case 5:
