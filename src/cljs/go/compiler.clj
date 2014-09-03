@@ -193,6 +193,7 @@
                     cljs.core/instance?
                     cljs.core/symbol?
                     cljs.core/missing-protocol
+                    cljs.core/complement
                     cljs.core/make-array
                     cljs.core/array
                     cljs.core/string?
