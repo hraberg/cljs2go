@@ -536,7 +536,7 @@
   (core/list 'js* "float64(int(~{}) ^ (int(1) << uint(~{})))" x n))
 
 (defmacro ^::ana/numeric bit-test [x n]
-  (core/list 'js* "float64((int(~{}) & (int(1) << uint(~{}))) != 0)" x n))
+  (bool-expr (core/list 'js* "float64((int(~{}) & (int(1) << uint(~{})))) != 0" x n)))
 
 (defmacro ^::ana/numeric bit-shift-left [x n]
   (core/list 'js* "float64(int(~{}) << uint(~{}))" x n))

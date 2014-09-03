@@ -768,7 +768,7 @@
         tags-match? true ; (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
-        coerce? (and (or (:field info) (:binding-form? info))
+        coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
                      (not (or fn? (= 'function (:tag info)))))
         static-field-receiver? (-> expr :args first :target :info :type)]
     (emit-wrap env
