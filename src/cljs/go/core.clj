@@ -500,7 +500,7 @@
   ([x y & more] `(min (min ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric js-mod [num div]
-  (core/list 'js* "(~{} % ~{})" num div))
+  (core/list 'js* "float64(int(~{}) % int(~{}))" num div))
 
 (defmacro ^::ana/numeric bit-not [x]
   (core/list 'js* "float64(^ int(~{}))" x))
@@ -554,11 +554,11 @@
   (core/list 'js* "float64(int(~{}) | (1 << iint(~{})))" x n))
 
 ;; internal
-(defmacro mask [hash shift]
+(defmacro ^::ana/numeric mask [hash shift]
   (core/list 'js* "float64((uint(~{}) >> uint(~{})) & 0x01f)" hash shift))
 
 ;; internal
-(defmacro bitpos [hash shift]
+(defmacro ^::ana/numeric bitpos [hash shift]
   (core/list 'js* "float64(1 << uint(~{}))" `(mask ~hash ~shift)))
 
 ;; internal
