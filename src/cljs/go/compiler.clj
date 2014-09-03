@@ -196,6 +196,7 @@
                     cljs.core/complement
                     cljs.core/make-array
                     cljs.core/array
+                    cljs.core/iter
                     cljs.core/string?
                     cljs.core/integer?
                     cljs.core/fn?
