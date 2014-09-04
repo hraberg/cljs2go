@@ -162,12 +162,13 @@
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
     (let [ns (symbol ns)
+          goog? (= 'goog ns)
           type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
       (str
-       (when type? "*")
+       (when (or type? goog?) "*")
        (munge (cond
                ((hash-set 'cljs.core ana/*cljs-ns*) ns) (go-type-fqn tag)
-               (= 'goog ns) (go-normalize-goog-type tag)
+               goog? (go-normalize-goog-type tag)
                :else (str ns "." (go-type-fqn tag))))))
     (go-tag->type tag "interface{}")))
 
@@ -817,7 +818,10 @@
     (emitln (comma-sep params)
             " = "
             (comma-sep (for [[e p] (map vector exprs params)]
-                         (str (emit-str e) (go-unbox-no-emit (go-try-to-ressurect-impl p) e))))))
+                         (str (emit-str e)
+                              (when-not ('#{goog js} (and (symbol? (:tag p))
+                                                          (some-> p :tag namespace symbol)))
+                                (go-unbox-no-emit (go-try-to-ressurect-impl p) e)))))))
   (emitln "continue"))
 
 (defmethod emit* :letfn
