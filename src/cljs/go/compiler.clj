@@ -179,8 +179,11 @@
 
 (declare emit-str)
 
+(defn go-static-field? [x]
+  (and (= :dot (:op x)) (-> x :target :info :type)))
+
 (defn go-unbox-no-emit [to x]
-  (let [static-field? (and (= :dot (:op x)) (-> x :target :info :type))
+  (let [static-field? (go-static-field? x)
         defined-var? (and (= :var (:op x)) (not (some (:info x) [:local :binding-form? :field])))
         new? (= :new (:op x))
         tag (:tag x)]
@@ -875,7 +878,7 @@
           (emits "func() " (go-type (:tag val)) " {")
           (emitln "var " return " = " val))
         (let [val (or return val)
-              static? (-> target :target :info :type)]
+              static? (go-static-field? target)]
           (if-let [reflective-field (and (= "interface{}" (-> target :target :tag go-type))
                                          (not static?)
                                          (:field target))]
@@ -938,7 +941,7 @@
 (defmethod emit* :dot
   [{:keys [target field method args env] :as dot}]
   (let [tag (:tag target)
-        static? (-> target :info :type)
+        static? (go-static-field? dot)
         decorator (go-native-decorator tag)
         reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
     (binding [*go-return-tag* (when (and (not static?)
