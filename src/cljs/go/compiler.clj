@@ -57,6 +57,8 @@
 (def ^:dynamic *go-import-prefix* "github.com/hraberg/cljs.go/")
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
+(def ^:dynamic *go-protocol-fn* nil)
+(def ^:dynamic *go-protocol* nil)
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
@@ -409,9 +411,9 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "&CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
+          (emits "(&CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
-            "}, nil}")
+            "}, nil})")
           (emits "CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3([]interface{}{"
             (comma-sep (interleave keys vals))
             "}, true, false).(*CljsCorePersistentArrayMap)"))
@@ -437,8 +439,8 @@
       (emits "CljsCorePersistentVector_EMPTY")
       (let [cnt (count items)]
         (if (< cnt 32)
-          (emits "&CljsCorePersistentVector{nil, " cnt
-            ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil}")
+          (emits "(&CljsCorePersistentVector{nil, " cnt
+            ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil})")
           (emits "CljsCorePersistentVector_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentVector)"))))))
 
 (defn distinct-constants? [items]
@@ -453,8 +455,8 @@
       (emits "CljsCorePersistentHashSet_EMPTY")
 
       (distinct-constants? items)
-      (emits "&CljsCorePersistentHashSet{nil, &CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
-        (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil}")
+      (emits "(&CljsCorePersistentHashSet{nil, &CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
+        (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil})")
 
       :else (emits "CljsCorePersistentHashSet_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentHashSet)"))))
 
@@ -625,7 +627,9 @@
   (emit-fn-signature (rest params) ret-tag)
   (emits "{")
   (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
-                              ret-tag)]
+                              ret-tag)
+            *go-protocol* protocol
+            *go-protocol-fn* (:name name)]
     (emit-fn-body type expr recurs))
   (emitln "}"))
 
@@ -774,10 +778,15 @@
 (defmethod emit* :invoke
   [{:keys [f args env] :as expr}]
   (let [info (:info f)
-       fn? (and ana/*cljs-static-fns*
-                (not (:dynamic info))
-                (:fn-var info))
-        protocol (:protocol info)
+        fn? (and ana/*cljs-static-fns*
+                 (not (:dynamic info))
+                 (:fn-var info))
+        protocol (or (:protocol info)
+                     (and (= *go-protocol-fn* (:name info)) ;; this is a hack to deal with self-calls, to be revisited.
+                          *go-protocol*))
+        object? (= 'cljs.core/Object protocol)
+        protocol (when (not object?)
+                   protocol)
         tag      (ana/infer-tag env (first (:args expr)))
         proto? (and protocol tag
                  (or (and ana/*cljs-static-fns* protocol (= tag 'not-native))
@@ -800,7 +809,7 @@
                 (or (= ns 'goog)
                     (when-let [ns-str (str ns)]
                       (= (get (string/split ns-str #"\.") 0 nil) "goog"))))
-        native? (or js? goog? go?)
+        native? (or js? goog? go? object?)
         keyword? (and (= (-> f :op) :constant)
                       (keyword? (-> f :form)))
         arity (count args)
