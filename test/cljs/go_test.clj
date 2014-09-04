@@ -6,11 +6,16 @@
             [cljs.env :as env]
             [cljs.tagged-literals]
             [clojure.pprint :as pp]
+            [fipp.edn :as fipp]
             [clojure.string :as s]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh])
   (:import [java.io Writer]
            [cljs.tagged_literals JSValue]))
+
+(defn pp [x]
+  (binding [pp/*print-right-margin* 132]
+    (fipp/pprint x {:width pp/*print-right-margin*})))
 
 (defmacro tdd [& body]
   `(env/ensure
@@ -18,7 +23,7 @@
       (def *ast (cljs->ast '[~@body]))
       (def *go (s/trim (goimports (ast->go *ast))))
       (def *ns (ana/get-namespace ana/*cljs-ns*))
-      (pp/pprint *ast)
+      (pp *ast)
       (println)
       (println *go))))
 
@@ -38,10 +43,10 @@
 
 (defn test-comment [code ast]
   (println "/*")
-  (pp/pprint code)
+  (pp code)
   (when *ast-debug*
     (println)
-    (pp/pprint ast))
+    (pp ast))
   (println"*/"))
 
 (defn test-setup [setup]

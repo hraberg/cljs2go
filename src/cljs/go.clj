@@ -3,7 +3,6 @@
             [cljs.env :as env]
             [cljs.go.compiler]
             [clojure.string :as s]
-            [clojure.pprint :as pp]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh]))
 
