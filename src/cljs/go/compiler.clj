@@ -515,6 +515,9 @@
   [{:keys [test then else env form unchecked tag]}]
   (let [context (:context env)
         checked (not (or unchecked (safe-test? env test)))
+        checked (if-let [real-tag (go-tag-of-target test)]
+                  (not= real-tag 'boolean)
+                  checked)
         test (cond-> test checked (assoc :tag 'any))] ;; and/or can mess up the tags - will always be interface{} for checked.
     (cond
       (truthy-constant? test) (emitln then)
@@ -905,8 +908,10 @@
 
 (defn go-tag-of-target [{:keys [op] :as target}]
   (when (= :dot op)
-    (some->> target :target :tag go-fields-of-type
-             (some #(and (= % (:field target)) (:tag (meta %)))))))
+    (or
+     (some->> target :target :tag go-fields-of-type
+              (some #(and (= % (:field target)) (:tag (meta %)))))
+     'any)))
 
 (defmethod emit* :set!
   [{:keys [target val env form]}]
@@ -914,10 +919,11 @@
     (emit-wrap env
       (let [return (when (#{:expr :return} (:context env))
                      (gensym "return__"))
+            tag-of-target (go-tag-of-target target)
             val (str (emit-str val)
-                     (go-unbox-no-emit (go-tag-of-target target) val))]
+                     (go-unbox-no-emit tag-of-target val))]
         (when return
-          (emits "func() " (go-type (go-tag-of-target target)) " {")
+          (emits "func() " (go-type tag-of-target) " {")
           (emitln "var " return " = " val))
         (let [val (or return val)
               static? (go-static-field? target)]
