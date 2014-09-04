@@ -154,6 +154,10 @@
         ns (string/replace (apply str (butlast parts)) "/" ".")]
     (symbol ns (last parts))))
 
+(def go-tag->type
+  '{number "float64" boolean "bool" string "string" array "[]interface{}"
+    seq "CljsCoreISeq" function "CljsCoreIFn"})
+
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
     (let [ns (symbol ns)
@@ -164,7 +168,7 @@
                ((hash-set 'cljs.core ana/*cljs-ns*) ns) (go-type-fqn tag)
                (= 'goog ns) (go-normalize-goog-type tag)
                :else (str ns "." (go-type-fqn tag))))))
-    ('{number "float64" boolean "bool" string "string" array "[]interface{}" seq "CljsCoreISeq"} tag "interface{}")))
+    (go-tag->type tag "interface{}")))
 
 (defn go-short-type [tag]
   ('{number "F" boolean "B" string "S" array "A" seq "Q"} tag "I"))

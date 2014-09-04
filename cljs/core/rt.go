@@ -171,6 +171,9 @@ func throwArity(f, arity interface{}) interface{} {
 	return f
 }
 
+func (this *AFn) CljsCoreIFn__() {
+}
+
 func (this *AFn) isVariadic() bool {
 	return this.MaxFixedArity >= 0 && this.ArityVariadic != nil
 }
