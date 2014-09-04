@@ -808,7 +808,7 @@
              (add-proto-methods* psym type type-sym sig)))
          sigs))))))
 
-(declare dt->et collect-protocols)
+(core/declare dt->et collect-protocols)
 
 ;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
 (defn fields-of-type [type]
