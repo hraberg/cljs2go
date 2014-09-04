@@ -1026,7 +1026,7 @@
                      ")"))))))))
 
 (defmethod emit* :js
-  [{:keys [env code js-op segs args numeric]}]
+  [{:keys [env code js-op segs args numeric tag]}]
   (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
         args (case js-op
                cljs.core/make-array [(go-unbox 'number (first args))]
@@ -1037,16 +1037,18 @@
                                       (map (partial go-unbox 'number) (butlast (rest args)))
                                       [(last args)])
                args)]
-    (emit-wrap env
-      (when aset-return?
-        (emits "func() " (go-type (:tag (last args))) "{ "))
-      (cond
-       code (emits code)
-       :else (emits (interleave (concat segs (repeat nil))
-                                (map (if numeric (partial go-unbox 'number) identity)
-                                     (concat args [nil])))))
-      (when aset-return?
-        (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()")))))
+    (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
+                                *go-return-tag*)]
+      (emit-wrap env
+        (when aset-return?
+          (emits "func() " (go-type (:tag (last args))) "{ "))
+        (cond
+         code (emits code)
+         :else (emits (interleave (concat segs (repeat nil))
+                                  (map (if numeric (partial go-unbox 'number) identity)
+                                       (concat args [nil])))))
+        (when aset-return?
+          (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()"))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
