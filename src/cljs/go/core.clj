@@ -810,11 +810,6 @@
 
 (core/declare dt->et collect-protocols)
 
-;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
-(defn fields-of-type [type]
-  (first (:method-params (get-in (ana/get-namespace (symbol (namespace type)))
-                                 [:defs (symbol (core/str '-> (name type)))]))))
-
 (defmacro extend-type [type-sym & impls]
   (let [env &env
         resolve (partial resolve-var env)
@@ -827,7 +822,7 @@
         impls (if (and extending-existing-type? real-type-in-current-ns?)
                 ;; we need to enrich here, but JS ClojureScript doesn't.
                 (dt->et (vary-meta type-sym assoc :protocols (collect-protocols impls env))
-                        impls (fields-of-type fq-type-sym) true)
+                        impls (cljs.compiler/go-fields-of-type fq-type-sym) true)
                 impls)
         impl-map (->impl-map impls)]
     (when (core/and (:extending-base-js-type cljs.analyzer/*cljs-warnings*)

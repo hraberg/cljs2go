@@ -244,6 +244,13 @@
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
 
+;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
+(defn go-fields-of-type [type]
+  (when (symbol? type)
+    (first (:method-params (get-in (ana/get-namespace (or (some-> type namespace symbol)
+                                                          ana/*cljs-ns*))
+                                   [:defs (symbol (str '-> (name type)))])))))
+
 (defn warn-on-reflection [{:keys [env field method f]}]
   (when *warn-on-reflection*
     (binding [*out* *err*]
@@ -889,17 +896,28 @@
                     js ctor
                     goog (normalize-goog-ctor ctor)
                     (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
-                    (comma-sep args)
-                    "})"))))
+                    (comma-sep
+                     (if-let [types (seq (map (comp :tag meta) (go-fields-of-type (-> ctor :info :name))))]
+                       (map go-unbox types args)
+                       args))
+                    "})"
+))))
+
+(defn go-tag-of-target [{:keys [op] :as target}]
+  (when (= :dot op)
+    (some->> target :target :tag go-fields-of-type
+             (some #(and (= % (:field target)) (:tag (meta %)))))))
 
 (defmethod emit* :set!
   [{:keys [target val env form]}]
   (when-not (go-skip-set! form)
     (emit-wrap env
       (let [return (when (#{:expr :return} (:context env))
-                     (gensym "return__"))]
+                     (gensym "return__"))
+            val (str (emit-str val)
+                     (go-unbox-no-emit (go-tag-of-target target) val))]
         (when return
-          (emits "func() " (go-type (:tag val)) " {")
+          (emits "func() " (go-type (go-tag-of-target target)) " {")
           (emitln "var " return " = " val))
         (let [val (or return val)
               static? (go-static-field? target)]
