@@ -778,13 +778,28 @@
 (defmethod emit* :loop [ast]
   (emit-let ast true))
 
+(defn go-try-to-ressurect-impl [{:keys [tag] :as x}]
+  (cond
+   (and (= tag 'cljs.core/IMap)
+        (<= (count (:keys (:info x))) array-map-threshold))
+   'cljs.core/PersistentArrayMap
+
+   (= '(. PersistentTreeMap -EMPTY) (-> x :init :form))
+   'cljs.core/PersistentTreeMap
+
+   :else
+   ('{cljs.core/IList cljs.core/List
+      cljs.core/ISet cljs.core/PersistentHashSet
+      cljs.core/IVector cljs.core/PersistentVector
+      cljs.core/IMap cljs.core/PersistentHashMap} tag tag)))
+
 (defmethod emit* :recur
   [{:keys [frame exprs]}]
   (when-let [params (seq (:params frame))]
     (emitln (comma-sep params)
             " = "
             (comma-sep (for [[e p] (map vector exprs params)]
-                         (str (emit-str e) (go-unbox-no-emit (:tag p) e))))))
+                         (str (emit-str e) (go-unbox-no-emit (go-try-to-ressurect-impl p) e))))))
   (emitln "continue"))
 
 (defmethod emit* :letfn
