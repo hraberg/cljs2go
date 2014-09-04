@@ -202,6 +202,28 @@
   (when x
     (str (emit-str x) (go-unbox-no-emit to x))))
 
+;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
+(defn go-fields-of-type [type]
+  (when (symbol? type)
+    (first (:method-params (get-in (ana/get-namespace (or (some-> type namespace symbol)
+                                                          ana/*cljs-ns*))
+                                   [:defs (symbol (str '-> (name type)))])))))
+
+(defn go-tag-of-target [{:keys [op info] :as target}]
+  (case op
+    :dot
+    (or
+     (some->> target :target :tag go-fields-of-type
+              (some #(and (= % (:field target)) (:tag (meta %)))))
+     'any)
+
+    :var
+    (if (:field info)
+      (:tag info)
+      'any)
+
+    nil))
+
 (def go-native-decorator {'string (fn [s] (str "js.JSString_(" (emit-str s) ")"))
                           'array (fn [a] (str "js.JSArray_(&" (emit-str a) ")"))})
 
@@ -243,13 +265,6 @@
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
-
-;; hack using the positional factory to get the fields, only :num-fields is stored in @env/*compiler*
-(defn go-fields-of-type [type]
-  (when (symbol? type)
-    (first (:method-params (get-in (ana/get-namespace (or (some-> type namespace symbol)
-                                                          ana/*cljs-ns*))
-                                   [:defs (symbol (str '-> (name type)))])))))
 
 (defn warn-on-reflection [{:keys [env field method f]}]
   (when *warn-on-reflection*
@@ -929,21 +944,6 @@
                        args))
                     "})"
 ))))
-
-(defn go-tag-of-target [{:keys [op info] :as target}]
-  (case op
-    :dot
-    (or
-     (some->> target :target :tag go-fields-of-type
-              (some #(and (= % (:field target)) (:tag (meta %)))))
-     'any)
-
-    :var
-    (if (:field info)
-      (:tag info)
-      'any)
-
-    nil))
 
 (defmethod emit* :set!
   [{:keys [target val env form]}]
