@@ -58,6 +58,7 @@
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
 (def ^:dynamic *go-protocol-fn* nil)
+(def ^:dynamic *go-protocol-type* nil)
 (def ^:dynamic *go-protocol* nil)
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
@@ -378,21 +379,29 @@
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
     ; e.g. (function greet(return x, return y) {}).
-    (if (:binding-form? arg)
+    (cond
+     (= (:name info) *go-protocol-fn*) ;; self reference to protocol fn as var.
+     (emits (when (= 'cljs.core/Object *go-protocol*)
+              (str "(*" *go-protocol-type* ")."))
+            (-> info :name munge go-public))
+
+     (:binding-form? arg)
       ; Emit the arg map so shadowing is properly handled when munging
       ; (prevents duplicate fn-param-names)
-      (emits (munge arg))
-      (when-not (= :statement (:context env))
-        (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
-                                    *go-return-tag*)]
-          (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
-                                        (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
-                                            (:field info))
-                                        (update-in info [:name] (comp go-public munge name))
-                                        (:ns info)
-                                        (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
-                                                                      "." (-> % name munge go-public)))
-                                        :else info)))))))))
+     (emits (munge arg))
+
+     :else
+     (when-not (= :statement (:context env))
+       (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
+                                   *go-return-tag*)]
+         (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
+                                       (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
+                                           (:field info))
+                                       (update-in info [:name] (comp go-public munge name))
+                                       (:ns info)
+                                       (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
+                                                                     "." (-> % name munge go-public)))
+                                       :else info)))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
@@ -633,7 +642,8 @@
   (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
                               ret-tag)
             *go-protocol* protocol
-            *go-protocol-fn* (:name name)]
+            *go-protocol-fn* (:name name)
+            *go-protocol-type* (-> params first :tag go-type-fqn)]
     (emit-fn-body type expr recurs))
   (emitln "}"))
 
