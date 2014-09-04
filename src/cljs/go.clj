@@ -95,7 +95,7 @@
   (let [{:keys [exit out err]} (sh/sh "go" "build" "--gcflags" "-e" :dir dir)]
     (when-not (zero? exit)
       (println err)
-      {:dir dir :errors (count (remove #(= \tab (first %)) (s/split-lines err)))})))
+      {:dir dir :errors (count (filter #(re-find #"^.+.go:\d+: " %) (s/split-lines err)))})))
 
 (defmacro with-fresh-ids [& body]
   `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
