@@ -787,6 +787,9 @@
    (= '(. PersistentTreeMap -EMPTY) (-> x :init :form))
    'cljs.core/PersistentTreeMap
 
+   (= 'seq tag)
+   'cljs.core/ISeq
+
    :else
    ('{cljs.core/IList cljs.core/List
       cljs.core/ISet cljs.core/PersistentHashSet
@@ -874,7 +877,10 @@
 
          protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
          (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
-           (emits (if (and (= (go-type tag) "interface{}")
+           (emits (if (and (or (= (go-type tag) "interface{}")
+                               (when-let [v (ana/resolve-existing-var (dissoc env :locals) (go-try-to-ressurect-impl (first args)))]
+                                 (and (:protocol-symbol v)
+                                      (not= (:name v) protocol))))
                            (not static-field-receiver?))
                     (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")")
                     (first args) )
