@@ -490,29 +490,30 @@
   (= 'boolean (ana/infer-tag env e)))
 
 (defmethod emit* :if
-  [{:keys [test then else env form unchecked]}]
+  [{:keys [test then else env form unchecked tag]}]
   (let [context (:context env)
-        checked (not (or unchecked (safe-test? env test)))]
+        checked (not (or unchecked (safe-test? env test)))
+        test (cond-> test checked (assoc :tag 'any))] ;; and/or can mess up the tags - will always be interface{} for checked.
     (cond
       (truthy-constant? test) (emitln then)
       (falsey-constant? test) (emitln else)
       (go-top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
-        (emits "func() interface{} { if " (when checked "Truth_") "("
-               (cond->> test checked (go-unbox 'boolean))
+        (emits "func() " (go-type tag) " { if " (when checked "Truth_") "("
+               test
                ") { return " then "} else { return " else "} }()")
         (do
           (if checked
             (emitln "if Truth_(" test ") {")
-            (emitln "if " (go-unbox 'boolean test) " {"))
+            (emitln "if " test " {"))
           (emitln then "} else {")
           (emitln else "}"))))))
 
 (defmethod emit* :case*
-  [{:keys [v tests thens default env]}]
+  [{:keys [v tests thens default env tag]}]
   (when (= (:context env) :expr)
-    (emitln "func() interface{} {"))
+    (emitln "func() " (go-type tag) " {"))
   (let [gs (gensym "caseval__")]
     (when (= :expr (:context env))
       (emitln "var " gs ""))
@@ -535,7 +536,7 @@
 (defmethod emit* :throw
   [{:keys [throw env]}]
   (if (= :expr (:context env))
-    (emits "func() interface{} { panic(" throw ") }()")
+    (emits "func() " (go-type (:tag throw)) " { panic("  throw ") }()")
     (emitln "panic(" throw ")")))
 
 (defn emit-comment
@@ -686,7 +687,7 @@
 (defmethod emit* :do
   [{:keys [statements ret env]}]
   (let [context (:context env)]
-    (when (and statements (= :expr context)) (emits "func() interface{} {"))
+    (when (and statements (= :expr context)) (emits "func() " (go-type (:tag ret)) " {"))
     (when statements
       (emits statements))
     (emit ret)
@@ -714,10 +715,10 @@
       (emits try))))
 
 (defn emit-let
-  [{:keys [bindings expr env]} is-loop]
+  [{:keys [bindings expr env tag]} is-loop]
   (let [context (:context env)]
     (if (= :expr context)
-      (emits "func() interface{} {")
+      (emits "func() " (go-type tag) " {")
       (emits "{"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
@@ -756,10 +757,10 @@
   (emitln "continue"))
 
 (defmethod emit* :letfn
-  [{:keys [bindings expr env]}]
+  [{:keys [bindings expr env tag]}]
   (let [context (:context env)]
     (if (= :expr context)
-      (emits "func() interface{} {")
+      (emits "func() " (go-type tag) " {")
       (emitln "{"))
     (emitln "var " (comma-sep (map munge bindings)) " *AFn")
     (doseq [{:keys [init] :as binding} bindings]
