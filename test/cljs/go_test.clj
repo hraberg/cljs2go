@@ -14,12 +14,13 @@
 
 (defmacro tdd [& body]
   `(env/ensure
-    (def *ast (cljs->ast '[~@body]))
-    (def *go (s/trim (goimports (ast->go *ast))))
-    (def *ns (ana/get-namespace ana/*cljs-ns*))
-    (pp/pprint *ast)
-    (println)
-    (println *go)))
+    (with-fresh-ids
+      (def *ast (cljs->ast '[~@body]))
+      (def *go (s/trim (goimports (ast->go *ast))))
+      (def *ns (ana/get-namespace ana/*cljs-ns*))
+      (pp/pprint *ast)
+      (println)
+      (println *go))))
 
 (defn combined-output [out err]
   (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
