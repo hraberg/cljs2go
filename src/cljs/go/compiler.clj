@@ -389,7 +389,7 @@
     (cond
      (= (:name info) *go-protocol-fn*) ;; self reference to protocol fn as var.
      (emits (when (= 'cljs.core/Object *go-protocol*)
-              (str "(*" *go-protocol-type* ")."))
+              (str "(*" (go-type-fqn *go-protocol-type*) ")."))
             (-> info :name munge go-public))
 
      (:binding-form? arg)
@@ -656,7 +656,7 @@
                               ret-tag)
             *go-protocol* protocol
             *go-protocol-fn* (:name name)
-            *go-protocol-type* (-> params first :tag go-type-fqn)]
+            *go-protocol-type* (-> params first :tag)]
     (emit-fn-body type expr recurs))
   (emitln "}"))
 
@@ -924,12 +924,20 @@
                     "})"
 ))))
 
-(defn go-tag-of-target [{:keys [op] :as target}]
-  (when (= :dot op)
+(defn go-tag-of-target [{:keys [op info] :as target}]
+  (case op
+    :dot
     (or
      (some->> target :target :tag go-fields-of-type
               (some #(and (= % (:field target)) (:tag (meta %)))))
-     'any)))
+     'any)
+
+    :var
+    (if (:field info)
+      (:tag info)
+      'any)
+
+    nil))
 
 (defmethod emit* :set!
   [{:keys [target val env form]}]
@@ -938,8 +946,10 @@
       (let [return (when (#{:expr :return} (:context env))
                      (gensym "return__"))
             tag-of-target (go-tag-of-target target)
-            val (str (emit-str val)
-                     (go-unbox-no-emit tag-of-target val))]
+            val (if (and (= 'boolean tag-of-target)
+                         (go-needs-coercion? (:tag val) tag-of-target))
+                  (str "Truth_(" (emit-str val) ")")
+                  (go-unbox tag-of-target val))]
         (when return
           (emits "func() " (go-type tag-of-target) " {")
           (emitln "var " return " = " val))

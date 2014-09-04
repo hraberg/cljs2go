@@ -755,7 +755,7 @@
                proto-fn (when (= (:protocol proto-fn) 'cljs.core/Object)
                           proto-fn)]
            `(do
-              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
+              ~(with-meta `(fn ~(vary-meta f assoc :tag (or (:ret-tag proto-fn) (-> f meta :tag)))
                              ~@(map #(adapt-proto-params type proto-fn %) meths)) (meta form))
               ~(when (= 'toString f)
                  (with-meta `(fn ~(with-meta 'string {:tag (:ret-tag proto-fn)})
