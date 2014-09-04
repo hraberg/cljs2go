@@ -147,15 +147,21 @@
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
 
+(defn go-normalize-goog-type [type]
+  (let [parts (string/split (str type) #"\.")
+        ns (string/replace (apply str (butlast parts)) "/" ".")]
+    (symbol ns (last parts))))
+
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
     (let [ns (symbol ns)
           type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
       (str
        (when type? "*")
-       (munge (if ((hash-set 'cljs.core ana/*cljs-ns*) ns)
-                (go-type-fqn tag)
-                (str ns "." (go-type-fqn tag))))))
+       (munge (cond
+               ((hash-set 'cljs.core ana/*cljs-ns*) ns) (go-type-fqn tag)
+               (= 'goog ns) (go-normalize-goog-type tag)
+               :else (str ns "." (go-type-fqn tag))))))
     ('{number "float64" boolean "bool" string "string" array "[]interface{}" seq "CljsCoreISeq"} tag "interface{}")))
 
 (defn go-short-type [tag]
@@ -174,8 +180,13 @@
 (declare emit-str)
 
 (defn go-unbox-no-emit [to x]
-  (when (go-needs-coercion? (:tag x) to)
-    (str ".(" (go-type to) ")")))
+  (let [static-field? (and (= :dot (:op x)) (-> x :target :info :type))
+        defined-var? (and (= :var (:op x)) (not (some (:info x) [:local :binding-form? :field])))
+        new? (= :new (:op x))
+        tag (:tag x)]
+    (when (and (go-needs-coercion? tag to)
+               (not (or static-field? defined-var? new?)))
+      (str ".(" (go-type to) ")"))))
 
 (defn go-unbox [to x]
   (when x
@@ -188,6 +199,12 @@
                                (not (zero? (Math/imul 0xffffffff 5))))})
 
 (def go-skip-def '#{cljs.core/enable-console-print!
+                    cljs.core/*print-length*
+                    cljs.core/*print-level*
+                    cljs.core/set-print-fn!
+                    cljs.core/string-hash-cache
+                    cljs.core/add-to-string-hash-cache
+                    cljs.core/hash-string
                     cljs.core/object?
                     cljs.core/native-satisfies?
                     cljs.core/instance?
@@ -211,6 +228,7 @@
                     cljs.core/js-obj
                     cljs.core/js-keys
                     cljs.core/js->clj
+                    cljs.core/re-pattern
                     cljs.core/nil-iter})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
@@ -514,7 +532,7 @@
 (defmethod emit* :throw
   [{:keys [throw env]}]
   (if (= :expr (:context env))
-    (emits "func() interface{} {panic(" throw ")}()")
+    (emits "func() interface{} { panic(" throw ") }()")
     (emitln "panic(" throw ")")))
 
 (defn emit-comment
@@ -831,21 +849,21 @@
           (emits (go-unbox-no-emit ret-tag nil)))))))
 
 (defn normalize-goog-ctor [ctor]
-  (let [parts (string/split (-> ctor :info :name str) #"\.")
-        ns (string/replace (apply str (butlast parts)) "/" ".")]
+  (let [type (go-normalize-goog-type (-> ctor :info :name str))]
     (-> ctor
-        (assoc-in [:info :name] (symbol ns (last parts)))
-        (assoc-in [:info :ns] (symbol ns)))))
+        (assoc-in [:info :name] type)
+        (assoc-in [:info :ns] (symbol (namespace type))))))
 
 (defmethod emit* :new
   [{:keys [ctor args env]}]
-  (emit-wrap env
-             (emits "(&" (case (-> ctor :info :ns)
-                           js ctor
-                           goog (normalize-goog-ctor ctor)
-                           (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
-           (comma-sep args)
-           "})")))
+  (binding [*go-return-tag* nil]
+    (emit-wrap env
+      (emits "(&" (case (-> ctor :info :ns)
+                    js ctor
+                    goog (normalize-goog-ctor ctor)
+                    (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
+                    (comma-sep args)
+                    "})"))))
 
 (defmethod emit* :set!
   [{:keys [target val env form]}]
@@ -923,32 +941,35 @@
         static? (-> target :info :type)
         decorator (go-native-decorator tag)
         reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
-    (emit-wrap env
-      (if reflection?
-        (do
-          (warn-on-reflection dot)
-          (if field
-            (emits "Native_get_instance_field.X_invoke_Arity2(" target ","
-                   (wrap-in-double-quotes (munge (go-public field) #{})) ")")
-            (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
-                   (wrap-in-double-quotes (munge (go-public method) #{})) ","
-                   "[]interface{}{" (comma-sep args) "})"))
-          (when-not (or (= :statement (:context env)) static?)
-            (emits (go-unbox-no-emit (:tag dot) nil))))
-        (do
-          (emits (cond
-                  (fn? decorator) (decorator target)
-                  (symbol? decorator) (str decorator "(" (emit-str target) ")")
-                  :else target)
-                 (if static? "_" "."))
-          (if field
-            (emits (munge (go-public field) #{}))
-            (emits (munge (go-public method) #{})
-                   (when static?
-                     (str ".X_invoke_Arity" (count args)))
-                   "("
-                   (comma-sep args)
-                   ")")))))))
+    (binding [*go-return-tag* (when (and (not static?)
+                                         (go-needs-coercion? tag *go-return-tag*))
+                                *go-return-tag*)]
+      (emit-wrap env
+        (if reflection?
+          (do
+            (warn-on-reflection dot)
+            (if field
+              (emits "Native_get_instance_field.X_invoke_Arity2(" target ","
+                     (wrap-in-double-quotes (munge (go-public field) #{})) ")")
+              (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
+                     (wrap-in-double-quotes (munge (go-public method) #{})) ","
+                     "[]interface{}{" (comma-sep args) "})"))
+            (when-not (or (= :statement (:context env)) static?)
+              (emits (go-unbox-no-emit (:tag dot) nil))))
+          (do
+            (emits (cond
+                    (fn? decorator) (decorator target)
+                    (symbol? decorator) (str decorator "(" (emit-str target) ")")
+                    :else target)
+                   (if static? "_" "."))
+            (if field
+              (emits (munge (go-public field) #{}))
+              (emits (munge (go-public method) #{})
+                     (when static?
+                       (str ".X_invoke_Arity" (count args)))
+                     "("
+                     (comma-sep args)
+                     ")"))))))))
 
 (defmethod emit* :js
   [{:keys [env code js-op segs args numeric]}]
