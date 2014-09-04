@@ -94,6 +94,8 @@ type Arity2IIA func(_, _ interface{}) []interface{}
 
 type Arity1IQ func(interface{}) CljsCoreISeq
 
+type Arity1IS func(interface{}) string
+
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
 type Arity1FI func(float64) interface{}
@@ -162,6 +164,8 @@ type AFn struct {
 	Arity2IIA
 
 	Arity1IQ
+
+	Arity1IS
 }
 
 func throwArity(f, arity interface{}) interface{} {
@@ -212,6 +216,8 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 			return this.Arity1IA(args[0])
 		case this.Arity1IQ != nil:
 			return this.Arity1IQ(args[0])
+		case this.Arity1IS != nil:
+			return this.Arity1IS(args[0])
 		default:
 			return this.Arity1(args[0])
 		}
