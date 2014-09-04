@@ -1028,15 +1028,18 @@
 (defmethod emit* :js
   [{:keys [env code js-op segs args numeric tag]}]
   (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
-        args (case js-op
-               cljs.core/make-array [(go-unbox 'number (first args))]
-               cljs.core/alength [(go-unbox 'array (first args))]
-               cljs.core/aget (cons (go-unbox 'array (first args))
-                                    (map (partial go-unbox 'number) (rest args)))
-               cljs.core/aset (concat [(go-unbox 'array (first args))]
-                                      (map (partial go-unbox 'number) (butlast (rest args)))
-                                      [(last args)])
-               args)]
+        box? (= 'removed-leaf? (-> args first :info :name)) ;; horrific hack to cancel out another.
+        args (if box?
+               args
+               (case js-op
+                 cljs.core/make-array [(go-unbox 'number (first args))]
+                 cljs.core/alength [(go-unbox 'array (first args))]
+                 cljs.core/aget (cons (go-unbox 'array (first args))
+                                      (map (partial go-unbox 'number) (rest args)))
+                 cljs.core/aset (concat [(go-unbox 'array (first args))]
+                                        (map (partial go-unbox 'number) (butlast (rest args)))
+                                        [(last args)])
+                 args))]
     (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
                                 *go-return-tag*)]
       (emit-wrap env
@@ -1044,6 +1047,9 @@
           (emits "func() " (go-type (:tag (last args))) "{ "))
         (cond
          code (emits code)
+         box? (emits (go-unbox 'cljs.core/Box (first args))
+                     ".Val" (when (= 'cljs.core/aset js-op)
+                              (str " = " (emit-str (second args)))))
          :else (emits (interleave (concat segs (repeat nil))
                                   (map (if numeric (partial go-unbox 'number) identity)
                                        (concat args [nil])))))
