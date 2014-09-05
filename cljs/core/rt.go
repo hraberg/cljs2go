@@ -33,7 +33,11 @@ func decorate(target interface{}) interface{} {
 	case map[string]interface{}:
 		return js.JSObject(object)
 	case nil:
-		return js.JSNil(object)
+		return js.JSNil{}
+	case bool:
+		return js.JSBoolean(object)
+	case float64:
+		return js.JSNumber(object)
 	default:
 		return object
 	}
@@ -89,6 +93,9 @@ type Arity18 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface
 type Arity19 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
 type Arity20 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
 
+// Unsupported
+type Arity21 func(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{}
+
 type Arity1IA func(interface{}) []interface{}
 type Arity2IIA func(_, _ interface{}) []interface{}
 
@@ -112,8 +119,15 @@ type Arity0B func() bool
 type Arity1IB func(interface{}) bool
 type Arity1FB func(float64) bool
 type Arity2IIB func(_, _ interface{}) bool
+type Arity2IBI func(_ interface{}, _ bool) interface{}
 type Arity2FFB func(_, _ float64) bool
 type Arity3IIIB func(_, _, _ interface{}) bool
+type Arity3IBBI func(_ interface{}, _, _ bool) interface{}
+type Arity3IIBI func(_, _ interface{}, _ bool) interface{}
+
+type Arity5IIBIII func(_, _ interface{}, _ bool, _, _ interface{}) interface{}
+type Arity5BIIBII func(_ bool, _, _ interface{}, _ bool, _ interface{}) interface{}
+type Arity6IIIBIII func(_, _, _ interface{}, _ bool, _, _ interface{}) interface{}
 
 type AFn struct {
 	MaxFixedArity int
@@ -140,6 +154,7 @@ type AFn struct {
 	Arity18
 	Arity19
 	Arity20
+	Arity21
 
 	Arity0F
 	Arity1IF
@@ -156,9 +171,14 @@ type AFn struct {
 	Arity0B
 	Arity1FB
 	Arity1IB
+
 	Arity2IIB
+	Arity2IBI
 	Arity2FFB
+
 	Arity3IIIB
+	Arity3IBBI
+	Arity3IIBI
 
 	Arity1IA
 	Arity2IIA
@@ -166,6 +186,11 @@ type AFn struct {
 	Arity1IQ
 
 	Arity1IS
+
+	// For positonal factories, needs better solution:
+	Arity5IIBIII
+	Arity5BIIBII
+	Arity6IIIBIII
 }
 
 func throwArity(f, arity interface{}) interface{} {
@@ -239,6 +264,8 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 			return this.Arity2FFF(args[0].(float64), args[1].(float64))
 		case this.Arity2IIB != nil:
 			return this.Arity2IIB(args[0], args[1])
+		case this.Arity2IBI != nil:
+			return this.Arity2IBI(args[0], args[1].(bool))
 		case this.Arity2FFB != nil:
 			return this.Arity2FFB(args[0].(float64), args[1].(float64))
 		case this.Arity2IIA != nil:
@@ -250,6 +277,10 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 		switch {
 		case this.Arity3IIIB != nil:
 			return this.Arity3IIIB(args[0], args[1], args[2])
+		case this.Arity3IBBI != nil:
+			return this.Arity3IBBI(args[0], args[1].(bool), args[2].(bool))
+		case this.Arity3IIBI != nil:
+			return this.Arity3IIBI(args[0], args[1], args[2].(bool))
 		default:
 			return this.Arity3(args[0], args[1], args[2])
 		}
@@ -376,6 +407,10 @@ func (this Arity20) X_invoke_Arity20(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o
 	return this(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t, rest)
 }
 
+func (this Arity21) X_invoke_Arity21(_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ interface{}) interface{} {
+	panic(&js.Error{"Only up to 20 arguments supported on functions."})
+}
+
 func (this ArityVariadic) X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest ...interface{}) interface{} {
 	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
@@ -419,6 +454,9 @@ func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 				out[i] = reflect.ValueOf(&o).Elem()
 			case reflect.Bool:
 				o = v.Bool()
+				out[i] = reflect.ValueOf(&o).Elem()
+			case reflect.String:
+				o = v.String()
 				out[i] = reflect.ValueOf(&o).Elem()
 			}
 		}
@@ -493,6 +531,13 @@ func Fn(fns ...interface{}) *AFn {
 
 func Truth_(x interface{}) bool {
 	return x != nil && x != false
+}
+
+func Seq_(x interface{}) CljsCoreISeq {
+	if x == nil {
+		return nil
+	}
+	return x.(CljsCoreISeq)
 }
 
 type Object interface {

@@ -227,7 +227,10 @@
     nil))
 
 (def go-native-decorator {'string (fn [s] (str "js.JSString_(" (emit-str s) ")"))
-                          'array (fn [a] (str "js.JSArray_(&" (emit-str a) ")"))})
+                          'array (fn [a] (str "js.JSArray_(&" (emit-str a) ")"))
+                          'boolean (fn [s] (str "js.JSBoolean(" (emit-str s) ")"))
+                          'number (fn [s] (str "js.JSNumber(" (emit-str s) ")"))
+                          'clj-nil (fn [s] (str "js.JSNil{}"))})
 
 (def go-top-level-then '#{(and (exists? Math/imul)
                                (not (zero? (Math/imul 0xffffffff 5))))})
@@ -901,10 +904,16 @@
         coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
                      (not (or fn? (= 'function (:tag info)))))
         static-field-receiver? (-> expr :args first :target :info :type)
-        ret-tag (:tag expr)]
-    (binding [*go-return-tag* (when (go-needs-coercion? ret-tag *go-return-tag*)
-                                *go-return-tag*)]
+        ret-tag (:tag expr)
+        real-ret-tag (when (go-needs-coercion? ret-tag *go-return-tag*)
+                       *go-return-tag*)
+        unbox? (not (or has-primitives? (= :statement (:context env))))
+        unbox-fn ('{seq Seq_ boolean Truth_} real-ret-tag)]
+    (binding [*go-return-tag* (when-not unbox-fn
+                                real-ret-tag)]
       (emit-wrap env
+        (when (and unbox? unbox-fn)
+          (emits unbox-fn "("))
         (cond
          opt-not?
          (emits "!(" (first args) ")")
@@ -939,9 +948,10 @@
          (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
         ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
-        (when-not (or has-primitives?
-                      (= :statement (:context env)))
-          (emits (go-unbox-no-emit ret-tag nil)))))))
+        (when unbox?
+          (if unbox-fn
+            (emits ")")
+            (emits (go-unbox-no-emit ret-tag nil))))))))
 
 (defn normalize-goog-ctor [ctor]
   (let [type (go-normalize-goog-type (-> ctor :info :name str))]

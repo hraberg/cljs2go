@@ -12,34 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-/*
-;; IFn
-
-;; Used in core.cljs apply, which uses apply-to built by core.clj gen-apply-to.
-;; It falls back to JS .apply it applyTo doesn't exist on the passed in fn.
-.-cljs$lang$maxFixedArity ;; a field on the fn
-.-cljs$lang$applyTo ;; accessed as field to see if it's there
-.cljs$lang$applyTo  ;; then called as fn if it exists.
-
-;; Used by the dispatch fn to actually invoke the various overloaded fns, uses JS arguments in a switch.
-;; See emit* :fn and emit* :invoke
-;; emit* :fn will emit a single fn or a dispatch fn around the real overlaoded fns.
-;; At times these are called directly, like cljs.core.str.cljs$core$IFn$_invoke$arity$1(~{}) in cljs.core/str
-.cljs$core$IFn$_invoke$arity$variadic
-.cljs$core$IFn$_invoke$arity$N
-
-;; defprotocol
-
-.-cljs$lang$protocol_mask$partitionN$
-
-;; deftype
-
-.-cljs$lang$type
-.-cljs$lang$ctorStr
-.-cljs$lang$ctorPrWriter
-
-*/
-
 func Test_Main(t *testing.T) {
 	mainWasCalled := false
 	X_STAR_main_cli_fn_STAR_ = Fn(func(args ...interface{}) interface{} {
@@ -78,7 +50,7 @@ func Test_Invoke(t *testing.T) {
 
 	assert.Equal(t, "", Str.X_invoke_Arity0())
 	assert.Equal(t, "Hello", Str.X_invoke_Arity1("Hello"))
-	assert.Equal(t, "1", Str.X_invoke_Arity1(1))
+	assert.Equal(t, "1", Str.X_invoke_Arity1(1.0))
 	assert.Equal(t, "HelloClojureWorld", Str.X_invoke_ArityVariadic("Hello", "Clojure", "World"))
 }
 
@@ -115,30 +87,30 @@ func Test_Protocols(t *testing.T) {
 	assert.True(t, symbol.(Object).Equiv(Symbol.X_invoke_Arity2("foo", "bar")))
 	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "Object"), symbol).(bool))
 	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
-	//	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(CljsCoreINamed).X_namespace_Arity1())
 	assert.Equal(t, "foo", X_namespace.X_invoke_Arity1(symbol))
-	//	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).X_invoke_Arity0() })
-	//	PanicsWith(t, "Invalid arity: 0", func() { X_invoke.X_invoke_Arity1(symbol) })
+	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).X_invoke_Arity0() })
+	PanicsWith(t, "Invalid arity: 0", func() { X_invoke.X_invoke_Arity1(symbol) })
 
 	assert.Equal(t, "foo", Namespace.X_invoke_Arity1(symbol))
-	PanicsWith(t, "Doesn't support namespace: 2", func() { Namespace.X_invoke_Arity1(2) })
+	PanicsWith(t, "Doesn't support namespace: 2", func() { Namespace.X_invoke_Arity1(2.0) })
 
 	assert.Equal(t, "bar", Name.X_invoke_Arity1(symbol))
-	PanicsWith(t, "Doesn't support name: 2", func() { Name.X_invoke_Arity1(2) })
+	PanicsWith(t, "Doesn't support name: 2", func() { Name.X_invoke_Arity1(2.0) })
 	assert.Equal(t, "baz", Name.X_invoke_Arity1("baz"))
 
 	assert.Equal(t, "foo", X_invoke.X_invoke_Arity2(X_namespace, symbol))
 	assert.Equal(t, "bar", symbol.(CljsCoreINamed).X_name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
 
-	foo, bar := Symbol.X_invoke_Arity1("foo"), Symbol.X_invoke_Arity1("bar")
-	m := ObjMap(map[interface{}]interface{}{foo: "bar"})
+	// foo, bar := Symbol.X_invoke_Arity1("foo"), Symbol.X_invoke_Arity1("bar")
+	// m := ObjMap(map[interface{}]interface{}{foo: "bar"})
 
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "ILookup"), m).(bool))
-	assert.Equal(t, "bar", m.X_lookup_Arity2(foo))
-	assert.Nil(t, X_Lookup.Call(m, bar))
-	assert.Equal(t, "baz", m.X_lookup_Arity3(bar, "baz"))
+	// assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "ILookup"), m).(bool))
+	// assert.Equal(t, "bar", m.X_lookup_Arity2(foo))
+	// assert.Nil(t, X_Lookup.Call(m, bar))
+	// assert.Equal(t, "baz", m.X_lookup_Arity3(bar, "baz"))
 
 	// assert.Equal(t, "bar", foo.(IFn).X_invoke_Arity1(m))
 	// assert.Equal(t, "bar", X_invoke.X_invoke_Arity2(foo, m))

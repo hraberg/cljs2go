@@ -28,8 +28,9 @@ func (e *TypeError) Error() string {
 }
 
 type JSObject map[string]interface{}
-type JSNil interface{}
+type JSNil struct{}
 type JSBoolean bool
+type JSNumber float64
 
 type Date struct {
 	Millis float64
@@ -167,8 +168,36 @@ func (this *JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(this.String())[int(index)])
 }
 
-func (this *JSString) String() string {
+func (this *JSString) ToString() string {
 	return this.str
+}
+
+func (this *JSString) String() string {
+	return this.ToString()
+}
+
+func (this JSNumber) ToString() string {
+	return fmt.Sprint(float64(this))
+}
+
+func (this JSNumber) String() string {
+	return this.ToString()
+}
+
+func (this JSBoolean) ToString() string {
+	return fmt.Sprint(bool(this))
+}
+
+func (this JSBoolean) String() string {
+	return this.ToString()
+}
+
+func (this JSNil) ToString() string {
+	return ""
+}
+
+func (this JSNil) String() string {
+	return this.ToString()
 }
 
 type JSArray struct {
@@ -212,4 +241,12 @@ func (this *JSArray) Push(x interface{}) float64 {
 	*this.array = append(*this.array, x)
 	this.Length += 1
 	return this.Length
+}
+
+func (this *JSArray) ToString() string {
+	return fmt.Sprint(*this.array)
+}
+
+func (this *JSArray) String() string {
+	return this.ToString()
 }

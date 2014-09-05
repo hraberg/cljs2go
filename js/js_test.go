@@ -46,6 +46,13 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, math.NaN(), ParseInt("3.14", 10))
 	assert.Equal(t, math.NaN(), ParseInt("x", 10))
 
+	assert.Equal(t, "1", JSNumber(1).ToString())
+	assert.Equal(t, "3.14", JSNumber(3.14).ToString())
+	assert.Equal(t, "true", JSBoolean(true).ToString())
+	assert.Equal(t, "", JSNil{}.ToString())
+	assert.Equal(t, "Hello", JSString_("Hello").ToString())
+	assert.Equal(t, "[Hello World]", JSArray_(&[]interface{}{"Hello", "World"}).ToString())
+
 	assert.Equal(t, "l", (JSString_("Hello").CharAt(2)))
 	assert.Equal(t, 108, (JSString_("Hello").CharCodeAt(2)))
 

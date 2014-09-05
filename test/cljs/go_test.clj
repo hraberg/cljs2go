@@ -160,8 +160,9 @@
           2 '(bar 1 2)
           "`bar`" '(baz)
           1 '(baz 1)
-          "[]interface{}{2, 3}" '(baz 1 2 3) ;; this should return a seq
-          "[]interface{}{2, 3, 4}" (read-string "(apply baz 1 2 #js [3 4])")  ;; and last arg here should be a seq
+          "&CljsCoreIndexedSeq{Arr:[]interface {}{2, 3}, I:0}" '(baz 1 2 3)
+          ;; last arg here to apply should be a seq
+          "&CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" (read-string "(apply baz 1 2 #js [3 4])")
           "`bar`" '((fn [x] x) "bar")
           3.14 '(js/ParseFloat "3.14")
           3 '(Math/floor 3.14)

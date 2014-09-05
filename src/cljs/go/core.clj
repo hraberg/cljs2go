@@ -744,7 +744,7 @@
   (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))
         this (vary-meta this assoc :tag type)]
     `(~(vec (cons this (map #(vary-meta % assoc :tag (-> %2 meta :tag))
-                            args (or (next proto-params) args))))
+                            args (core/or (next proto-params) args))))
       (this-as ~this
         ~@body))))
 
@@ -999,7 +999,7 @@
         method-sigs (fn [arity-limit sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
                  (let [fname (vary-meta fname assoc :protocol p)]
-                   `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs arity-limit sigs)))))
+                   `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs (core/inc arity-limit) sigs)))))
         method-decl (fn [[fname & sigs]]
                       (->>
                        (for [sig (method-sigs (core/inc arity-limit) sigs)]

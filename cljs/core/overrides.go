@@ -1,9 +1,6 @@
 package core
 
-import (
-	"fmt"
-	"reflect"
-)
+import "fmt"
 
 var Enable_console_print_BANG_ = Fn(func() interface{} {
 	X_STAR_print_fn_STAR_ = Fn(func(x interface{}) interface{} {
@@ -24,7 +21,7 @@ var Apply = Fn(func(f_args ...interface{}) interface{} {
 })
 
 var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
-	return reflect.ValueOf(x).Type().Implements(protocols[fmt.Sprint(p)])
+	return value(decorate(x)).Type().Implements(protocols[fmt.Sprint(p)])
 })
 
 // unimplemented
