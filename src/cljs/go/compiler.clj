@@ -61,6 +61,7 @@
 (def ^:dynamic *go-protocol-type* nil)
 (def ^:dynamic *go-protocol* nil)
 (def ^:dynamic *go-defs* nil)
+(def ^:dynamic *go-use-init-defs* false)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 
 (defmacro ^:private debug-prn
@@ -606,23 +607,33 @@
   [{:keys [name var init env doc export form]}]
   (let [redefine? (some-> *go-defs* deref (get name))
         protocol-symbol? (-> form second meta :protocol-symbol)
-        declared? (-> form second meta :declared)]
+        declared? (-> form second meta :declared)
+        init? *go-use-init-defs*]
     (when-not (or (go-skip-def name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)]
         (some-> *go-defs* (swap! conj name))
-        (when redefine?
+        (when (and init? (not redefine?))
+          (emits "var "
+                 mname
+                 " " (let [tag (:tag init)]
+                       (if (= 'function tag)
+                         "*AFn"
+                         (go-type tag)))))
+        (emitln)
+        (when (or init? redefine?)
           (emitln "func init() {"))
         (emit-comment doc (:jsdoc init))
-        (emitln (when-not redefine? "var ")
-                mname
-                (when (untyped-nil-needs-type? init)
-                  " interface{}")
-                " = " (or init "nil"))
+        (emits (when-not (or init? redefine?) "var ")
+               mname
+               (when (and (untyped-nil-needs-type? init)
+                          (not (or init? redefine?)))
+                 " interface{}")
+               " = " (or init "nil"))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
         (when-not (= :expr (:context env)) (emitln))
-        (when redefine?
+        (when (or init? redefine?)
           (emitln "}"))
         (when-let [export (and export (-> export munge go-short-name go-public))]
           (when-not (= export mname)
