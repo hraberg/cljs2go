@@ -28,7 +28,7 @@ var Native_satisfies_QMARK_ = Fn(func(p, x interface{}) bool {
 })
 
 // unimplemented
-var Set_print_fn_BANG_, Symbol_QMARK_, Complement, Iter, Pr_writer, Type_, Type__GT_str,
+var Set_print_fn_BANG_, Symbol_QMARK_, Complement, Iter, Pr_writer, Type_, Type__GT_str, Pr_sequential_writer,
 	Add_to_string_hash_cache, Hash_string, Fn_QMARK_, Integer_QMARK_, Array, Re_pattern, Nil_iter *AFn
 
 var X_STAR_print_length_STAR_ = -1.0

@@ -180,7 +180,9 @@ func JSArray_(a *[]interface{}) *JSArray {
 	return &JSArray{float64(len(*a)), a}
 }
 
-func (this *JSArray) Splice(index, howMany float64, elements ...interface{}) []interface{} {
+// Untyped arguments, only used by ObjMap dissoc. We need to choose how to deal with this in general.
+func (this *JSArray) Splice(index_, howMany_ interface{}, elements ...interface{}) []interface{} {
+	index, howMany := index_.(float64), howMany_.(float64)
 	if index < 0 {
 		index = this.Length + index
 	}

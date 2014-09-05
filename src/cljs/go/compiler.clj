@@ -258,6 +258,7 @@
                     cljs.core/type->str
                     cljs.core/quote-string
                     cljs.core/pr-writer
+                    cljs.core/pr-sequential-writer
                     cljs.core/js-obj
                     cljs.core/js-keys
                     cljs.core/js->clj
@@ -807,7 +808,7 @@
    'cljs.core/ISeq
 
    (and (= 'not-native tag) (= op :var))
-   (go-try-to-ressurect-impl init)
+   (go-try-to-ressurect-impl (if (:op info) info init))
 
    :else
    ('{cljs.core/IList cljs.core/List
