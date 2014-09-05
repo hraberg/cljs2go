@@ -14,7 +14,7 @@
 (def ^function type->str)
 (def ^function add-string-to-hash-cache)
 (def ^function hash-string)
-(def ^function interger?)
+(def ^function integer?)
 (def ^function array)
 (def ^function nil-iter)
 
@@ -38,14 +38,15 @@
   ([f x y z args]
      (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}}, ~{}.([]interface{})...)...)" x y z (into-array args)))
   ([f a b c d & args]
-     (let [arr (into-array (butlast args))
-           varargs (into-array (last args))]
+     ;; these type hints shouldn't be necessary.
+     (let [arr ^array (into-array (butlast args))
+           varargs ^array (into-array (last args))]
        (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...))...)" a b c d arr varargs))))
 
 (defn ^boolean native-satisfies?
   "Internal - do not use!"
   [p x]
-  ^boolean  (js* "value(decorate(~{})).Type().Implements(protocols[fmt.Sprint(~{})])" p x))
+  ^boolean  (js* "value(decorate(~{})).Type().Implements(protocols[fmt.Sprint(~{})])" x p))
 
 ;; Simple caching of string hashcode
 (def string-hash-cache (js* "map[string]interface{}{}"))

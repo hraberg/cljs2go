@@ -108,19 +108,28 @@
        (finally
          (.set id# current-id#) ))))
 
+(defn maybe-add-overrides [dir]
+  (when-let [overrides (io/resource (str (s/replace (str ana/*cljs-ns*) "." "/") "/overrides.cljs"))]
+    (let [target (io/file dir "overrides.go")]
+      (cljs.compiler/compile-file (io/file overrides) target)
+      (goimports-file target))))
+
 (defn compile-file
   ([] (compile-file "." (io/resource "cljs/core.cljs")))
   ([target-dir src]
      (let [src (io/file src)
-           target (cljs.compiler/to-target-file target-dir src)]
+           target (cljs.compiler/to-target-file target-dir src)
+           dir (.getParentFile target)]
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
                   cljs.compiler/*go-use-init-defs* true
                   cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
           (with-fresh-ids
-            (cljs.compiler/compile-file src target))
-          (goimports-file target)
-          (go-build (.getParentFile target)))))))
+            (binding [ana/*cljs-ns* (:ns (cljs.compiler/compile-file src target))
+                      cljs.compiler/*go-skip-def* #{}]
+              (maybe-add-overrides dir))
+            (goimports-file target)
+            (go-build dir)))))))
 
 (defn compile-clojurescript
   ([] (compile-clojurescript "."))

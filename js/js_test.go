@@ -71,5 +71,9 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 3, JSArray_(&arr).Push("Space"))
 	assert.Equal(t, []interface{}{"Hello", "World", "Space"}, arr)
 
-	assert.Equal(t, 2, JSArray_(&[]interface{}{"Hello", "World"}).Length)
+	var xs interface{} = []interface{}{"Hello", "World"}
+	assert.Equal(t, 2, JSArray_(&xs).Length)
+	assert.Equal(t, "World", JSArray_(&xs).Pop())
+	assert.Equal(t, 1, JSArray_(&xs).Length)
+	assert.Equal(t, []interface{}{"Hello"}, xs)
 }

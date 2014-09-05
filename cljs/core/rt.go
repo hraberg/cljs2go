@@ -458,6 +458,9 @@ func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 			case reflect.String:
 				o = v.String()
 				out[i] = reflect.ValueOf(&o).Elem()
+			default:
+				o = v.Interface()
+				out[i] = reflect.ValueOf(&o).Elem()
 			}
 		}
 		return out

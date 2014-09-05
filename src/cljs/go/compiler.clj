@@ -63,6 +63,37 @@
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-use-init-defs* false)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
+(def ^:dynamic *go-skip-def*
+  '#{cljs.core/enable-console-print!
+     cljs.core/*print-length*
+     cljs.core/*print-level*
+     cljs.core/set-print-fn!
+     cljs.core/string-hash-cache
+     cljs.core/add-to-string-hash-cache
+     cljs.core/hash-string
+     cljs.core/object?
+     cljs.core/native-satisfies?
+     cljs.core/instance?
+     cljs.core/symbol?
+     cljs.core/missing-protocol
+     cljs.core/complement
+     cljs.core/make-array
+     cljs.core/array
+     cljs.core/iter
+     cljs.core/integer?
+     cljs.core/char
+     cljs.core/apply
+     cljs.core/truth_
+     cljs.core/is_proto_
+     cljs.core/type
+     cljs.core/type->str
+     cljs.core/quote-string
+     cljs.core/pr-writer
+     cljs.core/pr-sequential-writer
+     cljs.core/js-obj
+     cljs.core/js-keys
+     cljs.core/js->clj
+     cljs.core/nil-iter})
 
 (defmacro ^:private debug-prn
   [& args]
@@ -234,37 +265,6 @@
 
 (def go-top-level-then '#{(and (exists? Math/imul)
                                (not (zero? (Math/imul 0xffffffff 5))))})
-
-(def go-skip-def '#{cljs.core/enable-console-print!
-                    cljs.core/*print-length*
-                    cljs.core/*print-level*
-                    cljs.core/set-print-fn!
-                    cljs.core/string-hash-cache
-                    cljs.core/add-to-string-hash-cache
-                    cljs.core/hash-string
-                    cljs.core/object?
-                    cljs.core/native-satisfies?
-                    cljs.core/instance?
-                    cljs.core/symbol?
-                    cljs.core/missing-protocol
-                    cljs.core/complement
-                    cljs.core/make-array
-                    cljs.core/array
-                    cljs.core/iter
-                    cljs.core/integer?
-                    cljs.core/char
-                    cljs.core/apply
-                    cljs.core/truth_
-                    cljs.core/is_proto_
-                    cljs.core/type
-                    cljs.core/type->str
-                    cljs.core/quote-string
-                    cljs.core/pr-writer
-                    cljs.core/pr-sequential-writer
-                    cljs.core/js-obj
-                    cljs.core/js-keys
-                    cljs.core/js->clj
-                    cljs.core/nil-iter})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
@@ -607,7 +607,7 @@
         protocol-symbol? (-> form second meta :protocol-symbol)
         declared? (-> form second meta :declared)
         init? (and *go-use-init-defs* (= 'function tag))]
-    (when-not (or (go-skip-def name) protocol-symbol? declared?)
+    (when-not (or (*go-skip-def* name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)
             def-type (if (= 'function tag)
                          "*AFn"
@@ -620,21 +620,22 @@
                  " " (let [tag (:tag init)]
                        def-type)))
         (emitln)
-        (if (or init? redefine?)
+        (if (and (or init? redefine?) init)
           (emitln "func init() {")
           (emit-comment doc (:jsdoc init)))
-        (emits (when-not (or init? redefine?) "var ")
-               mname
-               (when (and (untyped-nil-needs-type? init)
-                          (not (or init? redefine?)))
-                 (str " " def-type))
-               (when-let [init (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag))]
-                 (str " = " init)))
+        (when (or (not init?) (and init init?))
+          (emits (when-not (or init? redefine?) "var ")
+                 mname
+                 (when (and (untyped-nil-needs-type? init)
+                            (not (or init? redefine?)))
+                   (str " " def-type))
+                 (when-let [init (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag))]
+                   (str " = " init))))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
         (when-not (= :expr (:context env)) (emitln))
-        (when (or init? redefine?)
+        (when (and (or init? redefine?) init)
           (emitln "}"))
         (when-let [export (and export (-> export munge go-short-name go-public))]
           (when-not (= export mname)
@@ -1052,6 +1053,10 @@
   (let [tag (:tag target)
         static? (go-static-field? dot)
         decorator (go-native-decorator tag)
+        assume-array? (and (= (go-type tag) "interface{}")
+                           ('#{push pop splice slice} method))
+        decorator (or decorator (when assume-array?
+                                  (go-native-decorator 'array)))
         reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
     (binding [*go-return-tag* (when (and (not static?)
                                          (go-needs-coercion? tag *go-return-tag*))
@@ -1256,8 +1261,8 @@
               (do
                 (when-not (contains? (::ana/namespaces @env/*compiler*) ns)
                   (with-core-cljs
-                    (ana/analyze-file src-file)))
-                ns-info)))
+                    (ana/analyze-file src-file)))))
+            ns-info)
           (catch Exception e
             (throw (ex-info (str "failed compiling file:" src) {:file src} e))))
         (throw (java.io.FileNotFoundException. (str "The file " src " does not exist.")))))))

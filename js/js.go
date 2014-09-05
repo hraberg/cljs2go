@@ -206,11 +206,42 @@ func (this JSNil) String() string {
 
 type JSArray struct {
 	Length float64
-	array  *[]interface{}
+	array  interface{}
 }
 
-func JSArray_(a *[]interface{}) *JSArray {
-	return &JSArray{float64(len(*a)), a}
+func JSArray_(a interface{}) *JSArray {
+	var arr []interface{}
+	switch a := a.(type) {
+	case *[]interface{}:
+		arr = *a
+	case *interface{}:
+		arr = (*a).([]interface{})
+	default:
+		panic("Unknown array type: " + fmt.Sprint(a))
+	}
+	return &JSArray{float64(len(arr)), a}
+}
+
+func (this *JSArray) arr() []interface{} {
+	switch a := this.array.(type) {
+	case *[]interface{}:
+		return *a
+	case *interface{}:
+		return (*a).([]interface{})
+	default:
+		panic("Unknown array type: " + fmt.Sprint(a))
+	}
+}
+
+func (this *JSArray) setArr(arr []interface{}) *JSArray {
+	switch a := this.array.(type) {
+	case *[]interface{}:
+		*a = arr
+	case *interface{}:
+		*a = arr
+	}
+	this.Length = float64(len(arr))
+	return this
 }
 
 // Untyped arguments, only used by ObjMap dissoc. We need to choose how to deal with this in general.
@@ -220,35 +251,33 @@ func (this *JSArray) Splice(index_, howMany_ interface{}, elements ...interface{
 		index = this.Length + index
 	}
 	removed := make([]interface{}, int(howMany))
-	copy(removed, (*this.array)[int(index):int(index+howMany)])
-	*this.array = append((*this.array)[:int(index)], append(elements, (*this.array)[int(index+howMany):]...)...)
-	this.Length = float64(len(*this.array))
+	arr := this.arr()
+	copy(removed, arr[int(index):int(index+howMany)])
+	this.setArr(append(arr[:int(index)], append(elements, arr[int(index+howMany):]...)...))
 	return removed
 }
 
 func (this *JSArray) Slice(index, end float64) []interface{} {
+	arr := this.arr()
 	if end < 0 {
-		end = float64(len(*this.array)) + end
+		end = float64(len(arr)) + end
 	}
-	return (*this.array)[int(index):int(end)]
+	return arr[int(index):int(end)]
 }
 
 func (this *JSArray) Pop() interface{} {
-	idx := len(*this.array) - 1
-	x := (*this.array)[idx]
-	*this.array = (*this.array)[:idx]
-	this.Length -= 1
-	return x
+	arr := this.arr()
+	idx := len(arr) - 1
+	this.setArr(arr[:idx])
+	return arr[idx]
 }
 
 func (this *JSArray) Push(x interface{}) float64 {
-	*this.array = append(*this.array, x)
-	this.Length += 1
-	return this.Length
+	return this.setArr(append(this.arr(), x)).Length
 }
 
 func (this *JSArray) ToString() string {
-	return fmt.Sprint(*this.array)
+	return fmt.Sprint(this.arr())
 }
 
 func (this *JSArray) String() string {
