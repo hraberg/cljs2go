@@ -1,6 +1,8 @@
 ;; Go overrides
 (ns cljs.core)
 
+(def *clojurescript-version* (clojurescript-version))
+
 (def ^:dynamic *print-length* -1)
 (def ^:dynamic *print-level* -1)
 

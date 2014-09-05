@@ -64,7 +64,8 @@
 (def ^:dynamic *go-use-init-defs* false)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 (def ^:dynamic *go-skip-def*
-  '#{cljs.core/enable-console-print!
+  '#{cljs.core/*clojurescript-version*
+     cljs.core/enable-console-print!
      cljs.core/*print-length*
      cljs.core/*print-level*
      cljs.core/set-print-fn!

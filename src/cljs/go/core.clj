@@ -1598,3 +1598,6 @@
 
 (defmacro js-str [s]
   (core/list 'js* "fmt.Sprint(~{})" s))
+
+(defmacro clojurescript-version []
+  (cljs.compiler/clojurescript-version))

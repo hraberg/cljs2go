@@ -4,6 +4,8 @@ package core
 
 import "fmt"
 
+var X_STAR_clojurescript_version_STAR_ = "0.0-2322"
+
 var X_STAR_print_length_STAR_ = float64(-1)
 
 var X_STAR_print_level_STAR_ = float64(-1)
