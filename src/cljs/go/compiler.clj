@@ -251,9 +251,7 @@
                     cljs.core/make-array
                     cljs.core/array
                     cljs.core/iter
-                    cljs.core/string?
                     cljs.core/integer?
-                    cljs.core/fn?
                     cljs.core/char
                     cljs.core/apply
                     cljs.core/truth_
@@ -266,7 +264,6 @@
                     cljs.core/js-obj
                     cljs.core/js-keys
                     cljs.core/js->clj
-                    cljs.core/re-pattern
                     cljs.core/nil-iter})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))

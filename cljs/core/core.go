@@ -172,6 +172,16 @@ func init() {
 	}(&AFn{})
 }
 
+var String_QMARK_ *AFn
+
+func init() {
+	String_QMARK_ = func(string_QMARK_ *AFn) *AFn {
+		return Fn(string_QMARK_, func(x interface{}) bool {
+			return Truth_(Native_invoke_func.X_invoke_Arity2(goog.IsString, []interface{}{x}))
+		})
+	}(&AFn{})
+}
+
 // When compiled for a command-line target, whatever
 // function *main-fn* is set to will be called with the command-line
 // argv as arguments
@@ -3415,6 +3425,24 @@ func init() {
 							return ret
 						}
 					}
+				}
+			}
+		})
+	}(&AFn{})
+}
+
+var Fn_QMARK_ *AFn
+
+func init() {
+	Fn_QMARK_ = func(fn_QMARK_ *AFn) *AFn {
+		return Fn(fn_QMARK_, func(f interface{}) bool {
+			{
+				var or__53732__auto__ = Native_invoke_func.X_invoke_Arity2(goog.IsFunction, []interface{}{f}).(bool)
+				_ = or__53732__auto__
+				if Truth_(or__53732__auto__) {
+					return or__53732__auto__
+				} else {
+					return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "Fn", Str: "cljs.core/Fn", X_hash: float64(-695281833), X_meta: nil}), f).(bool)
 				}
 			}
 		})
@@ -24554,6 +24582,24 @@ func init() {
 				} else {
 					return nil
 				}
+			}
+		})
+	}(&AFn{})
+}
+
+// Returns an instance of RegExp which has compiled the provided string.
+var Re_pattern *AFn
+
+func init() {
+	Re_pattern = func(re_pattern *AFn) *AFn {
+		return Fn(re_pattern, func(s interface{}) interface{} {
+			{
+				var vec__685 = Re_find.X_invoke_Arity2((&js.RegExp{Pattern: `^(?:\(\?([idmsux]*)\))?(.*)`, Flags: ``}), s)
+				var ___ = Nth.X_invoke_Arity3(vec__685, float64(0), nil)
+				var flags = Nth.X_invoke_Arity3(vec__685, float64(1), nil)
+				var pattern = Nth.X_invoke_Arity3(vec__685, float64(2), nil)
+				_, _, _, _ = vec__685, ___, flags, pattern
+				return (&js.RegExp{pattern, flags})
 			}
 		})
 	}(&AFn{})

@@ -77,14 +77,14 @@ func (this *Date) ToString() string {
 }
 
 type RegExp struct {
-	Pattern string
-	Flags   string
+	Pattern interface{}
+	Flags   interface{}
 }
 
 func (this *RegExp) compile() *regexp.Regexp {
-	pattern := this.Pattern
-	if len(this.Flags) != 0 {
-		pattern = "(?" + this.Flags + ")" + pattern
+	pattern, flags := this.Pattern.(string), this.Flags.(string)
+	if len(flags) != 0 {
+		pattern = "(?" + flags + ")" + pattern
 	}
 	return regexp.MustCompile(pattern)
 }
