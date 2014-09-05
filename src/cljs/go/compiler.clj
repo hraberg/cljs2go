@@ -466,7 +466,7 @@
   (binding [*go-return-tag* nil]
     (emit-wrap env
       (if (empty? items)
-        (emits "CljsCoreList_EMPTY")
+        (emits "CljsCoreISeq(CljsCoreList_EMPTY)")
         (emits "List.X_invoke_ArityVariadic(" (comma-sep items) ").(*CljsCoreList)")))))
 
 (defmethod emit* :vector
@@ -794,17 +794,20 @@
 (defmethod emit* :loop [ast]
   (emit-let ast true))
 
-(defn go-try-to-ressurect-impl [{:keys [tag] :as x}]
+(defn go-try-to-ressurect-impl [{:keys [op tag init info]}]
   (cond
    (and (= tag 'cljs.core/IMap)
-        (<= (count (:keys (:info x))) array-map-threshold))
+        (<= (count (:keys info)) array-map-threshold))
    'cljs.core/PersistentArrayMap
 
-   (= '(. PersistentTreeMap -EMPTY) (-> x :init :form))
+   (= '(. PersistentTreeMap -EMPTY) (:form init))
    'cljs.core/PersistentTreeMap
 
    (= 'seq tag)
    'cljs.core/ISeq
+
+   (and (= 'not-native tag) (= op :var))
+   (go-try-to-ressurect-impl init)
 
    :else
    ('{cljs.core/IList cljs.core/List

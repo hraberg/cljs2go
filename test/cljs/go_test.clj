@@ -6,7 +6,6 @@
             [cljs.env :as env]
             [cljs.tagged-literals]
             [clojure.pprint :as pp]
-            [fipp.edn :as fipp]
             [clojure.string :as s]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh])
@@ -14,8 +13,8 @@
            [cljs.tagged_literals JSValue]))
 
 (defn pp [x]
-  (binding [pp/*print-right-margin* 132]
-    (fipp/pprint x {:width pp/*print-right-margin*})))
+  (binding [pp/*print-right-margin* 80]
+    (pp/pprint x)))
 
 (defmacro tdd [& body]
   `(env/ensure
