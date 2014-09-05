@@ -108,6 +108,12 @@
        (finally
          (.set id# current-id#) ))))
 
+(defn defs-in-file [f]
+  (let [clj (read-string (str \[ (slurp f) \]))
+        [[_ ns]] (filter (comp #{'ns} first) clj)]
+    (for [[def? name] clj :when ('#{def defn} def?)]
+      (symbol (str ns) (str name)))))
+
 (defn maybe-add-overrides [dir]
   (when-let [overrides (io/resource (str (s/replace (str ana/*cljs-ns*) "." "/") "/overrides.cljs"))]
     (let [target (io/file dir "overrides.go")]
