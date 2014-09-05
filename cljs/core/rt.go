@@ -540,6 +540,10 @@ func Seq_(x interface{}) CljsCoreISeq {
 	return x.(CljsCoreISeq)
 }
 
+func Nil_(x interface{}) bool {
+	return x == nil
+}
+
 type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool

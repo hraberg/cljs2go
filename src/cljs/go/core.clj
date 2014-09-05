@@ -282,7 +282,7 @@
            (if or# or# (or ~@next)))))))
 
 (defmacro nil? [x]
-  `(coercive-= ~x nil))
+  (bool-expr (core/list 'js* "Nil_(~{})" x)))
 
 ;; internal - do not use.
 (defmacro coercive-not [x]
