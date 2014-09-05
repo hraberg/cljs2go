@@ -602,11 +602,11 @@
   (or (= 'clj-nil (:tag init)) (nil? init)))
 
 (defmethod emit* :def
-  [{:keys [name var init env doc export form]}]
+  [{:keys [name var init env doc export tag form]}]
   (let [redefine? (some-> *go-defs* deref (get name))
         protocol-symbol? (-> form second meta :protocol-symbol)
         declared? (-> form second meta :declared)
-        init? *go-use-init-defs*]
+        init? (and *go-use-init-defs* (= 'function tag))]
     (when-not (or (go-skip-def name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)]
         (some-> *go-defs* (swap! conj name))
