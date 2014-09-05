@@ -24,11 +24,9 @@ func init() {
 	X_STAR_unchecked_if_STAR_ = false
 }
 
-/**
-* Each runtime environment provides a different way to print output.
-* Whatever function *print-fn* is bound to will be passed any
-* Strings which should be printed.
- */
+// Each runtime environment provides a different way to print output.
+// Whatever function *print-fn* is bound to will be passed any
+// Strings which should be printed.
 var X_STAR_print_fn_STAR_ *AFn
 
 func init() {
@@ -79,27 +77,21 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* bound in a repl thread to the most recent value printed
- */
+// bound in a repl thread to the most recent value printed
 var X_STAR_1 interface{}
 
 func init() {
 	X_STAR_1 = nil
 }
 
-/**
-* bound in a repl thread to the second most recent value printed
- */
+// bound in a repl thread to the second most recent value printed
 var X_STAR_2 interface{}
 
 func init() {
 	X_STAR_2 = nil
 }
 
-/**
-* bound in a repl thread to the third most recent value printed
- */
+// bound in a repl thread to the third most recent value printed
 var X_STAR_3 interface{}
 
 func init() {
@@ -112,9 +104,7 @@ func init() {
 	Not_native = nil
 }
 
-/**
-* Tests if 2 arguments are the same object
- */
+// Tests if 2 arguments are the same object
 var Identical_QMARK_ *AFn
 
 func init() {
@@ -125,9 +115,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x is nil, false otherwise.
- */
+// Returns true if x is nil, false otherwise.
 var Nil_QMARK_ *AFn
 
 func init() {
@@ -158,9 +146,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x is logical false, false otherwise.
- */
+// Returns true if x is logical false, false otherwise.
 var Not *AFn
 
 func init() {
@@ -175,9 +161,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x is not nil, false otherwise.
- */
+// Returns true if x is not nil, false otherwise.
 var Some_QMARK_ *AFn
 
 func init() {
@@ -188,20 +172,16 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* When compiled for a command-line target, whatever
-* function *main-fn* is set to will be called with the command-line
-* argv as arguments
- */
+// When compiled for a command-line target, whatever
+// function *main-fn* is set to will be called with the command-line
+// argv as arguments
 var X_STAR_main_cli_fn_STAR_ interface{}
 
 func init() {
 	X_STAR_main_cli_fn_STAR_ = nil
 }
 
-/**
-* Returns a javascript array, cloned from the passed in array
- */
+// Returns a javascript array, cloned from the passed in array
 var Aclone *AFn
 
 func init() {
@@ -234,10 +214,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the value at the index.
-* @param {...*} var_args
- */
+// Returns the value at the index.
+// @param {...*} var_args
 var Aget *AFn
 
 func init() {
@@ -254,10 +232,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Sets the value at the index.
-* @param {...*} var_args
- */
+// Sets the value at the index.
+// @param {...*} var_args
 var Aset *AFn
 
 func init() {
@@ -278,9 +254,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the length of the array. Works on arrays of all types.
- */
+// Returns the length of the array. Works on arrays of all types.
 var Alength *AFn
 
 func init() {
@@ -1434,10 +1408,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Support so that collections can implement toString without
-* loading all the printing machinery.
- */
+// Support so that collections can implement toString without
+// loading all the printing machinery.
 var Pr_str_STAR_ *AFn
 
 func init() {
@@ -2061,11 +2033,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a seq on the collection. If the collection is
-* empty, returns nil.  (seq nil) returns nil. seq also works on
-* Strings.
- */
+// Returns a seq on the collection. If the collection is
+// empty, returns nil.  (seq nil) returns nil. seq also works on
+// Strings.
 var Seq *AFn
 
 func init() {
@@ -2105,10 +2075,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the first item in the collection. Calls seq on its
-* argument. If coll is nil, returns nil.
- */
+// Returns the first item in the collection. Calls seq on its
+// argument. If coll is nil, returns nil.
 var First *AFn
 
 func init() {
@@ -2135,10 +2103,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a possibly empty seq of the items after the first. Calls seq on its
-* argument.
- */
+// Returns a possibly empty seq of the items after the first. Calls seq on its
+// argument.
 var Rest *AFn
 
 func init() {
@@ -2165,10 +2131,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a seq of the items after the first. Calls seq on its
-* argument.  If there are no more items, returns nil
- */
+// Returns a seq of the items after the first. Calls seq on its
+// argument.  If there are no more items, returns nil
 var Next *AFn
 
 func init() {
@@ -2187,13 +2151,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Equality. Returns true if x equals y, false if not. Compares
-* numbers and collections in a type-independent manner.  Clojure's immutable data
-* structures define -equiv (and thus =) as a value, not an identity,
-* comparison.
-* @param {...*} var_args
- */
+// Equality. Returns true if x equals y, false if not. Compares
+// numbers and collections in a type-independent manner.  Clojure's immutable data
+// structures define -equiv (and thus =) as a value, not an identity,
+// comparison.
+// @param {...*} var_args
 var X_EQ_ *AFn
 
 func init() {
@@ -2227,13 +2189,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Mix final collection hash for ordered or unordered collections.
-* hash-basis is the combined collection hash, count is the number
-* of elements included in the basis. Note this is the hash code
-* consistent with =, different from .hashCode.
-* See http://clojure.org/data_structures#hash for full algorithms.
- */
+// Mix final collection hash for ordered or unordered collections.
+// hash-basis is the combined collection hash, count is the number
+// of elements included in the basis. Note this is the hash code
+// consistent with =, different from .hashCode.
+// See http://clojure.org/data_structures#hash for full algorithms.
 var Mix_collection_hash *AFn
 
 func init() {
@@ -2250,11 +2210,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the hash code, consistent with =, for an external ordered
-* collection implementing Iterable.
-* See http://clojure.org/data_structures#hash for full algorithms.
- */
+// Returns the hash code, consistent with =, for an external ordered
+// collection implementing Iterable.
+// See http://clojure.org/data_structures#hash for full algorithms.
 var Hash_ordered_coll *AFn
 
 func init() {
@@ -2278,13 +2236,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the hash code, consistent with =, for an external unordered
-* collection implementing Iterable. For maps, the iterator should
-* return map entries whose hash is computed as
-* (hash-ordered-coll [k v]).
-* See http://clojure.org/data_structures#hash for full algorithms.
- */
+// Returns the hash code, consistent with =, for an external unordered
+// collection implementing Iterable. For maps, the iterator should
+// return map entries whose hash is computed as
+// (hash-ordered-coll [k v]).
+// See http://clojure.org/data_structures#hash for full algorithms.
 var Hash_unordered_coll *AFn
 
 func init() {
@@ -2308,9 +2264,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a number one greater than num.
- */
+// Returns a number one greater than num.
 var Inc *AFn
 
 func init() {
@@ -2342,9 +2296,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Wraps x in a way such that a reduce will terminate with the value x
- */
+// Wraps x in a way such that a reduce will terminate with the value x
 var Reduced *AFn
 
 func init() {
@@ -2355,9 +2307,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x is the result of a call to reduced
- */
+// Returns true if x is the result of a call to reduced
 var Reduced_QMARK_ *AFn
 
 func init() {
@@ -2378,10 +2328,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Accepts any collection which satisfies the ICount and IIndexed protocols and
-* reduces them without incurring seq initialization
- */
+// Accepts any collection which satisfies the ICount and IIndexed protocols and
+// reduces them without incurring seq initialization
 var Ci_reduce *AFn
 
 func init() {
@@ -2562,9 +2510,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll implements count in constant time
- */
+// Returns true if coll implements count in constant time
 var Counted_QMARK_ *AFn
 
 func init() {
@@ -2575,9 +2521,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll implements nth in constant time
- */
+// Returns true if coll implements nth in constant time
 var Indexed_QMARK_ *AFn
 
 func init() {
@@ -2997,9 +2941,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (first (next x))
- */
+// Same as (first (next x))
 var Second *AFn
 
 func init() {
@@ -3010,9 +2952,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (first (first x))
- */
+// Same as (first (first x))
 var Ffirst *AFn
 
 func init() {
@@ -3023,9 +2963,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (next (first x))
- */
+// Same as (next (first x))
 var Nfirst *AFn
 
 func init() {
@@ -3036,9 +2974,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (first (next x))
- */
+// Same as (first (next x))
 var Fnext *AFn
 
 func init() {
@@ -3049,9 +2985,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (next (next x))
- */
+// Same as (next (next x))
 var Nnext *AFn
 
 func init() {
@@ -3062,9 +2996,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return the last item in coll, in linear time
- */
+// Return the last item in coll, in linear time
 var Last *AFn
 
 func init() {
@@ -3086,12 +3018,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* conj[oin]. Returns a new collection with the xs
-* 'added'. (conj nil item) returns (item).  The 'addition' may
-* happen at different 'places' depending on the concrete type.
-* @param {...*} var_args
- */
+// conj[oin]. Returns a new collection with the xs
+// 'added'. (conj nil item) returns (item).  The 'addition' may
+// happen at different 'places' depending on the concrete type.
+// @param {...*} var_args
 var Conj *AFn
 
 func init() {
@@ -3123,9 +3053,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns an empty collection of the same category as coll, or nil
- */
+// Returns an empty collection of the same category as coll, or nil
 var Empty *AFn
 
 func init() {
@@ -3162,10 +3090,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the number of items in the collection. (count nil) returns
-* 0.  Also works on strings, arrays, and Maps
- */
+// Returns the number of items in the collection. (count nil) returns
+// 0.  Also works on strings, arrays, and Maps
 var Count *AFn
 
 func init() {
@@ -3257,12 +3183,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the value at the index. get returns nil if index out of
-* bounds, nth throws an exception unless not-found is supplied.  nth
-* also works for strings, arrays, regex Matchers and Lists, and,
-* in O(n) time, for sequences.
- */
+// Returns the value at the index. get returns nil if index out of
+// bounds, nth throws an exception unless not-found is supplied.  nth
+// also works for strings, arrays, regex Matchers and Lists, and,
+// in O(n) time, for sequences.
 var Nth *AFn
 
 func init() {
@@ -3349,9 +3273,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the value mapped to key, not-found or nil if key not present.
- */
+// Returns the value mapped to key, not-found or nil if key not present.
 var Get *AFn
 
 func init() {
@@ -3422,13 +3344,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* assoc[iate]. When applied to a map, returns a new map of the
-* same (hashed/sorted) type, that contains the mapping of key(s) to
-* val(s). When applied to a vector, returns a new vector that
-* contains val at index.
-* @param {...*} var_args
- */
+// assoc[iate]. When applied to a map, returns a new map of the
+// same (hashed/sorted) type, that contains the mapping of key(s) to
+// val(s). When applied to a vector, returns a new vector that
+// contains val at index.
+// @param {...*} var_args
 var Assoc *AFn
 
 func init() {
@@ -3461,11 +3381,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
-* that does not contain a mapping for key(s).
-* @param {...*} var_args
- */
+// dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
+// that does not contain a mapping for key(s).
+// @param {...*} var_args
 var Dissoc *AFn
 
 func init() {
@@ -3706,10 +3624,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns an object of the same type and value as obj, with
-* map m as its metadata.
- */
+// Returns an object of the same type and value as obj, with
+// map m as its metadata.
 var With_meta *AFn
 
 func init() {
@@ -3728,9 +3644,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the metadata of obj, returns nil if there is no metadata.
- */
+// Returns the metadata of obj, returns nil if there is no metadata.
 var Meta *AFn
 
 func init() {
@@ -3753,10 +3667,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* For a list or queue, same as first, for a vector, same as, but much
-* more efficient than, last. If the collection is empty, returns nil.
- */
+// For a list or queue, same as first, for a vector, same as, but much
+// more efficient than, last. If the collection is empty, returns nil.
 var Peek *AFn
 
 func init() {
@@ -3771,11 +3683,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* For a list or queue, returns a new list/queue without the first
-* item, for a vector, returns a new vector without the last item.
-* Note - not the same as next/butlast.
- */
+// For a list or queue, returns a new list/queue without the first
+// item, for a vector, returns a new vector without the last item.
+// Note - not the same as next/butlast.
 var Pop *AFn
 
 func init() {
@@ -3790,11 +3700,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* disj[oin]. Returns a new set of the same (hashed/sorted) type, that
-* does not contain key(s).
-* @param {...*} var_args
- */
+// disj[oin]. Returns a new set of the same (hashed/sorted) type, that
+// does not contain key(s).
+// @param {...*} var_args
 var Disj *AFn
 
 func init() {
@@ -3832,10 +3740,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll has no items - same as (not (seq coll)).
-* Please use the idiom (seq x) rather than (not (empty? x))
- */
+// Returns true if coll has no items - same as (not (seq coll)).
+// Please use the idiom (seq x) rather than (not (empty? x))
 var Empty_QMARK_ *AFn
 
 func init() {
@@ -3846,9 +3752,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x satisfies ICollection
- */
+// Returns true if x satisfies ICollection
 var Coll_QMARK_ *AFn
 
 func init() {
@@ -3863,9 +3767,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x satisfies ISet
- */
+// Returns true if x satisfies ISet
 var Set_QMARK_ *AFn
 
 func init() {
@@ -3880,9 +3782,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll implements Associative
- */
+// Returns true if coll implements Associative
 var Associative_QMARK_ *AFn
 
 func init() {
@@ -3893,9 +3793,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll satisfies ISequential
- */
+// Returns true if coll satisfies ISequential
 var Sequential_QMARK_ *AFn
 
 func init() {
@@ -3906,9 +3804,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll satisfies ISorted
- */
+// Returns true if coll satisfies ISorted
 var Sorted_QMARK_ *AFn
 
 func init() {
@@ -3919,9 +3815,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if coll satisfies IReduce
- */
+// Returns true if coll satisfies IReduce
 var Reduceable_QMARK_ *AFn
 
 func init() {
@@ -3932,9 +3826,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return true if x satisfies IMap
- */
+// Return true if x satisfies IMap
 var Map_QMARK_ *AFn
 
 func init() {
@@ -3949,9 +3841,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return true if x satisfies IVector
- */
+// Return true if x satisfies IVector
 var Vector_QMARK_ *AFn
 
 func init() {
@@ -4040,9 +3930,7 @@ func init() {
 	}()
 }
 
-/**
-* Returns true if x is the value false, false otherwise.
- */
+// Returns true if x is the value false, false otherwise.
 var False_QMARK_ *AFn
 
 func init() {
@@ -4053,9 +3941,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if x is the value true, false otherwise.
- */
+// Returns true if x is the value true, false otherwise.
 var True_QMARK_ *AFn
 
 func init() {
@@ -4076,9 +3962,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return true if s satisfies ISeq
- */
+// Return true if s satisfies ISeq
 var Seq_QMARK_ *AFn
 
 func init() {
@@ -4093,9 +3977,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return true if s satisfies ISeqable
- */
+// Return true if s satisfies ISeqable
 var Seqable_QMARK_ *AFn
 
 func init() {
@@ -4138,13 +4020,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if key is present in the given collection, otherwise
-* returns false.  Note that for numerically indexed collections like
-* vectors and arrays, this tests if the numeric key is within the
-* range of indexes. 'contains?' operates constant or logarithmic time;
-* it will not perform a linear search for a value.  See also 'some'.
- */
+// Returns true if key is present in the given collection, otherwise
+// returns false.  Note that for numerically indexed collections like
+// vectors and arrays, this tests if the numeric key is within the
+// range of indexes. 'contains?' operates constant or logarithmic time;
+// it will not perform a linear search for a value.  See also 'some'.
 var Contains_QMARK_ *AFn
 
 func init() {
@@ -4159,9 +4039,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the map entry for key, or nil if key not present.
- */
+// Returns the map entry for key, or nil if key not present.
 var Find *AFn
 
 func init() {
@@ -4176,10 +4054,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if no two of the arguments are =
-* @param {...*} var_args
- */
+// Returns true if no two of the arguments are =
+// @param {...*} var_args
 var Distinct_QMARK_ *AFn
 
 func init() {
@@ -4223,10 +4099,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Coerces coll to a (possibly empty) sequence, if it is not already
-* one. Will not force a lazy seq. (sequence nil) yields ()
- */
+// Coerces coll to a (possibly empty) sequence, if it is not already
+// one. Will not force a lazy seq. (sequence nil) yields ()
 var Sequence *AFn
 
 func init() {
@@ -4249,12 +4123,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Comparator. Returns a negative number, zero, or a positive number
-* when x is logically 'less than', 'equal to', or 'greater than'
-* y. Uses IComparable if available and google.array.defaultCompare for objects
-* of the same type and special-cases nil to be less than any other object.
- */
+// Comparator. Returns a negative number, zero, or a positive number
+// when x is logically 'less than', 'equal to', or 'greater than'
+// y. Uses IComparable if available and google.array.defaultCompare for objects
+// of the same type and special-cases nil to be less than any other object.
 var Compare *AFn
 
 func init() {
@@ -4286,9 +4158,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Compare indexed collection.
- */
+// Compare indexed collection.
 var Compare_indexed *AFn
 
 func init() {
@@ -4326,10 +4196,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Given a fn that might be boolean valued or a comparator,
-* return a fn that is a comparator.
- */
+// Given a fn that might be boolean valued or a comparator,
+// return a fn that is a comparator.
 var Fn__GT_comparator *AFn
 
 func init() {
@@ -4364,11 +4232,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a sorted sequence of the items in coll. Comp can be
-* boolean-valued comparison funcion, or a -/0/+ valued comparator.
-* Comp defaults to compare.
- */
+// Returns a sorted sequence of the items in coll. Comp can be
+// boolean-valued comparison funcion, or a -/0/+ valued comparator.
+// Comp defaults to compare.
 var Sort *AFn
 
 func init() {
@@ -4390,12 +4256,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a sorted sequence of the items in coll, where the sort
-* order is determined by comparing (keyfn item).  Comp can be
-* boolean-valued comparison funcion, or a -/0/+ valued comparator.
-* Comp defaults to compare.
- */
+// Returns a sorted sequence of the items in coll, where the sort
+// order is determined by comparing (keyfn item).  Comp can be
+// boolean-valued comparison funcion, or a -/0/+ valued comparator.
+// Comp defaults to compare.
 var Sort_by *AFn
 
 func init() {
@@ -4456,9 +4320,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return a random permutation of coll
- */
+// Return a random permutation of coll
 var Shuffle *AFn
 
 func init() {
@@ -4474,17 +4336,15 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* f should be a function of 2 arguments. If val is not supplied,
-* returns the result of applying f to the first 2 items in coll, then
-* applying f to that result and the 3rd item, etc. If coll contains no
-* items, f must accept no arguments as well, and reduce returns the
-* result of calling f with no arguments.  If coll has only 1 item, it
-* is returned and f is not called.  If val is supplied, returns the
-* result of applying f to val and the first item in coll, then
-* applying f to that result and the 2nd item, etc. If coll contains no
-* items, returns val and f is not called.
- */
+// f should be a function of 2 arguments. If val is not supplied,
+// returns the result of applying f to the first 2 items in coll, then
+// applying f to that result and the 3rd item, etc. If coll contains no
+// items, f must accept no arguments as well, and reduce returns the
+// result of calling f with no arguments.  If coll has only 1 item, it
+// is returned and f is not called.  If val is supplied, returns the
+// result of applying f to val and the first item in coll, then
+// applying f to that result and the 2nd item, etc. If coll contains no
+// items, returns val and f is not called.
 var Reduce *AFn
 
 func init() {
@@ -4531,14 +4391,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Reduces an associative collection. f should be a function of 3
-* arguments. Returns the result of applying f to init, the first key
-* and the first value in coll, then applying f to that result and the
-* 2nd key and value, etc. If coll contains no entries, returns init
-* and f is not called. Note that reduce-kv is supported on vectors,
-* where the keys will be the ordinals.
- */
+// Reduces an associative collection. f should be a function of 3
+// arguments. Returns the result of applying f to init, the first key
+// and the first value in coll, then applying f to that result and the
+// 2nd key and value, etc. If coll contains no entries, returns init
+// and f is not called. Note that reduce-kv is supported on vectors,
+// where the keys will be the ordinals.
 var Reduce_kv *AFn
 
 func init() {
@@ -4571,14 +4429,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* reduce with a transformation of f (xf). If init is not
-* supplied, (f) will be called to produce it. Returns the result of
-* applying (the transformed) xf to init and the first item in coll,
-* then applying xf to that result and the 2nd item, etc. If coll
-* contains no items, returns init and f is not called. Note that
-* certain transforms may inject or skip items.
- */
+// reduce with a transformation of f (xf). If init is not
+// supplied, (f) will be called to produce it. Returns the result of
+// applying (the transformed) xf to init and the first item in coll,
+// then applying xf to that result and the 2nd item, etc. If coll
+// contains no items, returns init and f is not called. Note that
+// certain transforms may inject or skip items.
 var Transduce *AFn
 
 func init() {
@@ -4607,10 +4463,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the sum of nums. (+) returns 0.
-* @param {...*} var_args
- */
+// Returns the sum of nums. (+) returns 0.
+// @param {...*} var_args
 var X_PLUS_ *AFn
 
 func init() {
@@ -4631,11 +4485,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If no ys are supplied, returns the negation of x, else subtracts
-* the ys from x and returns the result.
-* @param {...*} var_args
- */
+// If no ys are supplied, returns the negation of x, else subtracts
+// the ys from x and returns the result.
+// @param {...*} var_args
 var X_ *AFn
 
 func init() {
@@ -4654,10 +4506,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the product of nums. (*) returns 1.
-* @param {...*} var_args
- */
+// Returns the product of nums. (*) returns 1.
+// @param {...*} var_args
 var X_STAR_ *AFn
 
 func init() {
@@ -4678,11 +4528,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If no denominators are supplied, returns 1/numerator,
-* else returns numerator divided by all of the denominators.
-* @param {...*} var_args
- */
+// If no denominators are supplied, returns 1/numerator,
+// else returns numerator divided by all of the denominators.
+// @param {...*} var_args
 var X_SLASH_ *AFn
 
 func init() {
@@ -4701,11 +4549,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns non-nil if nums are in monotonically increasing order,
-* otherwise false.
-* @param {...*} var_args
- */
+// Returns non-nil if nums are in monotonically increasing order,
+// otherwise false.
+// @param {...*} var_args
 var X_LT_ *AFn
 
 func init() {
@@ -4735,11 +4581,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns non-nil if nums are in monotonically non-decreasing order,
-* otherwise false.
-* @param {...*} var_args
- */
+// Returns non-nil if nums are in monotonically non-decreasing order,
+// otherwise false.
+// @param {...*} var_args
 var X_LT__EQ_ *AFn
 
 func init() {
@@ -4769,11 +4613,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns non-nil if nums are in monotonically decreasing order,
-* otherwise false.
-* @param {...*} var_args
- */
+// Returns non-nil if nums are in monotonically decreasing order,
+// otherwise false.
+// @param {...*} var_args
 var X_GT_ *AFn
 
 func init() {
@@ -4803,11 +4645,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns non-nil if nums are in monotonically non-increasing order,
-* otherwise false.
-* @param {...*} var_args
- */
+// Returns non-nil if nums are in monotonically non-increasing order,
+// otherwise false.
+// @param {...*} var_args
 var X_GT__EQ_ *AFn
 
 func init() {
@@ -4837,9 +4677,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a number one less than num.
- */
+// Returns a number one less than num.
 var Dec *AFn
 
 func init() {
@@ -4850,10 +4688,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the greatest of the nums.
-* @param {...*} var_args
- */
+// Returns the greatest of the nums.
+// @param {...*} var_args
 var Max *AFn
 
 func init() {
@@ -4884,10 +4720,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the least of the nums.
-* @param {...*} var_args
- */
+// Returns the least of the nums.
+// @param {...*} var_args
 var Min *AFn
 
 func init() {
@@ -5008,10 +4842,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the sum of nums. (+) returns 0.
-* @param {...*} var_args
- */
+// Returns the sum of nums. (+) returns 0.
+// @param {...*} var_args
 var Unchecked_add *AFn
 
 func init() {
@@ -5032,10 +4864,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the sum of nums. (+) returns 0.
-* @param {...*} var_args
- */
+// Returns the sum of nums. (+) returns 0.
+// @param {...*} var_args
 var Unchecked_add_int *AFn
 
 func init() {
@@ -5076,11 +4906,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If no denominators are supplied, returns 1/numerator,
-* else returns numerator divided by all of the denominators.
-* @param {...*} var_args
- */
+// If no denominators are supplied, returns 1/numerator,
+// else returns numerator divided by all of the denominators.
+// @param {...*} var_args
 var Unchecked_divide_int *AFn
 
 func init() {
@@ -5119,10 +4947,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the product of nums. (*) returns 1.
-* @param {...*} var_args
- */
+// Returns the product of nums. (*) returns 1.
+// @param {...*} var_args
 var Unchecked_multiply *AFn
 
 func init() {
@@ -5143,10 +4969,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the product of nums. (*) returns 1.
-* @param {...*} var_args
- */
+// Returns the product of nums. (*) returns 1.
+// @param {...*} var_args
 var Unchecked_multiply_int *AFn
 
 func init() {
@@ -5197,11 +5021,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If no ys are supplied, returns the negation of x, else subtracts
-* the ys from x and returns the result.
-* @param {...*} var_args
- */
+// If no ys are supplied, returns the negation of x, else subtracts
+// the ys from x and returns the result.
+// @param {...*} var_args
 var Unchecked_subtract *AFn
 
 func init() {
@@ -5220,11 +5042,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If no ys are supplied, returns the negation of x, else subtracts
-* the ys from x and returns the result.
-* @param {...*} var_args
- */
+// If no ys are supplied, returns the negation of x, else subtracts
+// the ys from x and returns the result.
+// @param {...*} var_args
 var Unchecked_subtract_int *AFn
 
 func init() {
@@ -5257,9 +5077,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Coerce to int by stripping decimal places.
- */
+// Coerce to int by stripping decimal places.
 var Int_ *AFn
 
 func init() {
@@ -5270,9 +5088,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Coerce to int by stripping decimal places.
- */
+// Coerce to int by stripping decimal places.
 var Unchecked_int *AFn
 
 func init() {
@@ -5283,9 +5099,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Coerce to long by stripping decimal places. Identical to `int'.
- */
+// Coerce to long by stripping decimal places. Identical to `int'.
 var Long *AFn
 
 func init() {
@@ -5296,9 +5110,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Coerce to long by stripping decimal places. Identical to `int'.
- */
+// Coerce to long by stripping decimal places. Identical to `int'.
 var Unchecked_long *AFn
 
 func init() {
@@ -5389,9 +5201,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Modulus of num and div with original javascript behavior. i.e. bug for negative numbers
- */
+// Modulus of num and div with original javascript behavior. i.e. bug for negative numbers
 var Js_mod *AFn
 
 func init() {
@@ -5402,9 +5212,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Modulus of num and div. Truncates toward negative infinity.
- */
+// Modulus of num and div. Truncates toward negative infinity.
 var Mod *AFn
 
 func init() {
@@ -5415,9 +5223,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* quot[ient] of dividing numerator by denominator.
- */
+// quot[ient] of dividing numerator by denominator.
 var Quot *AFn
 
 func init() {
@@ -5432,9 +5238,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* remainder of dividing numerator by denominator.
- */
+// remainder of dividing numerator by denominator.
 var Rem *AFn
 
 func init() {
@@ -5449,9 +5253,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a random floating point number between 0 (inclusive) and n (default 1) (exclusive).
- */
+// Returns a random floating point number between 0 (inclusive) and n (default 1) (exclusive).
 var Rand *AFn
 
 func init() {
@@ -5464,9 +5266,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a random integer between 0 (inclusive) and n (exclusive).
- */
+// Returns a random integer between 0 (inclusive) and n (exclusive).
 var Rand_int *AFn
 
 func init() {
@@ -5477,9 +5277,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise exclusive or
- */
+// Bitwise exclusive or
 var Bit_xor *AFn
 
 func init() {
@@ -5490,9 +5288,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise and
- */
+// Bitwise and
 var Bit_and *AFn
 
 func init() {
@@ -5503,9 +5299,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise or
- */
+// Bitwise or
 var Bit_or *AFn
 
 func init() {
@@ -5516,9 +5310,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise and
- */
+// Bitwise and
 var Bit_and_not *AFn
 
 func init() {
@@ -5529,9 +5321,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Clear bit at index n
- */
+// Clear bit at index n
 var Bit_clear *AFn
 
 func init() {
@@ -5542,9 +5332,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Flip bit at index n
- */
+// Flip bit at index n
 var Bit_flip *AFn
 
 func init() {
@@ -5555,9 +5343,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise complement
- */
+// Bitwise complement
 var Bit_not *AFn
 
 func init() {
@@ -5568,9 +5354,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Set bit at index n
- */
+// Set bit at index n
 var Bit_set *AFn
 
 func init() {
@@ -5581,9 +5365,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Test bit at index n
- */
+// Test bit at index n
 var Bit_test *AFn
 
 func init() {
@@ -5594,9 +5376,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise shift left
- */
+// Bitwise shift left
 var Bit_shift_left *AFn
 
 func init() {
@@ -5607,9 +5387,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise shift right
- */
+// Bitwise shift right
 var Bit_shift_right *AFn
 
 func init() {
@@ -5620,9 +5398,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* DEPRECATED: Bitwise shift right with zero fill
- */
+// DEPRECATED: Bitwise shift right with zero fill
 var Bit_shift_right_zero_fill *AFn
 
 func init() {
@@ -5633,9 +5409,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Bitwise shift right with zero fill
- */
+// Bitwise shift right with zero fill
 var Unsigned_bit_shift_right *AFn
 
 func init() {
@@ -5646,9 +5420,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Counts the number of bits set in n
- */
+// Counts the number of bits set in n
 var Bit_count *AFn
 
 func init() {
@@ -5664,12 +5436,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns non-nil if nums all have the equivalent
-* value, otherwise false. Behavior on non nums is
-* undefined.
-* @param {...*} var_args
- */
+// Returns non-nil if nums all have the equivalent
+// value, otherwise false. Behavior on non nums is
+// undefined.
+// @param {...*} var_args
 var X_EQ__EQ_ *AFn
 
 func init() {
@@ -5699,9 +5469,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if num is greater than zero, else false
- */
+// Returns true if num is greater than zero, else false
 var Pos_QMARK_ *AFn
 
 func init() {
@@ -5722,9 +5490,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if num is less than zero, else false
- */
+// Returns true if num is less than zero, else false
 var Neg_QMARK_ *AFn
 
 func init() {
@@ -5735,9 +5501,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the nth next of coll, (seq coll) when n is 0.
- */
+// Returns the nth next of coll, (seq coll) when n is 0.
 var Nthnext *AFn
 
 func init() {
@@ -5768,12 +5532,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* With no args, returns the empty string. With one arg x, returns
-* x.toString().  (str nil) returns the empty string. With more than
-* one arg, returns the concatenation of the str values of the args.
-* @param {...*} var_args
- */
+// With no args, returns the empty string. With one arg x, returns
+// x.toString().  (str nil) returns the empty string. With more than
+// one arg, returns the concatenation of the str values of the args.
+// @param {...*} var_args
 var Str *AFn
 
 func init() {
@@ -5807,10 +5569,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the substring of s beginning at start inclusive, and ending
-* at end (defaults to length of string), exclusive.
- */
+// Returns the substring of s beginning at start inclusive, and ending
+// at end (defaults to length of string), exclusive.
 var Subs *AFn
 
 func init() {
@@ -5823,10 +5583,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Assumes x is sequential. Returns true if x equals y, otherwise
-* returns false.
- */
+// Assumes x is sequential. Returns true if x equals y, otherwise
+// returns false.
 var Equiv_sequential *AFn
 
 func init() {
@@ -5948,12 +5706,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a JavaScript object and a map of names to functions and
-* attaches said functions as methods on the object.  Any references to
-* JavaScript's implict this (via the this-as macro) will resolve to the
-* object that the function is attached.
- */
+// Takes a JavaScript object and a map of names to functions and
+// attaches said functions as methods on the object.  Any references to
+// JavaScript's implict this (via the this-as macro) will resolve to the
+// object that the function is attached.
 var Extend_object_BANG_ *AFn
 
 func init() {
@@ -6436,9 +6192,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a seq of the items in coll in reverse order. Not lazy.
- */
+// Returns a seq of the items in coll in reverse order. Not lazy.
 var Reverse *AFn
 
 func init() {
@@ -6453,9 +6207,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* @param {...*} var_args
- */
+// @param {...*} var_args
 var List *AFn
 
 func init() {
@@ -6689,9 +6441,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new seq where x is the first element and seq is the rest.
- */
+// Returns a new seq where x is the first element and seq is the rest.
 var Cons *AFn
 
 func init() {
@@ -7035,9 +6785,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the namespace String of a symbol or keyword, or nil if not present.
- */
+// Returns the namespace String of a symbol or keyword, or nil if not present.
 var Namespace *AFn
 
 func init() {
@@ -7052,10 +6800,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a Keyword with the given namespace and name.  Do not use :
-* in the keyword strings, it will be added automatically.
- */
+// Returns a Keyword with the given namespace and name.  Do not use :
+// in the keyword strings, it will be added automatically.
 var Keyword *AFn
 
 func init() {
@@ -7727,9 +7473,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Naive impl of to-array as a start.
- */
+// Naive impl of to-array as a start.
 var To_array *AFn
 
 func init() {
@@ -7756,10 +7500,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a (potentially-ragged) 2-dimensional array
-* containing the contents of coll.
- */
+// Returns a (potentially-ragged) 2-dimensional array
+// containing the contents of coll.
 var To_array_2d *AFn
 
 func init() {
@@ -8106,10 +7848,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq representing the concatenation of the elements in the supplied colls.
-* @param {...*} var_args
- */
+// Returns a lazy seq representing the concatenation of the elements in the supplied colls.
+// @param {...*} var_args
 var Concat *AFn
 
 func init() {
@@ -8182,11 +7922,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Creates a new list containing the items prepended to the rest, the
-* last of which will be treated as a sequence.
-* @param {...*} var_args
- */
+// Creates a new list containing the items prepended to the rest, the
+// last of which will be treated as a sequence.
+// @param {...*} var_args
 var List_STAR_ *AFn
 
 func init() {
@@ -8211,9 +7949,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new, transient version of the collection, in constant time.
- */
+// Returns a new, transient version of the collection, in constant time.
 var Transient *AFn
 
 func init() {
@@ -8224,11 +7960,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new, persistent version of the transient collection, in
-* constant time. The transient collection cannot be used after this
-* call, any such use will throw an exception.
- */
+// Returns a new, persistent version of the transient collection, in
+// constant time. The transient collection cannot be used after this
+// call, any such use will throw an exception.
 var Persistent_BANG_ *AFn
 
 func init() {
@@ -8239,11 +7973,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Adds x to the transient collection, and return coll. The 'addition'
-* may happen at different 'places' depending on the concrete type.
-* @param {...*} var_args
- */
+// Adds x to the transient collection, and return coll. The 'addition'
+// may happen at different 'places' depending on the concrete type.
+// @param {...*} var_args
 var Conj_BANG_ *AFn
 
 func init() {
@@ -8275,12 +8007,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* When applied to a transient map, adds mapping of key(s) to
-* val(s). When applied to a transient vector, sets the val at index.
-* Note - index must be <= (count vector). Returns coll.
-* @param {...*} var_args
- */
+// When applied to a transient map, adds mapping of key(s) to
+// val(s). When applied to a transient vector, sets the val at index.
+// Note - index must be <= (count vector). Returns coll.
+// @param {...*} var_args
 var Assoc_BANG_ *AFn
 
 func init() {
@@ -8309,10 +8039,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a transient map that doesn't contain a mapping for key(s).
-* @param {...*} var_args
- */
+// Returns a transient map that doesn't contain a mapping for key(s).
+// @param {...*} var_args
 var Dissoc_BANG_ *AFn
 
 func init() {
@@ -8340,10 +8068,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Removes the last item from a transient vector. If
-* the collection is empty, throws an exception. Returns coll
- */
+// Removes the last item from a transient vector. If
+// the collection is empty, throws an exception. Returns coll
 var Pop_BANG_ *AFn
 
 func init() {
@@ -8354,11 +8080,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* disj[oin]. Returns a transient set of the same (hashed/sorted) type, that
-* does not contain key(s).
-* @param {...*} var_args
- */
+// disj[oin]. Returns a transient set of the same (hashed/sorted) type, that
+// does not contain key(s).
+// @param {...*} var_args
 var Disj_BANG_ *AFn
 
 func init() {
@@ -8386,11 +8110,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns an object of the same type and value as obj, with
-* (apply f (meta obj) args) as its metadata.
-* @param {...*} var_args
- */
+// Returns an object of the same type and value as obj, with
+// (apply f (meta obj) args) as its metadata.
+// @param {...*} var_args
 var Vary_meta *AFn
 
 func init() {
@@ -8419,10 +8141,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as (not (= obj1 obj2))
-* @param {...*} var_args
- */
+// Same as (not (= obj1 obj2))
+// @param {...*} var_args
 var Not_EQ_ *AFn
 
 func init() {
@@ -8441,9 +8161,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If coll is empty, returns nil, else coll
- */
+// If coll is empty, returns nil, else coll
 var Not_empty *AFn
 
 func init() {
@@ -9126,10 +8844,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if (pred x) is logical true for every x in coll, else
-* false.
- */
+// Returns true if (pred x) is logical true for every x in coll, else
+// false.
 var Every_QMARK_ *AFn
 
 func init() {
@@ -9152,10 +8868,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns false if (pred x) is logical true for every x in
-* coll, else true.
- */
+// Returns false if (pred x) is logical true for every x in
+// coll, else true.
 var Not_every_QMARK_ *AFn
 
 func init() {
@@ -9166,12 +8880,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the first logical true value of (pred x) for any x in coll,
-* else nil.  One common idiom is to use a set as pred, for example
-* this will return :fred if :fred is in the sequence, otherwise nil:
-* (some #{:fred} coll)
- */
+// Returns the first logical true value of (pred x) for any x in coll,
+// else nil.  One common idiom is to use a set as pred, for example
+// this will return :fred if :fred is in the sequence, otherwise nil:
+// (some #{:fred} coll)
 var Some *AFn
 
 func init() {
@@ -9197,10 +8909,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns false if (pred x) is logical true for any x in coll,
-* else true.
- */
+// Returns false if (pred x) is logical true for any x in coll,
+// else true.
 var Not_any_QMARK_ *AFn
 
 func init() {
@@ -9211,9 +8921,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if n is even, throws an exception if n is not an integer
- */
+// Returns true if n is even, throws an exception if n is not an integer
 var Even_QMARK_ *AFn
 
 func init() {
@@ -9228,9 +8936,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if n is odd, throws an exception if n is not an integer
- */
+// Returns true if n is odd, throws an exception if n is not an integer
 var Odd_QMARK_ *AFn
 
 func init() {
@@ -9251,9 +8957,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a function that takes any number of arguments and returns x.
- */
+// Returns a function that takes any number of arguments and returns x.
 var Constantly *AFn
 
 func init() {
@@ -9270,13 +8974,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a set of functions and returns a fn that is the composition
-* of those fns.  The returned fn takes a variable number of args,
-* applies the rightmost of fns to the args, the next
-* fn (right-to-left) to the result, etc.
-* @param {...*} var_args
- */
+// Takes a set of functions and returns a fn that is the composition
+// of those fns.  The returned fn takes a variable number of args,
+// applies the rightmost of fns to the args, the next
+// fn (right-to-left) to the result, etc.
+// @param {...*} var_args
 var Comp *AFn
 
 func init() {
@@ -9358,12 +9060,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a function f and fewer than the normal arguments to f, and
-* returns a fn that takes a variable number of additional args. When
-* called, the returned function calls f with args + additional args.
-* @param {...*} var_args
- */
+// Takes a function f and fewer than the normal arguments to f, and
+// returns a fn that takes a variable number of additional args. When
+// called, the returned function calls f with args + additional args.
+// @param {...*} var_args
 var Partial *AFn
 
 func init() {
@@ -9412,13 +9112,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a function f, and returns a function that calls f, replacing
-* a nil first argument to f with the supplied value x. Higher arity
-* versions can replace arguments in the second and third
-* positions (y, z). Note that the function f can take any number of
-* arguments, not just the one(s) being nil-patched.
- */
+// Takes a function f, and returns a function that calls f, replacing
+// a nil first argument to f with the supplied value x. Higher arity
+// versions can replace arguments in the second and third
+// positions (y, z). Note that the function f can take any number of
+// arguments, not just the one(s) being nil-patched.
 var Fnil *AFn
 
 func init() {
@@ -9582,12 +9280,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence consisting of the result of applying f to 0
-* and the first item of coll, followed by applying f to 1 and the second
-* item in coll, etc, until coll is exhausted. Thus function f should
-* accept 2 arguments, index and item.
- */
+// Returns a lazy sequence consisting of the result of applying f to 0
+// and the first item of coll, followed by applying f to 1 and the second
+// item in coll, etc, until coll is exhausted. Thus function f should
+// accept 2 arguments, index and item.
 var Map_indexed *AFn
 
 func init() {
@@ -9650,11 +9346,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the non-nil results of (f item). Note,
-* this means false return values will be included.  f must be free of
-* side-effects.  Returns a transducer when no collection is provided.
- */
+// Returns a lazy sequence of the non-nil results of (f item). Note,
+// this means false return values will be included.  f must be free of
+// side-effects.  Returns a transducer when no collection is provided.
 var Keep *AFn
 
 func init() {
@@ -9889,22 +9583,20 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Creates and returns an Atom with an initial value of x and zero or
-* more options (in any order):
-*
-* :meta metadata-map
-*
-* :validator validate-fn
-*
-* If metadata-map is supplied, it will be come the metadata on the
-* atom. validate-fn must be nil or a side-effect-free fn of one
-* argument, which will be passed the intended new state on any state
-* change. If the new state is unacceptable, the validate-fn should
-* return false or throw an Error.  If either of these error conditions
-* occur, then the value of the atom will not change.
-* @param {...*} var_args
- */
+// Creates and returns an Atom with an initial value of x and zero or
+// more options (in any order):
+//
+// :meta metadata-map
+//
+// :validator validate-fn
+//
+// If metadata-map is supplied, it will be come the metadata on the
+// atom. validate-fn must be nil or a side-effect-free fn of one
+// argument, which will be passed the intended new state on any state
+// change. If the new state is unacceptable, the validate-fn should
+// return false or throw an Error.  If either of these error conditions
+// occur, then the value of the atom will not change.
+// @param {...*} var_args
 var Atom *AFn
 
 func init() {
@@ -9933,10 +9625,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Sets the value of atom to newval without regard for the
-* current value. Returns newval.
- */
+// Sets the value of atom to newval without regard for the
+// current value. Returns newval.
 var Reset_BANG_ *AFn
 
 func init() {
@@ -9971,13 +9661,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Atomically swaps the value of atom to be:
-* (apply f current-value-of-atom args). Note that f may be called
-* multiple times, and thus should be free of side effects.  Returns
-* the value that was swapped in.
-* @param {...*} var_args
- */
+// Atomically swaps the value of atom to be:
+// (apply f current-value-of-atom args). Note that f may be called
+// multiple times, and thus should be free of side effects.  Returns
+// the value that was swapped in.
+// @param {...*} var_args
 var Swap_BANG_ *AFn
 
 func init() {
@@ -10016,11 +9704,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Atomically sets the value of atom to newval if and only if the
-* current value of the atom is identical to oldval. Returns true if
-* set happened, else false.
- */
+// Atomically sets the value of atom to newval if and only if the
+// current value of the atom is identical to oldval. Returns true if
+// set happened, else false.
 var Compare_and_set_BANG_ *AFn
 
 func init() {
@@ -10036,14 +9722,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Sets the validator-fn for an atom. validator-fn must be nil or a
-* side-effect-free fn of one argument, which will be passed the intended
-* new state on any state change. If the new state is unacceptable, the
-* validator-fn should return false or throw an Error. If the current state
-* is not acceptable to the new validator, an Error will be thrown and the
-* validator will not be changed.
- */
+// Sets the validator-fn for an atom. validator-fn must be nil or a
+// side-effect-free fn of one argument, which will be passed the intended
+// new state on any state change. If the new state is unacceptable, the
+// validator-fn should return false or throw an Error. If the current state
+// is not acceptable to the new validator, an Error will be thrown and the
+// validator will not be changed.
 var Set_validator_BANG_ *AFn
 
 func init() {
@@ -10058,9 +9742,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Gets the validator-fn for a var/ref/agent/atom.
- */
+// Gets the validator-fn for a var/ref/agent/atom.
 var Get_validator *AFn
 
 func init() {
@@ -10071,12 +9753,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the non-nil results of (f index item). Note,
-* this means false return values will be included.  f must be free of
-* side-effects.  Returns a stateful transducer when no collection is
-* provided.
- */
+// Returns a lazy sequence of the non-nil results of (f index item). Note,
+// this means false return values will be included.  f must be free of
+// side-effects.  Returns a stateful transducer when no collection is
+// provided.
 var Keep_indexed *AFn
 
 func init() {
@@ -10183,13 +9863,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a set of predicates and returns a function f that returns true if all of its
-* composing predicates return a logical true value against all of its arguments, else it returns
-* false. Note that f is short-circuiting in that it will stop execution on the first
-* argument that triggers a logical false result against the original predicates.
-* @param {...*} var_args
- */
+// Takes a set of predicates and returns a function f that returns true if all of its
+// composing predicates return a logical true value against all of its arguments, else it returns
+// false. Note that f is short-circuiting in that it will stop execution on the first
+// argument that triggers a logical false result against the original predicates.
+// @param {...*} var_args
 var Every_pred *AFn
 
 func init() {
@@ -10581,13 +10259,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a set of predicates and returns a function f that returns the first logical true value
-* returned by one of its composing predicates against any of its arguments, else it returns
-* logical false. Note that f is short-circuiting in that it will stop execution on the first
-* argument that triggers a logical true result against the original predicates.
-* @param {...*} var_args
- */
+// Takes a set of predicates and returns a function f that returns the first logical true value
+// returned by one of its composing predicates against any of its arguments, else it returns
+// logical false. Note that f is short-circuiting in that it will stop execution on the first
+// argument that triggers a logical true result against the original predicates.
+// @param {...*} var_args
 var Some_fn *AFn
 
 func init() {
@@ -11015,15 +10691,13 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence consisting of the result of applying f to
-* the set of first items of each coll, followed by applying f to the
-* set of second items in each coll, until any one of the colls is
-* exhausted.  Any remaining items in other colls are ignored. Function
-* f should accept number-of-colls arguments. Returns a transducer when
-* no collection is provided.
-* @param {...*} var_args
- */
+// Returns a lazy sequence consisting of the result of applying f to
+// the set of first items of each coll, followed by applying f to the
+// set of second items in each coll, until any one of the colls is
+// exhausted.  Any remaining items in other colls are ignored. Function
+// f should accept number-of-colls arguments. Returns a transducer when
+// no collection is provided.
+// @param {...*} var_args
 var Map_ *AFn
 
 func init() {
@@ -11186,11 +10860,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the first n items in coll, or all items if
-* there are fewer than n.  Returns a stateful transducer when
-* no collection is provided.
- */
+// Returns a lazy sequence of the first n items in coll, or all items if
+// there are fewer than n.  Returns a stateful transducer when
+// no collection is provided.
 var Take *AFn
 
 func init() {
@@ -11257,10 +10929,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of all but the first n items in coll.
-* Returns a stateful transducer when no collection is provided.
- */
+// Returns a lazy sequence of all but the first n items in coll.
+// Returns a stateful transducer when no collection is provided.
 var Drop *AFn
 
 func init() {
@@ -11333,9 +11003,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return a lazy sequence of all but the last n (default 1) items in coll
- */
+// Return a lazy sequence of all but the last n (default 1) items in coll
 var Drop_last *AFn
 
 func init() {
@@ -11352,10 +11020,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a seq of the last n items in coll.  Depending on the type
-* of coll may be no better than linear time.  For vectors, see also subvec.
- */
+// Returns a seq of the last n items in coll.  Depending on the type
+// of coll may be no better than linear time.  For vectors, see also subvec.
 var Take_last *AFn
 
 func init() {
@@ -11378,11 +11044,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the items in coll starting from the
-* first item for which (pred item) returns logical false.  Returns a
-* stateful transducer when no collection is provided.
- */
+// Returns a lazy sequence of the items in coll starting from the
+// first item for which (pred item) returns logical false.  Returns a
+// stateful transducer when no collection is provided.
 var Drop_while *AFn
 
 func init() {
@@ -11463,9 +11127,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy (infinite!) sequence of repetitions of the items in coll.
- */
+// Returns a lazy (infinite!) sequence of repetitions of the items in coll.
 var Cycle *AFn
 
 func init() {
@@ -11492,9 +11154,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a vector of [(take n coll) (drop n coll)]
- */
+// Returns a vector of [(take n coll) (drop n coll)]
 var Split_at *AFn
 
 func init() {
@@ -11505,9 +11165,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy (infinite!, or length n if supplied) sequence of xs.
- */
+// Returns a lazy (infinite!, or length n if supplied) sequence of xs.
 var Repeat *AFn
 
 func init() {
@@ -11524,9 +11182,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of n xs.
- */
+// Returns a lazy seq of n xs.
 var Replicate *AFn
 
 func init() {
@@ -11537,11 +11193,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a function of no args, presumably with side effects, and
-* returns an infinite (or length n if supplied) lazy sequence of calls
-* to it
- */
+// Takes a function of no args, presumably with side effects, and
+// returns an infinite (or length n if supplied) lazy sequence of calls
+// to it
 var Repeatedly *AFn
 
 func init() {
@@ -11558,9 +11212,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects
- */
+// Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects
 var Iterate *AFn
 
 func init() {
@@ -11575,10 +11227,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of the first item in each coll, then the second etc.
-* @param {...*} var_args
- */
+// Returns a lazy seq of the first item in each coll, then the second etc.
+// @param {...*} var_args
 var Interleave *AFn
 
 func init() {
@@ -11628,9 +11278,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of the elements of coll separated by sep
- */
+// Returns a lazy seq of the elements of coll separated by sep
 var Interpose *AFn
 
 func init() {
@@ -11641,10 +11289,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Take a collection of collections, and return a lazy seq
-* of items from the inner collection
- */
+// Take a collection of collections, and return a lazy seq
+// of items from the inner collection
 var Flatten1 *AFn
 
 func init() {
@@ -11683,11 +11329,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the result of applying concat to the result of applying map
-* to f and colls.  Thus function f should return a collection.
-* @param {...*} var_args
- */
+// Returns the result of applying concat to the result of applying map
+// to f and colls.  Thus function f should return a collection.
+// @param {...*} var_args
 var Mapcat *AFn
 
 func init() {
@@ -11704,11 +11348,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the items in coll for which
-* (pred item) returns true. pred must be free of side-effects.
-* Returns a transducer when no collection is provided.
- */
+// Returns a lazy sequence of the items in coll for which
+// (pred item) returns true. pred must be free of side-effects.
+// Returns a transducer when no collection is provided.
 var Filter *AFn
 
 func init() {
@@ -11792,11 +11434,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the items in coll for which
-* (pred item) returns false. pred must be free of side-effects.
-* Returns a transducer when no collection is provided.
- */
+// Returns a lazy sequence of the items in coll for which
+// (pred item) returns false. pred must be free of side-effects.
+// Returns a transducer when no collection is provided.
 var Remove *AFn
 
 func init() {
@@ -11809,14 +11449,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the nodes in a tree, via a depth-first walk.
-* branch? must be a fn of one arg that returns true if passed a node
-* that can have children (but may not).  children must be a fn of one
-* arg that returns a sequence of the children. Will only be called on
-* nodes for which branch? returns true. Root is the root node of the
-* tree.
- */
+// Returns a lazy sequence of the nodes in a tree, via a depth-first walk.
+// branch? must be a fn of one arg that returns true if passed a node
+// that can have children (but may not).  children must be a fn of one
+// arg that returns a sequence of the children. Will only be called on
+// nodes for which branch? returns true. Root is the root node of the
+// tree.
 var Tree_seq *AFn
 
 func init() {
@@ -11845,11 +11483,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes any nested combination of sequential things (lists, vectors,
-* etc.) and returns their contents as a single, flat sequence.
-* (flatten nil) returns nil.
- */
+// Takes any nested combination of sequential things (lists, vectors,
+// etc.) and returns their contents as a single, flat sequence.
+// (flatten nil) returns nil.
 var Flatten *AFn
 
 func init() {
@@ -11864,10 +11500,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new coll consisting of to-coll with all of the items of
-* from-coll conjoined. A transducer may be supplied.
- */
+// Returns a new coll consisting of to-coll with all of the items of
+// from-coll conjoined. A transducer may be supplied.
 var Into *AFn
 
 func init() {
@@ -11892,14 +11526,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a vector consisting of the result of applying f to the
-* set of first items of each coll, followed by applying f to the set
-* of second items in each coll, until any one of the colls is
-* exhausted.  Any remaining items in other colls are ignored. Function
-* f should accept number-of-colls arguments.
-* @param {...*} var_args
- */
+// Returns a vector consisting of the result of applying f to the
+// set of first items of each coll, followed by applying f to the set
+// of second items in each coll, until any one of the colls is
+// exhausted.  Any remaining items in other colls are ignored. Function
+// f should accept number-of-colls arguments.
+// @param {...*} var_args
 var Mapv *AFn
 
 func init() {
@@ -11926,10 +11558,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a vector of the items in coll for which
-* (pred item) returns true. pred must be free of side-effects.
- */
+// Returns a vector of the items in coll for which
+// (pred item) returns true. pred must be free of side-effects.
 var Filterv *AFn
 
 func init() {
@@ -11948,13 +11578,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of lists of n items each, at offsets step
-* apart. If step is not supplied, defaults to n, i.e. the partitions
-* do not overlap. If a pad collection is supplied, use its elements as
-* necessary to complete last partition upto n items. In case there are
-* not enough padding elements, return a partition with less than n items.
- */
+// Returns a lazy sequence of lists of n items each, at offsets step
+// apart. If step is not supplied, defaults to n, i.e. the partitions
+// do not overlap. If a pad collection is supplied, use its elements as
+// necessary to complete last partition upto n items. In case there are
+// not enough padding elements, return a partition with less than n items.
 var Partition *AFn
 
 func init() {
@@ -12017,11 +11645,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the value in a nested associative structure,
-* where ks is a sequence of keys. Returns nil if the key is not present,
-* or the not-found value if supplied.
- */
+// Returns the value in a nested associative structure,
+// where ks is a sequence of keys. Returns nil if the key is not present,
+// or the not-found value if supplied.
 var Get_in *AFn
 
 func init() {
@@ -12059,11 +11685,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Associates a value in a nested associative structure, where ks is a
-* sequence of keys and v is the new value and returns a new nested structure.
-* If any levels do not exist, hash-maps will be created.
- */
+// Associates a value in a nested associative structure, where ks is a
+// sequence of keys and v is the new value and returns a new nested structure.
+// If any levels do not exist, hash-maps will be created.
 var Assoc_in *AFn
 
 func init() {
@@ -12084,14 +11708,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* 'Updates' a value in a nested associative structure, where ks is a
-* sequence of keys and f is a function that will take the old value
-* and any supplied args and return the new value, and returns a new
-* nested structure.  If any levels do not exist, hash-maps will be
-* created.
-* @param {...*} var_args
- */
+// 'Updates' a value in a nested associative structure, where ks is a
+// sequence of keys and f is a function that will take the old value
+// and any supplied args and return the new value, and returns a new
+// nested structure.  If any levels do not exist, hash-maps will be
+// created.
+// @param {...*} var_args
 var Update_in *AFn
 
 func init() {
@@ -13116,9 +12738,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* @param {...*} var_args
- */
+// @param {...*} var_args
 var Vector *AFn
 
 func init() {
@@ -13862,13 +13482,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a persistent vector of the items in vector from
-* start (inclusive) to end (exclusive).  If end is not supplied,
-* defaults to (count vector). This operation is O(1) and very fast, as
-* the resulting vector shares structure with the original and no
-* trimming is done.
- */
+// Returns a persistent vector of the items in vector from
+// start (inclusive) to end (exclusive).  If end is not supplied,
+// defaults to (count vector). This operation is O(1) and very fast, as
+// the resulting vector shares structure with the original and no
+// trimming is done.
 var Subvec *AFn
 
 func init() {
@@ -14873,10 +14491,8 @@ func init() {
 	Never_equiv = (&CljsCoreNeverEquiv{})
 }
 
-/**
-* Assumes y is a map. Returns true if x equals y, otherwise returns
-* false.
- */
+// Assumes y is a map. Returns true if x equals y, otherwise returns
+// false.
 var Equiv_map *AFn
 
 func init() {
@@ -21549,11 +21165,9 @@ func init() {
 
 var CljsCorePersistentTreeMap_EMPTY = (&CljsCorePersistentTreeMap{Compare, nil, float64(0), nil, float64(0)})
 
-/**
-* keyval => key val
-* Returns a new hash map with supplied mappings.
-* @param {...*} var_args
- */
+// keyval => key val
+// Returns a new hash map with supplied mappings.
+// @param {...*} var_args
 var Hash_map *AFn
 
 func init() {
@@ -21578,11 +21192,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* keyval => key val
-* Returns a new array map with supplied mappings.
-* @param {...*} var_args
- */
+// keyval => key val
+// Returns a new array map with supplied mappings.
+// @param {...*} var_args
 var Array_map *AFn
 
 func init() {
@@ -21595,11 +21207,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* keyval => key val
-* Returns a new object map with supplied mappings.
-* @param {...*} var_args
- */
+// keyval => key val
+// Returns a new object map with supplied mappings.
+// @param {...*} var_args
 var Obj_map *AFn
 
 func init() {
@@ -21634,11 +21244,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* keyval => key val
-* Returns a new sorted map with supplied mappings.
-* @param {...*} var_args
- */
+// keyval => key val
+// Returns a new sorted map with supplied mappings.
+// @param {...*} var_args
 var Sorted_map *AFn
 
 func init() {
@@ -21663,11 +21271,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* keyval => key val
-* Returns a new sorted map with supplied mappings, using the supplied comparator.
-* @param {...*} var_args
- */
+// keyval => key val
+// Returns a new sorted map with supplied mappings, using the supplied comparator.
+// @param {...*} var_args
 var Sorted_map_by *AFn
 
 func init() {
@@ -21872,9 +21478,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a sequence of the map's keys.
- */
+// Returns a sequence of the map's keys.
 var Keys *AFn
 
 func init() {
@@ -21897,9 +21501,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the key of the map entry.
- */
+// Returns the key of the map entry.
 var Key *AFn
 
 func init() {
@@ -22089,9 +21691,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a sequence of the map's values.
- */
+// Returns a sequence of the map's values.
 var Vals *AFn
 
 func init() {
@@ -22114,9 +21714,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the value in the map entry.
- */
+// Returns the value in the map entry.
 var Val *AFn
 
 func init() {
@@ -22127,12 +21725,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map that consists of the rest of the maps conj-ed onto
-* the first.  If a key occurs in more than one map, the mapping from
-* the latter (left-to-right) will be the mapping in the result.
-* @param {...*} var_args
- */
+// Returns a map that consists of the rest of the maps conj-ed onto
+// the first.  If a key occurs in more than one map, the mapping from
+// the latter (left-to-right) will be the mapping in the result.
+// @param {...*} var_args
 var Merge *AFn
 
 func init() {
@@ -22161,13 +21757,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map that consists of the rest of the maps conj-ed onto
-* the first.  If a key occurs in more than one map, the mapping(s)
-* from the latter (left-to-right) will be combined with the mapping in
-* the result by calling (f val-in-result val-in-latter).
-* @param {...*} var_args
- */
+// Returns a map that consists of the rest of the maps conj-ed onto
+// the first.  If a key occurs in more than one map, the mapping(s)
+// from the latter (left-to-right) will be combined with the mapping in
+// the result by calling (f val-in-result val-in-latter).
+// @param {...*} var_args
 var Merge_with *AFn
 
 func init() {
@@ -22217,9 +21811,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map containing only those entries in map whose key is in keys
- */
+// Returns a map containing only those entries in map whose key is in keys
 var Select_keys *AFn
 
 func init() {
@@ -23506,9 +23098,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a set of the distinct elements of coll.
- */
+// Returns a set of the distinct elements of coll.
 var Set *AFn
 
 func init() {
@@ -23544,9 +23134,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* @param {...*} var_args
- */
+// @param {...*} var_args
 var Hash_set *AFn
 
 func init() {
@@ -23561,10 +23149,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new sorted set with supplied keys.
-* @param {...*} var_args
- */
+// Returns a new sorted set with supplied keys.
+// @param {...*} var_args
 var Sorted_set *AFn
 
 func init() {
@@ -23577,10 +23163,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a new sorted set with supplied keys, using the supplied comparator.
-* @param {...*} var_args
- */
+// Returns a new sorted set with supplied keys, using the supplied comparator.
+// @param {...*} var_args
 var Sorted_set_by *AFn
 
 func init() {
@@ -23594,12 +23178,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Given a map of replacement pairs and a vector/collection, returns a
-* vector/seq with any elements = a key in smap replaced with the
-* corresponding val in smap.  Returns a transducer when no collection
-* is provided.
- */
+// Given a map of replacement pairs and a vector/collection, returns a
+// vector/seq with any elements = a key in smap replaced with the
+// corresponding val in smap.  Returns a transducer when no collection
+// is provided.
 var Replace *AFn
 
 func init() {
@@ -23670,9 +23252,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of the elements of coll with duplicates removed
- */
+// Returns a lazy sequence of the elements of coll with duplicates removed
 var Distinct *AFn
 
 func init() {
@@ -23746,9 +23326,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the name String of a string, symbol or keyword.
- */
+// Returns the name String of a string, symbol or keyword.
 var Name *AFn
 
 func init() {
@@ -23767,9 +23345,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map with the keys mapped to the corresponding vals.
- */
+// Returns a map with the keys mapped to the corresponding vals.
 var Zipmap *AFn
 
 func init() {
@@ -23801,10 +23377,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the x for which (k x), a number, is greatest.
-* @param {...*} var_args
- */
+// Returns the x for which (k x), a number, is greatest.
+// @param {...*} var_args
 var Max_key *AFn
 
 func init() {
@@ -23832,10 +23406,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the x for which (k x), a number, is least.
-* @param {...*} var_args
- */
+// Returns the x for which (k x), a number, is least.
+// @param {...*} var_args
 var Min_key *AFn
 
 func init() {
@@ -23930,11 +23502,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of lists like partition, but may include
-* partitions with fewer than n items at the end.  Returns a stateful
-* transducer when no collection is provided.
- */
+// Returns a lazy sequence of lists like partition, but may include
+// partitions with fewer than n items at the end.  Returns a stateful
+// transducer when no collection is provided.
 var Partition_all *AFn
 
 func init() {
@@ -24008,11 +23578,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of successive items from coll while
-* (pred item) returns true. pred must be free of side-effects.
-* Returns a transducer when no collection is provided.
- */
+// Returns a lazy sequence of successive items from coll while
+// (pred item) returns true. pred must be free of side-effects.
+// Returns a transducer when no collection is provided.
 var Take_while *AFn
 
 func init() {
@@ -24079,11 +23647,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* sc must be a sorted collection, test(s) one of <, <=, > or
-* >=. Returns a seq of those entries with keys ek for
-* which (test (.. sc comparator (compare ek key)) 0) is true
- */
+// sc must be a sorted collection, test(s) one of <, <=, > or
+// >=. Returns a seq of those entries with keys ek for
+// which (test (.. sc comparator (compare ek key)) 0) is true
 var Subseq *AFn
 
 func init() {
@@ -24142,11 +23708,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* sc must be a sorted collection, test(s) one of <, <=, > or
-* >=. Returns a reverse seq of those entries with keys ek for
-* which (test (.. sc comparator (compare ek key)) 0) is true
- */
+// sc must be a sorted collection, test(s) one of <, <=, > or
+// >=. Returns a reverse seq of those entries with keys ek for
+// which (test (.. sc comparator (compare ek key)) 0) is true
 var Rsubseq *AFn
 
 func init() {
@@ -24456,11 +24020,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of nums from start (inclusive) to end
-* (exclusive), by step, where start defaults to 0, step to 1,
-* and end to infinity.
- */
+// Returns a lazy seq of nums from start (inclusive) to end
+// (exclusive), by step, where start defaults to 0, step to 1,
+// and end to infinity.
 var Range_ *AFn
 
 func init() {
@@ -24477,10 +24039,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of every nth item in coll.  Returns a stateful
-* transducer when no collection is provided.
- */
+// Returns a lazy seq of every nth item in coll.  Returns a stateful
+// transducer when no collection is provided.
 var Take_nth *AFn
 
 func init() {
@@ -24535,9 +24095,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a vector of [(take-while pred coll) (drop-while pred coll)]
- */
+// Returns a vector of [(take-while pred coll) (drop-while pred coll)]
 var Split_with *AFn
 
 func init() {
@@ -24548,11 +24106,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Applies f to each value in coll, splitting it each time f returns a
-* new value.  Returns a lazy seq of partitions.  Returns a stateful
-* transducer when no collection is provided.
- */
+// Applies f to each value in coll, splitting it each time f returns a
+// new value.  Returns a lazy seq of partitions.  Returns a stateful
+// transducer when no collection is provided.
 var Partition_by *AFn
 
 func init() {
@@ -24644,10 +24200,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map from distinct items in coll to the number of times
-* they appear.
- */
+// Returns a map from distinct items in coll to the number of times
+// they appear.
 var Frequencies *AFn
 
 func init() {
@@ -24662,10 +24216,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy seq of the intermediate values of the reduction (as
-* per reduce) of coll by f, starting with init.
- */
+// Returns a lazy seq of the intermediate values of the reduction (as
+// per reduce) of coll by f, starting with init.
 var Reductions *AFn
 
 func init() {
@@ -24710,14 +24262,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Takes a set of functions and returns a fn that is the juxtaposition
-* of those fns.  The returned fn takes a variable number of args, and
-* returns a vector containing the result of applying each fn to the
-* args (left-to-right).
-* ((juxt a b c) x) => [(a x) (b x) (c x)]
-* @param {...*} var_args
- */
+// Takes a set of functions and returns a fn that is the juxtaposition
+// of those fns.  The returned fn takes a variable number of args, and
+// returns a vector containing the result of applying each fn to the
+// args (left-to-right).
+// ((juxt a b c) x) => [(a x) (b x) (c x)]
+// @param {...*} var_args
 var Juxt *AFn
 
 func init() {
@@ -24843,13 +24393,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* When lazy sequences are produced via functions that have side
-* effects, any effects other than those needed to produce the first
-* element in the seq do not occur until the seq is consumed. dorun can
-* be used to force any effects. Walks through the successive nexts of
-* the seq, does not retain the head and returns nil.
- */
+// When lazy sequences are produced via functions that have side
+// effects, any effects other than those needed to produce the first
+// element in the seq do not occur until the seq is consumed. dorun can
+// be used to force any effects. Walks through the successive nexts of
+// the seq, does not retain the head and returns nil.
 var Dorun *AFn
 
 func init() {
@@ -24884,14 +24432,12 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* When lazy sequences are produced via functions that have side
-* effects, any effects other than those needed to produce the first
-* element in the seq do not occur until the seq is consumed. doall can
-* be used to force any effects. Walks through the successive nexts of
-* the seq, retains the head and returns it, thus causing the entire
-* seq to reside in memory at one time.
- */
+// When lazy sequences are produced via functions that have side
+// effects, any effects other than those needed to produce the first
+// element in the seq do not occur until the seq is consumed. doall can
+// be used to force any effects. Walks through the successive nexts of
+// the seq, retains the head and returns it, thus causing the entire
+// seq to reside in memory at one time.
 var Doall *AFn
 
 func init() {
@@ -24916,9 +24462,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the result of (re-find re s) if re fully matches s.
- */
+// Returns the result of (re-find re s) if re fully matches s.
 var Re_matches *AFn
 
 func init() {
@@ -24945,12 +24489,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the first regex match, if any, of s to re, using
-* re.exec(s). Returns a vector, containing first the matching
-* substring, then any capturing groups if the regular expression contains
-* capturing groups.
- */
+// Returns the first regex match, if any, of s to re, using
+// re.exec(s). Returns a vector, containing first the matching
+// substring, then any capturing groups if the regular expression contains
+// capturing groups.
 var Re_find *AFn
 
 func init() {
@@ -24977,9 +24519,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence of successive matches of re in s.
- */
+// Returns a lazy sequence of successive matches of re in s.
 var Re_seq *AFn
 
 func init() {
@@ -25019,9 +24559,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* @param {...*} var_args
- */
+// @param {...*} var_args
 var Write_all *AFn
 
 func init() {
@@ -25188,10 +24726,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Prints a sequence of objects to a string, observing all the
-* options given in opts
- */
+// Prints a sequence of objects to a string, observing all the
+// options given in opts
 var Pr_str_with_opts *AFn
 
 func init() {
@@ -25206,9 +24742,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as pr-str-with-opts followed by (newline)
- */
+// Same as pr-str-with-opts followed by (newline)
 var Prn_str_with_opts *AFn
 
 func init() {
@@ -25228,10 +24762,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Prints a sequence of objects using string-print, observing all
-* the options given in opts
- */
+// Prints a sequence of objects using string-print, observing all
+// the options given in opts
 var Pr_with_opts *AFn
 
 func init() {
@@ -25257,10 +24789,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* pr to a string, returning it. Fundamental entrypoint to IPrintWithWriter.
-* @param {...*} var_args
- */
+// pr to a string, returning it. Fundamental entrypoint to IPrintWithWriter.
+// @param {...*} var_args
 var Pr_str *AFn
 
 func init() {
@@ -25273,10 +24803,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as pr-str followed by (newline)
-* @param {...*} var_args
- */
+// Same as pr-str followed by (newline)
+// @param {...*} var_args
 var Prn_str *AFn
 
 func init() {
@@ -25289,13 +24817,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Prints the object(s) using string-print.  Prints the
-* object(s), separated by spaces if there is more than one.
-* By default, pr and prn print in a way that objects can be
-* read by the reader
-* @param {...*} var_args
- */
+// Prints the object(s) using string-print.  Prints the
+// object(s), separated by spaces if there is more than one.
+// By default, pr and prn print in a way that objects can be
+// read by the reader
+// @param {...*} var_args
 var Pr *AFn
 
 func init() {
@@ -25308,11 +24834,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Prints the object(s) using string-print.
-* print and println produce output for human consumption.
-* @param {...*} var_args
- */
+// Prints the object(s) using string-print.
+// print and println produce output for human consumption.
+// @param {...*} var_args
 var Print *AFn
 
 func init() {
@@ -25325,10 +24849,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* print to a string, returning it
-* @param {...*} var_args
- */
+// print to a string, returning it
+// @param {...*} var_args
 var Print_str *AFn
 
 func init() {
@@ -25341,10 +24863,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as print followed by (newline)
-* @param {...*} var_args
- */
+// Same as print followed by (newline)
+// @param {...*} var_args
 var Println *AFn
 
 func init() {
@@ -25362,10 +24882,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* println to a string, returning it
-* @param {...*} var_args
- */
+// println to a string, returning it
+// @param {...*} var_args
 var Println_str *AFn
 
 func init() {
@@ -25378,10 +24896,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Same as pr followed by (newline).
-* @param {...*} var_args
- */
+// Same as pr followed by (newline).
+// @param {...*} var_args
 var Prn *AFn
 
 func init() {
@@ -25713,14 +25229,12 @@ func (self__ *CljsCoreSymbol) X_compare_Arity2(y interface{}) float64 {
 	}
 }
 
-/**
-* Atomically sets the metadata for a namespace/var/ref/agent/atom to be:
-*
-* (apply f its-current-meta args)
-*
-* f must be free of side-effects
-* @param {...*} var_args
- */
+// Atomically sets the metadata for a namespace/var/ref/agent/atom to be:
+//
+// (apply f its-current-meta args)
+//
+// f must be free of side-effects
+// @param {...*} var_args
 var Alter_meta_BANG_ *AFn
 
 func init() {
@@ -25739,9 +25253,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Atomically resets the metadata for an atom
- */
+// Atomically resets the metadata for an atom
 var Reset_meta_BANG_ *AFn
 
 func init() {
@@ -25756,28 +25268,26 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-*
-* Adds a watch function to an atom reference. The watch fn must be a
-* fn of 4 args: a key, the reference, its old-state, its
-* new-state. Whenever the reference's state might have been changed,
-* any registered watches will have their functions called. The watch
-* fn will be called synchronously. Note that an atom's state
-* may have changed again prior to the fn call, so use old/new-state
-* rather than derefing the reference. Keys must be unique per
-* reference, and can be used to remove the watch with remove-watch,
-* but are otherwise considered opaque by the watch mechanism.  Bear in
-* mind that regardless of the result or action of the watch fns the
-* atom's value will change.  Example:
-*
-* (def a (atom 0))
-* (add-watch a :inc (fn [k r o n] (assert (== 0 n))))
-* (swap! a inc)
-* ;; Assertion Error
-* (deref a)
-* ;=> 1
- */
+// Alpha - subject to change.
+//
+// Adds a watch function to an atom reference. The watch fn must be a
+// fn of 4 args: a key, the reference, its old-state, its
+// new-state. Whenever the reference's state might have been changed,
+// any registered watches will have their functions called. The watch
+// fn will be called synchronously. Note that an atom's state
+// may have changed again prior to the fn call, so use old/new-state
+// rather than derefing the reference. Keys must be unique per
+// reference, and can be used to remove the watch with remove-watch,
+// but are otherwise considered opaque by the watch mechanism.  Bear in
+// mind that regardless of the result or action of the watch fns the
+// atom's value will change.  Example:
+//
+// (def a (atom 0))
+// (add-watch a :inc (fn [k r o n] (assert (== 0 n))))
+// (swap! a inc)
+// ;; Assertion Error
+// (deref a)
+// ;=> 1
 var Add_watch *AFn
 
 func init() {
@@ -25788,11 +25298,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-*
-* Removes a watch (set by add-watch) from a reference
- */
+// Alpha - subject to change.
+//
+// Removes a watch (set by add-watch) from a reference
 var Remove_watch *AFn
 
 func init() {
@@ -25809,11 +25317,9 @@ func init() {
 	Gensym_counter = nil
 }
 
-/**
-* Returns a new symbol with a unique name. If a prefix string is
-* supplied, the name is prefix# where # is some unique number. If
-* prefix is not supplied, the prefix is 'G__'.
- */
+// Returns a new symbol with a unique name. If a prefix string is
+// supplied, the name is prefix# where # is some unique number. If
+// prefix is not supplied, the prefix is 'G__'.
 var Gensym *AFn
 
 func init() {
@@ -25883,9 +25389,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* returns true if x is a Delay created with delay
- */
+// returns true if x is a Delay created with delay
 var Delay_QMARK_ *AFn
 
 func init() {
@@ -25896,9 +25400,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* If x is a Delay, returns the (possibly cached) value of its expression, else returns x
- */
+// If x is a Delay, returns the (possibly cached) value of its expression, else returns x
 var Force *AFn
 
 func init() {
@@ -25913,9 +25415,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if a value has been produced for a promise, delay, future or lazy sequence.
- */
+// Returns true if a value has been produced for a promise, delay, future or lazy sequence.
 var Realized_QMARK_ *AFn
 
 func init() {
@@ -25948,11 +25448,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* maps f over coll and concatenates the results.  Thus function f
-* should return a collection.  Returns a transducer when no collection
-* is provided.
- */
+// maps f over coll and concatenates the results.  Thus function f
+// should return a collection.  Returns a transducer when no collection
+// is provided.
 var Flatmap *AFn
 
 func init() {
@@ -25977,10 +25475,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a lazy sequence removing consecutive duplicates in coll.
-* Returns a transducer when no collection is provided.
- */
+// Returns a lazy sequence removing consecutive duplicates in coll.
+// Returns a transducer when no collection is provided.
 var Dedupe *AFn
 
 func init() {
@@ -26020,10 +25516,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns items from coll with random probability of prob (0.0 -
-* 1.0).  Returns a transducer when no collection is provided.
- */
+// Returns items from coll with random probability of prob (0.0 -
+// 1.0).  Returns a transducer when no collection is provided.
 var Random_sample *AFn
 
 func init() {
@@ -26088,11 +25582,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns an iterable/seqable/reducible sequence of applications of
-* the transducer to the items in coll. Note that these applications
-* will be performed every time iterator/seq/reduce is called.
- */
+// Returns an iterable/seqable/reducible sequence of applications of
+// the transducer to the items in coll. Note that these applications
+// will be performed every time iterator/seq/reduce is called.
 var Iteration *AFn
 
 func init() {
@@ -26103,10 +25595,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Runs the supplied procedure (via reduce), for purposes of side
-* effects, on successive items in the collection. Returns nil
- */
+// Runs the supplied procedure (via reduce), for purposes of side
+// effects, on successive items in the collection. Returns nil
 var Run_BANG_ *AFn
 
 func init() {
@@ -26169,11 +25659,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Recursively transforms ClojureScript values to JavaScript.
-* sets/vectors/lists become Arrays, Keywords and Symbol become Strings,
-* Maps become Objects. Arbitrary keys are encoded to by key->js.
- */
+// Recursively transforms ClojureScript values to JavaScript.
+// sets/vectors/lists become Arrays, Keywords and Symbol become Strings,
+// Maps become Objects. Arbitrary keys are encoded to by key->js.
 var Clj__GT_js *AFn
 
 func init() {
@@ -26338,12 +25826,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a memoized version of a referentially transparent function. The
-* memoized version of the function keeps a cache of the mapping from arguments
-* to results and, when calls with the same arguments are repeated often, has
-* higher performance at the expense of higher memory use.
- */
+// Returns a memoized version of a referentially transparent function. The
+// memoized version of the function keeps a cache of the mapping from arguments
+// to results and, when calls with the same arguments are repeated often, has
+// higher performance at the expense of higher memory use.
 var Memoize *AFn
 
 func init() {
@@ -26379,16 +25865,14 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* trampoline can be used to convert algorithms requiring mutual
-* recursion without stack consumption. Calls f with supplied args, if
-* any. If f returns a fn, calls that fn with no arguments, and
-* continues to repeat, until the return value is not a fn, then
-* returns that non-fn value. Note that if you want to return a fn as a
-* final value, you must wrap it in some data structure and unpack it
-* after trampoline returns.
-* @param {...*} var_args
- */
+// trampoline can be used to convert algorithms requiring mutual
+// recursion without stack consumption. Calls f with supplied args, if
+// any. If f returns a fn, calls that fn with no arguments, and
+// continues to repeat, until the return value is not a fn, then
+// returns that non-fn value. Note that if you want to return a fn as a
+// final value, you must wrap it in some data structure and unpack it
+// after trampoline returns.
+// @param {...*} var_args
 var Trampoline *AFn
 
 func init() {
@@ -26437,11 +25921,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Return a random element of the (sequential) collection. Will have
-* the same performance characteristics as nth for the given
-* collection.
- */
+// Return a random element of the (sequential) collection. Will have
+// the same performance characteristics as nth for the given
+// collection.
 var Rand_nth *AFn
 
 func init() {
@@ -26452,11 +25934,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns a map of the elements of coll keyed by the result of
-* f on each element. The value at each key will be a vector of the
-* corresponding elements, in the order they appeared in coll.
- */
+// Returns a map of the elements of coll keyed by the result of
+// f on each element. The value at each key will be a vector of the
+// corresponding elements, in the order they appeared in coll.
 var Group_by *AFn
 
 func init() {
@@ -26475,9 +25955,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Creates a hierarchy object for use with derive, isa? etc.
- */
+// Creates a hierarchy object for use with derive, isa? etc.
 var Make_hierarchy *AFn
 
 func init() {
@@ -26509,9 +25987,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* @param {...*} var_args
- */
+// @param {...*} var_args
 var Swap_global_hierarchy_BANG_ *AFn
 
 func init() {
@@ -26525,13 +26001,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns true if (= child parent), or child is directly or indirectly derived from
-* parent, either via a JavaScript type inheritance relationship or a
-* relationship established via derive. h must be a hierarchy obtained
-* from make-hierarchy, if not supplied defaults to the global
-* hierarchy
- */
+// Returns true if (= child parent), or child is directly or indirectly derived from
+// parent, either via a JavaScript type inheritance relationship or a
+// relationship established via derive. h must be a hierarchy obtained
+// from make-hierarchy, if not supplied defaults to the global
+// hierarchy
 var Isa_QMARK_ *AFn
 
 func init() {
@@ -26596,12 +26070,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the immediate parents of tag, either via a JavaScript type
-* inheritance relationship or a relationship established via derive. h
-* must be a hierarchy obtained from make-hierarchy, if not supplied
-* defaults to the global hierarchy
- */
+// Returns the immediate parents of tag, either via a JavaScript type
+// inheritance relationship or a relationship established via derive. h
+// must be a hierarchy obtained from make-hierarchy, if not supplied
+// defaults to the global hierarchy
 var Parents *AFn
 
 func init() {
@@ -26614,12 +26086,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the immediate and indirect parents of tag, either via a JavaScript type
-* inheritance relationship or a relationship established via derive. h
-* must be a hierarchy obtained from make-hierarchy, if not supplied
-* defaults to the global hierarchy
- */
+// Returns the immediate and indirect parents of tag, either via a JavaScript type
+// inheritance relationship or a relationship established via derive. h
+// must be a hierarchy obtained from make-hierarchy, if not supplied
+// defaults to the global hierarchy
 var Ancestors *AFn
 
 func init() {
@@ -26632,13 +26102,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns the immediate and indirect children of tag, through a
-* relationship established via derive. h must be a hierarchy obtained
-* from make-hierarchy, if not supplied defaults to the global
-* hierarchy. Note: does not work on JavaScript type inheritance
-* relationships.
- */
+// Returns the immediate and indirect children of tag, through a
+// relationship established via derive. h must be a hierarchy obtained
+// from make-hierarchy, if not supplied defaults to the global
+// hierarchy. Note: does not work on JavaScript type inheritance
+// relationships.
 var Descendants *AFn
 
 func init() {
@@ -26651,13 +26119,11 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Establishes a parent/child relationship between parent and
-* tag. Parent must be a namespace-qualified symbol or keyword and
-* child can be either a namespace-qualified symbol or keyword or a
-* class. h must be a hierarchy obtained from make-hierarchy, if not
-* supplied defaults to, and modifies, the global hierarchy.
- */
+// Establishes a parent/child relationship between parent and
+// tag. Parent must be a namespace-qualified symbol or keyword and
+// child can be either a namespace-qualified symbol or keyword or a
+// class. h must be a hierarchy obtained from make-hierarchy, if not
+// supplied defaults to, and modifies, the global hierarchy.
 var Derive *AFn
 
 func init() {
@@ -26722,11 +26188,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Removes a parent/child relationship between parent and
-* tag. h must be a hierarchy obtained from make-hierarchy, if not
-* supplied defaults to, and modifies, the global hierarchy.
- */
+// Removes a parent/child relationship between parent and
+// tag. h must be a hierarchy obtained from make-hierarchy, if not
+// supplied defaults to, and modifies, the global hierarchy.
 var Underive *AFn
 
 func init() {
@@ -27555,9 +27019,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Removes all of the methods of multimethod.
- */
+// Removes all of the methods of multimethod.
 var Remove_all_methods *AFn
 
 func init() {
@@ -27568,9 +27030,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Removes the method of multimethod associated with dispatch-value.
- */
+// Removes the method of multimethod associated with dispatch-value.
 var Remove_method *AFn
 
 func init() {
@@ -27581,10 +27041,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y
-* when there is a conflict
- */
+// Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y
+// when there is a conflict
 var Prefer_method *AFn
 
 func init() {
@@ -27595,9 +27053,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Given a multimethod, returns a map of dispatch values -> dispatch fns
- */
+// Given a multimethod, returns a map of dispatch values -> dispatch fns
 var Methods *AFn
 
 func init() {
@@ -27608,10 +27064,8 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Given a multimethod and a dispatch value, returns the dispatch fn
-* that would apply to that value, or nil if none apply and no default
- */
+// Given a multimethod and a dispatch value, returns the dispatch fn
+// that would apply to that value, or nil if none apply and no default
 var Get_method *AFn
 
 func init() {
@@ -27622,9 +27076,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Given a multimethod, returns a map of preferred value -> set of other values
- */
+// Given a multimethod, returns a map of preferred value -> set of other values
 var Prefers *AFn
 
 func init() {
@@ -27715,11 +27167,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-* Create an instance of ExceptionInfo, an Error type that carries a
-* map of additional data.
- */
+// Alpha - subject to change.
+// Create an instance of ExceptionInfo, an Error type that carries a
+// map of additional data.
 var Ex_info *AFn
 
 func init() {
@@ -27732,11 +27182,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-* Returns exception data (a map) if ex is an ExceptionInfo.
-* Otherwise returns nil.
- */
+// Alpha - subject to change.
+// Returns exception data (a map) if ex is an ExceptionInfo.
+// Otherwise returns nil.
 var Ex_data *AFn
 
 func init() {
@@ -27751,11 +27199,9 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-* Returns the message attached to the given Error / ExceptionInfo object.
-* For non-Errors returns nil.
- */
+// Alpha - subject to change.
+// Returns the message attached to the given Error / ExceptionInfo object.
+// For non-Errors returns nil.
 var Ex_message *AFn
 
 func init() {
@@ -27770,12 +27216,10 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Alpha - subject to change.
-* Returns exception cause (an Error / ExceptionInfo) if ex is an
-* ExceptionInfo.
-* Otherwise returns nil.
- */
+// Alpha - subject to change.
+// Returns exception cause (an Error / ExceptionInfo) if ex is an
+// ExceptionInfo.
+// Otherwise returns nil.
 var Ex_cause *AFn
 
 func init() {
@@ -27790,9 +27234,7 @@ func init() {
 	}(&AFn{})
 }
 
-/**
-* Returns an JavaScript compatible comparator based upon pred.
- */
+// Returns an JavaScript compatible comparator based upon pred.
 var Comparator *AFn
 
 func init() {

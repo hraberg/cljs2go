@@ -595,13 +595,11 @@
         docs (if jsdoc (concat docs jsdoc) docs)
         docs (remove nil? docs)]
     (letfn [(print-comment-lines [e] (doseq [next-line (string/split-lines e)]
-                                       (emitln "* " (string/trim next-line))))]
+                                       (emitln "// " (string/trim next-line))))]
       (when (seq docs)
-        (emitln "/**")
         (doseq [e docs]
           (when e
-            (print-comment-lines e)))
-        (emitln "*/")))))
+            (print-comment-lines e)))))))
 
 (defn untyped-nil-needs-type? [init]
   (or (= 'clj-nil (:tag init)) (nil? init)))
