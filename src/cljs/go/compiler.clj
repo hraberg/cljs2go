@@ -616,6 +616,7 @@
       (let [mname (-> name munge go-short-name go-public)]
         (some-> *go-defs* (swap! conj name))
         (when (and init? (not redefine?))
+          (emit-comment doc (:jsdoc init))
           (emits "var "
                  mname
                  " " (let [tag (:tag init)]
@@ -623,9 +624,9 @@
                          "*AFn"
                          (go-type tag)))))
         (emitln)
-        (when (or init? redefine?)
-          (emitln "func init() {"))
-        (emit-comment doc (:jsdoc init))
+        (if (or init? redefine?)
+          (emitln "func init() {")
+          (emit-comment doc (:jsdoc init)))
         (emits (when-not (or init? redefine?) "var ")
                mname
                (when (and (untyped-nil-needs-type? init)

@@ -24,14 +24,14 @@ func init() {
 	X_STAR_unchecked_if_STAR_ = false
 }
 
+/**
+* Each runtime environment provides a different way to print output.
+* Whatever function *print-fn* is bound to will be passed any
+* Strings which should be printed.
+ */
 var X_STAR_print_fn_STAR_ *AFn
 
 func init() {
-	/**
-	 * Each runtime environment provides a different way to print output.
-	 * Whatever function *print-fn* is bound to will be passed any
-	 * Strings which should be printed.
-	 */
 	X_STAR_print_fn_STAR_ = func(_STAR_print_fn_STAR_ *AFn) *AFn {
 		return Fn(_STAR_print_fn_STAR_, func(___ interface{}) interface{} {
 			panic((&js.Error{"No *print-fn* fn set for evaluation environment"}))
@@ -79,30 +79,30 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* bound in a repl thread to the most recent value printed
+ */
 var X_STAR_1 interface{}
 
 func init() {
-	/**
-	 * bound in a repl thread to the most recent value printed
-	 */
 	X_STAR_1 = nil
 }
 
+/**
+* bound in a repl thread to the second most recent value printed
+ */
 var X_STAR_2 interface{}
 
 func init() {
-	/**
-	 * bound in a repl thread to the second most recent value printed
-	 */
 	X_STAR_2 = nil
 }
 
+/**
+* bound in a repl thread to the third most recent value printed
+ */
 var X_STAR_3 interface{}
 
 func init() {
-	/**
-	 * bound in a repl thread to the third most recent value printed
-	 */
 	X_STAR_3 = nil
 }
 
@@ -112,12 +112,12 @@ func init() {
 	Not_native = nil
 }
 
+/**
+* Tests if 2 arguments are the same object
+ */
 var Identical_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Tests if 2 arguments are the same object
-	 */
 	Identical_QMARK_ = func(identical_QMARK_ *AFn) *AFn {
 		return Fn(identical_QMARK_, func(x interface{}, y interface{}) bool {
 			return reflect.DeepEqual(x, y)
@@ -125,12 +125,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x is nil, false otherwise.
+ */
 var Nil_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x is nil, false otherwise.
-	 */
 	Nil_QMARK_ = func(nil_QMARK_ *AFn) *AFn {
 		return Fn(nil_QMARK_, func(x interface{}) bool {
 			return reflect.DeepEqual(x, nil)
@@ -158,12 +158,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x is logical false, false otherwise.
+ */
 var Not *AFn
 
 func init() {
-	/**
-	 * Returns true if x is logical false, false otherwise.
-	 */
 	Not = func(not *AFn) *AFn {
 		return Fn(not, func(x interface{}) bool {
 			if Truth_(x) {
@@ -175,12 +175,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x is not nil, false otherwise.
+ */
 var Some_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x is not nil, false otherwise.
-	 */
 	Some_QMARK_ = func(some_QMARK_ *AFn) *AFn {
 		return Fn(some_QMARK_, func(x interface{}) bool {
 			return !(reflect.DeepEqual(x, nil))
@@ -188,23 +188,23 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* When compiled for a command-line target, whatever
+* function *main-fn* is set to will be called with the command-line
+* argv as arguments
+ */
 var X_STAR_main_cli_fn_STAR_ interface{}
 
 func init() {
-	/**
-	 * When compiled for a command-line target, whatever
-	 * function *main-fn* is set to will be called with the command-line
-	 * argv as arguments
-	 */
 	X_STAR_main_cli_fn_STAR_ = nil
 }
 
+/**
+* Returns a javascript array, cloned from the passed in array
+ */
 var Aclone *AFn
 
 func init() {
-	/**
-	 * Returns a javascript array, cloned from the passed in array
-	 */
 	Aclone = func(aclone *AFn) *AFn {
 		return Fn(aclone, func(arr interface{}) interface{} {
 			{
@@ -234,13 +234,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the value at the index.
+* @param {...*} var_args
+ */
 var Aget *AFn
 
 func init() {
-	/**
-	 * Returns the value at the index.
-	 * @param {...*} var_args
-	 */
 	Aget = func(aget *AFn) *AFn {
 		return Fn(aget, func(array interface{}, i interface{}) interface{} {
 			return (array.([]interface{})[int(i.(float64))])
@@ -254,13 +254,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Sets the value at the index.
+* @param {...*} var_args
+ */
 var Aset *AFn
 
 func init() {
-	/**
-	 * Sets the value at the index.
-	 * @param {...*} var_args
-	 */
 	Aset = func(aset *AFn) *AFn {
 		return Fn(aset, func(array interface{}, i interface{}, val interface{}) interface{} {
 			return func() interface{} {
@@ -278,12 +278,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the length of the array. Works on arrays of all types.
+ */
 var Alength *AFn
 
 func init() {
-	/**
-	 * Returns the length of the array. Works on arrays of all types.
-	 */
 	Alength = func(alength *AFn) *AFn {
 		return Fn(alength, func(array interface{}) float64 {
 			return float64(len(array.([]interface{})))
@@ -1434,13 +1434,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Support so that collections can implement toString without
+* loading all the printing machinery.
+ */
 var Pr_str_STAR_ *AFn
 
 func init() {
-	/**
-	 * Support so that collections can implement toString without
-	 * loading all the printing machinery.
-	 */
 	Pr_str_STAR_ = func(pr_str_STAR_ *AFn) *AFn {
 		return Fn(pr_str_STAR_, func(obj interface{}) interface{} {
 			{
@@ -2061,14 +2061,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a seq on the collection. If the collection is
+* empty, returns nil.  (seq nil) returns nil. seq also works on
+* Strings.
+ */
 var Seq *AFn
 
 func init() {
-	/**
-	 * Returns a seq on the collection. If the collection is
-	 * empty, returns nil.  (seq nil) returns nil. seq also works on
-	 * Strings.
-	 */
 	Seq = func(seq *AFn) *AFn {
 		return Fn(seq, func(coll interface{}) CljsCoreISeq {
 			if reflect.DeepEqual(coll, nil) {
@@ -2105,13 +2105,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the first item in the collection. Calls seq on its
+* argument. If coll is nil, returns nil.
+ */
 var First *AFn
 
 func init() {
-	/**
-	 * Returns the first item in the collection. Calls seq on its
-	 * argument. If coll is nil, returns nil.
-	 */
 	First = func(first *AFn) *AFn {
 		return Fn(first, func(coll interface{}) interface{} {
 			if reflect.DeepEqual(coll, nil) {
@@ -2135,13 +2135,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a possibly empty seq of the items after the first. Calls seq on its
+* argument.
+ */
 var Rest *AFn
 
 func init() {
-	/**
-	 * Returns a possibly empty seq of the items after the first. Calls seq on its
-	 * argument.
-	 */
 	Rest = func(rest *AFn) *AFn {
 		return Fn(rest, func(coll interface{}) CljsCoreISeq {
 			if !(reflect.DeepEqual(coll, nil)) {
@@ -2165,13 +2165,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a seq of the items after the first. Calls seq on its
+* argument.  If there are no more items, returns nil
+ */
 var Next *AFn
 
 func init() {
-	/**
-	 * Returns a seq of the items after the first. Calls seq on its
-	 * argument.  If there are no more items, returns nil
-	 */
 	Next = func(next *AFn) *AFn {
 		return Fn(next, func(coll interface{}) CljsCoreISeq {
 			if reflect.DeepEqual(coll, nil) {
@@ -2187,16 +2187,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Equality. Returns true if x equals y, false if not. Compares
+* numbers and collections in a type-independent manner.  Clojure's immutable data
+* structures define -equiv (and thus =) as a value, not an identity,
+* comparison.
+* @param {...*} var_args
+ */
 var X_EQ_ *AFn
 
 func init() {
-	/**
-	 * Equality. Returns true if x equals y, false if not. Compares
-	 * numbers and collections in a type-independent manner.  Clojure's immutable data
-	 * structures define -equiv (and thus =) as a value, not an identity,
-	 * comparison.
-	 * @param {...*} var_args
-	 */
 	X_EQ_ = func(_EQ_ *AFn) *AFn {
 		return Fn(_EQ_, func(x interface{}) bool {
 			return true
@@ -2227,16 +2227,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Mix final collection hash for ordered or unordered collections.
+* hash-basis is the combined collection hash, count is the number
+* of elements included in the basis. Note this is the hash code
+* consistent with =, different from .hashCode.
+* See http://clojure.org/data_structures#hash for full algorithms.
+ */
 var Mix_collection_hash *AFn
 
 func init() {
-	/**
-	 * Mix final collection hash for ordered or unordered collections.
-	 * hash-basis is the combined collection hash, count is the number
-	 * of elements included in the basis. Note this is the hash code
-	 * consistent with =, different from .hashCode.
-	 * See http://clojure.org/data_structures#hash for full algorithms.
-	 */
 	Mix_collection_hash = func(mix_collection_hash *AFn) *AFn {
 		return Fn(mix_collection_hash, func(hash_basis interface{}, count interface{}) float64 {
 			{
@@ -2250,14 +2250,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the hash code, consistent with =, for an external ordered
+* collection implementing Iterable.
+* See http://clojure.org/data_structures#hash for full algorithms.
+ */
 var Hash_ordered_coll *AFn
 
 func init() {
-	/**
-	 * Returns the hash code, consistent with =, for an external ordered
-	 * collection implementing Iterable.
-	 * See http://clojure.org/data_structures#hash for full algorithms.
-	 */
 	Hash_ordered_coll = func(hash_ordered_coll *AFn) *AFn {
 		return Fn(hash_ordered_coll, func(coll interface{}) float64 {
 			{
@@ -2278,16 +2278,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the hash code, consistent with =, for an external unordered
+* collection implementing Iterable. For maps, the iterator should
+* return map entries whose hash is computed as
+* (hash-ordered-coll [k v]).
+* See http://clojure.org/data_structures#hash for full algorithms.
+ */
 var Hash_unordered_coll *AFn
 
 func init() {
-	/**
-	 * Returns the hash code, consistent with =, for an external unordered
-	 * collection implementing Iterable. For maps, the iterator should
-	 * return map entries whose hash is computed as
-	 * (hash-ordered-coll [k v]).
-	 * See http://clojure.org/data_structures#hash for full algorithms.
-	 */
 	Hash_unordered_coll = func(hash_unordered_coll *AFn) *AFn {
 		return Fn(hash_unordered_coll, func(coll interface{}) float64 {
 			{
@@ -2308,12 +2308,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a number one greater than num.
+ */
 var Inc *AFn
 
 func init() {
-	/**
-	 * Returns a number one greater than num.
-	 */
 	Inc = func(inc *AFn) *AFn {
 		return Fn(inc, func(x interface{}) interface{} {
 			return (x.(float64) + float64(1))
@@ -2342,12 +2342,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Wraps x in a way such that a reduce will terminate with the value x
+ */
 var Reduced *AFn
 
 func init() {
-	/**
-	 * Wraps x in a way such that a reduce will terminate with the value x
-	 */
 	Reduced = func(reduced *AFn) *AFn {
 		return Fn(reduced, func(x interface{}) interface{} {
 			return (&CljsCoreReduced{x})
@@ -2355,12 +2355,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x is the result of a call to reduced
+ */
 var Reduced_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x is the result of a call to reduced
-	 */
 	Reduced_QMARK_ = func(reduced_QMARK_ *AFn) *AFn {
 		return Fn(reduced_QMARK_, func(r interface{}) bool {
 			return func() bool { _, instanceof := r.(*CljsCoreReduced); return instanceof }()
@@ -2378,13 +2378,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Accepts any collection which satisfies the ICount and IIndexed protocols and
+* reduces them without incurring seq initialization
+ */
 var Ci_reduce *AFn
 
 func init() {
-	/**
-	 * Accepts any collection which satisfies the ICount and IIndexed protocols and
-	 * reduces them without incurring seq initialization
-	 */
 	Ci_reduce = func(ci_reduce *AFn) *AFn {
 		return Fn(ci_reduce, func(cicoll interface{}, f interface{}) interface{} {
 			{
@@ -2562,12 +2562,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll implements count in constant time
+ */
 var Counted_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll implements count in constant time
-	 */
 	Counted_QMARK_ = func(counted_QMARK_ *AFn) *AFn {
 		return Fn(counted_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ICounted", Str: "cljs.core/ICounted", X_hash: float64(-1299011378), X_meta: nil}), x).(bool)
@@ -2575,12 +2575,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll implements nth in constant time
+ */
 var Indexed_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll implements nth in constant time
-	 */
 	Indexed_QMARK_ = func(indexed_QMARK_ *AFn) *AFn {
 		return Fn(indexed_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IIndexed", Str: "cljs.core/IIndexed", X_hash: float64(-436490749), X_meta: nil}), x).(bool)
@@ -2997,12 +2997,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (first (next x))
+ */
 var Second *AFn
 
 func init() {
-	/**
-	 * Same as (first (next x))
-	 */
 	Second = func(second *AFn) *AFn {
 		return Fn(second, func(coll interface{}) interface{} {
 			return First.X_invoke_Arity1(Next.Arity1IQ(coll))
@@ -3010,12 +3010,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (first (first x))
+ */
 var Ffirst *AFn
 
 func init() {
-	/**
-	 * Same as (first (first x))
-	 */
 	Ffirst = func(ffirst *AFn) *AFn {
 		return Fn(ffirst, func(coll interface{}) interface{} {
 			return First.X_invoke_Arity1(First.X_invoke_Arity1(coll))
@@ -3023,12 +3023,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (next (first x))
+ */
 var Nfirst *AFn
 
 func init() {
-	/**
-	 * Same as (next (first x))
-	 */
 	Nfirst = func(nfirst *AFn) *AFn {
 		return Fn(nfirst, func(coll interface{}) interface{} {
 			return Next.Arity1IQ(First.X_invoke_Arity1(coll))
@@ -3036,12 +3036,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (first (next x))
+ */
 var Fnext *AFn
 
 func init() {
-	/**
-	 * Same as (first (next x))
-	 */
 	Fnext = func(fnext *AFn) *AFn {
 		return Fn(fnext, func(coll interface{}) interface{} {
 			return First.X_invoke_Arity1(Next.Arity1IQ(coll))
@@ -3049,12 +3049,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (next (next x))
+ */
 var Nnext *AFn
 
 func init() {
-	/**
-	 * Same as (next (next x))
-	 */
 	Nnext = func(nnext *AFn) *AFn {
 		return Fn(nnext, func(coll interface{}) interface{} {
 			return Next.Arity1IQ(Next.Arity1IQ(coll))
@@ -3062,12 +3062,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return the last item in coll, in linear time
+ */
 var Last *AFn
 
 func init() {
-	/**
-	 * Return the last item in coll, in linear time
-	 */
 	Last = func(last *AFn) *AFn {
 		return Fn(last, func(s interface{}) interface{} {
 			for {
@@ -3086,15 +3086,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* conj[oin]. Returns a new collection with the xs
+* 'added'. (conj nil item) returns (item).  The 'addition' may
+* happen at different 'places' depending on the concrete type.
+* @param {...*} var_args
+ */
 var Conj *AFn
 
 func init() {
-	/**
-	 * conj[oin]. Returns a new collection with the xs
-	 * 'added'. (conj nil item) returns (item).  The 'addition' may
-	 * happen at different 'places' depending on the concrete type.
-	 * @param {...*} var_args
-	 */
 	Conj = func(conj *AFn) *AFn {
 		return Fn(conj, func() interface{} {
 			return CljsCorePersistentVector_EMPTY
@@ -3123,12 +3123,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns an empty collection of the same category as coll, or nil
+ */
 var Empty *AFn
 
 func init() {
-	/**
-	 * Returns an empty collection of the same category as coll, or nil
-	 */
 	Empty = func(empty *AFn) *AFn {
 		return Fn(empty, func(coll interface{}) interface{} {
 			if reflect.DeepEqual(coll, nil) {
@@ -3162,13 +3162,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the number of items in the collection. (count nil) returns
+* 0.  Also works on strings, arrays, and Maps
+ */
 var Count *AFn
 
 func init() {
-	/**
-	 * Returns the number of items in the collection. (count nil) returns
-	 * 0.  Also works on strings, arrays, and Maps
-	 */
 	Count = func(count *AFn) *AFn {
 		return Fn(count, func(coll interface{}) interface{} {
 			if !(reflect.DeepEqual(coll, nil)) {
@@ -3257,15 +3257,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the value at the index. get returns nil if index out of
+* bounds, nth throws an exception unless not-found is supplied.  nth
+* also works for strings, arrays, regex Matchers and Lists, and,
+* in O(n) time, for sequences.
+ */
 var Nth *AFn
 
 func init() {
-	/**
-	 * Returns the value at the index. get returns nil if index out of
-	 * bounds, nth throws an exception unless not-found is supplied.  nth
-	 * also works for strings, arrays, regex Matchers and Lists, and,
-	 * in O(n) time, for sequences.
-	 */
 	Nth = func(nth *AFn) *AFn {
 		return Fn(nth, func(coll interface{}, n interface{}) interface{} {
 			if !(reflect.TypeOf(n).Kind() == reflect.Float64) {
@@ -3349,12 +3349,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the value mapped to key, not-found or nil if key not present.
+ */
 var Get *AFn
 
 func init() {
-	/**
-	 * Returns the value mapped to key, not-found or nil if key not present.
-	 */
 	Get = func(get *AFn) *AFn {
 		return Fn(get, func(o interface{}, k interface{}) interface{} {
 			if reflect.DeepEqual(o, nil) {
@@ -3422,16 +3422,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* assoc[iate]. When applied to a map, returns a new map of the
+* same (hashed/sorted) type, that contains the mapping of key(s) to
+* val(s). When applied to a vector, returns a new vector that
+* contains val at index.
+* @param {...*} var_args
+ */
 var Assoc *AFn
 
 func init() {
-	/**
-	 * assoc[iate]. When applied to a map, returns a new map of the
-	 * same (hashed/sorted) type, that contains the mapping of key(s) to
-	 * val(s). When applied to a vector, returns a new vector that
-	 * contains val at index.
-	 * @param {...*} var_args
-	 */
 	Assoc = func(assoc *AFn) *AFn {
 		return Fn(assoc, func(coll interface{}, k interface{}, v interface{}) interface{} {
 			if !(reflect.DeepEqual(coll, nil)) {
@@ -3461,14 +3461,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
+* that does not contain a mapping for key(s).
+* @param {...*} var_args
+ */
 var Dissoc *AFn
 
 func init() {
-	/**
-	 * dissoc[iate]. Returns a new map of the same (hashed/sorted) type,
-	 * that does not contain a mapping for key(s).
-	 * @param {...*} var_args
-	 */
 	Dissoc = func(dissoc *AFn) *AFn {
 		return Fn(dissoc, func(coll interface{}) interface{} {
 			return coll
@@ -3706,13 +3706,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns an object of the same type and value as obj, with
+* map m as its metadata.
+ */
 var With_meta *AFn
 
 func init() {
-	/**
-	 * Returns an object of the same type and value as obj, with
-	 * map m as its metadata.
-	 */
 	With_meta = func(with_meta *AFn) *AFn {
 		return Fn(with_meta, func(o interface{}, meta interface{}) interface{} {
 			if (Fn_QMARK_.Arity1IB(o)) && (Not.Arity1IB(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IWithMeta", Str: "cljs.core/IWithMeta", X_hash: float64(-1981666051), X_meta: nil}), o))) {
@@ -3728,12 +3728,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the metadata of obj, returns nil if there is no metadata.
+ */
 var Meta *AFn
 
 func init() {
-	/**
-	 * Returns the metadata of obj, returns nil if there is no metadata.
-	 */
 	Meta = func(meta *AFn) *AFn {
 		return Fn(meta, func(o interface{}) interface{} {
 			if Truth_(func() interface{} {
@@ -3753,13 +3753,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* For a list or queue, same as first, for a vector, same as, but much
+* more efficient than, last. If the collection is empty, returns nil.
+ */
 var Peek *AFn
 
 func init() {
-	/**
-	 * For a list or queue, same as first, for a vector, same as, but much
-	 * more efficient than, last. If the collection is empty, returns nil.
-	 */
 	Peek = func(peek *AFn) *AFn {
 		return Fn(peek, func(coll interface{}) interface{} {
 			if reflect.DeepEqual(coll, nil) {
@@ -3771,14 +3771,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* For a list or queue, returns a new list/queue without the first
+* item, for a vector, returns a new vector without the last item.
+* Note - not the same as next/butlast.
+ */
 var Pop *AFn
 
 func init() {
-	/**
-	 * For a list or queue, returns a new list/queue without the first
-	 * item, for a vector, returns a new vector without the last item.
-	 * Note - not the same as next/butlast.
-	 */
 	Pop = func(pop *AFn) *AFn {
 		return Fn(pop, func(coll interface{}) interface{} {
 			if reflect.DeepEqual(coll, nil) {
@@ -3790,14 +3790,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* disj[oin]. Returns a new set of the same (hashed/sorted) type, that
+* does not contain key(s).
+* @param {...*} var_args
+ */
 var Disj *AFn
 
 func init() {
-	/**
-	 * disj[oin]. Returns a new set of the same (hashed/sorted) type, that
-	 * does not contain key(s).
-	 * @param {...*} var_args
-	 */
 	Disj = func(disj *AFn) *AFn {
 		return Fn(disj, func(coll interface{}) interface{} {
 			return coll
@@ -3832,13 +3832,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll has no items - same as (not (seq coll)).
+* Please use the idiom (seq x) rather than (not (empty? x))
+ */
 var Empty_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll has no items - same as (not (seq coll)).
-	 * Please use the idiom (seq x) rather than (not (empty? x))
-	 */
 	Empty_QMARK_ = func(empty_QMARK_ *AFn) *AFn {
 		return Fn(empty_QMARK_, func(coll interface{}) bool {
 			return (reflect.DeepEqual(coll, nil)) || (Not.Arity1IB(Seq.Arity1IQ(coll)))
@@ -3846,12 +3846,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x satisfies ICollection
+ */
 var Coll_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x satisfies ICollection
-	 */
 	Coll_QMARK_ = func(coll_QMARK_ *AFn) *AFn {
 		return Fn(coll_QMARK_, func(x interface{}) bool {
 			if reflect.DeepEqual(x, nil) {
@@ -3863,12 +3863,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x satisfies ISet
+ */
 var Set_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x satisfies ISet
-	 */
 	Set_QMARK_ = func(set_QMARK_ *AFn) *AFn {
 		return Fn(set_QMARK_, func(x interface{}) bool {
 			if reflect.DeepEqual(x, nil) {
@@ -3880,12 +3880,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll implements Associative
+ */
 var Associative_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll implements Associative
-	 */
 	Associative_QMARK_ = func(associative_QMARK_ *AFn) *AFn {
 		return Fn(associative_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IAssociative", Str: "cljs.core/IAssociative", X_hash: float64(-1700920611), X_meta: nil}), x).(bool)
@@ -3893,12 +3893,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll satisfies ISequential
+ */
 var Sequential_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll satisfies ISequential
-	 */
 	Sequential_QMARK_ = func(sequential_QMARK_ *AFn) *AFn {
 		return Fn(sequential_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ISequential", Str: "cljs.core/ISequential", X_hash: float64(-950981796), X_meta: nil}), x).(bool)
@@ -3906,12 +3906,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll satisfies ISorted
+ */
 var Sorted_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll satisfies ISorted
-	 */
 	Sorted_QMARK_ = func(sorted_QMARK_ *AFn) *AFn {
 		return Fn(sorted_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ISorted", Str: "cljs.core/ISorted", X_hash: float64(-1734125647), X_meta: nil}), x).(bool)
@@ -3919,12 +3919,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if coll satisfies IReduce
+ */
 var Reduceable_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if coll satisfies IReduce
-	 */
 	Reduceable_QMARK_ = func(reduceable_QMARK_ *AFn) *AFn {
 		return Fn(reduceable_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IReduce", Str: "cljs.core/IReduce", X_hash: float64(-577837345), X_meta: nil}), x).(bool)
@@ -3932,12 +3932,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return true if x satisfies IMap
+ */
 var Map_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Return true if x satisfies IMap
-	 */
 	Map_QMARK_ = func(map_QMARK_ *AFn) *AFn {
 		return Fn(map_QMARK_, func(x interface{}) bool {
 			if reflect.DeepEqual(x, nil) {
@@ -3949,12 +3949,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return true if x satisfies IVector
+ */
 var Vector_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Return true if x satisfies IVector
-	 */
 	Vector_QMARK_ = func(vector_QMARK_ *AFn) *AFn {
 		return Fn(vector_QMARK_, func(x interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IVector", Str: "cljs.core/IVector", X_hash: float64(1711112835), X_meta: nil}), x).(bool)
@@ -4040,12 +4040,12 @@ func init() {
 	}()
 }
 
+/**
+* Returns true if x is the value false, false otherwise.
+ */
 var False_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x is the value false, false otherwise.
-	 */
 	False_QMARK_ = func(false_QMARK_ *AFn) *AFn {
 		return Fn(false_QMARK_, func(x interface{}) bool {
 			return x == false
@@ -4053,12 +4053,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if x is the value true, false otherwise.
+ */
 var True_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if x is the value true, false otherwise.
-	 */
 	True_QMARK_ = func(true_QMARK_ *AFn) *AFn {
 		return Fn(true_QMARK_, func(x interface{}) bool {
 			return x == true
@@ -4076,12 +4076,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return true if s satisfies ISeq
+ */
 var Seq_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Return true if s satisfies ISeq
-	 */
 	Seq_QMARK_ = func(seq_QMARK_ *AFn) *AFn {
 		return Fn(seq_QMARK_, func(s interface{}) bool {
 			if reflect.DeepEqual(s, nil) {
@@ -4093,12 +4093,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return true if s satisfies ISeqable
+ */
 var Seqable_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Return true if s satisfies ISeqable
-	 */
 	Seqable_QMARK_ = func(seqable_QMARK_ *AFn) *AFn {
 		return Fn(seqable_QMARK_, func(s interface{}) bool {
 			return Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ISeqable", Str: "cljs.core/ISeqable", X_hash: float64(137437203), X_meta: nil}), s).(bool)
@@ -4138,16 +4138,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if key is present in the given collection, otherwise
+* returns false.  Note that for numerically indexed collections like
+* vectors and arrays, this tests if the numeric key is within the
+* range of indexes. 'contains?' operates constant or logarithmic time;
+* it will not perform a linear search for a value.  See also 'some'.
+ */
 var Contains_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if key is present in the given collection, otherwise
-	 * returns false.  Note that for numerically indexed collections like
-	 * vectors and arrays, this tests if the numeric key is within the
-	 * range of indexes. 'contains?' operates constant or logarithmic time;
-	 * it will not perform a linear search for a value.  See also 'some'.
-	 */
 	Contains_QMARK_ = func(contains_QMARK_ *AFn) *AFn {
 		return Fn(contains_QMARK_, func(coll interface{}, v interface{}) bool {
 			if reflect.DeepEqual(Get.X_invoke_Arity3(coll, v, Lookup_sentinel), Lookup_sentinel) {
@@ -4159,12 +4159,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the map entry for key, or nil if key not present.
+ */
 var Find *AFn
 
 func init() {
-	/**
-	 * Returns the map entry for key, or nil if key not present.
-	 */
 	Find = func(find *AFn) *AFn {
 		return Fn(find, func(coll interface{}, k interface{}) interface{} {
 			if (!(reflect.DeepEqual(coll, nil))) && (Associative_QMARK_.Arity1IB(coll)) && (Contains_QMARK_.Arity2IIB(coll, k)) {
@@ -4176,13 +4176,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if no two of the arguments are =
+* @param {...*} var_args
+ */
 var Distinct_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if no two of the arguments are =
-	 * @param {...*} var_args
-	 */
 	Distinct_QMARK_ = func(distinct_QMARK_ *AFn) *AFn {
 		return Fn(distinct_QMARK_, func(x interface{}) bool {
 			return true
@@ -4223,13 +4223,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Coerces coll to a (possibly empty) sequence, if it is not already
+* one. Will not force a lazy seq. (sequence nil) yields ()
+ */
 var Sequence *AFn
 
 func init() {
-	/**
-	 * Coerces coll to a (possibly empty) sequence, if it is not already
-	 * one. Will not force a lazy seq. (sequence nil) yields ()
-	 */
 	Sequence = func(sequence *AFn) *AFn {
 		return Fn(sequence, func(coll interface{}) CljsCoreISeq {
 			if Seq_QMARK_.Arity1IB(coll) {
@@ -4249,15 +4249,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Comparator. Returns a negative number, zero, or a positive number
+* when x is logically 'less than', 'equal to', or 'greater than'
+* y. Uses IComparable if available and google.array.defaultCompare for objects
+* of the same type and special-cases nil to be less than any other object.
+ */
 var Compare *AFn
 
 func init() {
-	/**
-	 * Comparator. Returns a negative number, zero, or a positive number
-	 * when x is logically 'less than', 'equal to', or 'greater than'
-	 * y. Uses IComparable if available and google.array.defaultCompare for objects
-	 * of the same type and special-cases nil to be less than any other object.
-	 */
 	Compare = func(compare *AFn) *AFn {
 		return Fn(compare, func(x interface{}, y interface{}) float64 {
 			if reflect.DeepEqual(x, y) {
@@ -4286,12 +4286,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Compare indexed collection.
+ */
 var Compare_indexed *AFn
 
 func init() {
-	/**
-	 * Compare indexed collection.
-	 */
 	Compare_indexed = func(compare_indexed *AFn) *AFn {
 		return Fn(compare_indexed, func(xs interface{}, ys interface{}) interface{} {
 			{
@@ -4326,13 +4326,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Given a fn that might be boolean valued or a comparator,
+* return a fn that is a comparator.
+ */
 var Fn__GT_comparator *AFn
 
 func init() {
-	/**
-	 * Given a fn that might be boolean valued or a comparator,
-	 * return a fn that is a comparator.
-	 */
 	Fn__GT_comparator = func(fn__GT_comparator *AFn) *AFn {
 		return Fn(fn__GT_comparator, func(f interface{}) interface{} {
 			if X_EQ_.Arity2IIB(f, Compare) {
@@ -4364,14 +4364,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a sorted sequence of the items in coll. Comp can be
+* boolean-valued comparison funcion, or a -/0/+ valued comparator.
+* Comp defaults to compare.
+ */
 var Sort *AFn
 
 func init() {
-	/**
-	 * Returns a sorted sequence of the items in coll. Comp can be
-	 * boolean-valued comparison funcion, or a -/0/+ valued comparator.
-	 * Comp defaults to compare.
-	 */
 	Sort = func(sort *AFn) *AFn {
 		return Fn(sort, func(coll interface{}) interface{} {
 			return sort.X_invoke_Arity2(Compare, coll)
@@ -4390,15 +4390,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a sorted sequence of the items in coll, where the sort
+* order is determined by comparing (keyfn item).  Comp can be
+* boolean-valued comparison funcion, or a -/0/+ valued comparator.
+* Comp defaults to compare.
+ */
 var Sort_by *AFn
 
 func init() {
-	/**
-	 * Returns a sorted sequence of the items in coll, where the sort
-	 * order is determined by comparing (keyfn item).  Comp can be
-	 * boolean-valued comparison funcion, or a -/0/+ valued comparator.
-	 * Comp defaults to compare.
-	 */
 	Sort_by = func(sort_by *AFn) *AFn {
 		return Fn(sort_by, func(keyfn interface{}, coll interface{}) interface{} {
 			return sort_by.X_invoke_Arity3(keyfn, Compare, coll)
@@ -4456,12 +4456,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return a random permutation of coll
+ */
 var Shuffle *AFn
 
 func init() {
-	/**
-	 * Return a random permutation of coll
-	 */
 	Shuffle = func(shuffle *AFn) *AFn {
 		return Fn(shuffle, func(coll interface{}) interface{} {
 			{
@@ -4474,20 +4474,20 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* f should be a function of 2 arguments. If val is not supplied,
+* returns the result of applying f to the first 2 items in coll, then
+* applying f to that result and the 3rd item, etc. If coll contains no
+* items, f must accept no arguments as well, and reduce returns the
+* result of calling f with no arguments.  If coll has only 1 item, it
+* is returned and f is not called.  If val is supplied, returns the
+* result of applying f to val and the first item in coll, then
+* applying f to that result and the 2nd item, etc. If coll contains no
+* items, returns val and f is not called.
+ */
 var Reduce *AFn
 
 func init() {
-	/**
-	 * f should be a function of 2 arguments. If val is not supplied,
-	 * returns the result of applying f to the first 2 items in coll, then
-	 * applying f to that result and the 3rd item, etc. If coll contains no
-	 * items, f must accept no arguments as well, and reduce returns the
-	 * result of calling f with no arguments.  If coll has only 1 item, it
-	 * is returned and f is not called.  If val is supplied, returns the
-	 * result of applying f to val and the first item in coll, then
-	 * applying f to that result and the 2nd item, etc. If coll contains no
-	 * items, returns val and f is not called.
-	 */
 	Reduce = func(reduce *AFn) *AFn {
 		return Fn(reduce, func(f interface{}, coll interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IReduce", Str: "cljs.core/IReduce", X_hash: float64(-577837345), X_meta: nil}), coll)) {
@@ -4531,17 +4531,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Reduces an associative collection. f should be a function of 3
+* arguments. Returns the result of applying f to init, the first key
+* and the first value in coll, then applying f to that result and the
+* 2nd key and value, etc. If coll contains no entries, returns init
+* and f is not called. Note that reduce-kv is supported on vectors,
+* where the keys will be the ordinals.
+ */
 var Reduce_kv *AFn
 
 func init() {
-	/**
-	 * Reduces an associative collection. f should be a function of 3
-	 * arguments. Returns the result of applying f to init, the first key
-	 * and the first value in coll, then applying f to that result and the
-	 * 2nd key and value, etc. If coll contains no entries, returns init
-	 * and f is not called. Note that reduce-kv is supported on vectors,
-	 * where the keys will be the ordinals.
-	 */
 	Reduce_kv = func(reduce_kv *AFn) *AFn {
 		return Fn(reduce_kv, func(f interface{}, init interface{}, coll interface{}) interface{} {
 			if !(reflect.DeepEqual(coll, nil)) {
@@ -4571,17 +4571,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* reduce with a transformation of f (xf). If init is not
+* supplied, (f) will be called to produce it. Returns the result of
+* applying (the transformed) xf to init and the first item in coll,
+* then applying xf to that result and the 2nd item, etc. If coll
+* contains no items, returns init and f is not called. Note that
+* certain transforms may inject or skip items.
+ */
 var Transduce *AFn
 
 func init() {
-	/**
-	 * reduce with a transformation of f (xf). If init is not
-	 * supplied, (f) will be called to produce it. Returns the result of
-	 * applying (the transformed) xf to init and the first item in coll,
-	 * then applying xf to that result and the 2nd item, etc. If coll
-	 * contains no items, returns init and f is not called. Note that
-	 * certain transforms may inject or skip items.
-	 */
 	Transduce = func(transduce *AFn) *AFn {
 		return Fn(transduce, func(xform interface{}, f interface{}, coll interface{}) interface{} {
 			return transduce.X_invoke_Arity4(xform, f, f.(CljsCoreIFn).X_invoke_Arity0(), coll)
@@ -4607,13 +4607,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the sum of nums. (+) returns 0.
+* @param {...*} var_args
+ */
 var X_PLUS_ *AFn
 
 func init() {
-	/**
-	 * Returns the sum of nums. (+) returns 0.
-	 * @param {...*} var_args
-	 */
 	X_PLUS_ = func(_PLUS_ *AFn) *AFn {
 		return Fn(_PLUS_, func() float64 {
 			return float64(0)
@@ -4631,14 +4631,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If no ys are supplied, returns the negation of x, else subtracts
+* the ys from x and returns the result.
+* @param {...*} var_args
+ */
 var X_ *AFn
 
 func init() {
-	/**
-	 * If no ys are supplied, returns the negation of x, else subtracts
-	 * the ys from x and returns the result.
-	 * @param {...*} var_args
-	 */
 	X_ = func(___ *AFn) *AFn {
 		return Fn(___, func(x interface{}) float64 {
 			return (-x.(float64))
@@ -4654,13 +4654,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the product of nums. (*) returns 1.
+* @param {...*} var_args
+ */
 var X_STAR_ *AFn
 
 func init() {
-	/**
-	 * Returns the product of nums. (*) returns 1.
-	 * @param {...*} var_args
-	 */
 	X_STAR_ = func(_STAR_ *AFn) *AFn {
 		return Fn(_STAR_, func() float64 {
 			return float64(1)
@@ -4678,14 +4678,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If no denominators are supplied, returns 1/numerator,
+* else returns numerator divided by all of the denominators.
+* @param {...*} var_args
+ */
 var X_SLASH_ *AFn
 
 func init() {
-	/**
-	 * If no denominators are supplied, returns 1/numerator,
-	 * else returns numerator divided by all of the denominators.
-	 * @param {...*} var_args
-	 */
 	X_SLASH_ = func(_SLASH_ *AFn) *AFn {
 		return Fn(_SLASH_, func(x interface{}) float64 {
 			return _SLASH_.Arity2IIF(float64(1), x)
@@ -4701,14 +4701,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns non-nil if nums are in monotonically increasing order,
+* otherwise false.
+* @param {...*} var_args
+ */
 var X_LT_ *AFn
 
 func init() {
-	/**
-	 * Returns non-nil if nums are in monotonically increasing order,
-	 * otherwise false.
-	 * @param {...*} var_args
-	 */
 	X_LT_ = func(_LT_ *AFn) *AFn {
 		return Fn(_LT_, func(x interface{}) bool {
 			return true
@@ -4735,14 +4735,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns non-nil if nums are in monotonically non-decreasing order,
+* otherwise false.
+* @param {...*} var_args
+ */
 var X_LT__EQ_ *AFn
 
 func init() {
-	/**
-	 * Returns non-nil if nums are in monotonically non-decreasing order,
-	 * otherwise false.
-	 * @param {...*} var_args
-	 */
 	X_LT__EQ_ = func(_LT__EQ_ *AFn) *AFn {
 		return Fn(_LT__EQ_, func(x interface{}) bool {
 			return true
@@ -4769,14 +4769,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns non-nil if nums are in monotonically decreasing order,
+* otherwise false.
+* @param {...*} var_args
+ */
 var X_GT_ *AFn
 
 func init() {
-	/**
-	 * Returns non-nil if nums are in monotonically decreasing order,
-	 * otherwise false.
-	 * @param {...*} var_args
-	 */
 	X_GT_ = func(_GT_ *AFn) *AFn {
 		return Fn(_GT_, func(x interface{}) bool {
 			return true
@@ -4803,14 +4803,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns non-nil if nums are in monotonically non-increasing order,
+* otherwise false.
+* @param {...*} var_args
+ */
 var X_GT__EQ_ *AFn
 
 func init() {
-	/**
-	 * Returns non-nil if nums are in monotonically non-increasing order,
-	 * otherwise false.
-	 * @param {...*} var_args
-	 */
 	X_GT__EQ_ = func(_GT__EQ_ *AFn) *AFn {
 		return Fn(_GT__EQ_, func(x interface{}) bool {
 			return true
@@ -4837,12 +4837,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a number one less than num.
+ */
 var Dec *AFn
 
 func init() {
-	/**
-	 * Returns a number one less than num.
-	 */
 	Dec = func(dec *AFn) *AFn {
 		return Fn(dec, func(x interface{}) interface{} {
 			return (x.(float64) - float64(1))
@@ -4850,13 +4850,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the greatest of the nums.
+* @param {...*} var_args
+ */
 var Max *AFn
 
 func init() {
-	/**
-	 * Returns the greatest of the nums.
-	 * @param {...*} var_args
-	 */
 	Max = func(max *AFn) *AFn {
 		return Fn(max, func(x interface{}) float64 {
 			return x.(float64)
@@ -4884,13 +4884,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the least of the nums.
+* @param {...*} var_args
+ */
 var Min *AFn
 
 func init() {
-	/**
-	 * Returns the least of the nums.
-	 * @param {...*} var_args
-	 */
 	Min = func(min *AFn) *AFn {
 		return Fn(min, func(x interface{}) float64 {
 			return x.(float64)
@@ -5008,13 +5008,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the sum of nums. (+) returns 0.
+* @param {...*} var_args
+ */
 var Unchecked_add *AFn
 
 func init() {
-	/**
-	 * Returns the sum of nums. (+) returns 0.
-	 * @param {...*} var_args
-	 */
 	Unchecked_add = func(unchecked_add *AFn) *AFn {
 		return Fn(unchecked_add, func() float64 {
 			return float64(0)
@@ -5032,13 +5032,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the sum of nums. (+) returns 0.
+* @param {...*} var_args
+ */
 var Unchecked_add_int *AFn
 
 func init() {
-	/**
-	 * Returns the sum of nums. (+) returns 0.
-	 * @param {...*} var_args
-	 */
 	Unchecked_add_int = func(unchecked_add_int *AFn) *AFn {
 		return Fn(unchecked_add_int, func() float64 {
 			return float64(0)
@@ -5076,14 +5076,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If no denominators are supplied, returns 1/numerator,
+* else returns numerator divided by all of the denominators.
+* @param {...*} var_args
+ */
 var Unchecked_divide_int *AFn
 
 func init() {
-	/**
-	 * If no denominators are supplied, returns 1/numerator,
-	 * else returns numerator divided by all of the denominators.
-	 * @param {...*} var_args
-	 */
 	Unchecked_divide_int = func(unchecked_divide_int *AFn) *AFn {
 		return Fn(unchecked_divide_int, func(x interface{}) float64 {
 			return unchecked_divide_int.Arity2IIF(float64(1), x)
@@ -5119,13 +5119,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the product of nums. (*) returns 1.
+* @param {...*} var_args
+ */
 var Unchecked_multiply *AFn
 
 func init() {
-	/**
-	 * Returns the product of nums. (*) returns 1.
-	 * @param {...*} var_args
-	 */
 	Unchecked_multiply = func(unchecked_multiply *AFn) *AFn {
 		return Fn(unchecked_multiply, func() float64 {
 			return float64(1)
@@ -5143,13 +5143,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the product of nums. (*) returns 1.
+* @param {...*} var_args
+ */
 var Unchecked_multiply_int *AFn
 
 func init() {
-	/**
-	 * Returns the product of nums. (*) returns 1.
-	 * @param {...*} var_args
-	 */
 	Unchecked_multiply_int = func(unchecked_multiply_int *AFn) *AFn {
 		return Fn(unchecked_multiply_int, func() float64 {
 			return float64(1)
@@ -5197,14 +5197,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If no ys are supplied, returns the negation of x, else subtracts
+* the ys from x and returns the result.
+* @param {...*} var_args
+ */
 var Unchecked_subtract *AFn
 
 func init() {
-	/**
-	 * If no ys are supplied, returns the negation of x, else subtracts
-	 * the ys from x and returns the result.
-	 * @param {...*} var_args
-	 */
 	Unchecked_subtract = func(unchecked_subtract *AFn) *AFn {
 		return Fn(unchecked_subtract, func(x interface{}) float64 {
 			return (-x.(float64))
@@ -5220,14 +5220,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If no ys are supplied, returns the negation of x, else subtracts
+* the ys from x and returns the result.
+* @param {...*} var_args
+ */
 var Unchecked_subtract_int *AFn
 
 func init() {
-	/**
-	 * If no ys are supplied, returns the negation of x, else subtracts
-	 * the ys from x and returns the result.
-	 * @param {...*} var_args
-	 */
 	Unchecked_subtract_int = func(unchecked_subtract_int *AFn) *AFn {
 		return Fn(unchecked_subtract_int, func(x interface{}) float64 {
 			return (-x.(float64))
@@ -5257,12 +5257,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Coerce to int by stripping decimal places.
+ */
 var Int_ *AFn
 
 func init() {
-	/**
-	 * Coerce to int by stripping decimal places.
-	 */
 	Int_ = func(int_ *AFn) *AFn {
 		return Fn(int_, func(x interface{}) interface{} {
 			return float64(int(x.(float64)) | int(float64(0)))
@@ -5270,12 +5270,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Coerce to int by stripping decimal places.
+ */
 var Unchecked_int *AFn
 
 func init() {
-	/**
-	 * Coerce to int by stripping decimal places.
-	 */
 	Unchecked_int = func(unchecked_int *AFn) *AFn {
 		return Fn(unchecked_int, func(x interface{}) interface{} {
 			return Fix.Arity1IF(x)
@@ -5283,12 +5283,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Coerce to long by stripping decimal places. Identical to `int'.
+ */
 var Long *AFn
 
 func init() {
-	/**
-	 * Coerce to long by stripping decimal places. Identical to `int'.
-	 */
 	Long = func(long *AFn) *AFn {
 		return Fn(long, func(x interface{}) interface{} {
 			return Fix.Arity1IF(x)
@@ -5296,12 +5296,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Coerce to long by stripping decimal places. Identical to `int'.
+ */
 var Unchecked_long *AFn
 
 func init() {
-	/**
-	 * Coerce to long by stripping decimal places. Identical to `int'.
-	 */
 	Unchecked_long = func(unchecked_long *AFn) *AFn {
 		return Fn(unchecked_long, func(x interface{}) interface{} {
 			return Fix.Arity1IF(x)
@@ -5389,12 +5389,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Modulus of num and div with original javascript behavior. i.e. bug for negative numbers
+ */
 var Js_mod *AFn
 
 func init() {
-	/**
-	 * Modulus of num and div with original javascript behavior. i.e. bug for negative numbers
-	 */
 	Js_mod = func(js_mod *AFn) *AFn {
 		return Fn(js_mod, func(n interface{}, d interface{}) interface{} {
 			return float64(int(n.(float64)) % int(d.(float64)))
@@ -5402,12 +5402,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Modulus of num and div. Truncates toward negative infinity.
+ */
 var Mod *AFn
 
 func init() {
-	/**
-	 * Modulus of num and div. Truncates toward negative infinity.
-	 */
 	Mod = func(mod *AFn) *AFn {
 		return Fn(mod, func(n interface{}, d interface{}) interface{} {
 			return float64(int((float64(int(n.(float64))%int(d.(float64))) + d.(float64))) % int(d.(float64)))
@@ -5415,12 +5415,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* quot[ient] of dividing numerator by denominator.
+ */
 var Quot *AFn
 
 func init() {
-	/**
-	 * quot[ient] of dividing numerator by denominator.
-	 */
 	Quot = func(quot *AFn) *AFn {
 		return Fn(quot, func(n interface{}, d interface{}) interface{} {
 			{
@@ -5432,12 +5432,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* remainder of dividing numerator by denominator.
+ */
 var Rem *AFn
 
 func init() {
-	/**
-	 * remainder of dividing numerator by denominator.
-	 */
 	Rem = func(rem *AFn) *AFn {
 		return Fn(rem, func(n interface{}, d interface{}) interface{} {
 			{
@@ -5449,12 +5449,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a random floating point number between 0 (inclusive) and n (default 1) (exclusive).
+ */
 var Rand *AFn
 
 func init() {
-	/**
-	 * Returns a random floating point number between 0 (inclusive) and n (default 1) (exclusive).
-	 */
 	Rand = func(rand *AFn) *AFn {
 		return Fn(rand, func() float64 {
 			return Native_invoke_func.X_invoke_Arity2(Math.Random, []interface{}{}).(float64)
@@ -5464,12 +5464,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a random integer between 0 (inclusive) and n (exclusive).
+ */
 var Rand_int *AFn
 
 func init() {
-	/**
-	 * Returns a random integer between 0 (inclusive) and n (exclusive).
-	 */
 	Rand_int = func(rand_int *AFn) *AFn {
 		return Fn(rand_int, func(n interface{}) interface{} {
 			return Fix.Arity1IF(Rand.Arity1IF(n))
@@ -5477,12 +5477,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise exclusive or
+ */
 var Bit_xor *AFn
 
 func init() {
-	/**
-	 * Bitwise exclusive or
-	 */
 	Bit_xor = func(bit_xor *AFn) *AFn {
 		return Fn(bit_xor, func(x interface{}, y interface{}) interface{} {
 			return float64(int(x.(float64)) ^ int(y.(float64)))
@@ -5490,12 +5490,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise and
+ */
 var Bit_and *AFn
 
 func init() {
-	/**
-	 * Bitwise and
-	 */
 	Bit_and = func(bit_and *AFn) *AFn {
 		return Fn(bit_and, func(x interface{}, y interface{}) interface{} {
 			return float64(int(x.(float64)) & int(y.(float64)))
@@ -5503,12 +5503,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise or
+ */
 var Bit_or *AFn
 
 func init() {
-	/**
-	 * Bitwise or
-	 */
 	Bit_or = func(bit_or *AFn) *AFn {
 		return Fn(bit_or, func(x interface{}, y interface{}) interface{} {
 			return float64(int(x.(float64)) | int(y.(float64)))
@@ -5516,12 +5516,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise and
+ */
 var Bit_and_not *AFn
 
 func init() {
-	/**
-	 * Bitwise and
-	 */
 	Bit_and_not = func(bit_and_not *AFn) *AFn {
 		return Fn(bit_and_not, func(x interface{}, y interface{}) interface{} {
 			return float64(int(x.(float64)) &^ int(y.(float64)))
@@ -5529,12 +5529,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Clear bit at index n
+ */
 var Bit_clear *AFn
 
 func init() {
-	/**
-	 * Clear bit at index n
-	 */
 	Bit_clear = func(bit_clear *AFn) *AFn {
 		return Fn(bit_clear, func(x interface{}, n interface{}) interface{} {
 			return float64(int(x.(float64)) &^ (int(1) << uint(n.(float64))))
@@ -5542,12 +5542,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Flip bit at index n
+ */
 var Bit_flip *AFn
 
 func init() {
-	/**
-	 * Flip bit at index n
-	 */
 	Bit_flip = func(bit_flip *AFn) *AFn {
 		return Fn(bit_flip, func(x interface{}, n interface{}) interface{} {
 			return float64(int(x.(float64)) ^ (int(1) << uint(n.(float64))))
@@ -5555,12 +5555,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise complement
+ */
 var Bit_not *AFn
 
 func init() {
-	/**
-	 * Bitwise complement
-	 */
 	Bit_not = func(bit_not *AFn) *AFn {
 		return Fn(bit_not, func(x interface{}) interface{} {
 			return float64(^int(x.(float64)))
@@ -5568,12 +5568,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Set bit at index n
+ */
 var Bit_set *AFn
 
 func init() {
-	/**
-	 * Set bit at index n
-	 */
 	Bit_set = func(bit_set *AFn) *AFn {
 		return Fn(bit_set, func(x interface{}, n interface{}) interface{} {
 			return float64(int(x.(float64)) | (int(1) << uint(n.(float64))))
@@ -5581,12 +5581,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Test bit at index n
+ */
 var Bit_test *AFn
 
 func init() {
-	/**
-	 * Test bit at index n
-	 */
 	Bit_test = func(bit_test *AFn) *AFn {
 		return Fn(bit_test, func(x interface{}, n interface{}) interface{} {
 			return float64((int(x.(float64)) & (int(1) << uint(n.(float64))))) != 0
@@ -5594,12 +5594,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise shift left
+ */
 var Bit_shift_left *AFn
 
 func init() {
-	/**
-	 * Bitwise shift left
-	 */
 	Bit_shift_left = func(bit_shift_left *AFn) *AFn {
 		return Fn(bit_shift_left, func(x interface{}, n interface{}) interface{} {
 			return float64(int(x.(float64)) << uint(n.(float64)))
@@ -5607,12 +5607,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise shift right
+ */
 var Bit_shift_right *AFn
 
 func init() {
-	/**
-	 * Bitwise shift right
-	 */
 	Bit_shift_right = func(bit_shift_right *AFn) *AFn {
 		return Fn(bit_shift_right, func(x interface{}, n interface{}) interface{} {
 			return float64(int(x.(float64)) >> uint(n.(float64)))
@@ -5620,12 +5620,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* DEPRECATED: Bitwise shift right with zero fill
+ */
 var Bit_shift_right_zero_fill *AFn
 
 func init() {
-	/**
-	 * DEPRECATED: Bitwise shift right with zero fill
-	 */
 	Bit_shift_right_zero_fill = func(bit_shift_right_zero_fill *AFn) *AFn {
 		return Fn(bit_shift_right_zero_fill, func(x interface{}, n interface{}) interface{} {
 			return float64(uint(x.(float64)) >> uint(n.(float64)))
@@ -5633,12 +5633,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Bitwise shift right with zero fill
+ */
 var Unsigned_bit_shift_right *AFn
 
 func init() {
-	/**
-	 * Bitwise shift right with zero fill
-	 */
 	Unsigned_bit_shift_right = func(unsigned_bit_shift_right *AFn) *AFn {
 		return Fn(unsigned_bit_shift_right, func(x interface{}, n interface{}) interface{} {
 			return float64(uint(x.(float64)) >> uint(n.(float64)))
@@ -5646,12 +5646,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Counts the number of bits set in n
+ */
 var Bit_count *AFn
 
 func init() {
-	/**
-	 * Counts the number of bits set in n
-	 */
 	Bit_count = func(bit_count *AFn) *AFn {
 		return Fn(bit_count, func(v interface{}) interface{} {
 			{
@@ -5664,15 +5664,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns non-nil if nums all have the equivalent
+* value, otherwise false. Behavior on non nums is
+* undefined.
+* @param {...*} var_args
+ */
 var X_EQ__EQ_ *AFn
 
 func init() {
-	/**
-	 * Returns non-nil if nums all have the equivalent
-	 * value, otherwise false. Behavior on non nums is
-	 * undefined.
-	 * @param {...*} var_args
-	 */
 	X_EQ__EQ_ = func(_EQ__EQ_ *AFn) *AFn {
 		return Fn(_EQ__EQ_, func(x interface{}) bool {
 			return true
@@ -5699,12 +5699,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if num is greater than zero, else false
+ */
 var Pos_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if num is greater than zero, else false
-	 */
 	Pos_QMARK_ = func(pos_QMARK_ *AFn) *AFn {
 		return Fn(pos_QMARK_, func(n interface{}) bool {
 			return (n.(float64) > float64(0))
@@ -5722,12 +5722,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if num is less than zero, else false
+ */
 var Neg_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if num is less than zero, else false
-	 */
 	Neg_QMARK_ = func(neg_QMARK_ *AFn) *AFn {
 		return Fn(neg_QMARK_, func(x interface{}) bool {
 			return (x.(float64) < float64(0))
@@ -5735,12 +5735,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the nth next of coll, (seq coll) when n is 0.
+ */
 var Nthnext *AFn
 
 func init() {
-	/**
-	 * Returns the nth next of coll, (seq coll) when n is 0.
-	 */
 	Nthnext = func(nthnext *AFn) *AFn {
 		return Fn(nthnext, func(coll interface{}, n interface{}) interface{} {
 			{
@@ -5768,15 +5768,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* With no args, returns the empty string. With one arg x, returns
+* x.toString().  (str nil) returns the empty string. With more than
+* one arg, returns the concatenation of the str values of the args.
+* @param {...*} var_args
+ */
 var Str *AFn
 
 func init() {
-	/**
-	 * With no args, returns the empty string. With one arg x, returns
-	 * x.toString().  (str nil) returns the empty string. With more than
-	 * one arg, returns the concatenation of the str values of the args.
-	 * @param {...*} var_args
-	 */
 	Str = func(str *AFn) *AFn {
 		return Fn(str, func() interface{} {
 			return ""
@@ -5807,13 +5807,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the substring of s beginning at start inclusive, and ending
+* at end (defaults to length of string), exclusive.
+ */
 var Subs *AFn
 
 func init() {
-	/**
-	 * Returns the substring of s beginning at start inclusive, and ending
-	 * at end (defaults to length of string), exclusive.
-	 */
 	Subs = func(subs *AFn) *AFn {
 		return Fn(subs, func(s interface{}, start interface{}) interface{} {
 			return Native_invoke_instance_method.X_invoke_Arity3(s, "Substring", []interface{}{start})
@@ -5823,13 +5823,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Assumes x is sequential. Returns true if x equals y, otherwise
+* returns false.
+ */
 var Equiv_sequential *AFn
 
 func init() {
-	/**
-	 * Assumes x is sequential. Returns true if x equals y, otherwise
-	 * returns false.
-	 */
 	Equiv_sequential = func(equiv_sequential *AFn) *AFn {
 		return Fn(equiv_sequential, func(x interface{}, y interface{}) interface{} {
 			return Boolean.Arity1IB(func() interface{} {
@@ -5948,15 +5948,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a JavaScript object and a map of names to functions and
+* attaches said functions as methods on the object.  Any references to
+* JavaScript's implict this (via the this-as macro) will resolve to the
+* object that the function is attached.
+ */
 var Extend_object_BANG_ *AFn
 
 func init() {
-	/**
-	 * Takes a JavaScript object and a map of names to functions and
-	 * attaches said functions as methods on the object.  Any references to
-	 * JavaScript's implict this (via the this-as macro) will resolve to the
-	 * object that the function is attached.
-	 */
 	Extend_object_BANG_ = func(extend_object_BANG_ *AFn) *AFn {
 		return Fn(extend_object_BANG_, func(obj interface{}, fn_map interface{}) interface{} {
 			{
@@ -6436,12 +6436,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a seq of the items in coll in reverse order. Not lazy.
+ */
 var Reverse *AFn
 
 func init() {
-	/**
-	 * Returns a seq of the items in coll in reverse order. Not lazy.
-	 */
 	Reverse = func(reverse *AFn) *AFn {
 		return Fn(reverse, func(coll interface{}) interface{} {
 			if Reversible_QMARK_.Arity1IB(coll) {
@@ -6453,12 +6453,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* @param {...*} var_args
+ */
 var List *AFn
 
 func init() {
-	/**
-	 * @param {...*} var_args
-	 */
 	List = func(list *AFn) *AFn {
 		return Fn(list, func(xs__ ...interface{}) interface{} {
 			var xs = Array_seq.X_invoke_Arity1(xs__[0:])
@@ -6689,12 +6689,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new seq where x is the first element and seq is the rest.
+ */
 var Cons *AFn
 
 func init() {
-	/**
-	 * Returns a new seq where x is the first element and seq is the rest.
-	 */
 	Cons = func(cons *AFn) *AFn {
 		return Fn(cons, func(x interface{}, coll interface{}) interface{} {
 			if Truth_(func() interface{} {
@@ -7035,12 +7035,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the namespace String of a symbol or keyword, or nil if not present.
+ */
 var Namespace *AFn
 
 func init() {
-	/**
-	 * Returns the namespace String of a symbol or keyword, or nil if not present.
-	 */
 	Namespace = func(namespace *AFn) *AFn {
 		return Fn(namespace, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
@@ -7052,13 +7052,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a Keyword with the given namespace and name.  Do not use :
+* in the keyword strings, it will be added automatically.
+ */
 var Keyword *AFn
 
 func init() {
-	/**
-	 * Returns a Keyword with the given namespace and name.  Do not use :
-	 * in the keyword strings, it will be added automatically.
-	 */
 	Keyword = func(keyword *AFn) *AFn {
 		return Fn(keyword, func(name interface{}) interface{} {
 			if func() bool { _, instanceof := name.(*CljsCoreKeyword); return instanceof }() {
@@ -7727,12 +7727,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Naive impl of to-array as a start.
+ */
 var To_array *AFn
 
 func init() {
-	/**
-	 * Naive impl of to-array as a start.
-	 */
 	To_array = func(to_array *AFn) *AFn {
 		return Fn(to_array, func(s interface{}) interface{} {
 			{
@@ -7756,13 +7756,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a (potentially-ragged) 2-dimensional array
+* containing the contents of coll.
+ */
 var To_array_2d *AFn
 
 func init() {
-	/**
-	 * Returns a (potentially-ragged) 2-dimensional array
-	 * containing the contents of coll.
-	 */
 	To_array_2d = func(to_array_2d *AFn) *AFn {
 		return Fn(to_array_2d, func(coll interface{}) interface{} {
 			{
@@ -8106,13 +8106,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq representing the concatenation of the elements in the supplied colls.
+* @param {...*} var_args
+ */
 var Concat *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq representing the concatenation of the elements in the supplied colls.
-	 * @param {...*} var_args
-	 */
 	Concat = func(concat *AFn) *AFn {
 		return Fn(concat, func() interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__343 *AFn) *AFn {
@@ -8182,14 +8182,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Creates a new list containing the items prepended to the rest, the
+* last of which will be treated as a sequence.
+* @param {...*} var_args
+ */
 var List_STAR_ *AFn
 
 func init() {
-	/**
-	 * Creates a new list containing the items prepended to the rest, the
-	 * last of which will be treated as a sequence.
-	 * @param {...*} var_args
-	 */
 	List_STAR_ = func(list_STAR_ *AFn) *AFn {
 		return Fn(list_STAR_, func(args interface{}) interface{} {
 			return Seq.Arity1IQ(args)
@@ -8211,12 +8211,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new, transient version of the collection, in constant time.
+ */
 var Transient *AFn
 
 func init() {
-	/**
-	 * Returns a new, transient version of the collection, in constant time.
-	 */
 	Transient = func(transient *AFn) *AFn {
 		return Fn(transient, func(coll interface{}) interface{} {
 			return coll.(CljsCoreIEditableCollection).X_as_transient_Arity1()
@@ -8224,14 +8224,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new, persistent version of the transient collection, in
+* constant time. The transient collection cannot be used after this
+* call, any such use will throw an exception.
+ */
 var Persistent_BANG_ *AFn
 
 func init() {
-	/**
-	 * Returns a new, persistent version of the transient collection, in
-	 * constant time. The transient collection cannot be used after this
-	 * call, any such use will throw an exception.
-	 */
 	Persistent_BANG_ = func(persistent_BANG_ *AFn) *AFn {
 		return Fn(persistent_BANG_, func(tcoll interface{}) interface{} {
 			return tcoll.(CljsCoreITransientCollection).X_persistent_BANG__Arity1()
@@ -8239,14 +8239,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Adds x to the transient collection, and return coll. The 'addition'
+* may happen at different 'places' depending on the concrete type.
+* @param {...*} var_args
+ */
 var Conj_BANG_ *AFn
 
 func init() {
-	/**
-	 * Adds x to the transient collection, and return coll. The 'addition'
-	 * may happen at different 'places' depending on the concrete type.
-	 * @param {...*} var_args
-	 */
 	Conj_BANG_ = func(conj_BANG_ *AFn) *AFn {
 		return Fn(conj_BANG_, func() interface{} {
 			return Transient.X_invoke_Arity1(CljsCorePersistentVector_EMPTY)
@@ -8275,15 +8275,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* When applied to a transient map, adds mapping of key(s) to
+* val(s). When applied to a transient vector, sets the val at index.
+* Note - index must be <= (count vector). Returns coll.
+* @param {...*} var_args
+ */
 var Assoc_BANG_ *AFn
 
 func init() {
-	/**
-	 * When applied to a transient map, adds mapping of key(s) to
-	 * val(s). When applied to a transient vector, sets the val at index.
-	 * Note - index must be <= (count vector). Returns coll.
-	 * @param {...*} var_args
-	 */
 	Assoc_BANG_ = func(assoc_BANG_ *AFn) *AFn {
 		return Fn(assoc_BANG_, func(tcoll interface{}, key interface{}, val interface{}) interface{} {
 			return tcoll.(CljsCoreITransientAssociative).X_assoc_BANG__Arity3(key, val)
@@ -8309,13 +8309,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a transient map that doesn't contain a mapping for key(s).
+* @param {...*} var_args
+ */
 var Dissoc_BANG_ *AFn
 
 func init() {
-	/**
-	 * Returns a transient map that doesn't contain a mapping for key(s).
-	 * @param {...*} var_args
-	 */
 	Dissoc_BANG_ = func(dissoc_BANG_ *AFn) *AFn {
 		return Fn(dissoc_BANG_, func(tcoll interface{}, key interface{}) interface{} {
 			return tcoll.(CljsCoreITransientMap).X_dissoc_BANG__Arity2(key)
@@ -8340,13 +8340,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Removes the last item from a transient vector. If
+* the collection is empty, throws an exception. Returns coll
+ */
 var Pop_BANG_ *AFn
 
 func init() {
-	/**
-	 * Removes the last item from a transient vector. If
-	 * the collection is empty, throws an exception. Returns coll
-	 */
 	Pop_BANG_ = func(pop_BANG_ *AFn) *AFn {
 		return Fn(pop_BANG_, func(tcoll interface{}) interface{} {
 			return tcoll.(CljsCoreITransientVector).X_pop_BANG__Arity1()
@@ -8354,14 +8354,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* disj[oin]. Returns a transient set of the same (hashed/sorted) type, that
+* does not contain key(s).
+* @param {...*} var_args
+ */
 var Disj_BANG_ *AFn
 
 func init() {
-	/**
-	 * disj[oin]. Returns a transient set of the same (hashed/sorted) type, that
-	 * does not contain key(s).
-	 * @param {...*} var_args
-	 */
 	Disj_BANG_ = func(disj_BANG_ *AFn) *AFn {
 		return Fn(disj_BANG_, func(tcoll interface{}, val interface{}) interface{} {
 			return tcoll.(CljsCoreITransientSet).X_disjoin_BANG__Arity2(val)
@@ -8386,14 +8386,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns an object of the same type and value as obj, with
+* (apply f (meta obj) args) as its metadata.
+* @param {...*} var_args
+ */
 var Vary_meta *AFn
 
 func init() {
-	/**
-	 * Returns an object of the same type and value as obj, with
-	 * (apply f (meta obj) args) as its metadata.
-	 * @param {...*} var_args
-	 */
 	Vary_meta = func(vary_meta *AFn) *AFn {
 		return Fn(vary_meta, func(obj interface{}, f interface{}) interface{} {
 			return With_meta.X_invoke_Arity2(obj, f.(CljsCoreIFn).X_invoke_Arity1(Meta.X_invoke_Arity1(obj)))
@@ -8419,13 +8419,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as (not (= obj1 obj2))
+* @param {...*} var_args
+ */
 var Not_EQ_ *AFn
 
 func init() {
-	/**
-	 * Same as (not (= obj1 obj2))
-	 * @param {...*} var_args
-	 */
 	Not_EQ_ = func(not_EQ_ *AFn) *AFn {
 		return Fn(not_EQ_, func(x interface{}) bool {
 			return false
@@ -8441,12 +8441,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If coll is empty, returns nil, else coll
+ */
 var Not_empty *AFn
 
 func init() {
-	/**
-	 * If coll is empty, returns nil, else coll
-	 */
 	Not_empty = func(not_empty *AFn) *AFn {
 		return Fn(not_empty, func(coll interface{}) interface{} {
 			if Truth_(Seq.Arity1IQ(coll)) {
@@ -9099,17 +9099,6 @@ var CljsCoreLazyTransformer_CreateMulti = func(G__360 *AFn) *AFn {
 }(&AFn{})
 
 func init() {
-	/**
-	 * Coerces coll to a (possibly empty) sequence, if it is not already
-	 * one. Will not force a lazy seq. (sequence nil) yields (), When a
-	 * transducer is supplied, returns a lazy sequence of applications of
-	 * the transform to the items in coll(s), i.e. to the set of first
-	 * items of each coll, followed by the set of second
-	 * items in each coll, until any one of the colls is exhausted.  Any
-	 * remaining items in other colls are ignored. The transform should accept
-	 * number-of-colls arguments
-	 * @param {...*} var_args
-	 */
 	Sequence = func(sequence *AFn) *AFn {
 		return Fn(sequence, func(coll interface{}) interface{} {
 			if Seq_QMARK_.Arity1IB(coll) {
@@ -9137,13 +9126,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if (pred x) is logical true for every x in coll, else
+* false.
+ */
 var Every_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if (pred x) is logical true for every x in coll, else
-	 * false.
-	 */
 	Every_QMARK_ = func(every_QMARK_ *AFn) *AFn {
 		return Fn(every_QMARK_, func(pred interface{}, coll interface{}) bool {
 			for {
@@ -9163,13 +9152,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns false if (pred x) is logical true for every x in
+* coll, else true.
+ */
 var Not_every_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns false if (pred x) is logical true for every x in
-	 * coll, else true.
-	 */
 	Not_every_QMARK_ = func(not_every_QMARK_ *AFn) *AFn {
 		return Fn(not_every_QMARK_, func(pred interface{}, coll interface{}) bool {
 			return !(Every_QMARK_.Arity2IIB(pred, coll))
@@ -9177,15 +9166,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the first logical true value of (pred x) for any x in coll,
+* else nil.  One common idiom is to use a set as pred, for example
+* this will return :fred if :fred is in the sequence, otherwise nil:
+* (some #{:fred} coll)
+ */
 var Some *AFn
 
 func init() {
-	/**
-	 * Returns the first logical true value of (pred x) for any x in coll,
-	 * else nil.  One common idiom is to use a set as pred, for example
-	 * this will return :fred if :fred is in the sequence, otherwise nil:
-	 * (some #{:fred} coll)
-	 */
 	Some = func(some *AFn) *AFn {
 		return Fn(some, func(pred interface{}, coll interface{}) interface{} {
 			for {
@@ -9208,13 +9197,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns false if (pred x) is logical true for any x in coll,
+* else true.
+ */
 var Not_any_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns false if (pred x) is logical true for any x in coll,
-	 * else true.
-	 */
 	Not_any_QMARK_ = func(not_any_QMARK_ *AFn) *AFn {
 		return Fn(not_any_QMARK_, func(pred interface{}, coll interface{}) bool {
 			return Not.Arity1IB(Some.X_invoke_Arity2(pred, coll))
@@ -9222,12 +9211,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if n is even, throws an exception if n is not an integer
+ */
 var Even_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if n is even, throws an exception if n is not an integer
-	 */
 	Even_QMARK_ = func(even_QMARK_ *AFn) *AFn {
 		return Fn(even_QMARK_, func(n interface{}) bool {
 			if Integer_QMARK_.Arity1IB(n) {
@@ -9239,12 +9228,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if n is odd, throws an exception if n is not an integer
+ */
 var Odd_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if n is odd, throws an exception if n is not an integer
-	 */
 	Odd_QMARK_ = func(odd_QMARK_ *AFn) *AFn {
 		return Fn(odd_QMARK_, func(n interface{}) bool {
 			return !(Even_QMARK_.Arity1IB(n))
@@ -9262,12 +9251,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a function that takes any number of arguments and returns x.
+ */
 var Constantly *AFn
 
 func init() {
-	/**
-	 * Returns a function that takes any number of arguments and returns x.
-	 */
 	Constantly = func(constantly *AFn) *AFn {
 		return Fn(constantly, func(x interface{}) interface{} {
 			return func(G__370 *AFn) *AFn {
@@ -9281,16 +9270,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a set of functions and returns a fn that is the composition
+* of those fns.  The returned fn takes a variable number of args,
+* applies the rightmost of fns to the args, the next
+* fn (right-to-left) to the result, etc.
+* @param {...*} var_args
+ */
 var Comp *AFn
 
 func init() {
-	/**
-	 * Takes a set of functions and returns a fn that is the composition
-	 * of those fns.  The returned fn takes a variable number of args,
-	 * applies the rightmost of fns to the args, the next
-	 * fn (right-to-left) to the result, etc.
-	 * @param {...*} var_args
-	 */
 	Comp = func(comp *AFn) *AFn {
 		return Fn(comp, func() interface{} {
 			return Identity
@@ -9369,15 +9358,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a function f and fewer than the normal arguments to f, and
+* returns a fn that takes a variable number of additional args. When
+* called, the returned function calls f with args + additional args.
+* @param {...*} var_args
+ */
 var Partial *AFn
 
 func init() {
-	/**
-	 * Takes a function f and fewer than the normal arguments to f, and
-	 * returns a fn that takes a variable number of additional args. When
-	 * called, the returned function calls f with args + additional args.
-	 * @param {...*} var_args
-	 */
 	Partial = func(partial *AFn) *AFn {
 		return Fn(partial, func(f interface{}) interface{} {
 			return f
@@ -9423,16 +9412,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a function f, and returns a function that calls f, replacing
+* a nil first argument to f with the supplied value x. Higher arity
+* versions can replace arguments in the second and third
+* positions (y, z). Note that the function f can take any number of
+* arguments, not just the one(s) being nil-patched.
+ */
 var Fnil *AFn
 
 func init() {
-	/**
-	 * Takes a function f, and returns a function that calls f, replacing
-	 * a nil first argument to f with the supplied value x. Higher arity
-	 * versions can replace arguments in the second and third
-	 * positions (y, z). Note that the function f can take any number of
-	 * arguments, not just the one(s) being nil-patched.
-	 */
 	Fnil = func(fnil *AFn) *AFn {
 		return Fn(fnil, func(f interface{}, x interface{}) interface{} {
 			return func(G__378 *AFn) *AFn {
@@ -9593,15 +9582,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence consisting of the result of applying f to 0
+* and the first item of coll, followed by applying f to 1 and the second
+* item in coll, etc, until coll is exhausted. Thus function f should
+* accept 2 arguments, index and item.
+ */
 var Map_indexed *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence consisting of the result of applying f to 0
-	 * and the first item of coll, followed by applying f to 1 and the second
-	 * item in coll, etc, until coll is exhausted. Thus function f should
-	 * accept 2 arguments, index and item.
-	 */
 	Map_indexed = func(map_indexed *AFn) *AFn {
 		return Fn(map_indexed, func(f interface{}, coll interface{}) interface{} {
 			{
@@ -9661,14 +9650,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the non-nil results of (f item). Note,
+* this means false return values will be included.  f must be free of
+* side-effects.  Returns a transducer when no collection is provided.
+ */
 var Keep *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the non-nil results of (f item). Note,
-	 * this means false return values will be included.  f must be free of
-	 * side-effects.  Returns a transducer when no collection is provided.
-	 */
 	Keep = func(keep *AFn) *AFn {
 		return Fn(keep, func(f interface{}) interface{} {
 			return func(G__384 *AFn) *AFn {
@@ -9900,25 +9889,25 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Creates and returns an Atom with an initial value of x and zero or
+* more options (in any order):
+*
+* :meta metadata-map
+*
+* :validator validate-fn
+*
+* If metadata-map is supplied, it will be come the metadata on the
+* atom. validate-fn must be nil or a side-effect-free fn of one
+* argument, which will be passed the intended new state on any state
+* change. If the new state is unacceptable, the validate-fn should
+* return false or throw an Error.  If either of these error conditions
+* occur, then the value of the atom will not change.
+* @param {...*} var_args
+ */
 var Atom *AFn
 
 func init() {
-	/**
-	 * Creates and returns an Atom with an initial value of x and zero or
-	 * more options (in any order):
-	 *
-	 * :meta metadata-map
-	 *
-	 * :validator validate-fn
-	 *
-	 * If metadata-map is supplied, it will be come the metadata on the
-	 * atom. validate-fn must be nil or a side-effect-free fn of one
-	 * argument, which will be passed the intended new state on any state
-	 * change. If the new state is unacceptable, the validate-fn should
-	 * return false or throw an Error.  If either of these error conditions
-	 * occur, then the value of the atom will not change.
-	 * @param {...*} var_args
-	 */
 	Atom = func(atom *AFn) *AFn {
 		return Fn(atom, func(x interface{}) interface{} {
 			return (&CljsCoreAtom{x, nil, nil, nil})
@@ -9944,13 +9933,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Sets the value of atom to newval without regard for the
+* current value. Returns newval.
+ */
 var Reset_BANG_ *AFn
 
 func init() {
-	/**
-	 * Sets the value of atom to newval without regard for the
-	 * current value. Returns newval.
-	 */
 	Reset_BANG_ = func(reset_BANG_ *AFn) *AFn {
 		return Fn(reset_BANG_, func(a interface{}, new_value interface{}) interface{} {
 			if func() bool { _, instanceof := a.(*CljsCoreAtom); return instanceof }() {
@@ -9982,16 +9971,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Atomically swaps the value of atom to be:
+* (apply f current-value-of-atom args). Note that f may be called
+* multiple times, and thus should be free of side effects.  Returns
+* the value that was swapped in.
+* @param {...*} var_args
+ */
 var Swap_BANG_ *AFn
 
 func init() {
-	/**
-	 * Atomically swaps the value of atom to be:
-	 * (apply f current-value-of-atom args). Note that f may be called
-	 * multiple times, and thus should be free of side effects.  Returns
-	 * the value that was swapped in.
-	 * @param {...*} var_args
-	 */
 	Swap_BANG_ = func(swap_BANG_ *AFn) *AFn {
 		return Fn(swap_BANG_, func(a interface{}, f interface{}) interface{} {
 			if func() bool { _, instanceof := a.(*CljsCoreAtom); return instanceof }() {
@@ -10027,14 +10016,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Atomically sets the value of atom to newval if and only if the
+* current value of the atom is identical to oldval. Returns true if
+* set happened, else false.
+ */
 var Compare_and_set_BANG_ *AFn
 
 func init() {
-	/**
-	 * Atomically sets the value of atom to newval if and only if the
-	 * current value of the atom is identical to oldval. Returns true if
-	 * set happened, else false.
-	 */
 	Compare_and_set_BANG_ = func(compare_and_set_BANG_ *AFn) *AFn {
 		return Fn(compare_and_set_BANG_, func(a interface{}, oldval interface{}, newval interface{}) interface{} {
 			if X_EQ_.Arity2IIB(Native_get_instance_field.X_invoke_Arity2(a, "State"), oldval) {
@@ -10047,17 +10036,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Sets the validator-fn for an atom. validator-fn must be nil or a
+* side-effect-free fn of one argument, which will be passed the intended
+* new state on any state change. If the new state is unacceptable, the
+* validator-fn should return false or throw an Error. If the current state
+* is not acceptable to the new validator, an Error will be thrown and the
+* validator will not be changed.
+ */
 var Set_validator_BANG_ *AFn
 
 func init() {
-	/**
-	 * Sets the validator-fn for an atom. validator-fn must be nil or a
-	 * side-effect-free fn of one argument, which will be passed the intended
-	 * new state on any state change. If the new state is unacceptable, the
-	 * validator-fn should return false or throw an Error. If the current state
-	 * is not acceptable to the new validator, an Error will be thrown and the
-	 * validator will not be changed.
-	 */
 	Set_validator_BANG_ = func(set_validator_BANG_ *AFn) *AFn {
 		return Fn(set_validator_BANG_, func(iref interface{}, val interface{}) interface{} {
 			return func() interface{} {
@@ -10069,12 +10058,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Gets the validator-fn for a var/ref/agent/atom.
+ */
 var Get_validator *AFn
 
 func init() {
-	/**
-	 * Gets the validator-fn for a var/ref/agent/atom.
-	 */
 	Get_validator = func(get_validator *AFn) *AFn {
 		return Fn(get_validator, func(iref interface{}) interface{} {
 			return Native_get_instance_field.X_invoke_Arity2(iref, "Validator")
@@ -10082,15 +10071,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the non-nil results of (f index item). Note,
+* this means false return values will be included.  f must be free of
+* side-effects.  Returns a stateful transducer when no collection is
+* provided.
+ */
 var Keep_indexed *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the non-nil results of (f index item). Note,
-	 * this means false return values will be included.  f must be free of
-	 * side-effects.  Returns a stateful transducer when no collection is
-	 * provided.
-	 */
 	Keep_indexed = func(keep_indexed *AFn) *AFn {
 		return Fn(keep_indexed, func(f interface{}) interface{} {
 			return func(G__407 *AFn) *AFn {
@@ -10194,16 +10183,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a set of predicates and returns a function f that returns true if all of its
+* composing predicates return a logical true value against all of its arguments, else it returns
+* false. Note that f is short-circuiting in that it will stop execution on the first
+* argument that triggers a logical false result against the original predicates.
+* @param {...*} var_args
+ */
 var Every_pred *AFn
 
 func init() {
-	/**
-	 * Takes a set of predicates and returns a function f that returns true if all of its
-	 * composing predicates return a logical true value against all of its arguments, else it returns
-	 * false. Note that f is short-circuiting in that it will stop execution on the first
-	 * argument that triggers a logical false result against the original predicates.
-	 * @param {...*} var_args
-	 */
 	Every_pred = func(every_pred *AFn) *AFn {
 		return Fn(every_pred, func(p interface{}) interface{} {
 			return func(ep1 *AFn) *AFn {
@@ -10592,16 +10581,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a set of predicates and returns a function f that returns the first logical true value
+* returned by one of its composing predicates against any of its arguments, else it returns
+* logical false. Note that f is short-circuiting in that it will stop execution on the first
+* argument that triggers a logical true result against the original predicates.
+* @param {...*} var_args
+ */
 var Some_fn *AFn
 
 func init() {
-	/**
-	 * Takes a set of predicates and returns a function f that returns the first logical true value
-	 * returned by one of its composing predicates against any of its arguments, else it returns
-	 * logical false. Note that f is short-circuiting in that it will stop execution on the first
-	 * argument that triggers a logical true result against the original predicates.
-	 * @param {...*} var_args
-	 */
 	Some_fn = func(some_fn *AFn) *AFn {
 		return Fn(some_fn, func(p interface{}) interface{} {
 			return func(sp1 *AFn) *AFn {
@@ -11026,18 +11015,18 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence consisting of the result of applying f to
+* the set of first items of each coll, followed by applying f to the
+* set of second items in each coll, until any one of the colls is
+* exhausted.  Any remaining items in other colls are ignored. Function
+* f should accept number-of-colls arguments. Returns a transducer when
+* no collection is provided.
+* @param {...*} var_args
+ */
 var Map_ *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence consisting of the result of applying f to
-	 * the set of first items of each coll, followed by applying f to the
-	 * set of second items in each coll, until any one of the colls is
-	 * exhausted.  Any remaining items in other colls are ignored. Function
-	 * f should accept number-of-colls arguments. Returns a transducer when
-	 * no collection is provided.
-	 * @param {...*} var_args
-	 */
 	Map_ = func(map_ *AFn) *AFn {
 		return Fn(map_, func(f interface{}) interface{} {
 			return func(G__438 *AFn) *AFn {
@@ -11197,14 +11186,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the first n items in coll, or all items if
+* there are fewer than n.  Returns a stateful transducer when
+* no collection is provided.
+ */
 var Take *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the first n items in coll, or all items if
-	 * there are fewer than n.  Returns a stateful transducer when
-	 * no collection is provided.
-	 */
 	Take = func(take *AFn) *AFn {
 		return Fn(take, func(n interface{}) interface{} {
 			return func(G__447 *AFn) *AFn {
@@ -11268,13 +11257,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of all but the first n items in coll.
+* Returns a stateful transducer when no collection is provided.
+ */
 var Drop *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of all but the first n items in coll.
-	 * Returns a stateful transducer when no collection is provided.
-	 */
 	Drop = func(drop *AFn) *AFn {
 		return Fn(drop, func(n interface{}) interface{} {
 			return func(G__450 *AFn) *AFn {
@@ -11344,12 +11333,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return a lazy sequence of all but the last n (default 1) items in coll
+ */
 var Drop_last *AFn
 
 func init() {
-	/**
-	 * Return a lazy sequence of all but the last n (default 1) items in coll
-	 */
 	Drop_last = func(drop_last *AFn) *AFn {
 		return Fn(drop_last, func(s interface{}) interface{} {
 			return drop_last.X_invoke_Arity2(float64(1), s).(*CljsCoreLazySeq)
@@ -11363,13 +11352,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a seq of the last n items in coll.  Depending on the type
+* of coll may be no better than linear time.  For vectors, see also subvec.
+ */
 var Take_last *AFn
 
 func init() {
-	/**
-	 * Returns a seq of the last n items in coll.  Depending on the type
-	 * of coll may be no better than linear time.  For vectors, see also subvec.
-	 */
 	Take_last = func(take_last *AFn) *AFn {
 		return Fn(take_last, func(n interface{}, coll interface{}) interface{} {
 			{
@@ -11389,14 +11378,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the items in coll starting from the
+* first item for which (pred item) returns logical false.  Returns a
+* stateful transducer when no collection is provided.
+ */
 var Drop_while *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the items in coll starting from the
-	 * first item for which (pred item) returns logical false.  Returns a
-	 * stateful transducer when no collection is provided.
-	 */
 	Drop_while = func(drop_while *AFn) *AFn {
 		return Fn(drop_while, func(pred interface{}) interface{} {
 			return func(G__455 *AFn) *AFn {
@@ -11474,12 +11463,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy (infinite!) sequence of repetitions of the items in coll.
+ */
 var Cycle *AFn
 
 func init() {
-	/**
-	 * Returns a lazy (infinite!) sequence of repetitions of the items in coll.
-	 */
 	Cycle = func(cycle *AFn) *AFn {
 		return Fn(cycle, func(coll interface{}) interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__459 *AFn) *AFn {
@@ -11503,12 +11492,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a vector of [(take n coll) (drop n coll)]
+ */
 var Split_at *AFn
 
 func init() {
-	/**
-	 * Returns a vector of [(take n coll) (drop n coll)]
-	 */
 	Split_at = func(split_at *AFn) *AFn {
 		return Fn(split_at, func(n interface{}, coll interface{}) interface{} {
 			return (&CljsCorePersistentVector{nil, 2, 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{Take.X_invoke_Arity2(n, coll).(*CljsCoreLazySeq), Drop.X_invoke_Arity2(n, coll).(*CljsCoreLazySeq)}, nil})
@@ -11516,12 +11505,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy (infinite!, or length n if supplied) sequence of xs.
+ */
 var Repeat *AFn
 
 func init() {
-	/**
-	 * Returns a lazy (infinite!, or length n if supplied) sequence of xs.
-	 */
 	Repeat = func(repeat *AFn) *AFn {
 		return Fn(repeat, func(x interface{}) interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__460 *AFn) *AFn {
@@ -11535,12 +11524,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of n xs.
+ */
 var Replicate *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of n xs.
-	 */
 	Replicate = func(replicate *AFn) *AFn {
 		return Fn(replicate, func(n interface{}, x interface{}) interface{} {
 			return Take.X_invoke_Arity2(n, Repeat.X_invoke_Arity1(x).(*CljsCoreLazySeq)).(*CljsCoreLazySeq)
@@ -11548,14 +11537,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a function of no args, presumably with side effects, and
+* returns an infinite (or length n if supplied) lazy sequence of calls
+* to it
+ */
 var Repeatedly *AFn
 
 func init() {
-	/**
-	 * Takes a function of no args, presumably with side effects, and
-	 * returns an infinite (or length n if supplied) lazy sequence of calls
-	 * to it
-	 */
 	Repeatedly = func(repeatedly *AFn) *AFn {
 		return Fn(repeatedly, func(f interface{}) interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__461 *AFn) *AFn {
@@ -11569,12 +11558,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects
+ */
 var Iterate *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects
-	 */
 	Iterate = func(iterate *AFn) *AFn {
 		return Fn(iterate, func(f interface{}, x interface{}) interface{} {
 			return Cons.X_invoke_Arity2(x, (&CljsCoreLazySeq{nil, func(G__462 *AFn) *AFn {
@@ -11586,13 +11575,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of the first item in each coll, then the second etc.
+* @param {...*} var_args
+ */
 var Interleave *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of the first item in each coll, then the second etc.
-	 * @param {...*} var_args
-	 */
 	Interleave = func(interleave *AFn) *AFn {
 		return Fn(interleave, func(c1 interface{}, c2 interface{}) interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__463 *AFn) *AFn {
@@ -11639,12 +11628,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of the elements of coll separated by sep
+ */
 var Interpose *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of the elements of coll separated by sep
-	 */
 	Interpose = func(interpose *AFn) *AFn {
 		return Fn(interpose, func(sep interface{}, coll interface{}) interface{} {
 			return Drop.X_invoke_Arity2(float64(1), Interleave.X_invoke_Arity2(Repeat.X_invoke_Arity1(sep).(*CljsCoreLazySeq), coll).(*CljsCoreLazySeq)).(*CljsCoreLazySeq)
@@ -11652,13 +11641,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Take a collection of collections, and return a lazy seq
+* of items from the inner collection
+ */
 var Flatten1 *AFn
 
 func init() {
-	/**
-	 * Take a collection of collections, and return a lazy seq
-	 * of items from the inner collection
-	 */
 	Flatten1 = func(flatten1 *AFn) *AFn {
 		return Fn(flatten1, func(colls interface{}) interface{} {
 			{
@@ -11694,14 +11683,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the result of applying concat to the result of applying map
+* to f and colls.  Thus function f should return a collection.
+* @param {...*} var_args
+ */
 var Mapcat *AFn
 
 func init() {
-	/**
-	 * Returns the result of applying concat to the result of applying map
-	 * to f and colls.  Thus function f should return a collection.
-	 * @param {...*} var_args
-	 */
 	Mapcat = func(mapcat *AFn) *AFn {
 		return Fn(mapcat, func(f interface{}, coll interface{}) interface{} {
 			return Flatten1.X_invoke_Arity1(Map_.X_invoke_Arity2(f, coll).(*CljsCoreLazySeq)).(*CljsCoreLazySeq)
@@ -11715,14 +11704,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the items in coll for which
+* (pred item) returns true. pred must be free of side-effects.
+* Returns a transducer when no collection is provided.
+ */
 var Filter *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the items in coll for which
-	 * (pred item) returns true. pred must be free of side-effects.
-	 * Returns a transducer when no collection is provided.
-	 */
 	Filter = func(filter *AFn) *AFn {
 		return Fn(filter, func(pred interface{}) interface{} {
 			return func(G__466 *AFn) *AFn {
@@ -11803,14 +11792,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the items in coll for which
+* (pred item) returns false. pred must be free of side-effects.
+* Returns a transducer when no collection is provided.
+ */
 var Remove *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the items in coll for which
-	 * (pred item) returns false. pred must be free of side-effects.
-	 * Returns a transducer when no collection is provided.
-	 */
 	Remove = func(remove *AFn) *AFn {
 		return Fn(remove, func(pred interface{}) interface{} {
 			return Filter.X_invoke_Arity1(Complement.Arity1IB(pred)).(CljsCoreIFn)
@@ -11820,17 +11809,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the nodes in a tree, via a depth-first walk.
+* branch? must be a fn of one arg that returns true if passed a node
+* that can have children (but may not).  children must be a fn of one
+* arg that returns a sequence of the children. Will only be called on
+* nodes for which branch? returns true. Root is the root node of the
+* tree.
+ */
 var Tree_seq *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the nodes in a tree, via a depth-first walk.
-	 * branch? must be a fn of one arg that returns true if passed a node
-	 * that can have children (but may not).  children must be a fn of one
-	 * arg that returns a sequence of the children. Will only be called on
-	 * nodes for which branch? returns true. Root is the root node of the
-	 * tree.
-	 */
 	Tree_seq = func(tree_seq *AFn) *AFn {
 		return Fn(tree_seq, func(branch_QMARK_ interface{}, children interface{}, root interface{}) interface{} {
 			{
@@ -11856,14 +11845,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes any nested combination of sequential things (lists, vectors,
+* etc.) and returns their contents as a single, flat sequence.
+* (flatten nil) returns nil.
+ */
 var Flatten *AFn
 
 func init() {
-	/**
-	 * Takes any nested combination of sequential things (lists, vectors,
-	 * etc.) and returns their contents as a single, flat sequence.
-	 * (flatten nil) returns nil.
-	 */
 	Flatten = func(flatten *AFn) *AFn {
 		return Fn(flatten, func(x interface{}) interface{} {
 			return Filter.X_invoke_Arity2(func(G__473 *AFn) *AFn {
@@ -11875,13 +11864,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new coll consisting of to-coll with all of the items of
+* from-coll conjoined. A transducer may be supplied.
+ */
 var Into *AFn
 
 func init() {
-	/**
-	 * Returns a new coll consisting of to-coll with all of the items of
-	 * from-coll conjoined. A transducer may be supplied.
-	 */
 	Into = func(into *AFn) *AFn {
 		return Fn(into, func(to interface{}, from interface{}) interface{} {
 			if !(reflect.DeepEqual(to, nil)) {
@@ -11903,17 +11892,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a vector consisting of the result of applying f to the
+* set of first items of each coll, followed by applying f to the set
+* of second items in each coll, until any one of the colls is
+* exhausted.  Any remaining items in other colls are ignored. Function
+* f should accept number-of-colls arguments.
+* @param {...*} var_args
+ */
 var Mapv *AFn
 
 func init() {
-	/**
-	 * Returns a vector consisting of the result of applying f to the
-	 * set of first items of each coll, followed by applying f to the set
-	 * of second items in each coll, until any one of the colls is
-	 * exhausted.  Any remaining items in other colls are ignored. Function
-	 * f should accept number-of-colls arguments.
-	 * @param {...*} var_args
-	 */
 	Mapv = func(mapv *AFn) *AFn {
 		return Fn(mapv, func(f interface{}, coll interface{}) interface{} {
 			return Persistent_BANG_.X_invoke_Arity1(Reduce.X_invoke_Arity3(func(G__474 *AFn) *AFn {
@@ -11937,13 +11926,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a vector of the items in coll for which
+* (pred item) returns true. pred must be free of side-effects.
+ */
 var Filterv *AFn
 
 func init() {
-	/**
-	 * Returns a vector of the items in coll for which
-	 * (pred item) returns true. pred must be free of side-effects.
-	 */
 	Filterv = func(filterv *AFn) *AFn {
 		return Fn(filterv, func(pred interface{}, coll interface{}) interface{} {
 			return Persistent_BANG_.X_invoke_Arity1(Reduce.X_invoke_Arity3(func(G__475 *AFn) *AFn {
@@ -11959,16 +11948,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of lists of n items each, at offsets step
+* apart. If step is not supplied, defaults to n, i.e. the partitions
+* do not overlap. If a pad collection is supplied, use its elements as
+* necessary to complete last partition upto n items. In case there are
+* not enough padding elements, return a partition with less than n items.
+ */
 var Partition *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of lists of n items each, at offsets step
-	 * apart. If step is not supplied, defaults to n, i.e. the partitions
-	 * do not overlap. If a pad collection is supplied, use its elements as
-	 * necessary to complete last partition upto n items. In case there are
-	 * not enough padding elements, return a partition with less than n items.
-	 */
 	Partition = func(partition *AFn) *AFn {
 		return Fn(partition, func(n interface{}, coll interface{}) interface{} {
 			return partition.X_invoke_Arity3(n, n, coll).(*CljsCoreLazySeq)
@@ -12028,14 +12017,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the value in a nested associative structure,
+* where ks is a sequence of keys. Returns nil if the key is not present,
+* or the not-found value if supplied.
+ */
 var Get_in *AFn
 
 func init() {
-	/**
-	 * Returns the value in a nested associative structure,
-	 * where ks is a sequence of keys. Returns nil if the key is not present,
-	 * or the not-found value if supplied.
-	 */
 	Get_in = func(get_in *AFn) *AFn {
 		return Fn(get_in, func(m interface{}, ks interface{}) interface{} {
 			return get_in.X_invoke_Arity3(m, ks, nil)
@@ -12070,14 +12059,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Associates a value in a nested associative structure, where ks is a
+* sequence of keys and v is the new value and returns a new nested structure.
+* If any levels do not exist, hash-maps will be created.
+ */
 var Assoc_in *AFn
 
 func init() {
-	/**
-	 * Associates a value in a nested associative structure, where ks is a
-	 * sequence of keys and v is the new value and returns a new nested structure.
-	 * If any levels do not exist, hash-maps will be created.
-	 */
 	Assoc_in = func(assoc_in *AFn) *AFn {
 		return Fn(assoc_in, func(m interface{}, p__478 interface{}, v interface{}) interface{} {
 			{
@@ -12095,17 +12084,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* 'Updates' a value in a nested associative structure, where ks is a
+* sequence of keys and f is a function that will take the old value
+* and any supplied args and return the new value, and returns a new
+* nested structure.  If any levels do not exist, hash-maps will be
+* created.
+* @param {...*} var_args
+ */
 var Update_in *AFn
 
 func init() {
-	/**
-	 * 'Updates' a value in a nested associative structure, where ks is a
-	 * sequence of keys and f is a function that will take the old value
-	 * and any supplied args and return the new value, and returns a new
-	 * nested structure.  If any levels do not exist, hash-maps will be
-	 * created.
-	 * @param {...*} var_args
-	 */
 	Update_in = func(update_in *AFn) *AFn {
 		return Fn(update_in, func(m interface{}, p__481 interface{}, f interface{}) interface{} {
 			{
@@ -13127,12 +13116,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* @param {...*} var_args
+ */
 var Vector *AFn
 
 func init() {
-	/**
-	 * @param {...*} var_args
-	 */
 	Vector = func(vector *AFn) *AFn {
 		return Fn(vector, func(args__ ...interface{}) interface{} {
 			var args = Array_seq.X_invoke_Arity1(args__[0:])
@@ -13873,16 +13862,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a persistent vector of the items in vector from
+* start (inclusive) to end (exclusive).  If end is not supplied,
+* defaults to (count vector). This operation is O(1) and very fast, as
+* the resulting vector shares structure with the original and no
+* trimming is done.
+ */
 var Subvec *AFn
 
 func init() {
-	/**
-	 * Returns a persistent vector of the items in vector from
-	 * start (inclusive) to end (exclusive).  If end is not supplied,
-	 * defaults to (count vector). This operation is O(1) and very fast, as
-	 * the resulting vector shares structure with the original and no
-	 * trimming is done.
-	 */
 	Subvec = func(subvec *AFn) *AFn {
 		return Fn(subvec, func(v interface{}, start interface{}) interface{} {
 			return subvec.X_invoke_Arity3(v, start, Count.X_invoke_Arity1(v).(float64)).(*CljsCoreSubvec)
@@ -14884,13 +14873,13 @@ func init() {
 	Never_equiv = (&CljsCoreNeverEquiv{})
 }
 
+/**
+* Assumes y is a map. Returns true if x equals y, otherwise returns
+* false.
+ */
 var Equiv_map *AFn
 
 func init() {
-	/**
-	 * Assumes y is a map. Returns true if x equals y, otherwise returns
-	 * false.
-	 */
 	Equiv_map = func(equiv_map *AFn) *AFn {
 		return Fn(equiv_map, func(x interface{}, y interface{}) interface{} {
 			return Boolean.Arity1IB(func() interface{} {
@@ -21560,14 +21549,14 @@ func init() {
 
 var CljsCorePersistentTreeMap_EMPTY = (&CljsCorePersistentTreeMap{Compare, nil, float64(0), nil, float64(0)})
 
+/**
+* keyval => key val
+* Returns a new hash map with supplied mappings.
+* @param {...*} var_args
+ */
 var Hash_map *AFn
 
 func init() {
-	/**
-	 * keyval => key val
-	 * Returns a new hash map with supplied mappings.
-	 * @param {...*} var_args
-	 */
 	Hash_map = func(hash_map *AFn) *AFn {
 		return Fn(hash_map, func(keyvals__ ...interface{}) interface{} {
 			var keyvals = Array_seq.X_invoke_Arity1(keyvals__[0:])
@@ -21589,14 +21578,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* keyval => key val
+* Returns a new array map with supplied mappings.
+* @param {...*} var_args
+ */
 var Array_map *AFn
 
 func init() {
-	/**
-	 * keyval => key val
-	 * Returns a new array map with supplied mappings.
-	 * @param {...*} var_args
-	 */
 	Array_map = func(array_map *AFn) *AFn {
 		return Fn(array_map, func(keyvals__ ...interface{}) interface{} {
 			var keyvals = Array_seq.X_invoke_Arity1(keyvals__[0:])
@@ -21606,14 +21595,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* keyval => key val
+* Returns a new object map with supplied mappings.
+* @param {...*} var_args
+ */
 var Obj_map *AFn
 
 func init() {
-	/**
-	 * keyval => key val
-	 * Returns a new object map with supplied mappings.
-	 * @param {...*} var_args
-	 */
 	Obj_map = func(obj_map *AFn) *AFn {
 		return Fn(obj_map, func(keyvals__ ...interface{}) interface{} {
 			var keyvals = Array_seq.X_invoke_Arity1(keyvals__[0:])
@@ -21645,14 +21634,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* keyval => key val
+* Returns a new sorted map with supplied mappings.
+* @param {...*} var_args
+ */
 var Sorted_map *AFn
 
 func init() {
-	/**
-	 * keyval => key val
-	 * Returns a new sorted map with supplied mappings.
-	 * @param {...*} var_args
-	 */
 	Sorted_map = func(sorted_map *AFn) *AFn {
 		return Fn(sorted_map, func(keyvals__ ...interface{}) interface{} {
 			var keyvals = Array_seq.X_invoke_Arity1(keyvals__[0:])
@@ -21674,14 +21663,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* keyval => key val
+* Returns a new sorted map with supplied mappings, using the supplied comparator.
+* @param {...*} var_args
+ */
 var Sorted_map_by *AFn
 
 func init() {
-	/**
-	 * keyval => key val
-	 * Returns a new sorted map with supplied mappings, using the supplied comparator.
-	 * @param {...*} var_args
-	 */
 	Sorted_map_by = func(sorted_map_by *AFn) *AFn {
 		return Fn(sorted_map_by, func(comparator_keyvals__ ...interface{}) interface{} {
 			var comparator = comparator_keyvals__[0]
@@ -21883,12 +21872,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a sequence of the map's keys.
+ */
 var Keys *AFn
 
 func init() {
-	/**
-	 * Returns a sequence of the map's keys.
-	 */
 	Keys = func(keys *AFn) *AFn {
 		return Fn(keys, func(hash_map interface{}) interface{} {
 			{
@@ -21908,12 +21897,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the key of the map entry.
+ */
 var Key *AFn
 
 func init() {
-	/**
-	 * Returns the key of the map entry.
-	 */
 	Key = func(key *AFn) *AFn {
 		return Fn(key, func(map_entry interface{}) interface{} {
 			return map_entry.(CljsCoreIMapEntry).X_key_Arity1()
@@ -22100,12 +22089,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a sequence of the map's values.
+ */
 var Vals *AFn
 
 func init() {
-	/**
-	 * Returns a sequence of the map's values.
-	 */
 	Vals = func(vals *AFn) *AFn {
 		return Fn(vals, func(hash_map interface{}) interface{} {
 			{
@@ -22125,12 +22114,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the value in the map entry.
+ */
 var Val *AFn
 
 func init() {
-	/**
-	 * Returns the value in the map entry.
-	 */
 	Val = func(val *AFn) *AFn {
 		return Fn(val, func(map_entry interface{}) interface{} {
 			return map_entry.(CljsCoreIMapEntry).X_val_Arity1()
@@ -22138,15 +22127,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map that consists of the rest of the maps conj-ed onto
+* the first.  If a key occurs in more than one map, the mapping from
+* the latter (left-to-right) will be the mapping in the result.
+* @param {...*} var_args
+ */
 var Merge *AFn
 
 func init() {
-	/**
-	 * Returns a map that consists of the rest of the maps conj-ed onto
-	 * the first.  If a key occurs in more than one map, the mapping from
-	 * the latter (left-to-right) will be the mapping in the result.
-	 * @param {...*} var_args
-	 */
 	Merge = func(merge *AFn) *AFn {
 		return Fn(merge, func(maps__ ...interface{}) interface{} {
 			var maps = Array_seq.X_invoke_Arity1(maps__[0:])
@@ -22172,16 +22161,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map that consists of the rest of the maps conj-ed onto
+* the first.  If a key occurs in more than one map, the mapping(s)
+* from the latter (left-to-right) will be combined with the mapping in
+* the result by calling (f val-in-result val-in-latter).
+* @param {...*} var_args
+ */
 var Merge_with *AFn
 
 func init() {
-	/**
-	 * Returns a map that consists of the rest of the maps conj-ed onto
-	 * the first.  If a key occurs in more than one map, the mapping(s)
-	 * from the latter (left-to-right) will be combined with the mapping in
-	 * the result by calling (f val-in-result val-in-latter).
-	 * @param {...*} var_args
-	 */
 	Merge_with = func(merge_with *AFn) *AFn {
 		return Fn(merge_with, func(f_maps__ ...interface{}) interface{} {
 			var f = f_maps__[0]
@@ -22228,12 +22217,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map containing only those entries in map whose key is in keys
+ */
 var Select_keys *AFn
 
 func init() {
-	/**
-	 * Returns a map containing only those entries in map whose key is in keys
-	 */
 	Select_keys = func(select_keys *AFn) *AFn {
 		return Fn(select_keys, func(map_ interface{}, keyseq interface{}) interface{} {
 			{
@@ -23517,12 +23506,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a set of the distinct elements of coll.
+ */
 var Set *AFn
 
 func init() {
-	/**
-	 * Returns a set of the distinct elements of coll.
-	 */
 	Set = func(set *AFn) *AFn {
 		return Fn(set, func(coll interface{}) interface{} {
 			{
@@ -23555,12 +23544,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* @param {...*} var_args
+ */
 var Hash_set *AFn
 
 func init() {
-	/**
-	 * @param {...*} var_args
-	 */
 	Hash_set = func(hash_set *AFn) *AFn {
 		return Fn(hash_set, func() interface{} {
 			return CljsCorePersistentHashSet_EMPTY
@@ -23572,13 +23561,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new sorted set with supplied keys.
+* @param {...*} var_args
+ */
 var Sorted_set *AFn
 
 func init() {
-	/**
-	 * Returns a new sorted set with supplied keys.
-	 * @param {...*} var_args
-	 */
 	Sorted_set = func(sorted_set *AFn) *AFn {
 		return Fn(sorted_set, func(keys__ ...interface{}) interface{} {
 			var keys = Array_seq.X_invoke_Arity1(keys__[0:])
@@ -23588,13 +23577,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a new sorted set with supplied keys, using the supplied comparator.
+* @param {...*} var_args
+ */
 var Sorted_set_by *AFn
 
 func init() {
-	/**
-	 * Returns a new sorted set with supplied keys, using the supplied comparator.
-	 * @param {...*} var_args
-	 */
 	Sorted_set_by = func(sorted_set_by *AFn) *AFn {
 		return Fn(sorted_set_by, func(comparator_keys__ ...interface{}) interface{} {
 			var comparator = comparator_keys__[0]
@@ -23605,15 +23594,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Given a map of replacement pairs and a vector/collection, returns a
+* vector/seq with any elements = a key in smap replaced with the
+* corresponding val in smap.  Returns a transducer when no collection
+* is provided.
+ */
 var Replace *AFn
 
 func init() {
-	/**
-	 * Given a map of replacement pairs and a vector/collection, returns a
-	 * vector/seq with any elements = a key in smap replaced with the
-	 * corresponding val in smap.  Returns a transducer when no collection
-	 * is provided.
-	 */
 	Replace = func(replace *AFn) *AFn {
 		return Fn(replace, func(smap interface{}) interface{} {
 			return Map_.X_invoke_Arity1(func(G__618 *AFn) *AFn {
@@ -23681,12 +23670,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of the elements of coll with duplicates removed
+ */
 var Distinct *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of the elements of coll with duplicates removed
-	 */
 	Distinct = func(distinct *AFn) *AFn {
 		return Fn(distinct, func(coll interface{}) interface{} {
 			{
@@ -23757,12 +23746,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the name String of a string, symbol or keyword.
+ */
 var Name *AFn
 
 func init() {
-	/**
-	 * Returns the name String of a string, symbol or keyword.
-	 */
 	Name = func(name *AFn) *AFn {
 		return Fn(name, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
@@ -23778,12 +23767,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map with the keys mapped to the corresponding vals.
+ */
 var Zipmap *AFn
 
 func init() {
-	/**
-	 * Returns a map with the keys mapped to the corresponding vals.
-	 */
 	Zipmap = func(zipmap *AFn) *AFn {
 		return Fn(zipmap, func(keys interface{}, vals interface{}) interface{} {
 			{
@@ -23812,13 +23801,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the x for which (k x), a number, is greatest.
+* @param {...*} var_args
+ */
 var Max_key *AFn
 
 func init() {
-	/**
-	 * Returns the x for which (k x), a number, is greatest.
-	 * @param {...*} var_args
-	 */
 	Max_key = func(max_key *AFn) *AFn {
 		return Fn(max_key, func(k interface{}, x interface{}) interface{} {
 			return x
@@ -23843,13 +23832,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the x for which (k x), a number, is least.
+* @param {...*} var_args
+ */
 var Min_key *AFn
 
 func init() {
-	/**
-	 * Returns the x for which (k x), a number, is least.
-	 * @param {...*} var_args
-	 */
 	Min_key = func(min_key *AFn) *AFn {
 		return Fn(min_key, func(k interface{}, x interface{}) interface{} {
 			return x
@@ -23941,14 +23930,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of lists like partition, but may include
+* partitions with fewer than n items at the end.  Returns a stateful
+* transducer when no collection is provided.
+ */
 var Partition_all *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of lists like partition, but may include
-	 * partitions with fewer than n items at the end.  Returns a stateful
-	 * transducer when no collection is provided.
-	 */
 	Partition_all = func(partition_all *AFn) *AFn {
 		return Fn(partition_all, func(n interface{}) interface{} {
 			return func(G__638 *AFn) *AFn {
@@ -24019,14 +24008,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of successive items from coll while
+* (pred item) returns true. pred must be free of side-effects.
+* Returns a transducer when no collection is provided.
+ */
 var Take_while *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of successive items from coll while
-	 * (pred item) returns true. pred must be free of side-effects.
-	 * Returns a transducer when no collection is provided.
-	 */
 	Take_while = func(take_while *AFn) *AFn {
 		return Fn(take_while, func(pred interface{}) interface{} {
 			return func(G__641 *AFn) *AFn {
@@ -24090,14 +24079,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* sc must be a sorted collection, test(s) one of <, <=, > or
+* >=. Returns a seq of those entries with keys ek for
+* which (test (.. sc comparator (compare ek key)) 0) is true
+ */
 var Subseq *AFn
 
 func init() {
-	/**
-	 * sc must be a sorted collection, test(s) one of <, <=, > or
-	 * >=. Returns a seq of those entries with keys ek for
-	 * which (test (.. sc comparator (compare ek key)) 0) is true
-	 */
 	Subseq = func(subseq *AFn) *AFn {
 		return Fn(subseq, func(sc interface{}, test interface{}, key interface{}) interface{} {
 			{
@@ -24153,14 +24142,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* sc must be a sorted collection, test(s) one of <, <=, > or
+* >=. Returns a reverse seq of those entries with keys ek for
+* which (test (.. sc comparator (compare ek key)) 0) is true
+ */
 var Rsubseq *AFn
 
 func init() {
-	/**
-	 * sc must be a sorted collection, test(s) one of <, <=, > or
-	 * >=. Returns a reverse seq of those entries with keys ek for
-	 * which (test (.. sc comparator (compare ek key)) 0) is true
-	 */
 	Rsubseq = func(rsubseq *AFn) *AFn {
 		return Fn(rsubseq, func(sc interface{}, test interface{}, key interface{}) interface{} {
 			{
@@ -24467,14 +24456,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of nums from start (inclusive) to end
+* (exclusive), by step, where start defaults to 0, step to 1,
+* and end to infinity.
+ */
 var Range_ *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of nums from start (inclusive) to end
-	 * (exclusive), by step, where start defaults to 0, step to 1,
-	 * and end to infinity.
-	 */
 	Range_ = func(range_ *AFn) *AFn {
 		return Fn(range_, func() interface{} {
 			return range_.X_invoke_Arity3(float64(0), Native_get_instance_field.X_invoke_Arity2(js.Number, "MAX_VALUE"), float64(1)).(*CljsCoreRange)
@@ -24488,13 +24477,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of every nth item in coll.  Returns a stateful
+* transducer when no collection is provided.
+ */
 var Take_nth *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of every nth item in coll.  Returns a stateful
-	 * transducer when no collection is provided.
-	 */
 	Take_nth = func(take_nth *AFn) *AFn {
 		return Fn(take_nth, func(n interface{}) interface{} {
 			return func(G__653 *AFn) *AFn {
@@ -24546,12 +24535,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a vector of [(take-while pred coll) (drop-while pred coll)]
+ */
 var Split_with *AFn
 
 func init() {
-	/**
-	 * Returns a vector of [(take-while pred coll) (drop-while pred coll)]
-	 */
 	Split_with = func(split_with *AFn) *AFn {
 		return Fn(split_with, func(pred interface{}, coll interface{}) interface{} {
 			return (&CljsCorePersistentVector{nil, 2, 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{Take_while.X_invoke_Arity2(pred, coll).(*CljsCoreLazySeq), Drop_while.X_invoke_Arity2(pred, coll).(*CljsCoreLazySeq)}, nil})
@@ -24559,14 +24548,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Applies f to each value in coll, splitting it each time f returns a
+* new value.  Returns a lazy seq of partitions.  Returns a stateful
+* transducer when no collection is provided.
+ */
 var Partition_by *AFn
 
 func init() {
-	/**
-	 * Applies f to each value in coll, splitting it each time f returns a
-	 * new value.  Returns a lazy seq of partitions.  Returns a stateful
-	 * transducer when no collection is provided.
-	 */
 	Partition_by = func(partition_by *AFn) *AFn {
 		return Fn(partition_by, func(f interface{}) interface{} {
 			return func(G__657 *AFn) *AFn {
@@ -24655,13 +24644,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map from distinct items in coll to the number of times
+* they appear.
+ */
 var Frequencies *AFn
 
 func init() {
-	/**
-	 * Returns a map from distinct items in coll to the number of times
-	 * they appear.
-	 */
 	Frequencies = func(frequencies *AFn) *AFn {
 		return Fn(frequencies, func(coll interface{}) interface{} {
 			return Persistent_BANG_.X_invoke_Arity1(Reduce.X_invoke_Arity3(func(G__661 *AFn) *AFn {
@@ -24673,13 +24662,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy seq of the intermediate values of the reduction (as
+* per reduce) of coll by f, starting with init.
+ */
 var Reductions *AFn
 
 func init() {
-	/**
-	 * Returns a lazy seq of the intermediate values of the reduction (as
-	 * per reduce) of coll by f, starting with init.
-	 */
 	Reductions = func(reductions *AFn) *AFn {
 		return Fn(reductions, func(f interface{}, coll interface{}) interface{} {
 			return (&CljsCoreLazySeq{nil, func(G__662 *AFn) *AFn {
@@ -24721,17 +24710,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Takes a set of functions and returns a fn that is the juxtaposition
+* of those fns.  The returned fn takes a variable number of args, and
+* returns a vector containing the result of applying each fn to the
+* args (left-to-right).
+* ((juxt a b c) x) => [(a x) (b x) (c x)]
+* @param {...*} var_args
+ */
 var Juxt *AFn
 
 func init() {
-	/**
-	 * Takes a set of functions and returns a fn that is the juxtaposition
-	 * of those fns.  The returned fn takes a variable number of args, and
-	 * returns a vector containing the result of applying each fn to the
-	 * args (left-to-right).
-	 * ((juxt a b c) x) => [(a x) (b x) (c x)]
-	 * @param {...*} var_args
-	 */
 	Juxt = func(juxt *AFn) *AFn {
 		return Fn(juxt, func(f interface{}) interface{} {
 			return func(G__674 *AFn) *AFn {
@@ -24854,16 +24843,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* When lazy sequences are produced via functions that have side
+* effects, any effects other than those needed to produce the first
+* element in the seq do not occur until the seq is consumed. dorun can
+* be used to force any effects. Walks through the successive nexts of
+* the seq, does not retain the head and returns nil.
+ */
 var Dorun *AFn
 
 func init() {
-	/**
-	 * When lazy sequences are produced via functions that have side
-	 * effects, any effects other than those needed to produce the first
-	 * element in the seq do not occur until the seq is consumed. dorun can
-	 * be used to force any effects. Walks through the successive nexts of
-	 * the seq, does not retain the head and returns nil.
-	 */
 	Dorun = func(dorun *AFn) *AFn {
 		return Fn(dorun, func(coll interface{}) interface{} {
 			for {
@@ -24895,17 +24884,17 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* When lazy sequences are produced via functions that have side
+* effects, any effects other than those needed to produce the first
+* element in the seq do not occur until the seq is consumed. doall can
+* be used to force any effects. Walks through the successive nexts of
+* the seq, retains the head and returns it, thus causing the entire
+* seq to reside in memory at one time.
+ */
 var Doall *AFn
 
 func init() {
-	/**
-	 * When lazy sequences are produced via functions that have side
-	 * effects, any effects other than those needed to produce the first
-	 * element in the seq do not occur until the seq is consumed. doall can
-	 * be used to force any effects. Walks through the successive nexts of
-	 * the seq, retains the head and returns it, thus causing the entire
-	 * seq to reside in memory at one time.
-	 */
 	Doall = func(doall *AFn) *AFn {
 		return Fn(doall, func(coll interface{}) interface{} {
 			Dorun.X_invoke_Arity1(coll)
@@ -24927,12 +24916,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the result of (re-find re s) if re fully matches s.
+ */
 var Re_matches *AFn
 
 func init() {
-	/**
-	 * Returns the result of (re-find re s) if re fully matches s.
-	 */
 	Re_matches = func(re_matches *AFn) *AFn {
 		return Fn(re_matches, func(re interface{}, s interface{}) interface{} {
 			if reflect.TypeOf(s).Kind() == reflect.String {
@@ -24956,15 +24945,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the first regex match, if any, of s to re, using
+* re.exec(s). Returns a vector, containing first the matching
+* substring, then any capturing groups if the regular expression contains
+* capturing groups.
+ */
 var Re_find *AFn
 
 func init() {
-	/**
-	 * Returns the first regex match, if any, of s to re, using
-	 * re.exec(s). Returns a vector, containing first the matching
-	 * substring, then any capturing groups if the regular expression contains
-	 * capturing groups.
-	 */
 	Re_find = func(re_find *AFn) *AFn {
 		return Fn(re_find, func(re interface{}, s interface{}) interface{} {
 			if reflect.TypeOf(s).Kind() == reflect.String {
@@ -24988,12 +24977,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence of successive matches of re in s.
+ */
 var Re_seq *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence of successive matches of re in s.
-	 */
 	Re_seq = func(re_seq *AFn) *AFn {
 		return Fn(re_seq, func(re interface{}, s interface{}) interface{} {
 			{
@@ -25030,12 +25019,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* @param {...*} var_args
+ */
 var Write_all *AFn
 
 func init() {
-	/**
-	 * @param {...*} var_args
-	 */
 	Write_all = func(write_all *AFn) *AFn {
 		return Fn(write_all, func(writer_ss__ ...interface{}) interface{} {
 			var writer = writer_ss__[0]
@@ -25199,13 +25188,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Prints a sequence of objects to a string, observing all the
+* options given in opts
+ */
 var Pr_str_with_opts *AFn
 
 func init() {
-	/**
-	 * Prints a sequence of objects to a string, observing all the
-	 * options given in opts
-	 */
 	Pr_str_with_opts = func(pr_str_with_opts *AFn) *AFn {
 		return Fn(pr_str_with_opts, func(objs interface{}, opts interface{}) interface{} {
 			if Empty_QMARK_.Arity1IB(objs) {
@@ -25217,12 +25206,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as pr-str-with-opts followed by (newline)
+ */
 var Prn_str_with_opts *AFn
 
 func init() {
-	/**
-	 * Same as pr-str-with-opts followed by (newline)
-	 */
 	Prn_str_with_opts = func(prn_str_with_opts *AFn) *AFn {
 		return Fn(prn_str_with_opts, func(objs interface{}, opts interface{}) interface{} {
 			if Empty_QMARK_.Arity1IB(objs) {
@@ -25239,13 +25228,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Prints a sequence of objects using string-print, observing all
+* the options given in opts
+ */
 var Pr_with_opts *AFn
 
 func init() {
-	/**
-	 * Prints a sequence of objects using string-print, observing all
-	 * the options given in opts
-	 */
 	Pr_with_opts = func(pr_with_opts *AFn) *AFn {
 		return Fn(pr_with_opts, func(objs interface{}, opts interface{}) interface{} {
 			return String_print.X_invoke_Arity1(Pr_str_with_opts.X_invoke_Arity2(objs, opts).(string))
@@ -25268,13 +25257,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* pr to a string, returning it. Fundamental entrypoint to IPrintWithWriter.
+* @param {...*} var_args
+ */
 var Pr_str *AFn
 
 func init() {
-	/**
-	 * pr to a string, returning it. Fundamental entrypoint to IPrintWithWriter.
-	 * @param {...*} var_args
-	 */
 	Pr_str = func(pr_str *AFn) *AFn {
 		return Fn(pr_str, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25284,13 +25273,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as pr-str followed by (newline)
+* @param {...*} var_args
+ */
 var Prn_str *AFn
 
 func init() {
-	/**
-	 * Same as pr-str followed by (newline)
-	 * @param {...*} var_args
-	 */
 	Prn_str = func(prn_str *AFn) *AFn {
 		return Fn(prn_str, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25300,16 +25289,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Prints the object(s) using string-print.  Prints the
+* object(s), separated by spaces if there is more than one.
+* By default, pr and prn print in a way that objects can be
+* read by the reader
+* @param {...*} var_args
+ */
 var Pr *AFn
 
 func init() {
-	/**
-	 * Prints the object(s) using string-print.  Prints the
-	 * object(s), separated by spaces if there is more than one.
-	 * By default, pr and prn print in a way that objects can be
-	 * read by the reader
-	 * @param {...*} var_args
-	 */
 	Pr = func(pr *AFn) *AFn {
 		return Fn(pr, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25319,14 +25308,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Prints the object(s) using string-print.
+* print and println produce output for human consumption.
+* @param {...*} var_args
+ */
 var Print *AFn
 
 func init() {
-	/**
-	 * Prints the object(s) using string-print.
-	 * print and println produce output for human consumption.
-	 * @param {...*} var_args
-	 */
 	Print = func(cljs_core_print *AFn) *AFn {
 		return Fn(cljs_core_print, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25336,13 +25325,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* print to a string, returning it
+* @param {...*} var_args
+ */
 var Print_str *AFn
 
 func init() {
-	/**
-	 * print to a string, returning it
-	 * @param {...*} var_args
-	 */
 	Print_str = func(print_str *AFn) *AFn {
 		return Fn(print_str, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25352,13 +25341,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as print followed by (newline)
+* @param {...*} var_args
+ */
 var Println *AFn
 
 func init() {
-	/**
-	 * Same as print followed by (newline)
-	 * @param {...*} var_args
-	 */
 	Println = func(println *AFn) *AFn {
 		return Fn(println, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25373,13 +25362,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* println to a string, returning it
+* @param {...*} var_args
+ */
 var Println_str *AFn
 
 func init() {
-	/**
-	 * println to a string, returning it
-	 * @param {...*} var_args
-	 */
 	Println_str = func(println_str *AFn) *AFn {
 		return Fn(println_str, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25389,13 +25378,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Same as pr followed by (newline).
+* @param {...*} var_args
+ */
 var Prn *AFn
 
 func init() {
-	/**
-	 * Same as pr followed by (newline).
-	 * @param {...*} var_args
-	 */
 	Prn = func(prn *AFn) *AFn {
 		return Fn(prn, func(objs__ ...interface{}) interface{} {
 			var objs = Array_seq.X_invoke_Arity1(objs__[0:])
@@ -25724,17 +25713,17 @@ func (self__ *CljsCoreSymbol) X_compare_Arity2(y interface{}) float64 {
 	}
 }
 
+/**
+* Atomically sets the metadata for a namespace/var/ref/agent/atom to be:
+*
+* (apply f its-current-meta args)
+*
+* f must be free of side-effects
+* @param {...*} var_args
+ */
 var Alter_meta_BANG_ *AFn
 
 func init() {
-	/**
-	 * Atomically sets the metadata for a namespace/var/ref/agent/atom to be:
-	 *
-	 * (apply f its-current-meta args)
-	 *
-	 * f must be free of side-effects
-	 * @param {...*} var_args
-	 */
 	Alter_meta_BANG_ = func(alter_meta_BANG_ *AFn) *AFn {
 		return Fn(alter_meta_BANG_, func(iref_f_args__ ...interface{}) interface{} {
 			var iref = iref_f_args__[0]
@@ -25750,12 +25739,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Atomically resets the metadata for an atom
+ */
 var Reset_meta_BANG_ *AFn
 
 func init() {
-	/**
-	 * Atomically resets the metadata for an atom
-	 */
 	Reset_meta_BANG_ = func(reset_meta_BANG_ *AFn) *AFn {
 		return Fn(reset_meta_BANG_, func(iref interface{}, m interface{}) interface{} {
 			return func() interface{} {
@@ -25767,31 +25756,31 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+*
+* Adds a watch function to an atom reference. The watch fn must be a
+* fn of 4 args: a key, the reference, its old-state, its
+* new-state. Whenever the reference's state might have been changed,
+* any registered watches will have their functions called. The watch
+* fn will be called synchronously. Note that an atom's state
+* may have changed again prior to the fn call, so use old/new-state
+* rather than derefing the reference. Keys must be unique per
+* reference, and can be used to remove the watch with remove-watch,
+* but are otherwise considered opaque by the watch mechanism.  Bear in
+* mind that regardless of the result or action of the watch fns the
+* atom's value will change.  Example:
+*
+* (def a (atom 0))
+* (add-watch a :inc (fn [k r o n] (assert (== 0 n))))
+* (swap! a inc)
+* ;; Assertion Error
+* (deref a)
+* ;=> 1
+ */
 var Add_watch *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 *
-	 * Adds a watch function to an atom reference. The watch fn must be a
-	 * fn of 4 args: a key, the reference, its old-state, its
-	 * new-state. Whenever the reference's state might have been changed,
-	 * any registered watches will have their functions called. The watch
-	 * fn will be called synchronously. Note that an atom's state
-	 * may have changed again prior to the fn call, so use old/new-state
-	 * rather than derefing the reference. Keys must be unique per
-	 * reference, and can be used to remove the watch with remove-watch,
-	 * but are otherwise considered opaque by the watch mechanism.  Bear in
-	 * mind that regardless of the result or action of the watch fns the
-	 * atom's value will change.  Example:
-	 *
-	 * (def a (atom 0))
-	 * (add-watch a :inc (fn [k r o n] (assert (== 0 n))))
-	 * (swap! a inc)
-	 * ;; Assertion Error
-	 * (deref a)
-	 * ;=> 1
-	 */
 	Add_watch = func(add_watch *AFn) *AFn {
 		return Fn(add_watch, func(iref interface{}, key interface{}, f interface{}) interface{} {
 			return iref.(CljsCoreIWatchable).X_add_watch_Arity3(key, f)
@@ -25799,14 +25788,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+*
+* Removes a watch (set by add-watch) from a reference
+ */
 var Remove_watch *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 *
-	 * Removes a watch (set by add-watch) from a reference
-	 */
 	Remove_watch = func(remove_watch *AFn) *AFn {
 		return Fn(remove_watch, func(iref interface{}, key interface{}) interface{} {
 			return iref.(CljsCoreIWatchable).X_remove_watch_Arity2(key)
@@ -25820,14 +25809,14 @@ func init() {
 	Gensym_counter = nil
 }
 
+/**
+* Returns a new symbol with a unique name. If a prefix string is
+* supplied, the name is prefix# where # is some unique number. If
+* prefix is not supplied, the prefix is 'G__'.
+ */
 var Gensym *AFn
 
 func init() {
-	/**
-	 * Returns a new symbol with a unique name. If a prefix string is
-	 * supplied, the name is prefix# where # is some unique number. If
-	 * prefix is not supplied, the prefix is 'G__'.
-	 */
 	Gensym = func(gensym *AFn) *AFn {
 		return Fn(gensym, func() interface{} {
 			return gensym.X_invoke_Arity1("G__")
@@ -25894,12 +25883,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* returns true if x is a Delay created with delay
+ */
 var Delay_QMARK_ *AFn
 
 func init() {
-	/**
-	 * returns true if x is a Delay created with delay
-	 */
 	Delay_QMARK_ = func(delay_QMARK_ *AFn) *AFn {
 		return Fn(delay_QMARK_, func(x interface{}) bool {
 			return func() bool { _, instanceof := x.(*CljsCoreDelay); return instanceof }()
@@ -25907,12 +25896,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* If x is a Delay, returns the (possibly cached) value of its expression, else returns x
+ */
 var Force *AFn
 
 func init() {
-	/**
-	 * If x is a Delay, returns the (possibly cached) value of its expression, else returns x
-	 */
 	Force = func(force *AFn) *AFn {
 		return Fn(force, func(x interface{}) interface{} {
 			if Delay_QMARK_.Arity1IB(x) {
@@ -25924,12 +25913,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if a value has been produced for a promise, delay, future or lazy sequence.
+ */
 var Realized_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if a value has been produced for a promise, delay, future or lazy sequence.
-	 */
 	Realized_QMARK_ = func(realized_QMARK_ *AFn) *AFn {
 		return Fn(realized_QMARK_, func(d interface{}) bool {
 			return d.(CljsCoreIPending).X_realized_QMARK__Arity1()
@@ -25959,14 +25948,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* maps f over coll and concatenates the results.  Thus function f
+* should return a collection.  Returns a transducer when no collection
+* is provided.
+ */
 var Flatmap *AFn
 
 func init() {
-	/**
-	 * maps f over coll and concatenates the results.  Thus function f
-	 * should return a collection.  Returns a transducer when no collection
-	 * is provided.
-	 */
 	Flatmap = func(flatmap *AFn) *AFn {
 		return Fn(flatmap, func(f interface{}) interface{} {
 			return func(G__712 *AFn) *AFn {
@@ -25988,13 +25977,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a lazy sequence removing consecutive duplicates in coll.
+* Returns a transducer when no collection is provided.
+ */
 var Dedupe *AFn
 
 func init() {
-	/**
-	 * Returns a lazy sequence removing consecutive duplicates in coll.
-	 * Returns a transducer when no collection is provided.
-	 */
 	Dedupe = func(dedupe *AFn) *AFn {
 		return Fn(dedupe, func() interface{} {
 			return func(G__714 *AFn) *AFn {
@@ -26031,13 +26020,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns items from coll with random probability of prob (0.0 -
+* 1.0).  Returns a transducer when no collection is provided.
+ */
 var Random_sample *AFn
 
 func init() {
-	/**
-	 * Returns items from coll with random probability of prob (0.0 -
-	 * 1.0).  Returns a transducer when no collection is provided.
-	 */
 	Random_sample = func(random_sample *AFn) *AFn {
 		return Fn(random_sample, func(prob interface{}) interface{} {
 			return Filter.X_invoke_Arity1(func(G__716 *AFn) *AFn {
@@ -26099,14 +26088,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns an iterable/seqable/reducible sequence of applications of
+* the transducer to the items in coll. Note that these applications
+* will be performed every time iterator/seq/reduce is called.
+ */
 var Iteration *AFn
 
 func init() {
-	/**
-	 * Returns an iterable/seqable/reducible sequence of applications of
-	 * the transducer to the items in coll. Note that these applications
-	 * will be performed every time iterator/seq/reduce is called.
-	 */
 	Iteration = func(iteration *AFn) *AFn {
 		return Fn(iteration, func(xform interface{}, coll interface{}) interface{} {
 			return (&CljsCoreIteration{xform, coll})
@@ -26114,13 +26103,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Runs the supplied procedure (via reduce), for purposes of side
+* effects, on successive items in the collection. Returns nil
+ */
 var Run_BANG_ *AFn
 
 func init() {
-	/**
-	 * Runs the supplied procedure (via reduce), for purposes of side
-	 * effects, on successive items in the collection. Returns nil
-	 */
 	Run_BANG_ = func(run_BANG_ *AFn) *AFn {
 		return Fn(run_BANG_, func(proc interface{}, coll interface{}) interface{} {
 			return Reduce.X_invoke_Arity3(func(G__720 *AFn) *AFn {
@@ -26180,14 +26169,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Recursively transforms ClojureScript values to JavaScript.
+* sets/vectors/lists become Arrays, Keywords and Symbol become Strings,
+* Maps become Objects. Arbitrary keys are encoded to by key->js.
+ */
 var Clj__GT_js *AFn
 
 func init() {
-	/**
-	 * Recursively transforms ClojureScript values to JavaScript.
-	 * sets/vectors/lists become Arrays, Keywords and Symbol become Strings,
-	 * Maps become Objects. Arbitrary keys are encoded to by key->js.
-	 */
 	Clj__GT_js = func(clj__GT_js *AFn) *AFn {
 		return Fn(clj__GT_js, func(x interface{}) interface{} {
 			if reflect.DeepEqual(x, nil) {
@@ -26349,15 +26338,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a memoized version of a referentially transparent function. The
+* memoized version of the function keeps a cache of the mapping from arguments
+* to results and, when calls with the same arguments are repeated often, has
+* higher performance at the expense of higher memory use.
+ */
 var Memoize *AFn
 
 func init() {
-	/**
-	 * Returns a memoized version of a referentially transparent function. The
-	 * memoized version of the function keeps a cache of the mapping from arguments
-	 * to results and, when calls with the same arguments are repeated often, has
-	 * higher performance at the expense of higher memory use.
-	 */
 	Memoize = func(memoize *AFn) *AFn {
 		return Fn(memoize, func(f interface{}) interface{} {
 			{
@@ -26390,19 +26379,19 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* trampoline can be used to convert algorithms requiring mutual
+* recursion without stack consumption. Calls f with supplied args, if
+* any. If f returns a fn, calls that fn with no arguments, and
+* continues to repeat, until the return value is not a fn, then
+* returns that non-fn value. Note that if you want to return a fn as a
+* final value, you must wrap it in some data structure and unpack it
+* after trampoline returns.
+* @param {...*} var_args
+ */
 var Trampoline *AFn
 
 func init() {
-	/**
-	 * trampoline can be used to convert algorithms requiring mutual
-	 * recursion without stack consumption. Calls f with supplied args, if
-	 * any. If f returns a fn, calls that fn with no arguments, and
-	 * continues to repeat, until the return value is not a fn, then
-	 * returns that non-fn value. Note that if you want to return a fn as a
-	 * final value, you must wrap it in some data structure and unpack it
-	 * after trampoline returns.
-	 * @param {...*} var_args
-	 */
 	Trampoline = func(trampoline *AFn) *AFn {
 		return Fn(trampoline, func(f interface{}) interface{} {
 			for {
@@ -26431,10 +26420,6 @@ func init() {
 }
 
 func init() {
-	/**
-	 * Returns a random floating point number between 0 (inclusive) and
-	 * n (default 1) (exclusive).
-	 */
 	Rand = func(rand *AFn) *AFn {
 		return Fn(rand, func() interface{} {
 			return rand.X_invoke_Arity1(float64(1)).(float64)
@@ -26445,9 +26430,6 @@ func init() {
 }
 
 func init() {
-	/**
-	 * Returns a random integer between 0 (inclusive) and n (exclusive).
-	 */
 	Rand_int = func(rand_int *AFn) *AFn {
 		return Fn(rand_int, func(n interface{}) interface{} {
 			return Native_invoke_func.X_invoke_Arity2(Math.Floor, []interface{}{(Native_invoke_func.X_invoke_Arity2(Math.Random, []interface{}{}).(float64) * n.(float64))})
@@ -26455,14 +26437,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Return a random element of the (sequential) collection. Will have
+* the same performance characteristics as nth for the given
+* collection.
+ */
 var Rand_nth *AFn
 
 func init() {
-	/**
-	 * Return a random element of the (sequential) collection. Will have
-	 * the same performance characteristics as nth for the given
-	 * collection.
-	 */
 	Rand_nth = func(rand_nth *AFn) *AFn {
 		return Fn(rand_nth, func(coll interface{}) interface{} {
 			return Nth.X_invoke_Arity2(coll, Rand_int.X_invoke_Arity1(Count.X_invoke_Arity1(coll).(float64)))
@@ -26470,14 +26452,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns a map of the elements of coll keyed by the result of
+* f on each element. The value at each key will be a vector of the
+* corresponding elements, in the order they appeared in coll.
+ */
 var Group_by *AFn
 
 func init() {
-	/**
-	 * Returns a map of the elements of coll keyed by the result of
-	 * f on each element. The value at each key will be a vector of the
-	 * corresponding elements, in the order they appeared in coll.
-	 */
 	Group_by = func(group_by *AFn) *AFn {
 		return Fn(group_by, func(f interface{}, coll interface{}) interface{} {
 			return Reduce.X_invoke_Arity3(func(G__787 *AFn) *AFn {
@@ -26493,12 +26475,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Creates a hierarchy object for use with derive, isa? etc.
+ */
 var Make_hierarchy *AFn
 
 func init() {
-	/**
-	 * Creates a hierarchy object for use with derive, isa? etc.
-	 */
 	Make_hierarchy = func(make_hierarchy *AFn) *AFn {
 		return Fn(make_hierarchy, func() interface{} {
 			return (&CljsCorePersistentArrayMap{nil, 3, []interface{}{(&CljsCoreKeyword{Ns: nil, Name: "parents", Fqn: "parents", X_hash: float64(-2027538891)}), CljsCorePersistentArrayMap_EMPTY, (&CljsCoreKeyword{Ns: nil, Name: "descendants", Fqn: "descendants", X_hash: float64(1824886031)}), CljsCorePersistentArrayMap_EMPTY, (&CljsCoreKeyword{Ns: nil, Name: "ancestors", Fqn: "ancestors", X_hash: float64(-776045424)}), CljsCorePersistentArrayMap_EMPTY}, nil})
@@ -26527,12 +26509,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* @param {...*} var_args
+ */
 var Swap_global_hierarchy_BANG_ *AFn
 
 func init() {
-	/**
-	 * @param {...*} var_args
-	 */
 	Swap_global_hierarchy_BANG_ = func(swap_global_hierarchy_BANG_ *AFn) *AFn {
 		return Fn(swap_global_hierarchy_BANG_, func(f_args__ ...interface{}) interface{} {
 			var f = f_args__[0]
@@ -26543,16 +26525,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns true if (= child parent), or child is directly or indirectly derived from
+* parent, either via a JavaScript type inheritance relationship or a
+* relationship established via derive. h must be a hierarchy obtained
+* from make-hierarchy, if not supplied defaults to the global
+* hierarchy
+ */
 var Isa_QMARK_ *AFn
 
 func init() {
-	/**
-	 * Returns true if (= child parent), or child is directly or indirectly derived from
-	 * parent, either via a JavaScript type inheritance relationship or a
-	 * relationship established via derive. h must be a hierarchy obtained
-	 * from make-hierarchy, if not supplied defaults to the global
-	 * hierarchy
-	 */
 	Isa_QMARK_ = func(isa_QMARK_ *AFn) *AFn {
 		return Fn(isa_QMARK_, func(child interface{}, parent interface{}) bool {
 			return isa_QMARK_.Arity3IIIB(Deref.X_invoke_Arity1(Get_global_hierarchy.X_invoke_Arity0()), child, parent)
@@ -26614,15 +26596,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the immediate parents of tag, either via a JavaScript type
+* inheritance relationship or a relationship established via derive. h
+* must be a hierarchy obtained from make-hierarchy, if not supplied
+* defaults to the global hierarchy
+ */
 var Parents *AFn
 
 func init() {
-	/**
-	 * Returns the immediate parents of tag, either via a JavaScript type
-	 * inheritance relationship or a relationship established via derive. h
-	 * must be a hierarchy obtained from make-hierarchy, if not supplied
-	 * defaults to the global hierarchy
-	 */
 	Parents = func(parents *AFn) *AFn {
 		return Fn(parents, func(tag interface{}) interface{} {
 			return parents.X_invoke_Arity2(Deref.X_invoke_Arity1(Get_global_hierarchy.X_invoke_Arity0()), tag)
@@ -26632,15 +26614,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the immediate and indirect parents of tag, either via a JavaScript type
+* inheritance relationship or a relationship established via derive. h
+* must be a hierarchy obtained from make-hierarchy, if not supplied
+* defaults to the global hierarchy
+ */
 var Ancestors *AFn
 
 func init() {
-	/**
-	 * Returns the immediate and indirect parents of tag, either via a JavaScript type
-	 * inheritance relationship or a relationship established via derive. h
-	 * must be a hierarchy obtained from make-hierarchy, if not supplied
-	 * defaults to the global hierarchy
-	 */
 	Ancestors = func(ancestors *AFn) *AFn {
 		return Fn(ancestors, func(tag interface{}) interface{} {
 			return ancestors.X_invoke_Arity2(Deref.X_invoke_Arity1(Get_global_hierarchy.X_invoke_Arity0()), tag)
@@ -26650,16 +26632,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns the immediate and indirect children of tag, through a
+* relationship established via derive. h must be a hierarchy obtained
+* from make-hierarchy, if not supplied defaults to the global
+* hierarchy. Note: does not work on JavaScript type inheritance
+* relationships.
+ */
 var Descendants *AFn
 
 func init() {
-	/**
-	 * Returns the immediate and indirect children of tag, through a
-	 * relationship established via derive. h must be a hierarchy obtained
-	 * from make-hierarchy, if not supplied defaults to the global
-	 * hierarchy. Note: does not work on JavaScript type inheritance
-	 * relationships.
-	 */
 	Descendants = func(descendants *AFn) *AFn {
 		return Fn(descendants, func(tag interface{}) interface{} {
 			return descendants.X_invoke_Arity2(Deref.X_invoke_Arity1(Get_global_hierarchy.X_invoke_Arity0()), tag)
@@ -26669,16 +26651,16 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Establishes a parent/child relationship between parent and
+* tag. Parent must be a namespace-qualified symbol or keyword and
+* child can be either a namespace-qualified symbol or keyword or a
+* class. h must be a hierarchy obtained from make-hierarchy, if not
+* supplied defaults to, and modifies, the global hierarchy.
+ */
 var Derive *AFn
 
 func init() {
-	/**
-	 * Establishes a parent/child relationship between parent and
-	 * tag. Parent must be a namespace-qualified symbol or keyword and
-	 * child can be either a namespace-qualified symbol or keyword or a
-	 * class. h must be a hierarchy obtained from make-hierarchy, if not
-	 * supplied defaults to, and modifies, the global hierarchy.
-	 */
 	Derive = func(derive *AFn) *AFn {
 		return Fn(derive, func(tag interface{}, parent interface{}) interface{} {
 			if Truth_(Namespace.X_invoke_Arity1(parent)) {
@@ -26740,14 +26722,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Removes a parent/child relationship between parent and
+* tag. h must be a hierarchy obtained from make-hierarchy, if not
+* supplied defaults to, and modifies, the global hierarchy.
+ */
 var Underive *AFn
 
 func init() {
-	/**
-	 * Removes a parent/child relationship between parent and
-	 * tag. h must be a hierarchy obtained from make-hierarchy, if not
-	 * supplied defaults to, and modifies, the global hierarchy.
-	 */
 	Underive = func(underive *AFn) *AFn {
 		return Fn(underive, func(tag interface{}, parent interface{}) interface{} {
 			Swap_global_hierarchy_BANG_.X_invoke_ArityVariadic(underive, tag, parent)
@@ -27573,12 +27555,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Removes all of the methods of multimethod.
+ */
 var Remove_all_methods *AFn
 
 func init() {
-	/**
-	 * Removes all of the methods of multimethod.
-	 */
 	Remove_all_methods = func(remove_all_methods *AFn) *AFn {
 		return Fn(remove_all_methods, func(multifn interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_reset_Arity1()
@@ -27586,12 +27568,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Removes the method of multimethod associated with dispatch-value.
+ */
 var Remove_method *AFn
 
 func init() {
-	/**
-	 * Removes the method of multimethod associated with dispatch-value.
-	 */
 	Remove_method = func(remove_method *AFn) *AFn {
 		return Fn(remove_method, func(multifn interface{}, dispatch_val interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_remove_method_Arity2(dispatch_val)
@@ -27599,13 +27581,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y
+* when there is a conflict
+ */
 var Prefer_method *AFn
 
 func init() {
-	/**
-	 * Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y
-	 * when there is a conflict
-	 */
 	Prefer_method = func(prefer_method *AFn) *AFn {
 		return Fn(prefer_method, func(multifn interface{}, dispatch_val_x interface{}, dispatch_val_y interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_prefer_method_Arity3(dispatch_val_x, dispatch_val_y)
@@ -27613,12 +27595,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Given a multimethod, returns a map of dispatch values -> dispatch fns
+ */
 var Methods *AFn
 
 func init() {
-	/**
-	 * Given a multimethod, returns a map of dispatch values -> dispatch fns
-	 */
 	Methods = func(methods *AFn) *AFn {
 		return Fn(methods, func(multifn interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_methods_Arity1()
@@ -27626,13 +27608,13 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Given a multimethod and a dispatch value, returns the dispatch fn
+* that would apply to that value, or nil if none apply and no default
+ */
 var Get_method *AFn
 
 func init() {
-	/**
-	 * Given a multimethod and a dispatch value, returns the dispatch fn
-	 * that would apply to that value, or nil if none apply and no default
-	 */
 	Get_method = func(get_method *AFn) *AFn {
 		return Fn(get_method, func(multifn interface{}, dispatch_val interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_get_method_Arity2(dispatch_val)
@@ -27640,12 +27622,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Given a multimethod, returns a map of preferred value -> set of other values
+ */
 var Prefers *AFn
 
 func init() {
-	/**
-	 * Given a multimethod, returns a map of preferred value -> set of other values
-	 */
 	Prefers = func(prefers *AFn) *AFn {
 		return Fn(prefers, func(multifn interface{}) interface{} {
 			return multifn.(CljsCoreIMultiFn).X_prefers_Arity1()
@@ -27733,14 +27715,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+* Create an instance of ExceptionInfo, an Error type that carries a
+* map of additional data.
+ */
 var Ex_info *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 * Create an instance of ExceptionInfo, an Error type that carries a
-	 * map of additional data.
-	 */
 	Ex_info = func(ex_info *AFn) *AFn {
 		return Fn(ex_info, func(msg interface{}, map_ interface{}) interface{} {
 			return (&CljsCoreExceptionInfo{msg, map_, nil})
@@ -27750,14 +27732,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+* Returns exception data (a map) if ex is an ExceptionInfo.
+* Otherwise returns nil.
+ */
 var Ex_data *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 * Returns exception data (a map) if ex is an ExceptionInfo.
-	 * Otherwise returns nil.
-	 */
 	Ex_data = func(ex_data *AFn) *AFn {
 		return Fn(ex_data, func(ex interface{}) interface{} {
 			if func() bool { _, instanceof := ex.(*CljsCoreExceptionInfo); return instanceof }() {
@@ -27769,14 +27751,14 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+* Returns the message attached to the given Error / ExceptionInfo object.
+* For non-Errors returns nil.
+ */
 var Ex_message *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 * Returns the message attached to the given Error / ExceptionInfo object.
-	 * For non-Errors returns nil.
-	 */
 	Ex_message = func(ex_message *AFn) *AFn {
 		return Fn(ex_message, func(ex interface{}) interface{} {
 			if func() bool { _, instanceof := ex.(*js.Error); return instanceof }() {
@@ -27788,15 +27770,15 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Alpha - subject to change.
+* Returns exception cause (an Error / ExceptionInfo) if ex is an
+* ExceptionInfo.
+* Otherwise returns nil.
+ */
 var Ex_cause *AFn
 
 func init() {
-	/**
-	 * Alpha - subject to change.
-	 * Returns exception cause (an Error / ExceptionInfo) if ex is an
-	 * ExceptionInfo.
-	 * Otherwise returns nil.
-	 */
 	Ex_cause = func(ex_cause *AFn) *AFn {
 		return Fn(ex_cause, func(ex interface{}) interface{} {
 			if func() bool { _, instanceof := ex.(*CljsCoreExceptionInfo); return instanceof }() {
@@ -27808,12 +27790,12 @@ func init() {
 	}(&AFn{})
 }
 
+/**
+* Returns an JavaScript compatible comparator based upon pred.
+ */
 var Comparator *AFn
 
 func init() {
-	/**
-	 * Returns an JavaScript compatible comparator based upon pred.
-	 */
 	Comparator = func(comparator *AFn) *AFn {
 		return Fn(comparator, func(pred interface{}) interface{} {
 			return func(G__807 *AFn) *AFn {
