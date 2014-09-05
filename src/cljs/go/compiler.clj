@@ -608,16 +608,17 @@
         declared? (-> form second meta :declared)
         init? (and *go-use-init-defs* (= 'function tag))]
     (when-not (or (go-skip-def name) protocol-symbol? declared?)
-      (let [mname (-> name munge go-short-name go-public)]
+      (let [mname (-> name munge go-short-name go-public)
+            def-type (if (= 'function tag)
+                         "*AFn"
+                         (go-type tag))]
         (some-> *go-defs* (swap! conj name))
         (when (and init? (not redefine?))
           (emit-comment doc (:jsdoc init))
           (emits "var "
                  mname
                  " " (let [tag (:tag init)]
-                       (if (= 'function tag)
-                         "*AFn"
-                         (go-type tag)))))
+                       def-type)))
         (emitln)
         (if (or init? redefine?)
           (emitln "func init() {")
@@ -626,8 +627,9 @@
                mname
                (when (and (untyped-nil-needs-type? init)
                           (not (or init? redefine?)))
-                 " interface{}")
-               " = " (or init "nil"))
+                 (str " " def-type))
+               (when-let [init (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag))]
+                 (str " = " init)))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
