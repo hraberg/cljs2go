@@ -36,6 +36,10 @@ func (this *StringBuffer) String() string {
 	return this.ToString()
 }
 
+func (this *StringBuffer) GetLength() float64 {
+	return float64(this.buffer().Len())
+}
+
 func (this *StringBuffer) Append(a1 interface{}) *StringBuffer {
 	_, _ = this.buffer().WriteString(fmt.Sprint(a1))
 	return this
@@ -46,3 +50,5 @@ func HashCode(str string) float64 {
 	_, _ = h.Write([]byte(str))
 	return float64(h.Sum32())
 }
+
+var RegExpEscape, Trim, TrimLeft, TrimRight, IsEmptySafe, IsNumeric, IsBreakingWhitespace, Contains interface{}

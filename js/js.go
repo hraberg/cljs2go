@@ -168,6 +168,10 @@ func (this *JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(this.String())[int(index)])
 }
 
+func (this *JSString) Split(re RegExp) []interface{} {
+	panic("Not implemented")
+}
+
 func (this *JSString) ToString() string {
 	return this.str
 }
