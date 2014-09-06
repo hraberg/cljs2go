@@ -1,5 +1,9 @@
 // Compiled by ClojureScript to Go 0.0-2322
 // clojure.zip
+
+// Functional hierarchical zipper, with navigation, editing,
+// and enumeration.  See Huet
+// Author: Rich Hickey
 package zip
 
 import cljs_core "github.com/hraberg/cljs.go/cljs/core"

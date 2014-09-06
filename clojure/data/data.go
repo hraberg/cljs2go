@@ -1,5 +1,8 @@
 // Compiled by ClojureScript to Go 0.0-2322
 // clojure.data
+
+// Non-core data functions.
+// Author: Stuart Halloway
 package data
 
 import (

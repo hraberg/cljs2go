@@ -1,5 +1,7 @@
 // Compiled by ClojureScript to Go 0.0-2322
 // cljs.core
+
+// Go overrides.
 package core
 
 import (

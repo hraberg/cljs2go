@@ -1,5 +1,5 @@
-;; Go overrides
-(ns cljs.core)
+(ns ^{:doc "Go overrides."}
+  cljs.core)
 
 (def *clojurescript-version* (clojurescript-version))
 

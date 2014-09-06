@@ -1,5 +1,6 @@
 // Compiled by ClojureScript to Go 0.0-2322
 // clojure.string
+
 package string
 
 import (

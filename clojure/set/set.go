@@ -1,5 +1,8 @@
 // Compiled by ClojureScript to Go 0.0-2322
 // clojure.set
+
+// Set operations such as union/intersection.
+// Author: Rich Hickey
 package set
 
 import (

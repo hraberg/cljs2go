@@ -1020,6 +1020,9 @@
 (defmethod emit* :ns
   [{:keys [name requires uses imports require-macros env]}]
   (emitln "// " name)
+  (emitln)
+  (emit-comment (-> name meta :doc)
+                (some->> name meta :author (str "Author: ") vector))
   (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
   (emitln "import (")
