@@ -36,7 +36,7 @@
 (defn test-header [package & imports]
   (with-out-str
     (println "package" package)
-    (println "import" "." (pr-str "github.com/hraberg/cljs.go/cljs/core"))))
+    (println "import" "cljs_core" (pr-str "github.com/hraberg/cljs.go/cljs/core"))))
 
 (def ^:dynamic *ast-debug* false)
 
@@ -93,13 +93,13 @@
           "map[string]interface{}{`foo`: `bar`}" (read-string "#js {:foo \"bar\"}")
           "[]interface{}{\"foo\", \"bar\"}" (read-string "#js [\"foo\", \"bar\"])")
           "&js.Date{Millis: 1408642409602}" #inst "2014-08-21T17:33:29.602-00:00"
-          "&CljsCoreUUID{Uuid: `15c52219-a8fd-4771-87e2-42ee33b79bca`}" #uuid "15c52219-a8fd-4771-87e2-42ee33b79bca"
+          "&cljs_core.CljsCoreUUID{Uuid: `15c52219-a8fd-4771-87e2-42ee33b79bca`}" #uuid "15c52219-a8fd-4771-87e2-42ee33b79bca"
           "&js.RegExp{Pattern: `x`, Flags: ``}" #"x"
           "&js.RegExp{Pattern: ``, Flags: ``}" #""
-          "&CljsCoreSymbol{Ns: nil, Name: `x`, Str: `x`, X_hash: float64(-555367584), X_meta: nil}" ''x
-          "&CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, X_hash: float64(-568535109), X_meta: nil}" ''user/x
-          "&CljsCoreKeyword{Ns: nil, Name: `x`, Fqn: `x`, X_hash: float64(2099068185)}" :x
-          "&CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, X_hash: float64(2085900660)}" :user/x)]
+          "&cljs_core.CljsCoreSymbol{Ns: nil, Name: `x`, Str: `x`, X_hash: float64(-555367584), X_meta: nil}" ''x
+          "&cljs_core.CljsCoreSymbol{Ns: `user`, Name: `x`, Str: `user/x`, X_hash: float64(-568535109), X_meta: nil}" ''user/x
+          "&cljs_core.CljsCoreKeyword{Ns: nil, Name: `x`, Fqn: `x`, X_hash: float64(2099068185)}" :x
+          "&cljs_core.CljsCoreKeyword{Ns: `user`, Name: `x`, Fqn: `user/x`, X_hash: float64(2085900660)}" :user/x)]
    (emit-test "go_test" "constants_test")))
 
 (defn special-forms []
@@ -160,9 +160,9 @@
           2 '(bar 1 2)
           "`bar`" '(baz)
           1 '(baz 1)
-          "&CljsCoreIndexedSeq{Arr:[]interface {}{2, 3}, I:0}" '(baz 1 2 3)
+          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3}, I:0}" '(baz 1 2 3)
           ;; last arg here to apply should be a seq
-          "&CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" (read-string "(apply baz 1 2 #js [3 4])")
+          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" (read-string "(apply baz 1 2 #js [3 4])")
           "`bar`" '((fn [x] x) "bar")
           3.14 '(js/ParseFloat "3.14")
           3 '(Math/floor 3.14)
@@ -179,8 +179,7 @@
           3 '(.-length "foo")
           "`o`" '(let [x "foo"]
                    (.charAt x 1))
-          ;; As cljs.core isn't analyzed yet we need to ns qualify this so the type FQN resolves.
-          "`15c52219-a8fd-4771-87e2-42ee33b79bca`" '(.-uuid (cljs.core/UUID. "15c52219-a8fd-4771-87e2-42ee33b79bca")))
+          "`15c52219-a8fd-4771-87e2-42ee33b79bca`" '(.-uuid (UUID. "15c52219-a8fd-4771-87e2-42ee33b79bca")))
     (test-setup '[(deftype MyPoint [x y])
 
                   (defprotocol IFoo
@@ -348,7 +347,8 @@
     (doseq [gen [constants special-forms benchmarks]]
       (with-fresh-ids
         (env/ensure
-         (gen))))
+         (cljs.compiler/with-core-cljs
+           (gen)))))
     (go-test "./...")))
 
 (defn run-benchmarks []

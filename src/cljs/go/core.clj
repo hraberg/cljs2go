@@ -226,7 +226,7 @@
                                      (core/float? %) (core/true? %)
                                      (core/false? %))
                             "~{}"
-                            "Str.X_invoke_Arity1(~{}).(string)"))
+                            (core/str (cljs.compiler/go-core "Str") ".X_invoke_Arity1(~{}).(string)")))
                   (interpose "+")
                   (apply core/str))]
     ;; Google closure advanced compile will stringify and concat strings and
@@ -282,7 +282,7 @@
            (if or# or# (or ~@next)))))))
 
 (defmacro nil? [x]
-  (bool-expr (core/list 'js* "Nil_(~{})" x)))
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Nil_") "(~{})") x)))
 
 ;; internal - do not use.
 (defmacro coercive-not [x]
@@ -1019,7 +1019,7 @@
        (~'js* ~(core/str "type ~{} interface{\n" (core/str go-psym "__()\n")
                          (apply core/str (map method-decl methods)) "}\n")
               ~go-psym)
-       (~'js* "func init() {\n\tRegisterProtocol_(~{}, (*~{})(nil))\n}"
+       (~'js* ~(core/str "func init() {\n\t" (cljs.compiler/go-core "RegisterProtocol_") "(~{}, (*~{})(nil))\n}")
               ~(core/str fq-psym) ~go-psym)
        ~@(map method methods))))
 
@@ -1029,7 +1029,7 @@
   (let [p          (:name
                     (cljs.analyzer/resolve-var
                      (dissoc &env :locals) psym))]
-    `(~'js* "Native_satisfies_QMARK_.X_invoke_Arity2(~{}, ~{})" '~p ~x)))
+    `(~'js* ~(core/str (cljs.compiler/go-core "Native_satisfies_QMARK_") ".X_invoke_Arity2(~{}, ~{})") '~p ~x)))
 
 (defmacro implements?
   "EXPERIMENTAL"

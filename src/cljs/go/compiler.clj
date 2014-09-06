@@ -187,9 +187,10 @@
         ns (string/replace (apply str (butlast parts)) "/" ".")]
     (symbol ns (last parts))))
 
-(def go-tag->type
-  '{number "float64" boolean "bool" string "string" array "[]interface{}"
-    seq "CljsCoreISeq" function "CljsCoreIFn"})
+(defn go-core [x]
+  (if (= 'cljs.core ana/*cljs-ns*)
+    x
+    (str "cljs_core." x)))
 
 (defn go-type [tag]
   (if-let [ns (and (symbol? tag) (namespace tag))]
@@ -199,10 +200,12 @@
       (str
        (when (or type? goog?) "*")
        (munge (cond
-               ((hash-set 'cljs.core ana/*cljs-ns*) ns) (go-type-fqn tag)
+               (= ana/*cljs-ns* ns) (go-type-fqn tag)
                goog? (go-normalize-goog-type tag)
                :else (str ns "." (go-type-fqn tag))))))
-    (go-tag->type tag "interface{}")))
+    ((merge '{number "float64" boolean "bool" string "string" array "[]interface{}"}
+            {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
+     tag "interface{}")))
 
 (defn go-short-type [tag]
   ('{number "F" boolean "B" string "S" array "A" seq "Q"} tag "I"))
@@ -331,7 +334,7 @@
 (defn emits-keyword [kw]
   (let [ns   (namespace kw)
         name (name kw)]
-    (emits "(&CljsCoreKeyword{")
+    (emits "(&" (go-core "CljsCoreKeyword") "{")
     (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
@@ -359,7 +362,7 @@
         symstr (if-not (nil? ns)
                  (str ns "/" name)
                  name)]
-    (emits "(&CljsCoreSymbol{")
+    (emits "(&" (go-core "CljsCoreSymbol") "{")
     (emits "Ns: ")
     (emit-constant ns)
     (emits ",")
@@ -382,7 +385,7 @@
   (emits "(&js.Date{Millis: " (.getTime date) "})"))
 
 (defmethod emit-constant java.util.UUID [^java.util.UUID uuid]
-  (emits "(&CljsCoreUUID{Uuid: `" (.toString uuid) "`})"))
+  (emits "(&" (go-core "CljsCoreUUID") "{Uuid: `" (.toString uuid) "`})"))
 
 (defmacro emit-wrap [env & body]
   `(let [env# ~env]
@@ -420,17 +423,17 @@
        (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
                                    *go-return-tag*)]
          (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
-                                       (or ((hash-set ana/*cljs-ns* 'cljs.core) (:ns info))
+                                       (or (= ana/*cljs-ns*  (:ns info))
                                            (:field info))
                                        (update-in info [:name] (comp go-public munge name))
                                        (:ns info)
-                                       (update-in info [:name] #(str (cond-> % (not (string? %)) namespace)
-                                                                     "." (-> % name munge go-public)))
+                                       (update-in info [:name] #(str (:ns info) "."
+                                                                     (-> % name munge go-public)))
                                        :else info)))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
-    (emits "With_meta.X_invoke_Arity2(" expr "," meta ")")))
+    (emits (go-core "With_meta") ".X_invoke_Arity2(" expr "," meta ")")))
 
 (def ^:private array-map-threshold 8)
 (def ^:private obj-map-threshold 8)
@@ -445,43 +448,43 @@
     (emit-wrap env
       (cond
         (zero? (count keys))
-        (emits "CljsCorePersistentArrayMap_EMPTY")
+        (emits (go-core "CljsCorePersistentArrayMap_EMPTY"))
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "(&CljsCorePersistentArrayMap{nil, " (count keys) ", []interface{}{"
+          (emits "(&" (go-core "CljsCorePersistentArrayMap") "{nil, " (count keys) ", []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil})")
-          (emits "CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3([]interface{}{"
+          (emits (go-core "CljsCorePersistentArrayMap_FromArray") ".X_invoke_Arity3([]interface{}{"
             (comma-sep (interleave keys vals))
-            "}, true, false).(*CljsCorePersistentArrayMap)"))
+            "}, true, false).(*" (go-core "CljsCorePersistentArrayMap") ")"))
 
         :else
-        (emits "CljsCorePersistentHashMap_FromArrays.X_invoke_Arity2([]interface{}{"
+        (emits (go-core "CljsCorePersistentHashMap_FromArrays") ".X_invoke_Arity2([]interface{}{"
                (comma-sep keys)
                "},[]interface{}{"
                (comma-sep vals)
-               "}).(*CljsCorePersistentHashMap)")))))
+               "}).(*" (go-core "CljsCorePersistentHashMap") ")")))))
 
 (defmethod emit* :list
   [{:keys [items env]}]
   (binding [*go-return-tag* nil]
     (emit-wrap env
       (if (empty? items)
-        (emits "CljsCoreISeq(CljsCoreList_EMPTY)")
-        (emits "List.X_invoke_ArityVariadic(" (comma-sep items) ").(*CljsCoreList)")))))
+        (emits (go-core "CljsCoreISeq") "(" (go-core "CljsCoreList_EMPTY") ")")
+        (emits (go-core "List") ".X_invoke_ArityVariadic(" (comma-sep items) ").(*" (go-core "CljsCoreList") ")")))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
   (binding [*go-return-tag* nil]
     (emit-wrap env
       (if (empty? items)
-        (emits "CljsCorePersistentVector_EMPTY")
+        (emits (go-core "CljsCorePersistentVector_EMPTY"))
         (let [cnt (count items)]
           (if (< cnt 32)
-            (emits "(&CljsCorePersistentVector{nil, " cnt
-                   ", 5, CljsCorePersistentVector_EMPTY_NODE, []interface{}{"  (comma-sep items) "}, nil})")
-            (emits "CljsCorePersistentVector_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentVector)")))))))
+            (emits "(&" (go-core "CljsCorePersistentVector") "{nil, " cnt
+                   ", 5, " (go-core "CljsCorePersistentVector_EMPTY_NODE") ", []interface{}{" (comma-sep items) "}, nil})")
+            (emits (go-core "CljsCorePersistentVector_FromArray") ".X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*" (go-core "CljsCorePersistentVector") ")")))))))
 
 (defn distinct-constants? [items]
   (and (every? #(= (:op %) :constant) items)
@@ -493,13 +496,14 @@
     (emit-wrap env
       (cond
        (empty? items)
-       (emits "CljsCorePersistentHashSet_EMPTY")
+       (emits (go-core "CljsCorePersistentHashSet_EMPTY"))
 
        (distinct-constants? items)
-       (emits "(&CljsCorePersistentHashSet{nil, &CljsCorePersistentArrayMap{nil, " (count items) ", []interface{}{"
+       (emits "(&" (go-core "CljsCorePersistentHashSet") "{nil, &" (go-core "CljsCorePersistentArrayMap")
+              "{nil, " (count items) ", []interface{}{"
               (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil})")
 
-       :else (emits "CljsCorePersistentHashSet_FromArray.X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*CljsCorePersistentHashSet)")))))
+       :else (emits (go-core "CljsCorePersistentHashSet_FromArray") ".X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*" (go-core "CljsCorePersistentHashSet") ")")))))
 
 (defmethod emit* :js-value
   [{:keys [items js-type env]}]
@@ -546,12 +550,12 @@
       (go-top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
-        (emits "func() " (go-type tag) " { if " (when checked "Truth_") "("
+        (emits "func() " (go-type tag) " { if " (when checked (go-core "Truth_")) "("
                test
                ") { return " then "} else { return " else "} }()")
         (do
           (if checked
-            (emitln "if Truth_(" test ") {")
+            (emitln "if " (go-core "Truth_") "(" test ") {")
             (emitln "if " test " {"))
           (emitln then "} else {")
           (emitln else "}"))))))
@@ -610,8 +614,8 @@
     (when-not (or (*go-skip-def* name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)
             def-type (if (= 'function tag)
-                         "*AFn"
-                         (go-type tag))]
+                       (str "*" (go-core "AFn"))
+                       (go-type tag))]
         (some-> *go-defs* (swap! conj name))
         (when (and init? (not redefine?))
           (emit-comment doc (:jsdoc init))
@@ -698,7 +702,7 @@
       (emitln varargs " ...interface{}" ") interface{} {")
       (doseq [[idx p] (map-indexed vector (butlast params))]
         (emitln "var " p " = " varargs "[" idx "]"))
-      (emitln "var " (last params) " = Array_seq.X_invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
+      (emitln "var " (last params) " = " (go-core "Array_seq") ".X_invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
       (assign-to-blank params)
       (emit-fn-body type expr recurs)
       (emits "}"))))
@@ -713,7 +717,7 @@
       (when loop-locals
         (when (= :return (:context env))
           (emits "return "))
-        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *AFn {")
+        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *" (go-core "AFn") " {")
         (when-not (= :return (:context env))
           (emits "return ")))
       (let [name (or name (gensym))
@@ -721,8 +725,8 @@
         (when (= :return (:context env))
           (emits "return "))
         (when-not protocol-impl
-          (emitln "func(" mname " *AFn) *AFn {")
-          (emits "return Fn(" mname ", "))
+          (emitln "func(" mname " *" (go-core "AFn") ") *" (go-core "AFn") " {")
+          (emits "return " (go-core "Fn") "(" mname ", "))
         (loop [[meth & methods] methods]
           (let [meth (assoc-in meth [:env :context] :expr)]
             (cond
@@ -736,13 +740,13 @@
           (emitln)
           (do
             (emitln ")")
-            (emits "}(&AFn{})"))))
+            (emits "}(&" (go-core "AFn") "{})"))))
       (when loop-locals
         (emits "}(" (comma-sep loop-locals) ")"))))
   (when (= '-main (:name name))
     (emitln)
     (emitln"func init() {")
-    (emitln "STAR_main_cli_fn_STAR_ = _main")
+    (emitln (go-core "STAR_main_cli_fn_STAR_") " = _main")
     (emitln "}")))
 
 (defmethod emit* :do
@@ -847,7 +851,7 @@
     (if (= :expr context)
       (emits "func() " (go-type tag) " {")
       (emitln "{"))
-    (emitln "var " (comma-sep (map munge bindings)) " *AFn")
+    (emitln "var " (comma-sep (map munge bindings)) " *" (go-core "AFn"))
     (doseq [{:keys [init] :as binding} bindings]
       (emitln (munge binding) " = " init))
     (assign-to-blank bindings)
@@ -913,7 +917,7 @@
                                 real-ret-tag)]
       (emit-wrap env
         (when (and unbox? unbox-fn)
-          (emits unbox-fn "("))
+          (emits (go-core unbox-fn) "("))
         (cond
          opt-not?
          (emits "!(" (first args) ")")
@@ -938,14 +942,14 @@
          native?
          (do
            (warn-on-reflection expr)
-           (emits "Native_invoke_func.X_invoke_Arity2(" f ","
+           (emits (go-core "Native_invoke_func") ".X_invoke_Arity2(" f ","
                   "[]interface{}{" (comma-sep args) "})"))
 
          (and has-primitives? tags-match?)
          (emits f ".Arity" arity primitive-sig "(" (comma-sep args) ")")
 
          :else
-         (emits f (when coerce? ".(CljsCoreIFn)") ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
+         (emits f (when coerce? (str ".(" (go-core "CljsCoreIFn") ")")) ".X_invoke_Arity" arity "(" (comma-sep args) ")"))
 
         ;; this is somewhat optimistic, the analyzer tags the expression based on the body of the fn, not the actual return type.
         (when unbox?
@@ -983,7 +987,7 @@
             tag-of-target (go-tag-of-target target)
             val (if (and (= 'boolean tag-of-target)
                          (go-needs-coercion? (:tag val) tag-of-target))
-                  (str "Truth_(" (emit-str val) ")")
+                  (str (go-core "Truth_") "(" (emit-str val) ")")
                   (go-unbox tag-of-target val))]
         (when return
           (emits "func() " (go-type tag-of-target) " {")
@@ -995,7 +999,7 @@
                                          (:field target))]
             (do
               (warn-on-reflection target)
-              (emits "Native_set_instance_field.X_invoke_Arity3(" (:target target) ","
+              (emits (go-core "Native_set_instance_field") ".X_invoke_Arity3(" (:target target) ","
                       (wrap-in-double-quotes (munge (go-public reflective-field) #{}))
                       ","  val ")")
               (when-not (= :statement (:context env))
@@ -1020,13 +1024,12 @@
   (emitln)
   (emitln "import (")
   (when-not (= name 'cljs.core)
-    (emitln "\t" "." " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
+    (emitln "\t" "cljs_core" " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
   (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "goog"))) ;; gets imported indirectly in JS I think?
-  (doseq [lib (distinct (remove '#{cljs.core}
-                                (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
-                                        (vals (apply dissoc requires (keys imports))) (vals uses))))]
+  (doseq [lib (distinct (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
+                                (vals (apply dissoc requires (keys imports))) (vals uses)))]
     (emitln "\t" (string/replace (munge lib) "." "_") " "
             (wrap-in-double-quotes
              (str (when (provided-lib? lib)
@@ -1067,9 +1070,9 @@
           (do
             (warn-on-reflection dot)
             (if field
-              (emits "Native_get_instance_field.X_invoke_Arity2(" target ","
+              (emits (go-core "Native_get_instance_field") ".X_invoke_Arity2(" target ","
                      (wrap-in-double-quotes (munge (go-public field) #{})) ")")
-              (emits "Native_invoke_instance_method.X_invoke_Arity3(" target ","
+              (emits (go-core "Native_invoke_instance_method") ".X_invoke_Arity3(" target ","
                      (wrap-in-double-quotes (munge (go-public method) #{})) ","
                      "[]interface{}{" (comma-sep args) "})"))
             (when-not (or (= :statement (:context env)) static?)
