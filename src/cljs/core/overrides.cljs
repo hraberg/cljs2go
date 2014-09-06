@@ -205,3 +205,6 @@
   "Internal - do not use!"
   [p x]
   ^boolean  (js* "value(decorate(~{})).Type().Implements(protocols[~{}])" x (str p)))
+
+;; There are two protocols in clojure.data, EqualityPartition and Diff which extend the base types and default which gets skipped.
+;; There are also the extent-type calls at start of core.cljs we aren't dealing with.
