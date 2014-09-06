@@ -148,11 +148,12 @@
                   cljs.compiler/*go-use-init-defs* true
                   cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
           (with-fresh-ids
-            (binding [ana/*cljs-ns* (:ns (cljs.compiler/compile-file src target))
-                      cljs.compiler/*go-skip-def* #{}]
-              (maybe-add-overrides dir))
-            (goimports-file target)
-            (go-install dir)))))))
+            (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]
+              (binding [ana/*cljs-ns* compiled-ns
+                        cljs.compiler/*go-skip-def* #{}]
+                (maybe-add-overrides dir))
+              (goimports-file target)
+              (go-install dir))))))))
 
 (defn compile-clojurescript
   ([] (compile-clojurescript "."))

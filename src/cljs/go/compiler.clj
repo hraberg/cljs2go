@@ -1188,7 +1188,7 @@
 (defn compiled-by-version [^File f]
   (with-open [reader (io/reader f)]
     (let [match (->> reader line-seq first
-                     (re-matches #".*ClojureScript (.*)$"))]
+                     (re-matches #".*ClojureScript to Go (.*)$"))]
       (and match (second match)))))
 
 (defn requires-compilation?
@@ -1197,7 +1197,9 @@
   ([^File src ^File dest opts]
     (env/ensure
       (or (not (.exists dest))
-          (> (.lastModified src) (.lastModified dest))
+          (some #(> (.lastModified ^File %) (.lastModified dest))
+                (cons src (when (.exists (io/file "cljs/core/rt.go"))
+                            (cons (io/file "cljs/core/rt.go") (file-seq (io/file "src"))))))
           (let [version' (compiled-by-version dest)
                 version  (clojurescript-version)]
             (and version (not= version version')))))))
@@ -1265,12 +1267,12 @@
                   (when (and (contains? (::ana/namespaces @env/*compiler*) ns)
                              (not (:overrides? opts)))
                   (swap! env/*compiler* update-in [::ana/namespaces] dissoc ns))
-                (compile-file* src-file dest-file opts))
+                (compile-file* src-file dest-file opts)
+                ns-info)
               (do
                 (when-not (contains? (::ana/namespaces @env/*compiler*) ns)
                   (with-core-cljs
-                    (ana/analyze-file src-file)))))
-            ns-info)
+                    (ana/analyze-file src-file))))))
           (catch Exception e
             (throw (ex-info (str "failed compiling file:" src) {:file src} e))))
         (throw (java.io.FileNotFoundException. (str "The file " src " does not exist.")))))))
