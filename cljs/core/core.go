@@ -4718,26 +4718,6 @@ func init() {
 	}(&AFn{})
 }
 
-// Coerce to char
-var Char *AFn
-
-func init() {
-	Char = func(char *AFn) *AFn {
-		return Fn(char, func(x interface{}) interface{} {
-			if reflect.ValueOf(x).Kind() == reflect.Float64 {
-				return Native_invoke_instance_method.X_invoke_Arity3(js.String, "FromCharCode", []interface{}{x})
-			} else {
-				if (reflect.ValueOf(x).Kind() == reflect.String) && (Native_get_instance_field.X_invoke_Arity2(x, "Length").(float64) == float64(1)) {
-					return x
-				} else {
-					panic((&js.Error{"Argument to char must be a character or number"}))
-
-				}
-			}
-		})
-	}(&AFn{})
-}
-
 var Short *AFn
 
 func init() {

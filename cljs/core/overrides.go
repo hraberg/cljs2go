@@ -318,6 +318,9 @@ func init() {
 	}(&AFn{})
 }
 
+// Coerce to char
+var Char *AFn
+
 func init() {
 	Char = func(char *AFn) *AFn {
 		return Fn(char, func(x interface{}) interface{} {
