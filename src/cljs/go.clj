@@ -54,6 +54,22 @@
               {:line (biginteger line) :col (biginteger col)}) ))
          (println err)))))
 
+(defn go-signature [package var]
+  (when-let [def (:def (godef package var))]
+    (let [ret-tag (symbol (last (s/split def #"\s+")))
+          [type method] (s/split var #"\.")
+          params (s/split (last (re-find #"\((.+)\)" def)) #",")
+          params (map #(s/split (s/trim %) #"\s+") params)
+          params (loop [last-t nil [[v t] & params] (reverse params) acc []]
+                   (if v
+                     (let [t (symbol (or t last-t))]
+                       (recur t params (conj acc (with-meta (symbol v) {:tag t}))))
+                     (vec (reverse acc))))]
+      (cond->
+       {:ns package :ret-tag ret-tag :method-params (list params)}
+       method (assoc :type (symbol type) :method (symbol method))
+       (not method) (assoc :func (symbol var))))))
+
 (defn godoc [package name]
   (let [{:keys [exit err out]} (sh/sh "godoc" package name)
         out (s/trim out)]
