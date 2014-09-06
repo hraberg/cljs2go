@@ -117,7 +117,7 @@
 (defn maybe-add-overrides [dir]
   (when-let [overrides (io/resource (str (s/replace (str ana/*cljs-ns*) "." "/") "/overrides.cljs"))]
     (let [target (io/file dir "overrides.go")]
-      (cljs.compiler/compile-file (io/file overrides) target)
+      (cljs.compiler/compile-file (io/file overrides) target {:overrides? true})
       (goimports-file target))))
 
 (defn compile-file

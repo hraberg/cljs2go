@@ -63,13 +63,13 @@ var Apply *AFn
 func init() {
 	Apply = func(apply *AFn) *AFn {
 		return Fn(apply, func(f interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(Into_array.X_invoke_Arity1(args).([]interface{})...)
+			return f.(*AFn).Call(Into_array.Arity1IA(args)...)
 		}, func(f interface{}, x interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x}, Into_array.X_invoke_Arity1(args).([]interface{})...)...)
+			return f.(*AFn).Call(append([]interface{}{x}, Into_array.Arity1IA(args)...)...)
 		}, func(f interface{}, x interface{}, y interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x, y}, Into_array.X_invoke_Arity1(args).([]interface{})...)...)
+			return f.(*AFn).Call(append([]interface{}{x, y}, Into_array.Arity1IA(args)...)...)
 		}, func(f interface{}, x interface{}, y interface{}, z interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x, y, z}, Into_array.X_invoke_Arity1(args).([]interface{})...)...)
+			return f.(*AFn).Call(append([]interface{}{x, y, z}, Into_array.Arity1IA(args)...)...)
 		}, func(f_a_b_c_d_args__ ...interface{}) interface{} {
 			var f = f_a_b_c_d_args__[0]
 			var a = f_a_b_c_d_args__[1]
@@ -79,10 +79,10 @@ func init() {
 			var args = Array_seq.X_invoke_Arity1(f_a_b_c_d_args__[5:])
 			_, _, _, _, _, _ = f, a, b, c, d, args
 			{
-				var arr = Into_array.X_invoke_Arity1(Butlast.X_invoke_Arity1(args)).([]interface{})
-				var varargs = Into_array.X_invoke_Arity1(Last.X_invoke_Arity1(args)).([]interface{})
+				var arr = Into_array.Arity1IA(Seq_(Butlast.X_invoke_Arity1(args)))
+				var varargs = Into_array.Arity1IA(Last.X_invoke_Arity1(args))
 				_, _ = arr, varargs
-				return f.(*AFn).Call(append([]interface{}{a, b, c, d}, append(arr, varargs...))...)
+				return f.(*AFn).Call(append([]interface{}{a, b, c, d}, append(arr, varargs...)...)...)
 			}
 		})
 	}(&AFn{})

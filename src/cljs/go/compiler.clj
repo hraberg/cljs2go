@@ -908,7 +908,7 @@
         real-ret-tag (when (go-needs-coercion? ret-tag *go-return-tag*)
                        *go-return-tag*)
         unbox? (not (or has-primitives? (= :statement (:context env))))
-        unbox-fn ('{seq Seq_ boolean Truth_} real-ret-tag)]
+        unbox-fn (some '{seq Seq_ boolean Truth_} [real-ret-tag ret-tag])]
     (binding [*go-return-tag* (when-not unbox-fn
                                 real-ret-tag)]
       (emit-wrap env
@@ -1256,7 +1256,8 @@
           (let [{ns :ns :as ns-info} (parse-ns src-file dest-file opts)]
             (if (requires-compilation? src-file dest-file opts)
               (do (mkdirs dest-file)
-                (when (contains? (::ana/namespaces @env/*compiler*) ns)
+                  (when (and (contains? (::ana/namespaces @env/*compiler*) ns)
+                             (not (:overrides? opts)))
                   (swap! env/*compiler* update-in [::ana/namespaces] dissoc ns))
                 (compile-file* src-file dest-file opts))
               (do

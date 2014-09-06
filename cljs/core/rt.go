@@ -443,7 +443,11 @@ func typedSignature(t reflect.Type) string {
 func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
-			in[i] = reflect.ValueOf(v.Interface())
+			if iv := v.Interface(); iv == nil {
+				in[i] = reflect.ValueOf(&iv).Elem()
+			} else {
+				in[i] = reflect.ValueOf(iv)
+			}
 		}
 		out := f.Call(in)
 		for i, v := range out {

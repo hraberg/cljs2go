@@ -32,18 +32,18 @@
   "Applies fn f to the argument list formed by prepending intervening arguments to args.
   First cut.  Not lazy.  Needs to use emitted toApply."
   ([f args]
-     (js* "f.(*AFn).Call(~{}.([]interface{})...)" (into-array args)))
+     (js* "f.(*AFn).Call(~{}...)" (into-array args)))
   ([f x args]
-     (js* "f.(*AFn).Call(append([]interface{}{~{}}, ~{}.([]interface{})...)...)" x (into-array args)))
+     (js* "f.(*AFn).Call(append([]interface{}{~{}}, ~{}...)...)" x (into-array args)))
   ([f x y args]
-     (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}}, ~{}.([]interface{})...)...)" x y (into-array args)))
+     (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}}, ~{}...)...)" x y (into-array args)))
   ([f x y z args]
-     (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}}, ~{}.([]interface{})...)...)" x y z (into-array args)))
+     (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}}, ~{}...)...)" x y z (into-array args)))
   ([f a b c d & args]
      ;; these type hints shouldn't be necessary.
-     (let [arr ^array (into-array (butlast args))
-           varargs ^array (into-array (last args))]
-       (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...))...)" a b c d arr varargs))))
+     (let [arr (into-array (butlast args))
+           varargs (into-array (last args))]
+       (js* "f.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...)...)...)" a b c d arr varargs))))
 
 (defn ^boolean native-satisfies?
   "Internal - do not use!"

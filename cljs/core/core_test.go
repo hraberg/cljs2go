@@ -44,9 +44,9 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, []interface{}{"World"}, X_invoke.X_invoke_ArityVariadic(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, X_invoke.Call(Baz, "Hello", "World"))
 	assert.Equal(t, []interface{}{"World"}, Apply.X_invoke_Arity3(Baz, "Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
-	// assert.Equal(t, []interface{}{"Another", "Brave", "And", "New", "World"},
-	// 	Apply.X_invoke_ArityVariadic(Baz, "Hello", "Another", "Brave", "And", Array_seq.X_invoke_Arity1([]interface{}{"New", "World"})
-	//	))
+
+	assert.Equal(t, []interface{}{"Another", "Brave", "And", "New", "World"},
+		Apply.X_invoke_ArityVariadic(Baz, "Hello", "Another", "Brave", "And", Array_seq.X_invoke_Arity1([]interface{}{"New", "World"})))
 
 	assert.Equal(t, []interface{}{"World"}, Baz.X_invoke_Arity2("Hello", "World"))
 	assert.Equal(t, []interface{}{"World", "Space"}, Baz.X_invoke_Arity3("Hello", "World", "Space"))

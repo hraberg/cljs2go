@@ -321,15 +321,15 @@
   (bool-expr (core/list 'js* "~{} == false" x)))
 
 (defmacro array? [x]
-  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Slice" x)))
+  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.Slice" x)))
 
 (defmacro string? [x]
-  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.String" x)))
+  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.String" x)))
 
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
   (bool-expr
-    (core/list 'js* "reflect.TypeOf(~{}).Kind() != reflect.Invalid" ;; this is wrong
+    (core/list 'js* "reflect.ValueOf(~{}).Kind() != reflect.Invalid"
       (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
@@ -348,7 +348,7 @@
                   (~'js* "func() bool { _, instanceof := ~{}.(*~{}); return instanceof }()" o# t#)))))
 
 (defmacro number? [x]
-  (bool-expr (core/list 'js* "reflect.TypeOf(~{}).Kind() == reflect.Float64" x)))
+  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.Float64" x)))
 
 (defmacro symbol? [x]
   (bool-expr `(instance? Symbol ~x)))
