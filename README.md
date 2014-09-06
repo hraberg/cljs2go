@@ -51,6 +51,7 @@ http://www.gnu.org/software/libjit/
 http://www.rust-lang.org/
 http://julialang.org/
 http://llvm.org/
+http://openjdk.java.net/projects/graal/ / Indy JVM
 
 ## License
 
