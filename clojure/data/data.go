@@ -18,9 +18,9 @@ func init() {
 	Atom_diff = func(atom_diff *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(atom_diff, func(a interface{}, b interface{}) interface{} {
 			if cljs_core.X_EQ_.Arity2IIB(a, b) {
-				return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
+				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
 			} else {
-				return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{a, b, nil}, nil})
+				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{a, b, nil}, nil})
 			}
 		})
 	}(&cljs_core.AFn{})
@@ -69,7 +69,7 @@ func init() {
 				var in_b = cljs_core.Contains_QMARK_.Arity2IIB(b, k)
 				var same = (in_a) && (in_b) && ((!(cljs_core.Nil_(ab))) || ((cljs_core.Nil_(va)) && (cljs_core.Nil_(vb))))
 				_, _, _, _, _, _, _, _, _ = va, vb, vec__7, a_STAR_, b_STAR_, ab, in_a, in_b, same
-				return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{func() interface{} {
+				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{func() interface{} {
 					if (in_a) && ((!(cljs_core.Nil_(a_STAR_))) || (!(same))) {
 						return cljs_core.CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3([]interface{}{k, a_STAR_}, true, false).(*cljs_core.CljsCorePersistentArrayMap)
 					} else {
@@ -105,7 +105,7 @@ func init() {
 				return cljs_core.Fn(G__8, func(diff1 interface{}, diff2 interface{}) interface{} {
 					return cljs_core.Doall.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity3(cljs_core.Merge, diff1, diff2).(*cljs_core.CljsCoreLazySeq))
 				})
-			}(&cljs_core.AFn{}), (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, nil}, nil}), cljs_core.Map_.X_invoke_Arity2(cljs_core.Partial.X_invoke_Arity3(Diff_associative_key, a, b).(cljs_core.CljsCoreIFn), ks).(*cljs_core.CljsCoreLazySeq))
+			}(&cljs_core.AFn{}), (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, nil}, nil}), cljs_core.Map_.X_invoke_Arity2(cljs_core.Partial.X_invoke_Arity3(Diff_associative_key, a, b).(cljs_core.CljsCoreIFn), ks).(*cljs_core.CljsCoreLazySeq))
 		})
 	}(&cljs_core.AFn{})
 }
@@ -143,7 +143,7 @@ var Diff_set *cljs_core.AFn
 func init() {
 	Diff_set = func(diff_set *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(diff_set, func(a interface{}, b interface{}) interface{} {
-			return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Difference.X_invoke_Arity2(a, b)), cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Difference.X_invoke_Arity2(b, a)), cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Intersection.X_invoke_Arity2(a, b))}, nil})
+			return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Difference.X_invoke_Arity2(a, b)), cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Difference.X_invoke_Arity2(b, a)), cljs_core.Not_empty.X_invoke_Arity1(clojure_set.Intersection.X_invoke_Arity2(a, b))}, nil})
 		})
 	}(&cljs_core.AFn{})
 }
@@ -203,7 +203,7 @@ func init() {
 	Diff = func(diff *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(diff, func(a interface{}, b interface{}) interface{} {
 			if cljs_core.X_EQ_.Arity2IIB(a, b) {
-				return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
+				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
 			} else {
 				if cljs_core.X_EQ_.Arity2IIB(a.(ClojureDataEqualityPartition).Equality_partition_Arity1(), b.(ClojureDataEqualityPartition).Equality_partition_Arity1()) {
 					return a.(ClojureDataDiff).Diff_similar_Arity2(b)

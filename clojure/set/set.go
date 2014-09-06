@@ -262,21 +262,21 @@ func init() {
 	Join = func(join *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(join, func(xrel interface{}, yrel interface{}) interface{} {
 			if cljs_core.Truth_(func() interface{} {
-				var and__79525__auto__ = cljs_core.Seq.Arity1IQ(xrel)
-				_ = and__79525__auto__
-				if cljs_core.Truth_(and__79525__auto__) {
+				var and__7083__auto__ = cljs_core.Seq.Arity1IQ(xrel)
+				_ = and__7083__auto__
+				if cljs_core.Truth_(and__7083__auto__) {
 					return cljs_core.Seq.Arity1IQ(yrel)
 				} else {
-					return and__79525__auto__
+					return and__7083__auto__
 				}
 			}()) {
 				{
 					var ks = Intersection.X_invoke_Arity2(cljs_core.Set.X_invoke_Arity1(cljs_core.Keys.X_invoke_Arity1(cljs_core.First.X_invoke_Arity1(xrel))), cljs_core.Set.X_invoke_Arity1(cljs_core.Keys.X_invoke_Arity1(cljs_core.First.X_invoke_Arity1(yrel))))
 					var vec__29 = func() cljs_core.CljsCoreIVector {
 						if cljs_core.Count.X_invoke_Arity1(xrel).(float64) <= cljs_core.Count.X_invoke_Arity1(yrel).(float64) {
-							return (&cljs_core.CljsCorePersistentVector{nil, 2, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel}, nil})
+							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel}, nil})
 						} else {
-							return (&cljs_core.CljsCorePersistentVector{nil, 2, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel}, nil})
+							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel}, nil})
 						}
 					}()
 					var r = cljs_core.Nth.X_invoke_Arity3(vec__29, float64(0), nil)
@@ -312,9 +312,9 @@ func init() {
 			{
 				var vec__30 = func() cljs_core.CljsCoreIVector {
 					if cljs_core.Count.X_invoke_Arity1(xrel).(float64) <= cljs_core.Count.X_invoke_Arity1(yrel).(float64) {
-						return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel, Map_invert.X_invoke_Arity1(km)}, nil})
+						return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel, Map_invert.X_invoke_Arity1(km)}, nil})
 					} else {
-						return (&cljs_core.CljsCorePersistentVector{nil, 3, 5, cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel, km}, nil})
+						return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel, km}, nil})
 					}
 				}()
 				var r = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(0), nil)

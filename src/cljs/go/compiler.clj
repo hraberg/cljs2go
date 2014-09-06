@@ -452,7 +452,7 @@
 
         (<= (count keys) array-map-threshold)
         (if (distinct-keys? keys)
-          (emits "(&" (go-core "CljsCorePersistentArrayMap") "{nil, " (count keys) ", []interface{}{"
+          (emits "(&" (go-core "CljsCorePersistentArrayMap") "{nil, float64(" (count keys) "), []interface{}{"
             (comma-sep (interleave keys vals))
             "}, nil})")
           (emits (go-core "CljsCorePersistentArrayMap_FromArray") ".X_invoke_Arity3([]interface{}{"
@@ -482,8 +482,8 @@
         (emits (go-core "CljsCorePersistentVector_EMPTY"))
         (let [cnt (count items)]
           (if (< cnt 32)
-            (emits "(&" (go-core "CljsCorePersistentVector") "{nil, " cnt
-                   ", 5, " (go-core "CljsCorePersistentVector_EMPTY_NODE") ", []interface{}{" (comma-sep items) "}, nil})")
+            (emits "(&" (go-core "CljsCorePersistentVector") "{nil, float64(" cnt
+                   "), float64(5), " (go-core "CljsCorePersistentVector_EMPTY_NODE") ", []interface{}{" (comma-sep items) "}, nil})")
             (emits (go-core "CljsCorePersistentVector_FromArray") ".X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*" (go-core "CljsCorePersistentVector") ")")))))))
 
 (defn distinct-constants? [items]
@@ -500,7 +500,7 @@
 
        (distinct-constants? items)
        (emits "(&" (go-core "CljsCorePersistentHashSet") "{nil, &" (go-core "CljsCorePersistentArrayMap")
-              "{nil, " (count items) ", []interface{}{"
+              "{nil, float64(" (count items) "), []interface{}{"
               (comma-sep (interleave items (repeat "nil"))) "}, nil}, nil})")
 
        :else (emits (go-core "CljsCorePersistentHashSet_FromArray") ".X_invoke_Arity2([]interface{}{" (comma-sep items) "}, true).(*" (go-core "CljsCorePersistentHashSet") ")")))))

@@ -171,7 +171,7 @@
           1 '(baz 1)
           "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3}, I:0}" '(baz 1 2 3)
           ;; last arg here to apply should be a seq
-          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" (read-string "(apply baz 1 2 #js [3 4])")
+          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" '(apply baz 1 2 [3 4])
           "`bar`" '((fn [x] x) "bar")
           3.14 '(js/ParseFloat "3.14")
           3 '(Math/floor 3.14)
@@ -245,7 +245,7 @@
           "`CljsUserIFoo`" '(js* "reflect.TypeOf((*CljsUserIFoo)(nil)).Elem().Name()")
           2 '(js* "reflect.TypeOf((*CljsUserIFoo)(nil)).Elem().NumMethod()")
           "`foo`" '(-bar (MyFooWithArg.) "foo")
-          "`foo`" (read-string "(apply -bar (MyFooWithArg.) #js [\"foo\"])")
+          "`foo`" '(apply -bar (MyFooWithArg.) ["foo"])
           "Foo_with_this" '(-bar (MyFooWithThis.) "foo")
           0 '(-bar (MyFooWithField. 0) nil)
           true '(satisfies? cljs.user/IFoo foo-with-this)
