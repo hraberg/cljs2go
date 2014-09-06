@@ -95,20 +95,20 @@ func init() {
 				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
 				if Truth_(func() interface{} {
-					var and__7083__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
-					_ = and__7083__auto__
-					if Truth_(and__7083__auto__) {
+					var and__172__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
+					_ = and__172__auto__
+					if Truth_(and__172__auto__) {
 						{
-							var and__7083__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
-							_ = and__7083__auto_____1
-							if Truth_(and__7083__auto_____1) {
+							var and__172__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
+							_ = and__172__auto_____1
+							if Truth_(and__172__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
 							} else {
-								return and__7083__auto_____1
+								return and__172__auto_____1
 							}
 						}
 					} else {
-						return and__7083__auto__
+						return and__172__auto__
 					}
 				}()) {
 					writer.(CljsCoreIWriter).X_write_Arity2("^")
@@ -219,12 +219,12 @@ func init() {
 								_, _ = coll_813___1, n_814
 								for {
 									if Truth_(func() interface{} {
-										var and__7083__auto__ = coll_813___1
-										_ = and__7083__auto__
-										if Truth_(and__7083__auto__) {
+										var and__172__auto__ = coll_813___1
+										_ = and__172__auto__
+										if Truth_(and__172__auto__) {
 											return (Nil_(n_814)) || (!(n_814 == float64(0)))
 										} else {
-											return and__7083__auto__
+											return and__172__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -233,12 +233,12 @@ func init() {
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__7083__auto__ = Seq.Arity1IQ(coll_813___1)
-											_ = and__7083__auto__
-											if Truth_(and__7083__auto__) {
+											var and__172__auto__ = Seq.Arity1IQ(coll_813___1)
+											_ = and__172__auto__
+											if Truth_(and__172__auto__) {
 												return (n_814 == float64(0))
 											} else {
-												return and__7083__auto__
+												return and__172__auto__
 											}
 										}()) {
 											writer.(CljsCoreIWriter).X_write_Arity2(sep)

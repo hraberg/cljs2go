@@ -158,6 +158,9 @@
   ([] (compile-clojurescript "."))
   ([target-dir]
      (env/ensure
+      (with-fresh-ids
+        (reset! ana/-cljs-macros-loaded false)
+        (ana/load-core))
       (doseq [ns '[cljs.core
                    ; cljs.reader ;; doesn't work yet, some ns / import issue.
                    ; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.

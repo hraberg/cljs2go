@@ -1137,16 +1137,6 @@
   [^File f]
   (.mkdirs (.getParentFile (.getCanonicalFile f))))
 
-(defmacro with-core-cljs
-  "Ensure that core.cljs has been loaded."
-  [& body]
-  `(do (when-not (get-in @env/*compiler* [::ana/namespaces 'cljs.core :defs])
-         (ana/analyze-file "cljs/core.cljs"))
-       ~@body))
-
-(defn url-path [^File f]
-  (.getPath (.toURL (.toURI f))))
-
 (defn ensure-ns-exist
   ([env] (ensure-ns-exist ana/*cljs-ns* env))
   ([ns env]
@@ -1161,6 +1151,17 @@
                     (^string toString [this])
                     (^boolean equiv [this other])))))
 
+(defmacro with-core-cljs
+  "Ensure that core.cljs has been loaded."
+  [& body]
+  `(do (when-not (get-in @env/*compiler* [::ana/namespaces 'cljs.core :defs])
+         (setup-native-defs (ana/empty-env))
+         (ana/analyze-file "cljs/core.cljs"))
+       ~@body))
+
+(defn url-path [^File f]
+  (.getPath (.toURL (.toURI f))))
+
 (defn compile-file*
   ([src dest] (compile-file* src dest nil))
   ([src dest opts]
@@ -1172,7 +1173,6 @@
                     ana/*cljs-file* (.getPath ^File src)
                     reader/*alias-map* (or reader/*alias-map* {})
                     *go-line-numbers* (boolean (:source-map opts))]
-            (setup-native-defs (ana/empty-env))
             (emitln "// Compiled by ClojureScript to Go " (clojurescript-version))
             (loop [forms (ana/forms-seq src)
                    ns-name nil
