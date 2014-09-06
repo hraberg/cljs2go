@@ -178,6 +178,7 @@
 (defn enable-console-print!
   "Set *print-fn* to console.log"
   []
+  (set! *print-newline* false)
   (set! *print-fn*
         (fn fmt-println [x]
           (js* "fmt.Println(~{})" x)

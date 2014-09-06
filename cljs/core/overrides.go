@@ -431,6 +431,8 @@ var Enable_console_print_BANG_ *AFn
 func init() {
 	Enable_console_print_BANG_ = func(enable_console_print_BANG_ *AFn) *AFn {
 		return Fn(enable_console_print_BANG_, func() interface{} {
+			X_STAR_print_newline_STAR_ = false
+
 			return func() interface{} {
 				var return__815 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, func(x interface{}) interface{} {
