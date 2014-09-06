@@ -80,7 +80,6 @@
      cljs.core/complement
      cljs.core/make-array
      cljs.core/array
-     cljs.core/iter
      cljs.core/integer?
      cljs.core/char
      cljs.core/apply
