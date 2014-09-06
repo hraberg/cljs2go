@@ -11,3 +11,4 @@ pom.xml.asc
 /.nrepl-port
 *~
 *.test
+cljs.go

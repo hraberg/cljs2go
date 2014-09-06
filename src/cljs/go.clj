@@ -91,8 +91,8 @@
       (println err)
       {:file file :errors (count (s/split-lines err))})))
 
-(defn go-build [dir]
-  (let [{:keys [exit out err]} (sh/sh "go" "build" "--gcflags" "-e" :dir dir)]
+(defn go-install [dir]
+  (let [{:keys [exit out err]} (sh/sh "go" "install" "--gcflags" "-e" :dir dir)]
     (when-not (zero? exit)
       (println err)
       {:dir dir :errors (count (filter #(re-find #"^.+.go:\d+: " %) (s/split-lines err)))})))
@@ -135,7 +135,7 @@
                       cljs.compiler/*go-skip-def* #{}]
               (maybe-add-overrides dir))
             (goimports-file target)
-            (go-build dir)))))))
+            (go-install dir)))))))
 
 (defn compile-clojurescript
   ([] (compile-clojurescript "."))
