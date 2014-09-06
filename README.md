@@ -11,7 +11,9 @@ While not introducing `eval`, it does open up for adding it as a third layer, th
 
 ### Why?
 
-Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and start-up time (a current concern in the Clojure world, see below). The goal isn't to compete with the JVM or V8 on performance. Another obvious reason would be to leverage the Go ecosystem using ClojureScript. It's also meant to simplify creating new emitters for ClojureScript. I'm aware of `tools.analyzer` etc, but as far as I've seen, they don't help you implement `clojure.core` and the actual language run-time. That said, building on a fork of `tools.analyzer.js` instead of `cljs.analyzer` is a likely future direction.
+Mainly for fun and to learn Go. But it is also trying to address issues around fast compilation and start-up time (a current concern in the Clojure world, see below). On the other side, see Fernando's [motivation](https://github.com/eudoxia0/corvus#why) for his corvus LLVM Lisp: "The era of dynamic languages is over. There is currently a 'race to the bottom': Languages like Rust and Nimrod are merging the world of low-level programming with high-level compiler features." The reason to start this exploration with Go itself is most pragmatically explained in Rob's motivating [talk](https://talks.golang.org/2012/splash.article). And, Go has momentum.
+
+The goal isn't to compete with the JVM or V8 on performance. Another obvious reason would be to leverage the Go ecosystem using ClojureScript. It's also meant to simplify creating new emitters for ClojureScript. I'm aware of `tools.analyzer` etc, but as far as I've seen, they don't help you implement `clojure.core` and the actual language run-time. That said, building on a fork of `tools.analyzer.js` instead of `cljs.analyzer` is a likely future direction.
 
 ### See Also
 
@@ -52,6 +54,7 @@ http://www.rust-lang.org/
 http://julialang.org/
 http://llvm.org/
 http://openjdk.java.net/projects/graal/ / Indy JVM
+https://software.intel.com/en-us/articles/introduction-to-x64-assembly
 
 ## License
 
