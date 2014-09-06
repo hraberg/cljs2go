@@ -158,7 +158,9 @@
   ([] (compile-clojurescript "."))
   ([target-dir]
      (env/ensure
-      (doseq [ns '[cljs.core ; cljs.reader ;; doesn't work yet, some ns / import issue.
+      (doseq [ns '[cljs.core
+                   ; cljs.reader ;; doesn't work yet, some ns / import issue.
+                   ; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.
                    clojure.set clojure.data clojure.string clojure.walk clojure.zip]
               :let [resource (io/resource (str (s/replace (str ns) "." "/") ".cljs"))]]
         (time
