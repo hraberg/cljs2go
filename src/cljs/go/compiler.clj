@@ -861,7 +861,8 @@
   (let [info (:info f)
         fn? (and ana/*cljs-static-fns*
                  (not (:dynamic info))
-                 (:fn-var info))
+                 (or (:fn-var info)
+                     (-> info :init :info :fn-var)))
         protocol (or (:protocol info)
                      (and (= *go-protocol-fn* (:name info)) ;; this is a hack to deal with self-calls, to be revisited.
                           *go-protocol*))

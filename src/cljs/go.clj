@@ -144,6 +144,7 @@
            dir (.getParentFile target)]
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
+                  ana/*cljs-static-fns* true
                   cljs.compiler/*go-use-init-defs* true
                   cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
           (with-fresh-ids
