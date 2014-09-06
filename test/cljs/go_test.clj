@@ -16,15 +16,24 @@
   (binding [pp/*print-right-margin* 80]
     (pp/pprint x)))
 
+(def core-env nil)
+
+(defn cache-core! []
+  (def core-env (env/ensure
+                 (cljs.compiler/with-core-cljs
+                   env/*compiler*))))
+
 (defmacro tdd [& body]
-  `(env/ensure
-    (with-fresh-ids
-      (def *ast (cljs->ast '[~@body]))
-      (def *go (s/trim (goimports (ast->go *ast))))
-      (def *ns (ana/get-namespace ana/*cljs-ns*))
-      (pp *ast)
-      (println)
-      (println *go))))
+  `(binding [env/*compiler* core-env]
+     (env/ensure
+      (cljs.compiler/with-core-cljs
+        (with-fresh-ids
+          (def *ast (cljs->ast '[~@body]))
+          (def *go (s/trim (goimports (ast->go *ast))))
+          (def *ns (ana/get-namespace ana/*cljs-ns*))
+          (pp *ast)
+          (println)
+          (println *go))))))
 
 (defn combined-output [out err]
   (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
