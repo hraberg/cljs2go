@@ -173,4 +173,5 @@
            (compile-file target-dir resource)))))))
 
 (defn -main [& args]
-  (println "ClojureScript to Go [clojure]"))
+  (println "ClojureScript to Go [clojure]")
+  (compile-clojurescript))
