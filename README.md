@@ -44,6 +44,14 @@ https://github.com/artagnon/rhine
 https://github.com/eudoxia0/corvus
 http://piumarta.com/software/maru/
 
+### Other potential targets
+
+http://nimrod-lang.org
+http://www.gnu.org/software/libjit/
+http://www.rust-lang.org/
+http://julialang.org/
+http://llvm.org/
+
 ## License
 
 **cljs.go**
