@@ -38,6 +38,12 @@ https://github.com/takeoutweight/clojure-scheme
 https://github.com/raph-amiard/clojurescript-lua
 https://github.com/kanaka/clojurescript
 
+### Lower-level Lisps
+
+https://github.com/artagnon/rhine
+https://github.com/eudoxia0/corvus
+http://piumarta.com/software/maru/
+
 ## License
 
 **cljs.go**
