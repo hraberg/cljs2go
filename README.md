@@ -23,6 +23,41 @@ As can be seen on `ISeq` above, types and protocols are ns-prefixed to not clash
 
 When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to build the AST (see Nicola's [AST Quickref](http://clojure.github.io/tools.analyzer/spec/quickref.html)). The analyzer depends on the `cljs.core` macros (`core.clj`), which (like all ClojureScript macros) are written in Clojure. This file is replaced by `cljs.go.core`, and heavily uses the `js*` macro to emit literal Go code. Once the AST has been generated, it's fed into the `cljs.go.compiler`, which emits the Go source code. This is in turn (usually) fed into [`goimports`](http://godoc.org/code.google.com/p/go.tools/cmd/goimports) (a version of `gofmt` that also fixes the imports) and then finally `go build` (or `go install`).
 
+### Road Map
+
+*We're currently somewhere between phase 0 and 1.*
+
+#### Phase 0
+
+* Generate compiling ClojureScript with mapping for all basic constructs to Go.
+* Minimal JavaScript host libraries assumed by ClojureScript.
+
+#### Phase 1
+
+* Getting the relevant parts of ClojureScript's test suite to run.
+* Ability to build an app with more than one namespace and a main fn which depends on the core.
+* Go interop, `func` macro, coercions functions, ability to write moderately useful programs.
+* Add support for `reify`.
+
+#### Phase 2
+
+* Ability transform `core.clj`, `analyzer.clj` and `compiler.clj` to compiling ClojureScript.
+* Compiling one reader, either `cljs.reader` (which might need extensions) or `tools.reader` to ClojureScript.
+* Bootstrap the compiler using the above to Go.
+* Ability to build new wrapping compilers for `require-macros` to work. Assume the macros are valid ClojureScript.
+
+#### Phase 3
+
+* Performance. Revisit all the basic assumptions. Generate cleaner code, remove redundant constructs.
+* Move to the `tools.analyzer` stack.
+* Full bootstrap, porting the hacks that allow the compiler to compile itself.
+* `core.async` using real Go blocks and channels.
+* ClojureScript to Go REPL
+
+#### Phase 4
+
+* Porting to other targets.
+
 ### See Also
 
 * http://martintrojer.github.io/clojure/2014/04/05/the-clojure-repl-a-blessing-and-a-curse/
