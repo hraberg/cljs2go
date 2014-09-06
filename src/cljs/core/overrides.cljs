@@ -196,7 +196,6 @@
   ([f x y z args]
      (js* "~{}.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}}, ~{}...)...)" f x y z (into-array args)))
   ([f a b c d & args]
-     ;; these type hints shouldn't be necessary.
      (let [arr (into-array (butlast args))
            varargs (into-array (last args))]
        (js* "~{}.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...)...)...)" f a b c d arr varargs))))
