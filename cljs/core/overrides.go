@@ -25,9 +25,9 @@ func init() {
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
 			return func() interface{} {
-				var return__808 = f.(*AFn)
-				X_STAR_print_fn_STAR_ = return__808
-				return return__808
+				var return__807 = f.(*AFn)
+				X_STAR_print_fn_STAR_ = return__807
+				return return__807
 			}()
 		})
 	}(&AFn{})
@@ -74,8 +74,8 @@ var Quote_string *AFn
 func init() {
 	Quote_string = func(quote_string *AFn) *AFn {
 		return Fn(quote_string, func(s interface{}) interface{} {
-			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__809 *AFn) *AFn {
-				return Fn(G__809, func(match interface{}) interface{} {
+			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__808 *AFn) *AFn {
+				return Fn(G__808, func(match interface{}) interface{} {
 					return Char_escapes.(map[string]interface{})[match.(string)]
 				})
 			}(&AFn{})})).(string) + "\"")
@@ -140,8 +140,8 @@ func init() {
 									} else {
 										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
 											{
-												var normalize = func(G__810 *AFn) *AFn {
-													return Fn(G__810, func(n interface{}, len interface{}) interface{} {
+												var normalize = func(G__809 *AFn) *AFn {
+													return Fn(G__809, func(n interface{}, len interface{}) interface{} {
 														{
 															var ns = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
@@ -189,11 +189,11 @@ func init() {
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
 		return Fn(pr_sequential_writer, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
-				var _STAR_print_level_STAR_812 = X_STAR_print_level_STAR_
-				_ = _STAR_print_level_STAR_812
+				var _STAR_print_level_STAR_811 = X_STAR_print_level_STAR_
+				_ = _STAR_print_level_STAR_811
 				return func() interface{} {
 					defer func() {
-						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_812
+						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_811
 
 					}()
 					{
@@ -214,29 +214,29 @@ func init() {
 							} else {
 							}
 							{
-								var coll_813___1 = Next.Arity1IQ(coll)
-								var n_814 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
-								_, _ = coll_813___1, n_814
+								var coll_812___1 = Next.Arity1IQ(coll)
+								var n_813 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
+								_, _ = coll_812___1, n_813
 								for {
 									if Truth_(func() interface{} {
-										var and__172__auto__ = coll_813___1
+										var and__172__auto__ = coll_812___1
 										_ = and__172__auto__
 										if Truth_(and__172__auto__) {
-											return (Nil_(n_814)) || (!(n_814 == float64(0)))
+											return (Nil_(n_813)) || (!(n_813 == float64(0)))
 										} else {
 											return and__172__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
-										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_813___1), writer, opts)
-										coll_813___1, n_814 = Next.Arity1IQ(coll_813___1), (n_814 - float64(1))
+										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_812___1), writer, opts)
+										coll_812___1, n_813 = Next.Arity1IQ(coll_812___1), (n_813 - float64(1))
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__172__auto__ = Seq.Arity1IQ(coll_813___1)
+											var and__172__auto__ = Seq.Arity1IQ(coll_812___1)
 											_ = and__172__auto__
 											if Truth_(and__172__auto__) {
-												return (n_814 == float64(0))
+												return (n_813 == float64(0))
 											} else {
 												return and__172__auto__
 											}
@@ -439,14 +439,14 @@ func init() {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
-				var return__815 = func(fmt_println *AFn) *AFn {
+				var return__814 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
 				}(&AFn{})
-				X_STAR_print_fn_STAR_ = return__815
-				return return__815
+				X_STAR_print_fn_STAR_ = return__814
+				return return__814
 			}()
 		})
 	}(&AFn{})
