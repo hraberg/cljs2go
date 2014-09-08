@@ -533,7 +533,7 @@
   (and (= op :constant) (not form)))
 
 (defn safe-test? [env e]
-  (= 'boolean (ana/infer-tag env e)))
+  (= 'boolean (:tag e)))
 
 (defmethod emit* :if
   [{:keys [test then else env form unchecked tag]}]
@@ -842,7 +842,7 @@
         object? (= 'cljs.core/Object protocol)
         protocol (when (not object?)
                    protocol)
-        tag      (ana/infer-tag env (first (:args expr)))
+        tag      (:tag (first (:args expr)))
         proto? (and protocol tag
                  (or (and ana/*cljs-static-fns* protocol (= tag 'not-native))
                      (and
@@ -855,7 +855,7 @@
                                 (when-let [ps (:protocols (ana/resolve-existing-var (dissoc env :locals) tag))]
                                   (ps protocol)))))))
         opt-not? (and (= (:name info) 'cljs.core/not)
-                      (= (ana/infer-tag env (first (:args expr))) 'boolean))
+                      (= (:tag (first (:args expr))) 'boolean))
         ns (:ns info)
         go? (and ns (not (ana/get-namespace ns))
                  (some #(get (% (ana/get-namespace ana/*cljs-ns*)) ns) [:requires :uses]))
