@@ -58,7 +58,7 @@
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
 (def ^:dynamic *go-protocol-fn* nil)
-(def ^:dynamic *go-protocol-type* nil)
+(def ^:dynamic *go-protocol-this* nil)
 (def ^:dynamic *go-protocol* nil)
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-def-vars* false)
@@ -120,7 +120,7 @@
       (let [{:keys [name field] :as info} s
             depth (shadow-depth s)
             renamed (*lexical-renames* (System/identityHashCode s))
-            munged-name (munge (cond field (str "self__." name)
+            munged-name (munge (cond field (str (munge (:name *go-protocol-this*)) "." name)
                                      renamed renamed
                                      :else name)
                                reserved)]
@@ -409,7 +409,7 @@
     (cond
      (= (:name info) *go-protocol-fn*) ;; self reference to protocol fn as var.
      (emits (when (= 'cljs.core/Object *go-protocol*)
-              (str "(*" (go-type-fqn *go-protocol-type*) ")."))
+              (str "(" (go-type (:tag *go-protocol-this*)) ")."))
             (-> info :name munge go-public))
 
      (:binding-form? arg)
@@ -658,7 +658,7 @@
 
 (defn emit-protocol-method
   [protocol name {:keys [type params expr env recurs]} ret-tag]
-  (emits "func (self__ *" (-> params first :tag go-type-fqn) ") "
+  (emits "func (" (first params) " " (-> params first :tag go-type) ") "
          (-> name munge go-short-name go-public)
          (when-not ('#{cljs.core/Object} protocol)
            (str "_Arity" (cond-> (count params)
@@ -670,7 +670,7 @@
                               ret-tag)
             *go-protocol* protocol
             *go-protocol-fn* (:name name)
-            *go-protocol-type* (-> params first :tag)]
+            *go-protocol-this* (first params)]
     (emit-fn-body type expr recurs))
   (emitln "}"))
 

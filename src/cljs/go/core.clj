@@ -656,15 +656,6 @@
   `(cljs.core/specify! (cljs.core/clone ~expr)
      ~@impls))
 
-(defmacro ^:private js-this []
-  (core/list 'js* "self__"))
-
-(defmacro this-as
-  "Defines a scope where JavaScript's implicit \"this\" is bound to the name provided."
-  [name & body]
-  `(let [~name (js-this)]
-     ~@body))
-
 (defn to-property [sym]
   (symbol (core/str "-" sym)))
 
@@ -721,30 +712,12 @@
 (core/defmethod extend-prefix :default
   [tsym sym] `(.. ~tsym -prototype ~(to-property sym)))
 
-(defn adapt-obj-params [type [[this & args :as sig] & body]]
-  (core/list (vec args)
-    (list* 'this-as (vary-meta this assoc :tag type) body)))
-
-(defn adapt-ifn-params [type [[this & args :as sig] & body]]
-  (let [self-sym (with-meta 'self__ {:tag type})]
-    `(~(vec (cons self-sym args))
-       (this-as ~self-sym
-         (let [~this ~self-sym]
-           ~@body)))))
-
-;; for IFn invoke implementations, we need to drop first arg
-(defn adapt-ifn-invoke-params [type [[this & args :as sig] & body]]
-  `(~(vec args)
-     (this-as ~(vary-meta this assoc :tag type)
-       ~@body)))
-
 (defn adapt-proto-params [type proto-fn [[this & args :as sig] & body]]
   (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))
         this (vary-meta this assoc :tag type)]
     `(~(vec (cons this (map #(vary-meta % assoc :tag (-> %2 meta :tag))
                             args (core/or (next proto-params) args))))
-      (this-as ~this
-        ~@body))))
+      ~@body)))
 
 ;; In ClojureScript, Object isn't really a protocol per-se, but a way of attaching native fns to a type.
 (defn add-obj-methods [type type-sym sigs]
@@ -762,7 +735,7 @@
 
 (def ^:private arity-limit 20)
 
-(defn ifn-invoke-methods [type type-sym [f & meths :as form]]
+(defn add-ifn-methods [type type-sym [f & meths :as form]]
   (let [proto-fn (get-in (ana/get-namespace 'cljs.core) [:defs f])
         ;; we don't support provided varargs here for now, so we drop the last rest fn.
         meths (remove #(core/> (core/dec (count (first %))) arity-limit) meths)
@@ -775,9 +748,6 @@
                    [(count (first meth))
                     (with-meta `(fn ~f ~(adapt-proto-params type proto-fn meth)) (meta form))])]
     (vals (merge (into (sorted-map) missing) (into {} provided)))))
-
-(defn add-ifn-methods [type type-sym [f & meths :as form]]
-  (ifn-invoke-methods type type-sym form))
 
 (defn proto-slot-name [fname sig]
   (core/str (-> fname cljs.compiler/munge cljs.compiler/go-public)
