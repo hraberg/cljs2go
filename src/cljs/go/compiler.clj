@@ -93,8 +93,7 @@
      cljs.core/pr-sequential-writer
      cljs.core/js-obj
      cljs.core/js-keys
-     cljs.core/js->clj
-     cljs.core/nil-iter})
+     cljs.core/js->clj})
 
 (defmacro ^:private debug-prn
   [& args]
@@ -266,9 +265,6 @@
                           'boolean (fn [s] (str "js.JSBoolean(" (emit-str s) ")"))
                           'number (fn [s] (str "js.JSNumber(" (emit-str s) ")"))
                           'clj-nil (fn [s] (str "js.JSNil{}"))})
-
-(def go-top-level-then '#{(and (exists? Math/imul)
-                               (not (zero? (Math/imul 0xffffffff 5))))})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
                      (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
@@ -548,7 +544,6 @@
     (cond
       (truthy-constant? test) (emitln then)
       (falsey-constant? test) (emitln else)
-      (go-top-level-then (second form)) (emitln then)
       :else
       (if (= :expr context)
         (emits "func() " (go-type tag) " { if " (when checked (go-core "Truth_")) "("

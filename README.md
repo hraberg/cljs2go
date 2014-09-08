@@ -37,7 +37,6 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 * Getting the relevant parts of ClojureScript's test suite to run.
 * Ability to build an app with more than one namespace and a main fn which depends on the core.
 * Go interop, `func` macro, coercions functions, ability to write moderately useful programs.
-* Add support for `reify`.
 
 #### Phase 2
 

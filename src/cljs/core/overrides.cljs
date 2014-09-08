@@ -165,16 +165,6 @@
       h
       (add-to-string-hash-cache k))))
 
-;; no reify support yet, needs to defer the anonymous deftype to toplevel, will fix later.
-(deftype T349 []
-  Object
-  (hasNext [_] false)
-  (next [_] (js/Error. "No such element"))
-  (remove [_] (js/Error. "Unsupported operation")))
-
-(defn nil-iter []
-  (T349.))
-
 (defn enable-console-print!
   "Set *print-fn* to console.log"
   []

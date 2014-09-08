@@ -71,20 +71,20 @@ func init() {
 				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
 				if Truth_(func() interface{} {
-					var and__172__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
-					_ = and__172__auto__
-					if Truth_(and__172__auto__) {
+					var and__23896__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
+					_ = and__23896__auto__
+					if Truth_(and__23896__auto__) {
 						{
-							var and__172__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
-							_ = and__172__auto_____1
-							if Truth_(and__172__auto_____1) {
+							var and__23896__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
+							_ = and__23896__auto_____1
+							if Truth_(and__23896__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
 							} else {
-								return and__172__auto_____1
+								return and__23896__auto_____1
 							}
 						}
 					} else {
-						return and__172__auto__
+						return and__23896__auto__
 					}
 				}()) {
 					writer.(CljsCoreIWriter).X_write_Arity2("^")
@@ -191,12 +191,12 @@ func init() {
 								_, _ = coll_828___1, n_829
 								for {
 									if Truth_(func() interface{} {
-										var and__172__auto__ = coll_828___1
-										_ = and__172__auto__
-										if Truth_(and__172__auto__) {
+										var and__23896__auto__ = coll_828___1
+										_ = and__23896__auto__
+										if Truth_(and__23896__auto__) {
 											return (Nil_(n_829)) || (!(n_829 == float64(0)))
 										} else {
-											return and__172__auto__
+											return and__23896__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -205,12 +205,12 @@ func init() {
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__172__auto__ = Seq.Arity1IQ(coll_828___1)
-											_ = and__172__auto__
-											if Truth_(and__172__auto__) {
+											var and__23896__auto__ = Seq.Arity1IQ(coll_828___1)
+											_ = and__23896__auto__
+											if Truth_(and__23896__auto__) {
 												return (n_829 == float64(0))
 											} else {
-												return and__172__auto__
+												return and__23896__auto__
 											}
 										}()) {
 											writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -318,18 +318,6 @@ func init() {
 		})
 	}(&AFn{})
 
-	X__GT_T349 = func(__GT_T349 *AFn) *AFn {
-		return Fn(__GT_T349, func() interface{} {
-			return (&CljsCoreT349{})
-		})
-	}(&AFn{})
-
-	Nil_iter = func(nil_iter *AFn) *AFn {
-		return Fn(nil_iter, func() interface{} {
-			return (&CljsCoreT349{})
-		})
-	}(&AFn{})
-
 	Enable_console_print_BANG_ = func(enable_console_print_BANG_ *AFn) *AFn {
 		return Fn(enable_console_print_BANG_, func() interface{} {
 			X_STAR_print_newline_STAR_ = false
@@ -388,85 +376,53 @@ var Add_to_string_hash_cache *AFn
 // @param {...*} var_args
 var Array *AFn
 
-func (self__ *CljsCoreT349) HasNext() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return false
-	}
-}
-
-var Make_array *AFn
-
 var Type__GT_str *AFn
 
-func (self__ *CljsCoreT349) Next() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return (&js.Error{"No such element"})
-	}
-}
-
 var Hash_string *AFn
-
-var Symbol_QMARK_ *AFn
-
-// Takes a fn f and returns a fn that takes the same arguments as f,
-// has the same effects, if any, and returns the opposite truth value.
-var Complement *AFn
 
 // Applies fn f to the argument list formed by prepending intervening arguments to args.
 // First cut.  Not lazy.  Needs to use emitted toApply.
 // @param {...*} var_args
 var Apply *AFn
 
-// Internal - do not use!
-var Native_satisfies_QMARK_ *AFn
+var Symbol_QMARK_ *AFn
 
 // Set *print-fn* to console.log
 var Enable_console_print_BANG_ *AFn
+
+var Quote_string *AFn
+
+var Make_array *AFn
+
+// Returns true if n is an integer.
+var Integer_QMARK_ *AFn
+
+// Coerce to char
+var Char *AFn
+
+var X_STAR_print_length_STAR_ float64
 
 // Prefer this to pr-seq, because it makes the printing function
 // configurable, allowing efficient implementations such as appending
 // to a StringBuffer.
 var Pr_writer *AFn
 
-// Returns true if n is an integer.
-var Integer_QMARK_ *AFn
-
-func (_ *CljsCoreT349) CljsCoreObject__() {}
-
-// Coerce to char
-var Char *AFn
-
-type CljsCoreT349 struct{}
-
-var Nil_iter *AFn
-
-var X_STAR_print_length_STAR_ float64
-
 var X_STAR_print_level_STAR_ float64
 
-var Quote_string *AFn
+// Takes a fn f and returns a fn that takes the same arguments as f,
+// has the same effects, if any, and returns the opposite truth value.
+var Complement *AFn
 
 // Set *print-fn* to f.
 var Set_print_fn_BANG_ *AFn
 
-func (self__ *CljsCoreT349) Remove() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return (&js.Error{"Unsupported operation"})
-	}
-}
-
 var String_hash_cache interface{}
-
-var X__GT_T349 *AFn
-
-var Type_ *AFn
 
 var Pr_sequential_writer *AFn
 
+var Type_ *AFn
+
 var X_STAR_clojurescript_version_STAR_ string
+
+// Internal - do not use!
+var Native_satisfies_QMARK_ *AFn

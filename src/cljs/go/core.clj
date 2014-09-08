@@ -637,15 +637,13 @@
         ns     (-> &env :ns :name)
         munge  cljs.compiler/munge]
     `(do
-       ;; this needs to happen on top-level
-       (when-not (exists? ~(symbol (core/str ns) (core/str t)))
-         (deftype ~t [~@locals ~meta-sym]
-           IWithMeta
-           (~'-with-meta [~this-sym ~meta-sym]
-             (new ~t ~@locals ~meta-sym))
-           IMeta
-           (~'-meta [~this-sym] ~meta-sym)
-           ~@impls))
+       (deftype ~t [~@locals ~meta-sym]
+         IWithMeta
+         (~'-with-meta [~this-sym ~meta-sym]
+           (new ~t ~@locals ~meta-sym))
+         IMeta
+         (~'-meta [~this-sym] ~meta-sym)
+         ~@impls)
        (new ~t ~@locals nil))))
 
 (defmacro specify! [expr & impls]
