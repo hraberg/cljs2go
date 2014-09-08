@@ -695,28 +695,28 @@
       (swap! *go-defs* conj ast)
       (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
                                      (mapcat :params loop-lets))
-                             seq)]
-        (let [name (or name (gensym))
-              mname (munge name)]
-          (when (= :return (:context env))
-            (emits "return "))
-          (when-not protocol-impl
-            (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn")) (typed-params loop-locals))) ") *" (go-core "AFn") " {")
-            (emits "return " (go-core "Fn") "(" mname ", "))
-          (loop [[meth & methods] methods]
-            (let [meth (assoc-in meth [:env :context] :expr)]
-              (cond
-               protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
-               (:variadic meth) (emit-variadic-fn-method meth)
-               :else (emit-fn-method meth (:ret-tag name))))
-            (when methods
-              (emits ", ")
-              (recur methods)))
-          (if protocol-impl
-            (emitln)
-            (do
-              (emitln ")")
-              (emits "}(" (comma-sep (cons (str "&" (go-core "AFn") "{}") loop-locals)) ")"))))))))
+                             seq)
+            name (or name (gensym))
+            mname (munge name)]
+        (when (= :return (:context env))
+          (emits "return "))
+        (when-not protocol-impl
+          (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn")) (typed-params loop-locals))) ") *" (go-core "AFn") " {")
+          (emits "return " (go-core "Fn") "(" mname ", "))
+        (loop [[meth & methods] methods]
+          (let [meth (assoc-in meth [:env :context] :expr)]
+            (cond
+             protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
+             (:variadic meth) (emit-variadic-fn-method meth)
+             :else (emit-fn-method meth (:ret-tag name))))
+          (when methods
+            (emits ", ")
+            (recur methods)))
+        (if protocol-impl
+          (emitln)
+          (do
+            (emitln ")")
+            (emits "}(" (comma-sep (cons (str "&" (go-core "AFn") "{}") loop-locals)) ")")))))))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
