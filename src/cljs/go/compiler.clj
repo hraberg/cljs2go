@@ -1231,11 +1231,8 @@ func main() {
                         (merge
                           {:ns (or ns-name 'cljs.user)
                            :provides [ns-name]
-                           :requires (if (= ns-name 'cljs.core)
-                                       (set (vals deps))
-                                       (cond-> (conj (set (vals deps)) 'cljs.core)
-                                         (get-in @env/*compiler* [:opts :emit-constants])
-                                         (conj 'constants-table)))
+                           :requires (cond-> (set (vals deps))
+                                             (not= ns-name 'cljs.core) (conj 'cljs.core))
                            :file dest
                            :source-file src
                            :ns-ast ast}
@@ -1340,16 +1337,3 @@ func main() {
                  ns-info (compile-file cljs-file output-file opts)]
              (recur (rest cljs-files) (conj output-files (assoc ns-info :file-name (.getPath output-file)))))
            output-files)))))
-
-;; TODO: needs fixing, table will include other things than keywords - David
-
-(defn emit-constants-table [table]
-  (doseq [[keyword value] table]
-    (emits value " = ")
-    (emits-keyword keyword)
-    (emitln)))
-
-(defn emit-constants-table-to-file [table dest]
-  (with-open [out ^java.io.Writer (io/make-writer dest {})]
-    (binding [*out* out]
-      (emit-constants-table table))))
