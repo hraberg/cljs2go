@@ -742,15 +742,7 @@
             (emitln ")")
             (emits "}(&" (go-core "AFn") "{})"))))
       (when loop-locals
-        (emits "}(" (comma-sep loop-locals) ")"))))
-  (when (= '-main (:name name))
-    (emitln)
-    (when-not *go-use-init-defs*
-      (emitln"func init() {"))
-    (emitln)
-    (emits (go-core "X_STAR_main_cli_fn_STAR_") " = X_main")
-    (when-not *go-use-init-defs*
-      (emitln"}"))))
+        (emits "}(" (comma-sep loop-locals) ")")))))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
@@ -1171,9 +1163,10 @@
 package main
 
 import cljs_core `github.com/hraberg/cljs.go/cljs/core`
-import _ `.`
+import main_ns `.`
 
 func main() {
+	cljs_core.X_STAR_main_cli_fn_STAR_ = main_ns.X_main
 	cljs_core.Main_()
 }
 ")

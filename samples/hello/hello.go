@@ -16,6 +16,4 @@ func init() {
 			return cljs_core.Println.X_invoke_ArityVariadic("Hello World")
 		})
 	}(&cljs_core.AFn{})
-
-	cljs_core.X_STAR_main_cli_fn_STAR_ = X_main
 }
