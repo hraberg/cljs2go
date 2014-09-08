@@ -148,11 +148,11 @@
     :else (throw (js/Error. "Argument to char must be a character or number"))))
 
 ;; Simple caching of string hashcode
-(def string-hash-cache (js* "map[string]interface{}{}"))
+(def string-hash-cache ^"map[string]interface{}" (js* "map[string]interface{}{}"))
 
 (defn add-to-string-hash-cache [k]
   (let [h (hash-string* k)]
-    (js* "~{}.(map[string]interface{})[~{}.(string)] = ~{}" string-hash-cache k h)
+    (js* "~{}[~{}.(string)] = ~{}" string-hash-cache k h)
     (set! string-hash-cache-count (inc string-hash-cache-count))
     h))
 
@@ -160,7 +160,7 @@
   (when (> string-hash-cache-count 255)
     (set! string-hash-cache (js* "map[string]interface{}{}"))
     (set! string-hash-cache-count 0))
-  (let [h (js* "~{}.(map[string]interface{})[~{}.(string)]" string-hash-cache k)]
+  (let [h (js* "~{}[~{}.(string)]" string-hash-cache k)]
     (if (number? h)
       h
       (add-to-string-hash-cache k))))

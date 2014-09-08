@@ -203,9 +203,11 @@
                (= ana/*cljs-ns* ns) (go-type-fqn tag)
                goog? (go-normalize-goog-type tag)
                :else (str ns "." (go-type-fqn tag))))))
-    ((merge '{number "float64" boolean "bool" string "string" array "[]interface{}"}
-            {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
-     tag "interface{}")))
+    (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
+      tag
+      ((merge '{number "float64" boolean "bool" string "string" array "[]interface{}"}
+              {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
+       tag "interface{}"))))
 
 (defn go-short-type [tag]
   ('{number "F" boolean "B" string "S" array "A" seq "Q"} tag "I"))
@@ -1165,7 +1167,7 @@ func main() {
       (with-core-cljs
         (with-open [out ^java.io.Writer (io/make-writer dest {})]
           (binding [*out* out
-                    ana/*cljs-ns* 'cljs.user
+                    ana/*cljs-ns* (or (:name ns-ast) 'cljs.user)
                     ana/*cljs-file* (.getPath ^File src)
                     reader/*alias-map* (or reader/*alias-map* {})
                     *go-line-numbers* (boolean (:source-map opts))]
@@ -1173,31 +1175,25 @@ func main() {
             (when ns-ast
               (emitln ns-ast))
             (emitln "func init() {")
-            (loop [forms (ana/forms-seq src)
-                   ns-name (:name ns-ast)
-                   deps (merge (:uses ns-ast) (:requires ns-ast))]
-              (if (seq forms)
-                (let [env (ana/empty-env)
-                      ast (ana/analyze env (first forms) nil opts)]
-                  (do (when-not (= ns-ast ast)
-                        (emit ast))
-                      (recur (rest forms) ns-name deps)))
-                (do
-                  (emitln "}")
-                  (binding [*go-def-vars* true
-                            *go-assign-vars* false]
-                    (loop [[ast & defs] (vec @*go-defs*) emitted-names #{}]
-                      (when ast
-                        (if (= :def (:op ast))
-                          (do
-                            (when-not (emitted-names (:name ast))
-                              (emitln ast))
-                            (when (= "-main" (and (= :def (:op ast)) (some-> ast :name name)))
-                              (spit (io/file (.getParentFile ^File dest) "main.go") main-src))
-                            (recur defs (conj emitted-names (:name ast))))
-                          (do
-                            (emitln ast)
-                            (recur defs emitted-names)))))))))))))))
+            (doseq [form (ana/forms-seq src)
+                    :let [ast (ana/analyze (ana/empty-env) form nil opts)]
+                    :when (not= ns-ast ast)]
+              (emit ast))
+            (binding [*go-def-vars* true
+                      *go-assign-vars* false]
+              (emitln "}")
+              (loop [[ast & defs] (vec @*go-defs*) emitted-names #{}]
+                (when ast
+                  (if (= :def (:op ast))
+                    (let [def-name (:name ast)]
+                      (when-not (emitted-names def-name)
+                        (emitln ast))
+                      (when (= "-main" (name def-name))
+                        (spit (io/file (.getParentFile ^File dest) "main.go") main-src))
+                      (recur defs (conj emitted-names def-name)))
+                    (do
+                      (emitln ast)
+                      (recur defs emitted-names))))))))))))
 
 (defn compiled-by-version [^File f]
   (with-open [reader (io/reader f)]

@@ -148,39 +148,26 @@ func init() {
 
 }
 
-// Diff associative things a and b, comparing only the key k.
-var Diff_associative_key *cljs_core.AFn
-
-var Equality_partition *cljs_core.AFn
-
-func init() {
-	cljs_core.RegisterProtocol_("clojure.data/EqualityPartition", (*ClojureDataEqualityPartition)(nil))
-}
+// Internal helper for diff.
+var Atom_diff *cljs_core.AFn
 
 // Convert an associative-by-numeric-index collection into
 // an equivalent vector, with nil for any missing keys
 var Vectorize *cljs_core.AFn
 
-var Diff_sequential *cljs_core.AFn
-
-var Diff_similar *cljs_core.AFn
-
-var Diff_set *cljs_core.AFn
-
-func init() {
-	cljs_core.RegisterProtocol_("clojure.data/Diff", (*ClojureDataDiff)(nil))
-}
-
-// Internal helper for diff.
-var Atom_diff *cljs_core.AFn
-
-type ClojureDataDiff interface {
-	ClojureDataDiff__()
-	Diff_similar_Arity2(b interface{}) interface{}
-}
+// Diff associative things a and b, comparing only the key k.
+var Diff_associative_key *cljs_core.AFn
 
 // Diff associative things a and b, comparing only keys in ks (if supplied).
 var Diff_associative *cljs_core.AFn
+
+var Diff_sequential *cljs_core.AFn
+
+var Diff_set *cljs_core.AFn
+
+var Equality_partition *cljs_core.AFn
+
+var Diff_similar *cljs_core.AFn
 
 // Recursively compares a and b, returning a tuple of
 // [things-only-in-a things-only-in-b things-in-both].
@@ -198,4 +185,17 @@ var Diff *cljs_core.AFn
 type ClojureDataEqualityPartition interface {
 	ClojureDataEqualityPartition__()
 	Equality_partition_Arity1() interface{}
+}
+
+type ClojureDataDiff interface {
+	ClojureDataDiff__()
+	Diff_similar_Arity2(b interface{}) interface{}
+}
+
+func init() {
+	cljs_core.RegisterProtocol_("clojure.data/EqualityPartition", (*ClojureDataEqualityPartition)(nil))
+}
+
+func init() {
+	cljs_core.RegisterProtocol_("clojure.data/Diff", (*ClojureDataDiff)(nil))
 }

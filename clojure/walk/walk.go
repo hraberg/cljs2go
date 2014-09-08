@@ -146,10 +146,19 @@ func init() {
 
 }
 
+// Traverses form, an arbitrary data structure.  inner and outer are
+// functions.  Applies inner to each element of form, building up a
+// data structure of the same type, then applies outer to the result.
+// Recognizes all Clojure data structures. Consumes seqs as with doall.
+var Walk *cljs_core.AFn
+
 // Performs a depth-first, post-order traversal of form.  Calls f on
 // each sub-form, uses f's return value in place of the original.
 // Recognizes all Clojure data structures. Consumes seqs as with doall.
 var Postwalk *cljs_core.AFn
+
+// Like postwalk, but does pre-order traversal.
+var Prewalk *cljs_core.AFn
 
 // Recursively transforms all map keys from strings to keywords.
 var Keywordize_keys *cljs_core.AFn
@@ -157,21 +166,12 @@ var Keywordize_keys *cljs_core.AFn
 // Recursively transforms all map keys from keywords to strings.
 var Stringify_keys *cljs_core.AFn
 
-// Like postwalk, but does pre-order traversal.
-var Prewalk *cljs_core.AFn
+// Recursively transforms form by replacing keys in smap with their
+// values.  Like clojure/replace but works on any data structure.  Does
+// replacement at the root of the tree first.
+var Prewalk_replace *cljs_core.AFn
 
 // Recursively transforms form by replacing keys in smap with their
 // values.  Like clojure/replace but works on any data structure.  Does
 // replacement at the leaves of the tree first.
 var Postwalk_replace *cljs_core.AFn
-
-// Traverses form, an arbitrary data structure.  inner and outer are
-// functions.  Applies inner to each element of form, building up a
-// data structure of the same type, then applies outer to the result.
-// Recognizes all Clojure data structures. Consumes seqs as with doall.
-var Walk *cljs_core.AFn
-
-// Recursively transforms form by replacing keys in smap with their
-// values.  Like clojure/replace but works on any data structure.  Does
-// replacement at the root of the tree first.
-var Prewalk_replace *cljs_core.AFn

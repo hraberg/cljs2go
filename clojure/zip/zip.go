@@ -593,101 +593,6 @@ func init() {
 
 }
 
-// Returns the loc of the leftmost sibling of the node at this loc, or self
-var Leftmost *cljs_core.AFn
-
-// Returns a new branch node, given an existing node and new
-// children. The loc is only used to supply the constructor.
-var Make_node *cljs_core.AFn
-
-// Returns the loc of the rightmost sibling of the node at this loc, or self
-var Rightmost *cljs_core.AFn
-
-// Inserts the item as the rightmost child of the node at this loc,
-// without moving
-var Append_child *cljs_core.AFn
-
-// zips all the way up and returns the root node, reflecting any
-// changes.
-var Root *cljs_core.AFn
-
-// Returns a seq of the left siblings of this loc
-var Lefts *cljs_core.AFn
-
-// Returns the loc of the leftmost child of the node at this loc, or
-// nil if no children
-var Down *cljs_core.AFn
-
-// Returns a zipper for xml elements (as from xml/parse),
-// given a root element
-var Xml_zip *cljs_core.AFn
-
-// Removes the node at loc, returning the loc that would have preceded
-// it in a depth-first walk.
-var Remove *cljs_core.AFn
-
-// Replaces the node at this loc with the value of (f node args)
-// @param {...*} var_args
-var Edit *cljs_core.AFn
-
-// Returns the node at loc
-var Node *cljs_core.AFn
-
-// Returns a seq of the right siblings of this loc
-var Rights *cljs_core.AFn
-
-// Inserts the item as the leftmost child of the node at this loc,
-// without moving
-var Insert_child *cljs_core.AFn
-
-// Returns a seq of nodes leading to this loc
-var Path *cljs_core.AFn
-
-// Inserts the item as the left sibling of the node at this loc,
-// without moving
-var Insert_left *cljs_core.AFn
-
-// Returns true if the node at loc is a branch
-var Branch_QMARK_ *cljs_core.AFn
-
-// Returns the loc of the left sibling of the node at this loc, or nil
-var Left *cljs_core.AFn
-
-// Returns the loc of the right sibling of the node at this loc, or nil
-var Right *cljs_core.AFn
-
-// Returns the loc of the parent of the node at this loc, or nil if at
-// the top
-var Up *cljs_core.AFn
-
-// Returns a seq of the children of node at loc, which must be a branch
-var Children *cljs_core.AFn
-
-// Inserts the item as the right sibling of the node at this loc,
-// without moving
-var Insert_right *cljs_core.AFn
-
-// Replaces the node at this loc, without moving
-var Replace *cljs_core.AFn
-
-// Returns a zipper for nested vectors, given a root vector
-var Vector_zip *cljs_core.AFn
-
-// Moves to the previous loc in the hierarchy, depth-first. If already
-// at the root, returns nil.
-var Prev *cljs_core.AFn
-
-// Returns a zipper for nested sequences, given a root sequence
-var Seq_zip *cljs_core.AFn
-
-// Returns true if loc represents the end of a depth-first walk
-var End_QMARK_ *cljs_core.AFn
-
-// Moves to the next loc in the hierarchy, depth-first. When reaching
-// the end, returns a distinguished loc detectable via end?. If already
-// at the end, stays there.
-var Next *cljs_core.AFn
-
 // Creates a new zipper structure.
 //
 // branch? is a fn that, given a node, returns true if can have
@@ -700,3 +605,98 @@ var Next *cljs_core.AFn
 // children, returns a new branch node with the supplied children.
 // root is the root node.
 var Zipper *cljs_core.AFn
+
+// Returns a zipper for nested sequences, given a root sequence
+var Seq_zip *cljs_core.AFn
+
+// Returns a zipper for nested vectors, given a root vector
+var Vector_zip *cljs_core.AFn
+
+// Returns a zipper for xml elements (as from xml/parse),
+// given a root element
+var Xml_zip *cljs_core.AFn
+
+// Returns the node at loc
+var Node *cljs_core.AFn
+
+// Returns true if the node at loc is a branch
+var Branch_QMARK_ *cljs_core.AFn
+
+// Returns a seq of the children of node at loc, which must be a branch
+var Children *cljs_core.AFn
+
+// Returns a new branch node, given an existing node and new
+// children. The loc is only used to supply the constructor.
+var Make_node *cljs_core.AFn
+
+// Returns a seq of nodes leading to this loc
+var Path *cljs_core.AFn
+
+// Returns a seq of the left siblings of this loc
+var Lefts *cljs_core.AFn
+
+// Returns a seq of the right siblings of this loc
+var Rights *cljs_core.AFn
+
+// Returns the loc of the leftmost child of the node at this loc, or
+// nil if no children
+var Down *cljs_core.AFn
+
+// Returns the loc of the parent of the node at this loc, or nil if at
+// the top
+var Up *cljs_core.AFn
+
+// zips all the way up and returns the root node, reflecting any
+// changes.
+var Root *cljs_core.AFn
+
+// Returns the loc of the right sibling of the node at this loc, or nil
+var Right *cljs_core.AFn
+
+// Returns the loc of the rightmost sibling of the node at this loc, or self
+var Rightmost *cljs_core.AFn
+
+// Returns the loc of the left sibling of the node at this loc, or nil
+var Left *cljs_core.AFn
+
+// Returns the loc of the leftmost sibling of the node at this loc, or self
+var Leftmost *cljs_core.AFn
+
+// Inserts the item as the left sibling of the node at this loc,
+// without moving
+var Insert_left *cljs_core.AFn
+
+// Inserts the item as the right sibling of the node at this loc,
+// without moving
+var Insert_right *cljs_core.AFn
+
+// Replaces the node at this loc, without moving
+var Replace *cljs_core.AFn
+
+// Replaces the node at this loc with the value of (f node args)
+// @param {...*} var_args
+var Edit *cljs_core.AFn
+
+// Inserts the item as the leftmost child of the node at this loc,
+// without moving
+var Insert_child *cljs_core.AFn
+
+// Inserts the item as the rightmost child of the node at this loc,
+// without moving
+var Append_child *cljs_core.AFn
+
+// Moves to the next loc in the hierarchy, depth-first. When reaching
+// the end, returns a distinguished loc detectable via end?. If already
+// at the end, stays there.
+var Next *cljs_core.AFn
+
+// Moves to the previous loc in the hierarchy, depth-first. If already
+// at the root, returns nil.
+var Prev *cljs_core.AFn
+
+// Returns true if loc represents the end of a depth-first walk
+var End_QMARK_ *cljs_core.AFn
+
+// Removes the node at loc, returning the loc that would have preceded
+// it in a depth-first walk.
+var Remove *cljs_core.AFn

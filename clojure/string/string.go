@@ -7,8 +7,9 @@ import (
 	"reflect"
 
 	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	goog_string "github.com/hraberg/cljs.go/goog/string"
 	"github.com/hraberg/cljs.go/js"
+
+	goog_string "github.com/hraberg/cljs.go/goog/string"
 )
 
 func init() {
@@ -274,46 +275,10 @@ func init() {
 
 }
 
-// True is s is nil, empty, or contains only whitespace.
-var Blank_QMARK_ *cljs_core.AFn
-
-var Split_with_empty_regex *cljs_core.AFn
-
-// Splits string on a regular expression. Optional argument limit is
-// the maximum number of splits. Not lazy. Returns vector of the splits.
-var Split *cljs_core.AFn
-
-// Converts first character of the string to upper-case, all other
-// characters to lower-case.
-var Capitalize *cljs_core.AFn
-
-// Removes whitespace from both ends of string.
-var Trim *cljs_core.AFn
-
-// Converts string to all upper-case.
-var Upper_case *cljs_core.AFn
-
-// Splits s on
-// or
-// .
-var Split_lines *cljs_core.AFn
-
-// Return a new string, using cmap to escape each character ch
-// from s as follows:
-//
-// If (cmap ch) is nil, append ch to the new string.
-// If (cmap ch) is non-nil, append (str (cmap ch)) instead.
-var Escape *cljs_core.AFn
-
-// Returns a string of all elements in coll, as returned by (seq coll),
-// separated by an optional separator.
-var Join *cljs_core.AFn
-
 var Seq_reverse *cljs_core.AFn
 
-// Removes all trailing newline \n or return \r characters from
-// string.  Similar to Perl's chomp.
-var Trim_newline *cljs_core.AFn
+// Returns s with its characters reversed.
+var Reverse *cljs_core.AFn
 
 // Replaces all instance of match with replacement in s.
 // match/replacement can be:
@@ -322,11 +287,6 @@ var Trim_newline *cljs_core.AFn
 // pattern / (string or function of match).
 var Replace *cljs_core.AFn
 
-var Pop_last_while_empty *cljs_core.AFn
-
-// Removes whitespace from the left side of string.
-var Triml *cljs_core.AFn
-
 // Replaces the first instance of match with replacement in s.
 // match/replacement can be:
 //
@@ -334,13 +294,54 @@ var Triml *cljs_core.AFn
 // pattern / (string or function of match).
 var Replace_first *cljs_core.AFn
 
+// Returns a string of all elements in coll, as returned by (seq coll),
+// separated by an optional separator.
+var Join *cljs_core.AFn
+
+// Converts string to all upper-case.
+var Upper_case *cljs_core.AFn
+
 // Converts string to all lower-case.
 var Lower_case *cljs_core.AFn
 
+// Converts first character of the string to upper-case, all other
+// characters to lower-case.
+var Capitalize *cljs_core.AFn
+
+var Pop_last_while_empty *cljs_core.AFn
+
 var Discard_trailing_if_needed *cljs_core.AFn
+
+var Split_with_empty_regex *cljs_core.AFn
+
+// Splits string on a regular expression. Optional argument limit is
+// the maximum number of splits. Not lazy. Returns vector of the splits.
+var Split *cljs_core.AFn
+
+// Splits s on
+// or
+// .
+var Split_lines *cljs_core.AFn
+
+// Removes whitespace from both ends of string.
+var Trim *cljs_core.AFn
+
+// Removes whitespace from the left side of string.
+var Triml *cljs_core.AFn
 
 // Removes whitespace from the right side of string.
 var Trimr *cljs_core.AFn
 
-// Returns s with its characters reversed.
-var Reverse *cljs_core.AFn
+// Removes all trailing newline \n or return \r characters from
+// string.  Similar to Perl's chomp.
+var Trim_newline *cljs_core.AFn
+
+// True is s is nil, empty, or contains only whitespace.
+var Blank_QMARK_ *cljs_core.AFn
+
+// Return a new string, using cmap to escape each character ch
+// from s as follows:
+//
+// If (cmap ch) is nil, append ch to the new string.
+// If (cmap ch) is non-nil, append (str (cmap ch)) instead.
+var Escape *cljs_core.AFn

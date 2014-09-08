@@ -311,13 +311,19 @@ func init() {
 
 }
 
-// When passed 2 rels, returns the rel corresponding to the natural
-// join. When passed an additional keymap, joins on the corresponding
-// keys.
-var Join *cljs_core.AFn
+var Bubble_max_key *cljs_core.AFn
 
-// Is set1 a superset of set2?
-var Superset_QMARK_ *cljs_core.AFn
+// Return a set that is the union of the input sets
+// @param {...*} var_args
+var Union *cljs_core.AFn
+
+// Return a set that is the intersection of the input sets
+// @param {...*} var_args
+var Intersection *cljs_core.AFn
+
+// Return a set that is the first set without elements of the remaining sets
+// @param {...*} var_args
+var Difference *cljs_core.AFn
 
 // Returns a set of the elements for which pred is true
 var Select_ *cljs_core.AFn
@@ -325,32 +331,26 @@ var Select_ *cljs_core.AFn
 // Returns a rel of the elements of xrel with only the keys in ks
 var Project *cljs_core.AFn
 
-// Return a set that is the first set without elements of the remaining sets
-// @param {...*} var_args
-var Difference *cljs_core.AFn
+// Returns the map with the keys in kmap renamed to the vals in kmap
+var Rename_keys *cljs_core.AFn
 
 // Returns a rel of the maps in xrel with the keys in kmap renamed to the vals in kmap
 var Rename *cljs_core.AFn
 
-// Return a set that is the union of the input sets
-// @param {...*} var_args
-var Union *cljs_core.AFn
-
-// Returns the map with the keys in kmap renamed to the vals in kmap
-var Rename_keys *cljs_core.AFn
-
-// Is set1 a subset of set2?
-var Subset_QMARK_ *cljs_core.AFn
-
-// Return a set that is the intersection of the input sets
-// @param {...*} var_args
-var Intersection *cljs_core.AFn
+// Returns a map of the distinct values of ks in the xrel mapped to a
+// set of the maps in xrel with the corresponding values of ks.
+var Index *cljs_core.AFn
 
 // Returns the map with the vals mapped to the keys.
 var Map_invert *cljs_core.AFn
 
-var Bubble_max_key *cljs_core.AFn
+// When passed 2 rels, returns the rel corresponding to the natural
+// join. When passed an additional keymap, joins on the corresponding
+// keys.
+var Join *cljs_core.AFn
 
-// Returns a map of the distinct values of ks in the xrel mapped to a
-// set of the maps in xrel with the corresponding values of ks.
-var Index *cljs_core.AFn
+// Is set1 a subset of set2?
+var Subset_QMARK_ *cljs_core.AFn
+
+// Is set1 a superset of set2?
+var Superset_QMARK_ *cljs_core.AFn
