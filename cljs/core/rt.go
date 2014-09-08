@@ -211,13 +211,8 @@ func (this *AFn) CljsCoreFn__() {
 func (_ *AFn) CljsCoreICloneable__() {}
 
 func (this *AFn) X_clone_Arity1() interface{} {
-	clone := &AFn{}
-	vt := value(this)
-	vc := value(clone)
-	for i := 0; i < vt.Type().NumField(); i++ {
-		vc.Field(i).Set(vt.Field(i))
-	}
-	return clone
+	clone := *this
+	return &clone
 }
 
 func (_ *AFn) CljsCoreIMeta__() {}
