@@ -165,7 +165,25 @@ var Diff_sequential *cljs_core.AFn
 
 var Diff_set *cljs_core.AFn
 
+type ClojureDataEqualityPartition interface {
+	ClojureDataEqualityPartition__()
+	Equality_partition_Arity1() interface{}
+}
+
+func init() {
+	cljs_core.RegisterProtocol_("clojure.data/EqualityPartition", (*ClojureDataEqualityPartition)(nil))
+}
+
 var Equality_partition *cljs_core.AFn
+
+type ClojureDataDiff interface {
+	ClojureDataDiff__()
+	Diff_similar_Arity2(b interface{}) interface{}
+}
+
+func init() {
+	cljs_core.RegisterProtocol_("clojure.data/Diff", (*ClojureDataDiff)(nil))
+}
 
 var Diff_similar *cljs_core.AFn
 
@@ -181,21 +199,3 @@ var Diff_similar *cljs_core.AFn
 // * Everything else (including strings!) is treated as
 // an atom and compared for equality.
 var Diff *cljs_core.AFn
-
-type ClojureDataEqualityPartition interface {
-	ClojureDataEqualityPartition__()
-	Equality_partition_Arity1() interface{}
-}
-
-type ClojureDataDiff interface {
-	ClojureDataDiff__()
-	Diff_similar_Arity2(b interface{}) interface{}
-}
-
-func init() {
-	cljs_core.RegisterProtocol_("clojure.data/EqualityPartition", (*ClojureDataEqualityPartition)(nil))
-}
-
-func init() {
-	cljs_core.RegisterProtocol_("clojure.data/Diff", (*ClojureDataDiff)(nil))
-}

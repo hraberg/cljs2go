@@ -605,8 +605,7 @@
 
 (defmethod emit* :def
   [{:keys [name var init env doc export tag form] :as ast}]
-  (let [redefine? (some-> *go-defs* deref (get name))
-        protocol-symbol? (-> form second meta :protocol-symbol)
+  (let [protocol-symbol? (-> form second meta :protocol-symbol)
         declared? (-> form second meta :declared)]
     (when-not (or (*go-skip-def* name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)
@@ -1182,7 +1181,7 @@ func main() {
             (binding [*go-def-vars* true
                       *go-assign-vars* false]
               (emitln "}")
-              (loop [[ast & defs] (vec @*go-defs*) emitted-names #{}]
+              (loop [[ast & defs] @*go-defs* emitted-names #{}]
                 (when ast
                   (if (= :def (:op ast))
                     (let [def-name (:name ast)]
