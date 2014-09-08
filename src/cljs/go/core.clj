@@ -183,31 +183,6 @@
                (let ~(vec (interleave bs gs))
                  ~@body)))))))
 
-(def fast-path-protocols
-  "protocol fqn -> [partition number, bit]"
-  (zipmap (map #(symbol "cljs.core" (core/str %))
-               '[IFn ICounted IEmptyableCollection ICollection IIndexed ASeq ISeq INext
-                 ILookup IAssociative IMap IMapEntry ISet IStack IVector IDeref
-                 IDerefWithTimeout IMeta IWithMeta IReduce IKVReduce IEquiv IHash
-                 ISeqable ISequential IList IRecord IReversible ISorted IPrintWithWriter IWriter
-                 IPrintWithWriter IPending IWatchable IEditableCollection ITransientCollection
-                 ITransientAssociative ITransientMap ITransientVector ITransientSet
-                 IMultiFn IChunkedSeq IChunkedNext IComparable INamed ICloneable IAtom
-                 IReset ISwap])
-          (iterate (fn [[p b]]
-                     (if (core/== 2147483648 b)
-                       [(core/inc p) 1]
-                       [p (core/bit-shift-left b 1)]))
-                   [0 1])))
-
-(def fast-path-protocol-partitions-count
-  "total number of partitions"
-  (let [c (count fast-path-protocols)
-        m (core/mod c 32)]
-    (if (core/zero? m)
-      (core/quot c 32)
-      (core/inc (core/quot c 32)))))
-
 (defmacro str [& xs]
   ;; Eagerly stringify any string or char literals.
   (let [clean-xs (reduce (fn [acc x]
