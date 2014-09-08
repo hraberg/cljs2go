@@ -797,7 +797,7 @@
   (warn-and-update-protocol p type env)
   (let [psym      (resolve p)]
     (cons
-     `(do (~'js* "func (_ *~{})~{}__() {}" ~type-sym ~(symbol (cljs.compiler/go-type-fqn psym))))
+     `(do ^:top-level (~'js* "func (_ *~{})~{}__() {}" ~type-sym ~(symbol (cljs.compiler/go-type-fqn psym))))
      (if (= p 'Object)
        (add-obj-methods type type-sym sigs)
        (concat
@@ -1016,11 +1016,11 @@
                        (apply core/str)))]
     `(do
        (def ~psym) ;; Empty init gets dropped by the compiler, but registered by the analyzer.
-       (~'js* ~(core/str "type ~{} interface{\n" (core/str go-psym "__()\n")
-                         (apply core/str (map method-decl methods)) "}\n")
-              ~go-psym)
-       (~'js* ~(core/str "func init() {\n\t" (cljs.compiler/go-core "RegisterProtocol_") "(~{}, (*~{})(nil))\n}")
-              ~(core/str fq-psym) ~go-psym)
+       ^:top-level (~'js* ~(core/str "type ~{} interface{\n" (core/str go-psym "__()\n")
+                                     (apply core/str (map method-decl methods)) "}\n")
+                          ~go-psym)
+       ^:top-level (~'js* ~(core/str "func init() {\n\t" (cljs.compiler/go-core "RegisterProtocol_") "(~{}, (*~{})(nil))\n}")
+                          ~(core/str fq-psym) ~go-psym)
        ~@(map method methods))))
 
 (defmacro native-satisfies?

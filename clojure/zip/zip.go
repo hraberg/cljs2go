@@ -8,31 +8,13 @@ package zip
 
 import cljs_core "github.com/hraberg/cljs.go/cljs/core"
 
-// Creates a new zipper structure.
-//
-// branch? is a fn that, given a node, returns true if can have
-// children, even if it currently doesn't.
-//
-// children is a fn that, given a branch node, returns a seq of its
-// children.
-//
-// make-node is a fn that, given an existing node and a seq of
-// children, returns a new branch node with the supplied children.
-// root is the root node.
-var Zipper *cljs_core.AFn
-
 func init() {
 	Zipper = func(zipper *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(zipper, func(branch_QMARK_ interface{}, children interface{}, make_node interface{}, root interface{}) interface{} {
 			return cljs_core.With_meta.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{root, nil}, nil}), (&cljs_core.CljsCorePersistentArrayMap{nil, float64(3), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: "zip", Name: "make-node", Fqn: "zip/make-node", X_hash: float64(1103800591)}), make_node, (&cljs_core.CljsCoreKeyword{Ns: "zip", Name: "children", Fqn: "zip/children", X_hash: float64(-940194589)}), children, (&cljs_core.CljsCoreKeyword{Ns: "zip", Name: "branch?", Fqn: "zip/branch?", X_hash: float64(-998880862)}), branch_QMARK_}, nil}))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a zipper for nested sequences, given a root sequence
-var Seq_zip *cljs_core.AFn
-
-func init() {
 	Seq_zip = func(seq_zip *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(seq_zip, func(root interface{}) interface{} {
 			return Zipper.X_invoke_Arity4(cljs_core.Seq_QMARK_, cljs_core.Identity, func(G__1 *cljs_core.AFn) *cljs_core.AFn {
@@ -42,12 +24,7 @@ func init() {
 			}(&cljs_core.AFn{}), root)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a zipper for nested vectors, given a root vector
-var Vector_zip *cljs_core.AFn
-
-func init() {
 	Vector_zip = func(vector_zip *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(vector_zip, func(root interface{}) interface{} {
 			return Zipper.X_invoke_Arity4(cljs_core.Vector_QMARK_, cljs_core.Seq, func(G__2 *cljs_core.AFn) *cljs_core.AFn {
@@ -57,13 +34,7 @@ func init() {
 			}(&cljs_core.AFn{}), root)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a zipper for xml elements (as from xml/parse),
-// given a root element
-var Xml_zip *cljs_core.AFn
-
-func init() {
 	Xml_zip = func(xml_zip *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(xml_zip, func(root interface{}) interface{} {
 			return Zipper.X_invoke_Arity4(cljs_core.Complement.X_invoke_Arity1(cljs_core.String_QMARK_).(cljs_core.CljsCoreIFn), cljs_core.Comp.X_invoke_Arity2(cljs_core.Seq, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "content", Fqn: "content", X_hash: float64(15833224)})).(cljs_core.CljsCoreIFn), func(G__3 *cljs_core.AFn) *cljs_core.AFn {
@@ -81,34 +52,19 @@ func init() {
 			}(&cljs_core.AFn{}), root)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the node at loc
-var Node *cljs_core.AFn
-
-func init() {
 	Node = func(node *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(node, func(loc interface{}) interface{} {
 			return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(0))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns true if the node at loc is a branch
-var Branch_QMARK_ *cljs_core.AFn
-
-func init() {
 	Branch_QMARK_ = func(branch_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(branch_QMARK_, func(loc interface{}) interface{} {
 			return (&cljs_core.CljsCoreKeyword{Ns: "zip", Name: "branch?", Fqn: "zip/branch?", X_hash: float64(-998880862)}).X_invoke_Arity1(cljs_core.Meta.X_invoke_Arity1(loc)).(cljs_core.CljsCoreIFn).X_invoke_Arity1(Node.X_invoke_Arity1(loc))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a seq of the children of node at loc, which must be a branch
-var Children *cljs_core.AFn
-
-func init() {
 	Children = func(children *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(children, func(loc interface{}) interface{} {
 			if cljs_core.Truth_(Branch_QMARK_.X_invoke_Arity1(loc)) {
@@ -118,58 +74,31 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a new branch node, given an existing node and new
-// children. The loc is only used to supply the constructor.
-var Make_node *cljs_core.AFn
-
-func init() {
 	Make_node = func(make_node *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(make_node, func(loc interface{}, node interface{}, children interface{}) interface{} {
 			return (&cljs_core.CljsCoreKeyword{Ns: "zip", Name: "make-node", Fqn: "zip/make-node", X_hash: float64(1103800591)}).X_invoke_Arity1(cljs_core.Meta.X_invoke_Arity1(loc)).(cljs_core.CljsCoreIFn).X_invoke_Arity2(node, children)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a seq of nodes leading to this loc
-var Path *cljs_core.AFn
-
-func init() {
 	Path = func(path *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(path, func(loc interface{}) interface{} {
 			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a seq of the left siblings of this loc
-var Lefts *cljs_core.AFn
-
-func init() {
 	Lefts = func(lefts *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(lefts, func(loc interface{}) interface{} {
 			return cljs_core.Seq.Arity1IQ((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1))))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a seq of the right siblings of this loc
-var Rights *cljs_core.AFn
-
-func init() {
 	Rights = func(rights *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rights, func(loc interface{}) interface{} {
 			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the leftmost child of the node at this loc, or
-// nil if no children
-var Down *cljs_core.AFn
-
-func init() {
 	Down = func(down *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(down, func(loc interface{}) interface{} {
 			if cljs_core.Truth_(Branch_QMARK_.X_invoke_Arity1(loc)) {
@@ -199,13 +128,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the parent of the node at this loc, or nil if at
-// the top
-var Up *cljs_core.AFn
-
-func init() {
 	Up = func(up *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(up, func(loc interface{}) interface{} {
 			{
@@ -252,13 +175,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// zips all the way up and returns the root node, reflecting any
-// changes.
-var Root *cljs_core.AFn
-
-func init() {
 	Root = func(root *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(root, func(loc interface{}) interface{} {
 			for {
@@ -279,12 +196,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the right sibling of the node at this loc, or nil
-var Right *cljs_core.AFn
-
-func init() {
 	Right = func(right *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(right, func(loc interface{}) interface{} {
 			{
@@ -321,12 +233,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the rightmost sibling of the node at this loc, or self
-var Rightmost *cljs_core.AFn
-
-func init() {
 	Rightmost = func(rightmost *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rightmost, func(loc interface{}) interface{} {
 			{
@@ -360,12 +267,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the left sibling of the node at this loc, or nil
-var Left *cljs_core.AFn
-
-func init() {
 	Left = func(left *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(left, func(loc interface{}) interface{} {
 			{
@@ -399,12 +301,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the loc of the leftmost sibling of the node at this loc, or self
-var Leftmost *cljs_core.AFn
-
-func init() {
 	Leftmost = func(leftmost *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(leftmost, func(loc interface{}) interface{} {
 			{
@@ -438,13 +335,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Inserts the item as the left sibling of the node at this loc,
-// without moving
-var Insert_left *cljs_core.AFn
-
-func init() {
 	Insert_left = func(insert_left *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(insert_left, func(loc interface{}, item interface{}) interface{} {
 			{
@@ -469,13 +360,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Inserts the item as the right sibling of the node at this loc,
-// without moving
-var Insert_right *cljs_core.AFn
-
-func init() {
 	Insert_right = func(insert_right *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(insert_right, func(loc interface{}, item interface{}) interface{} {
 			{
@@ -500,12 +385,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Replaces the node at this loc, without moving
-var Replace *cljs_core.AFn
-
-func init() {
 	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(replace, func(loc interface{}, node interface{}) interface{} {
 			{
@@ -517,13 +397,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Replaces the node at this loc with the value of (f node args)
-// @param {...*} var_args
-var Edit *cljs_core.AFn
-
-func init() {
 	Edit = func(edit *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(edit, func(loc_f_args__ ...interface{}) interface{} {
 			var loc = loc_f_args__[0]
@@ -533,38 +407,19 @@ func init() {
 			return Replace.X_invoke_Arity2(loc, cljs_core.Apply.X_invoke_Arity3(f, Node.X_invoke_Arity1(loc), args))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Inserts the item as the leftmost child of the node at this loc,
-// without moving
-var Insert_child *cljs_core.AFn
-
-func init() {
 	Insert_child = func(insert_child *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(insert_child, func(loc interface{}, item interface{}) interface{} {
 			return Replace.X_invoke_Arity2(loc, Make_node.X_invoke_Arity3(loc, Node.X_invoke_Arity1(loc), cljs_core.Cons.X_invoke_Arity2(item, Children.X_invoke_Arity1(loc)).(*cljs_core.CljsCoreCons)))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Inserts the item as the rightmost child of the node at this loc,
-// without moving
-var Append_child *cljs_core.AFn
-
-func init() {
 	Append_child = func(append_child *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(append_child, func(loc interface{}, item interface{}) interface{} {
 			return Replace.X_invoke_Arity2(loc, Make_node.X_invoke_Arity3(loc, Node.X_invoke_Arity1(loc), cljs_core.Concat.X_invoke_Arity2(Children.X_invoke_Arity1(loc), (&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{item}, nil})).(*cljs_core.CljsCoreLazySeq)))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Moves to the next loc in the hierarchy, depth-first. When reaching
-// the end, returns a distinguished loc detectable via end?. If already
-// at the end, stays there.
-var Next *cljs_core.AFn
-
-func init() {
 	Next = func(next *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(next, func(loc interface{}) interface{} {
 			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1))) {
@@ -617,13 +472,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Moves to the previous loc in the hierarchy, depth-first. If already
-// at the root, returns nil.
-var Prev *cljs_core.AFn
-
-func init() {
 	Prev = func(prev *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(prev, func(loc interface{}) interface{} {
 			{
@@ -668,24 +517,13 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns true if loc represents the end of a depth-first walk
-var End_QMARK_ *cljs_core.AFn
-
-func init() {
 	End_QMARK_ = func(end_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(end_QMARK_, func(loc interface{}) interface{} {
 			return cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Removes the node at loc, returning the loc that would have preceded
-// it in a depth-first walk.
-var Remove *cljs_core.AFn
-
-func init() {
 	Remove = func(remove *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(remove, func(loc interface{}) interface{} {
 			{
@@ -752,4 +590,113 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
+
 }
+
+// Returns the loc of the leftmost sibling of the node at this loc, or self
+var Leftmost *cljs_core.AFn
+
+// Returns a new branch node, given an existing node and new
+// children. The loc is only used to supply the constructor.
+var Make_node *cljs_core.AFn
+
+// Returns the loc of the rightmost sibling of the node at this loc, or self
+var Rightmost *cljs_core.AFn
+
+// Inserts the item as the rightmost child of the node at this loc,
+// without moving
+var Append_child *cljs_core.AFn
+
+// zips all the way up and returns the root node, reflecting any
+// changes.
+var Root *cljs_core.AFn
+
+// Returns a seq of the left siblings of this loc
+var Lefts *cljs_core.AFn
+
+// Returns the loc of the leftmost child of the node at this loc, or
+// nil if no children
+var Down *cljs_core.AFn
+
+// Returns a zipper for xml elements (as from xml/parse),
+// given a root element
+var Xml_zip *cljs_core.AFn
+
+// Removes the node at loc, returning the loc that would have preceded
+// it in a depth-first walk.
+var Remove *cljs_core.AFn
+
+// Replaces the node at this loc with the value of (f node args)
+// @param {...*} var_args
+var Edit *cljs_core.AFn
+
+// Returns the node at loc
+var Node *cljs_core.AFn
+
+// Returns a seq of the right siblings of this loc
+var Rights *cljs_core.AFn
+
+// Inserts the item as the leftmost child of the node at this loc,
+// without moving
+var Insert_child *cljs_core.AFn
+
+// Returns a seq of nodes leading to this loc
+var Path *cljs_core.AFn
+
+// Inserts the item as the left sibling of the node at this loc,
+// without moving
+var Insert_left *cljs_core.AFn
+
+// Returns true if the node at loc is a branch
+var Branch_QMARK_ *cljs_core.AFn
+
+// Returns the loc of the left sibling of the node at this loc, or nil
+var Left *cljs_core.AFn
+
+// Returns the loc of the right sibling of the node at this loc, or nil
+var Right *cljs_core.AFn
+
+// Returns the loc of the parent of the node at this loc, or nil if at
+// the top
+var Up *cljs_core.AFn
+
+// Returns a seq of the children of node at loc, which must be a branch
+var Children *cljs_core.AFn
+
+// Inserts the item as the right sibling of the node at this loc,
+// without moving
+var Insert_right *cljs_core.AFn
+
+// Replaces the node at this loc, without moving
+var Replace *cljs_core.AFn
+
+// Returns a zipper for nested vectors, given a root vector
+var Vector_zip *cljs_core.AFn
+
+// Moves to the previous loc in the hierarchy, depth-first. If already
+// at the root, returns nil.
+var Prev *cljs_core.AFn
+
+// Returns a zipper for nested sequences, given a root sequence
+var Seq_zip *cljs_core.AFn
+
+// Returns true if loc represents the end of a depth-first walk
+var End_QMARK_ *cljs_core.AFn
+
+// Moves to the next loc in the hierarchy, depth-first. When reaching
+// the end, returns a distinguished loc detectable via end?. If already
+// at the end, stays there.
+var Next *cljs_core.AFn
+
+// Creates a new zipper structure.
+//
+// branch? is a fn that, given a node, returns true if can have
+// children, even if it currently doesn't.
+//
+// children is a fn that, given a branch node, returns a seq of its
+// children.
+//
+// make-node is a fn that, given an existing node and a seq of
+// children, returns a new branch node with the supplied children.
+// root is the root node.
+var Zipper *cljs_core.AFn

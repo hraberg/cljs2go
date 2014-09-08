@@ -352,6 +352,7 @@
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
             cljs.compiler/*go-line-numbers* true
             *ast-debug* false
+            cljs.compiler/*go-def-vars* true
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
     (doseq [gen [constants special-forms benchmarks]]
       (with-fresh-ids

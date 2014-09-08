@@ -12,42 +12,29 @@ import (
 	"github.com/hraberg/cljs.go/js"
 )
 
-var X_STAR_clojurescript_version_STAR_ = "0.0-2322"
-
-var X_STAR_print_length_STAR_ = float64(-1)
-
-var X_STAR_print_level_STAR_ = float64(-1)
-
-// Set *print-fn* to f.
-var Set_print_fn_BANG_ *AFn
-
 func init() {
+	X_STAR_clojurescript_version_STAR_ = "0.0-2322"
+
+	X_STAR_print_length_STAR_ = float64(-1)
+
+	X_STAR_print_level_STAR_ = float64(-1)
+
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
 			return func() interface{} {
-				var return__807 = f.(*AFn)
-				X_STAR_print_fn_STAR_ = return__807
-				return return__807
+				var return__823 = f.(*AFn)
+				X_STAR_print_fn_STAR_ = return__823
+				return return__823
 			}()
 		})
 	}(&AFn{})
-}
 
-var Symbol_QMARK_ *AFn
-
-func init() {
 	Symbol_QMARK_ = func(symbol_QMARK_ *AFn) *AFn {
 		return Fn(symbol_QMARK_, func(x interface{}) bool {
 			return func() bool { _, instanceof := x.(*CljsCoreSymbol); return instanceof }()
 		})
 	}(&AFn{})
-}
 
-// Takes a fn f and returns a fn that takes the same arguments as f,
-// has the same effects, if any, and returns the opposite truth value.
-var Complement *AFn
-
-func init() {
 	Complement = func(complement *AFn) *AFn {
 		return Fn(complement, func(f interface{}) interface{} {
 			return func(complement_fn *AFn) *AFn {
@@ -67,28 +54,17 @@ func init() {
 			}(&AFn{})
 		})
 	}(&AFn{})
-}
 
-var Quote_string *AFn
-
-func init() {
 	Quote_string = func(quote_string *AFn) *AFn {
 		return Fn(quote_string, func(s interface{}) interface{} {
-			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__808 *AFn) *AFn {
-				return Fn(G__808, func(match interface{}) interface{} {
+			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__824 *AFn) *AFn {
+				return Fn(G__824, func(match interface{}) interface{} {
 					return Char_escapes.(map[string]interface{})[match.(string)]
 				})
 			}(&AFn{})})).(string) + "\"")
 		})
 	}(&AFn{})
-}
 
-// Prefer this to pr-seq, because it makes the printing function
-// configurable, allowing efficient implementations such as appending
-// to a StringBuffer.
-var Pr_writer *AFn
-
-func init() {
 	Pr_writer = func(pr_writer *AFn) *AFn {
 		return Fn(pr_writer, func(obj interface{}, writer interface{}, opts interface{}) interface{} {
 			if Nil_(obj) {
@@ -140,8 +116,8 @@ func init() {
 									} else {
 										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
 											{
-												var normalize = func(G__809 *AFn) *AFn {
-													return Fn(G__809, func(n interface{}, len interface{}) interface{} {
+												var normalize = func(G__825 *AFn) *AFn {
+													return Fn(G__825, func(n interface{}, len interface{}) interface{} {
 														{
 															var ns = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
@@ -181,19 +157,15 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-var Pr_sequential_writer *AFn
-
-func init() {
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
 		return Fn(pr_sequential_writer, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
-				var _STAR_print_level_STAR_811 = X_STAR_print_level_STAR_
-				_ = _STAR_print_level_STAR_811
+				var _STAR_print_level_STAR_827 = X_STAR_print_level_STAR_
+				_ = _STAR_print_level_STAR_827
 				return func() interface{} {
 					defer func() {
-						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_811
+						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_827
 
 					}()
 					{
@@ -214,29 +186,29 @@ func init() {
 							} else {
 							}
 							{
-								var coll_812___1 = Next.Arity1IQ(coll)
-								var n_813 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
-								_, _ = coll_812___1, n_813
+								var coll_828___1 = Next.Arity1IQ(coll)
+								var n_829 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
+								_, _ = coll_828___1, n_829
 								for {
 									if Truth_(func() interface{} {
-										var and__172__auto__ = coll_812___1
+										var and__172__auto__ = coll_828___1
 										_ = and__172__auto__
 										if Truth_(and__172__auto__) {
-											return (Nil_(n_813)) || (!(n_813 == float64(0)))
+											return (Nil_(n_829)) || (!(n_829 == float64(0)))
 										} else {
 											return and__172__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
-										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_812___1), writer, opts)
-										coll_812___1, n_813 = Next.Arity1IQ(coll_812___1), (n_813 - float64(1))
+										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_828___1), writer, opts)
+										coll_828___1, n_829 = Next.Arity1IQ(coll_828___1), (n_829 - float64(1))
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__172__auto__ = Seq.Arity1IQ(coll_812___1)
+											var and__172__auto__ = Seq.Arity1IQ(coll_828___1)
 											_ = and__172__auto__
 											if Truth_(and__172__auto__) {
-												return (n_813 == float64(0))
+												return (n_829 == float64(0))
 											} else {
 												return and__172__auto__
 											}
@@ -256,11 +228,7 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-var Type_ *AFn
-
-func init() {
 	Type_ = func(type_ *AFn) *AFn {
 		return Fn(type_, func(x interface{}) interface{} {
 			if Nil_(x) {
@@ -270,35 +238,19 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-var Type__GT_str *AFn
-
-func init() {
 	Type__GT_str = func(type__GT_str *AFn) *AFn {
 		return Fn(type__GT_str, func(ty interface{}) interface{} {
 			return (`` + Str.X_invoke_Arity1(ty).(string))
 		})
 	}(&AFn{})
-}
 
-// Returns true if n is an integer.
-var Integer_QMARK_ *AFn
-
-func init() {
 	Integer_QMARK_ = func(integer_QMARK_ *AFn) *AFn {
 		return Fn(integer_QMARK_, func(n interface{}) bool {
 			return (reflect.ValueOf(n).Kind() == reflect.Float64) && (!(Truth_(Native_invoke_func.X_invoke_Arity2(js.IsNaN, []interface{}{n})))) && (!(reflect.DeepEqual(n, js.Infinity))) && (n.(float64) == float64(int(n.(float64))))
 		})
 	}(&AFn{})
-}
 
-// Creates a new javascript array.
-// @param {...*} var_args
-// @param {...*} var_args
-var Array *AFn
-
-func init() {
 	Array = func(array *AFn) *AFn {
 		return Fn(array, func(items__ ...interface{}) interface{} {
 			var items = Array_seq.X_invoke_Arity1(items__[0:])
@@ -306,11 +258,7 @@ func init() {
 			return Into_array.Arity1IA(items)
 		})
 	}(&AFn{})
-}
 
-var Make_array *AFn
-
-func init() {
 	Make_array = func(make_array *AFn) *AFn {
 		return Fn(make_array, func(size interface{}) []interface{} {
 			return make_array.Arity2IIA(nil, size)
@@ -318,12 +266,7 @@ func init() {
 			return make([]interface{}, int(size.(float64)))
 		})
 	}(&AFn{})
-}
 
-// Coerce to char
-var Char *AFn
-
-func init() {
 	Char = func(char *AFn) *AFn {
 		return Fn(char, func(x interface{}) interface{} {
 			if reflect.ValueOf(x).Kind() == reflect.Float64 {
@@ -338,29 +281,22 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-var String_hash_cache = map[string]interface{}{}
-var Add_to_string_hash_cache *AFn
+	String_hash_cache = map[string]interface{}{}
 
-func init() {
 	Add_to_string_hash_cache = func(add_to_string_hash_cache *AFn) *AFn {
 		return Fn(add_to_string_hash_cache, func(k interface{}) interface{} {
 			{
 				var h = Hash_string_STAR_.X_invoke_Arity1(k).(float64)
 				_ = h
-				String_hash_cache[k.(string)] = h
+				String_hash_cache.(map[string]interface{})[k.(string)] = h
 				String_hash_cache_count = (String_hash_cache_count + float64(1))
 
 				return h
 			}
 		})
 	}(&AFn{})
-}
 
-var Hash_string *AFn
-
-func init() {
 	Hash_string = func(hash_string *AFn) *AFn {
 		return Fn(hash_string, func(k interface{}) interface{} {
 			if String_hash_cache_count > float64(255) {
@@ -371,7 +307,7 @@ func init() {
 			} else {
 			}
 			{
-				var h = String_hash_cache[k.(string)]
+				var h = String_hash_cache.(map[string]interface{})[k.(string)]
 				_ = h
 				if reflect.ValueOf(h).Kind() == reflect.Float64 {
 					return h
@@ -381,83 +317,36 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-type CljsCoreT350 struct{}
-
-func (_ *CljsCoreT350) CljsCoreObject__() {}
-func (self__ *CljsCoreT350) HasNext() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return false
-	}
-}
-
-func (self__ *CljsCoreT350) Next() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return (&js.Error{"No such element"})
-	}
-}
-
-func (self__ *CljsCoreT350) Remove() interface{} {
-	{
-		var ______1 = self__
-		_ = ______1
-		return (&js.Error{"Unsupported operation"})
-	}
-}
-
-var X__GT_T350 *AFn
-
-func init() {
-	X__GT_T350 = func(__GT_T350 *AFn) *AFn {
-		return Fn(__GT_T350, func() interface{} {
-			return (&CljsCoreT350{})
+	X__GT_T349 = func(__GT_T349 *AFn) *AFn {
+		return Fn(__GT_T349, func() interface{} {
+			return (&CljsCoreT349{})
 		})
 	}(&AFn{})
-}
 
-var Nil_iter *AFn
-
-func init() {
 	Nil_iter = func(nil_iter *AFn) *AFn {
 		return Fn(nil_iter, func() interface{} {
-			return (&CljsCoreT350{})
+			return (&CljsCoreT349{})
 		})
 	}(&AFn{})
-}
 
-// Set *print-fn* to console.log
-var Enable_console_print_BANG_ *AFn
-
-func init() {
 	Enable_console_print_BANG_ = func(enable_console_print_BANG_ *AFn) *AFn {
 		return Fn(enable_console_print_BANG_, func() interface{} {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
-				var return__814 = func(fmt_println *AFn) *AFn {
+				var return__830 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
 				}(&AFn{})
-				X_STAR_print_fn_STAR_ = return__814
-				return return__814
+				X_STAR_print_fn_STAR_ = return__830
+				return return__830
 			}()
 		})
 	}(&AFn{})
-}
 
-// Applies fn f to the argument list formed by prepending intervening arguments to args.
-// First cut.  Not lazy.  Needs to use emitted toApply.
-// @param {...*} var_args
-var Apply *AFn
-
-func init() {
 	Apply = func(apply *AFn) *AFn {
 		return Fn(apply, func(f interface{}, args interface{}) interface{} {
 			return f.(*AFn).Call(Into_array.Arity1IA(args)...)
@@ -483,15 +372,101 @@ func init() {
 			}
 		})
 	}(&AFn{})
-}
 
-// Internal - do not use!
-var Native_satisfies_QMARK_ *AFn
-
-func init() {
 	Native_satisfies_QMARK_ = func(native_satisfies_QMARK_ *AFn) *AFn {
 		return Fn(native_satisfies_QMARK_, func(p interface{}, x interface{}) bool {
 			return value(decorate(x)).Type().Implements(protocols[(`` + Str.X_invoke_Arity1(p).(string))])
 		})
 	}(&AFn{})
+
 }
+
+var Add_to_string_hash_cache *AFn
+
+// Creates a new javascript array.
+// @param {...*} var_args
+// @param {...*} var_args
+var Array *AFn
+
+func (self__ *CljsCoreT349) HasNext() interface{} {
+	{
+		var ______1 = self__
+		_ = ______1
+		return false
+	}
+}
+
+var Make_array *AFn
+
+var Type__GT_str *AFn
+
+func (self__ *CljsCoreT349) Next() interface{} {
+	{
+		var ______1 = self__
+		_ = ______1
+		return (&js.Error{"No such element"})
+	}
+}
+
+var Hash_string *AFn
+
+var Symbol_QMARK_ *AFn
+
+// Takes a fn f and returns a fn that takes the same arguments as f,
+// has the same effects, if any, and returns the opposite truth value.
+var Complement *AFn
+
+// Applies fn f to the argument list formed by prepending intervening arguments to args.
+// First cut.  Not lazy.  Needs to use emitted toApply.
+// @param {...*} var_args
+var Apply *AFn
+
+// Internal - do not use!
+var Native_satisfies_QMARK_ *AFn
+
+// Set *print-fn* to console.log
+var Enable_console_print_BANG_ *AFn
+
+// Prefer this to pr-seq, because it makes the printing function
+// configurable, allowing efficient implementations such as appending
+// to a StringBuffer.
+var Pr_writer *AFn
+
+// Returns true if n is an integer.
+var Integer_QMARK_ *AFn
+
+func (_ *CljsCoreT349) CljsCoreObject__() {}
+
+// Coerce to char
+var Char *AFn
+
+type CljsCoreT349 struct{}
+
+var Nil_iter *AFn
+
+var X_STAR_print_length_STAR_ float64
+
+var X_STAR_print_level_STAR_ float64
+
+var Quote_string *AFn
+
+// Set *print-fn* to f.
+var Set_print_fn_BANG_ *AFn
+
+func (self__ *CljsCoreT349) Remove() interface{} {
+	{
+		var ______1 = self__
+		_ = ______1
+		return (&js.Error{"Unsupported operation"})
+	}
+}
+
+var String_hash_cache interface{}
+
+var X__GT_T349 *AFn
+
+var Type_ *AFn
+
+var Pr_sequential_writer *AFn
+
+var X_STAR_clojurescript_version_STAR_ string

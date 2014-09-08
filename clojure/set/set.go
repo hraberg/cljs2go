@@ -11,8 +11,6 @@ import (
 	cljs_core "github.com/hraberg/cljs.go/cljs/core"
 )
 
-var Bubble_max_key *cljs_core.AFn
-
 func init() {
 	Bubble_max_key = func(bubble_max_key *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(bubble_max_key, func(k interface{}, coll interface{}) interface{} {
@@ -29,13 +27,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Return a set that is the union of the input sets
-// @param {...*} var_args
-var Union *cljs_core.AFn
-
-func init() {
 	Union = func(union *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(union, func() interface{} {
 			return cljs_core.CljsCorePersistentHashSet_EMPTY
@@ -59,13 +51,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Return a set that is the intersection of the input sets
-// @param {...*} var_args
-var Intersection *cljs_core.AFn
-
-func init() {
 	Intersection = func(intersection *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(intersection, func(s1 interface{}) interface{} {
 			return s1
@@ -104,13 +90,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Return a set that is the first set without elements of the remaining sets
-// @param {...*} var_args
-var Difference *cljs_core.AFn
-
-func init() {
 	Difference = func(difference *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(difference, func(s1 interface{}) interface{} {
 			return s1
@@ -136,12 +116,7 @@ func init() {
 			return cljs_core.Reduce.X_invoke_Arity3(difference, s1, cljs_core.Conj.X_invoke_Arity2(sets, s2))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a set of the elements for which pred is true
-var Select_ *cljs_core.AFn
-
-func init() {
 	Select_ = func(select_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(select_, func(pred interface{}, xset interface{}) interface{} {
 			return cljs_core.Reduce.X_invoke_Arity3(func(G__7 *cljs_core.AFn) *cljs_core.AFn {
@@ -155,12 +130,7 @@ func init() {
 			}(&cljs_core.AFn{}), xset, xset)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a rel of the elements of xrel with only the keys in ks
-var Project *cljs_core.AFn
-
-func init() {
 	Project = func(project *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(project, func(xrel interface{}, ks interface{}) interface{} {
 			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__9 *cljs_core.AFn) *cljs_core.AFn {
@@ -170,12 +140,7 @@ func init() {
 			}(&cljs_core.AFn{}), xrel).(*cljs_core.CljsCoreLazySeq))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the map with the keys in kmap renamed to the vals in kmap
-var Rename_keys *cljs_core.AFn
-
-func init() {
 	Rename_keys = func(rename_keys *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rename_keys, func(map_ interface{}, kmap interface{}) interface{} {
 			return cljs_core.Reduce.X_invoke_Arity3(func(G__14 *cljs_core.AFn) *cljs_core.AFn {
@@ -195,12 +160,7 @@ func init() {
 			}(&cljs_core.AFn{}), cljs_core.Apply.X_invoke_Arity3(cljs_core.Dissoc, map_, cljs_core.Keys.X_invoke_Arity1(kmap)), kmap)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a rel of the maps in xrel with the keys in kmap renamed to the vals in kmap
-var Rename *cljs_core.AFn
-
-func init() {
 	Rename = func(rename *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rename, func(xrel interface{}, kmap interface{}) interface{} {
 			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__16 *cljs_core.AFn) *cljs_core.AFn {
@@ -210,13 +170,7 @@ func init() {
 			}(&cljs_core.AFn{}), xrel).(*cljs_core.CljsCoreLazySeq))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns a map of the distinct values of ks in the xrel mapped to a
-// set of the maps in xrel with the corresponding values of ks.
-var Index *cljs_core.AFn
-
-func init() {
 	Index = func(index *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(index, func(xrel interface{}, ks interface{}) interface{} {
 			return cljs_core.Reduce.X_invoke_Arity3(func(G__17 *cljs_core.AFn) *cljs_core.AFn {
@@ -230,12 +184,7 @@ func init() {
 			}(&cljs_core.AFn{}), cljs_core.CljsCorePersistentArrayMap_EMPTY, xrel)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Returns the map with the vals mapped to the keys.
-var Map_invert *cljs_core.AFn
-
-func init() {
 	Map_invert = func(map_invert *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(map_invert, func(m interface{}) interface{} {
 			return cljs_core.Reduce.X_invoke_Arity3(func(G__22 *cljs_core.AFn) *cljs_core.AFn {
@@ -251,14 +200,7 @@ func init() {
 			}(&cljs_core.AFn{}), cljs_core.CljsCorePersistentArrayMap_EMPTY, m)
 		})
 	}(&cljs_core.AFn{})
-}
 
-// When passed 2 rels, returns the rel corresponding to the natural
-// join. When passed an additional keymap, joins on the corresponding
-// keys.
-var Join *cljs_core.AFn
-
-func init() {
 	Join = func(join *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(join, func(xrel interface{}, yrel interface{}) interface{} {
 			if cljs_core.Truth_(func() interface{} {
@@ -346,12 +288,7 @@ func init() {
 			}
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Is set1 a subset of set2?
-var Subset_QMARK_ *cljs_core.AFn
-
-func init() {
 	Subset_QMARK_ = func(subset_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(subset_QMARK_, func(set1 interface{}, set2 interface{}) interface{} {
 			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) <= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__36 *cljs_core.AFn) *cljs_core.AFn {
@@ -361,12 +298,7 @@ func init() {
 			}(&cljs_core.AFn{}), set1))
 		})
 	}(&cljs_core.AFn{})
-}
 
-// Is set1 a superset of set2?
-var Superset_QMARK_ *cljs_core.AFn
-
-func init() {
 	Superset_QMARK_ = func(superset_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(superset_QMARK_, func(set1 interface{}, set2 interface{}) interface{} {
 			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) >= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__38 *cljs_core.AFn) *cljs_core.AFn {
@@ -376,4 +308,49 @@ func init() {
 			}(&cljs_core.AFn{}), set2))
 		})
 	}(&cljs_core.AFn{})
+
 }
+
+// When passed 2 rels, returns the rel corresponding to the natural
+// join. When passed an additional keymap, joins on the corresponding
+// keys.
+var Join *cljs_core.AFn
+
+// Is set1 a superset of set2?
+var Superset_QMARK_ *cljs_core.AFn
+
+// Returns a set of the elements for which pred is true
+var Select_ *cljs_core.AFn
+
+// Returns a rel of the elements of xrel with only the keys in ks
+var Project *cljs_core.AFn
+
+// Return a set that is the first set without elements of the remaining sets
+// @param {...*} var_args
+var Difference *cljs_core.AFn
+
+// Returns a rel of the maps in xrel with the keys in kmap renamed to the vals in kmap
+var Rename *cljs_core.AFn
+
+// Return a set that is the union of the input sets
+// @param {...*} var_args
+var Union *cljs_core.AFn
+
+// Returns the map with the keys in kmap renamed to the vals in kmap
+var Rename_keys *cljs_core.AFn
+
+// Is set1 a subset of set2?
+var Subset_QMARK_ *cljs_core.AFn
+
+// Return a set that is the intersection of the input sets
+// @param {...*} var_args
+var Intersection *cljs_core.AFn
+
+// Returns the map with the vals mapped to the keys.
+var Map_invert *cljs_core.AFn
+
+var Bubble_max_key *cljs_core.AFn
+
+// Returns a map of the distinct values of ks in the xrel mapped to a
+// set of the maps in xrel with the corresponding values of ks.
+var Index *cljs_core.AFn

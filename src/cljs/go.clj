@@ -133,8 +133,9 @@
 (defn maybe-add-overrides [dir]
   (when-let [overrides (io/resource (str (s/replace (str ana/*cljs-ns*) "." "/") "/overrides.cljs"))]
     (let [target (io/file dir "overrides.go")]
-      (cljs.compiler/compile-file (io/file overrides) target {:overrides? true})
-      (goimports-file target))))
+      (binding [cljs.compiler/*go-defs* (atom #{})]
+        (cljs.compiler/compile-file (io/file overrides) target {:overrides? true})
+        (goimports-file target)))))
 
 (defn compile-file
   ([] (compile-file "." (io/resource "cljs/core.cljs")))
@@ -145,7 +146,6 @@
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
                   ana/*cljs-static-fns* true
-                  cljs.compiler/*go-use-init-defs* true
                   cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom #{}))]
           (with-fresh-ids
             (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]

@@ -61,7 +61,8 @@
 (def ^:dynamic *go-protocol-type* nil)
 (def ^:dynamic *go-protocol* nil)
 (def ^:dynamic *go-defs* nil)
-(def ^:dynamic *go-use-init-defs* false)
+(def ^:dynamic *go-def-vars* false)
+(def ^:dynamic *go-assign-vars* true)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 (def ^:dynamic *go-skip-def*
   '#{cljs.core/*clojurescript-version*
@@ -606,44 +607,27 @@
   (or (= 'clj-nil (:tag init)) (nil? init)))
 
 (defmethod emit* :def
-  [{:keys [name var init env doc export tag form]}]
+  [{:keys [name var init env doc export tag form] :as ast}]
   (let [redefine? (some-> *go-defs* deref (get name))
         protocol-symbol? (-> form second meta :protocol-symbol)
-        declared? (-> form second meta :declared)
-        init? (and *go-use-init-defs* (= 'function tag))]
+        declared? (-> form second meta :declared)]
     (when-not (or (*go-skip-def* name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)
             def-type (if (= 'function tag)
                        (str "*" (go-core "AFn"))
                        (go-type tag))]
-        (some-> *go-defs* (swap! conj name))
-        (when (and init? (not redefine?))
+        (some-> *go-defs* (swap! conj ast))
+        (when *go-def-vars*
           (emit-comment doc (:jsdoc init))
-          (emits "var "
-                 mname
-                 " " (let [tag (:tag init)]
-                       def-type)))
-        (emitln)
-        (if (and (or init? redefine?) init)
-          (emitln "func init() {")
-          (emit-comment doc (:jsdoc init)))
-        (when (or (not init?) (and init init?))
-          (emits (when-not (or init? redefine?) "var ")
-                 mname
-                 (when (and (untyped-nil-needs-type? init)
-                            (not (or init? redefine?)))
-                   (str " " def-type))
-                 (when-let [init (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag))]
-                   (str " = " init))))
+          (emits "var " mname " " def-type))
+        (if-let [init (and *go-assign-vars*
+                           (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag)))]
+          (emitln (when (not *go-def-vars*) mname) " = " init)
+          (emitln))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
-        (when-not (= :expr (:context env)) (emitln))
-        (when (and (or init? redefine?) init)
-          (emitln "}"))
-        (when-let [export (and export (-> export munge go-short-name go-public))]
-          (when-not (= export mname)
-            (emitln "var "export  " = " mname)))))))
+        (when-not (= :expr (:context env)) (emitln))))))
 
 (defn typed-params [params]
   (for [param params]
@@ -708,41 +692,43 @@
       (emits "}"))))
 
 (defmethod emit* :fn
-  [{:keys [name env methods protocol-impl max-fixed-arity variadic recur-frames loop-lets]}]
+  [{:keys [name env methods protocol-impl max-fixed-arity variadic recur-frames loop-lets] :as ast}]
   ;;fn statements get erased, serve no purpose and can pollute scope if named
   (when (or (not= :statement (:context env)) protocol-impl)
-    (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
-                                   (mapcat :params loop-lets))
-                           seq)]
-      (when loop-locals
-        (when (= :return (:context env))
-          (emits "return "))
-        (emitln "func(" (comma-sep (typed-params loop-locals)) ") *" (go-core "AFn") " {")
-        (when-not (= :return (:context env))
-          (emits "return ")))
-      (let [name (or name (gensym))
-            mname (munge name)]
-        (when (= :return (:context env))
-          (emits "return "))
-        (when-not protocol-impl
-          (emitln "func(" mname " *" (go-core "AFn") ") *" (go-core "AFn") " {")
-          (emits "return " (go-core "Fn") "(" mname ", "))
-        (loop [[meth & methods] methods]
-          (let [meth (assoc-in meth [:env :context] :expr)]
-            (cond
-             protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
-             (:variadic meth) (emit-variadic-fn-method meth)
-             :else (emit-fn-method meth (:ret-tag name))))
-          (when methods
-            (emits ", ")
-            (recur methods)))
-        (if protocol-impl
-          (emitln)
-          (do
-            (emitln ")")
-            (emits "}(&" (go-core "AFn") "{})"))))
-      (when loop-locals
-        (emits "}(" (comma-sep loop-locals) ")")))))
+    (if (and protocol-impl (not *go-def-vars*))
+      (swap! *go-defs* conj ast)
+      (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
+                                     (mapcat :params loop-lets))
+                             seq)]
+        (when loop-locals
+          (when (= :return (:context env))
+            (emits "return "))
+          (emitln "func(" (comma-sep (typed-params loop-locals)) ") *" (go-core "AFn") " {")
+          (when-not (= :return (:context env))
+            (emits "return ")))
+        (let [name (or name (gensym))
+              mname (munge name)]
+          (when (= :return (:context env))
+            (emits "return "))
+          (when-not protocol-impl
+            (emitln "func(" mname " *" (go-core "AFn") ") *" (go-core "AFn") " {")
+            (emits "return " (go-core "Fn") "(" mname ", "))
+          (loop [[meth & methods] methods]
+            (let [meth (assoc-in meth [:env :context] :expr)]
+              (cond
+               protocol-impl (emit-protocol-method protocol-impl name meth (:ret-tag name))
+               (:variadic meth) (emit-variadic-fn-method meth)
+               :else (emit-fn-method meth (:ret-tag name))))
+            (when methods
+              (emits ", ")
+              (recur methods)))
+          (if protocol-impl
+            (emitln)
+            (do
+              (emitln ")")
+              (emits "}(&" (go-core "AFn") "{})"))))
+        (when loop-locals
+          (emits "}(" (comma-sep loop-locals) ")"))))))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
@@ -974,7 +960,7 @@
 ))))
 
 (defmethod emit* :set!
-  [{:keys [target val env form]}]
+  [{:keys [target val env form] :as ast}]
   (when-not (go-skip-set! form)
     (emit-wrap env
       (let [return (when (#{:expr :return} (:context env))
@@ -999,10 +985,11 @@
                       ","  val ")")
               (when-not (= :statement (:context env))
                 (emitln (go-unbox-no-emit (:tag val) nil))))
-            (do
-              (when (and static? (= :statement (:context env)))
-                (emits "var "))
-              (emitln target " = " val)))
+            (if (and static? (not *go-def-vars*))
+              (swap! *go-defs* conj ast)
+              (do (when (and static? (= :statement (:context env)))
+                    (emits "var "))
+                  (emitln target " = " val))))
           (when return
             (emitln " return " return)
             (emits "}()")))))))
@@ -1041,14 +1028,18 @@
     (str (go-public (munge field)) " " (-> field meta :tag go-type))))
 
 (defmethod emit* :deftype*
-  [{:keys [t fields pmasks]}]
-  (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields)) " }"))
+  [{:keys [t fields pmasks] :as ast}]
+  (if *go-def-vars*
+    (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields)) " }")
+    (swap! *go-defs* conj ast)))
 
 (defmethod emit* :defrecord*
-  [{:keys [t fields pmasks]}]
-  (let [fields (map (comp go-public munge) fields)]
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields))
-            "\nX__meta interface{}\nX__extmap interface{} }")))
+  [{:keys [t fields pmasks] :as ast}]
+  (if *go-def-vars*
+    (let [fields (map (comp go-public munge) fields)]
+      (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields))
+              "\nX__meta interface{}\nX__extmap interface{} }"))
+    (swap! *go-defs* conj ast)))
 
 (defmethod emit* :dot
   [{:keys [target field method args env] :as dot}]
@@ -1091,35 +1082,37 @@
                      ")"))))))))
 
 (defmethod emit* :js
-  [{:keys [env code js-op segs args numeric tag]}]
-  (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
-        box? (= 'removed-leaf? (-> args first :info :name)) ;; horrific hack to cancel out another.
-        args (if box?
-               args
-               (case js-op
-                 cljs.core/make-array [(go-unbox 'number (first args))]
-                 cljs.core/alength [(go-unbox 'array (first args))]
-                 cljs.core/aget (cons (go-unbox 'array (first args))
-                                      (map (partial go-unbox 'number) (rest args)))
-                 cljs.core/aset (concat [(go-unbox 'array (first args))]
-                                        (map (partial go-unbox 'number) (butlast (rest args)))
-                                        [(last args)])
-                 args))]
-    (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
-                                *go-return-tag*)]
-      (emit-wrap env
-        (when aset-return?
-          (emits "func() " (go-type (:tag (last args))) "{ "))
-        (cond
-         code (emits code)
-         box? (emits (go-unbox 'cljs.core/Box (first args))
-                     ".Val" (when (= 'cljs.core/aset js-op)
-                              (str " = " (emit-str (second args)))))
-         :else (emits (interleave (concat segs (repeat nil))
-                                  (map (if numeric (partial go-unbox 'number) identity)
-                                       (concat args [nil])))))
-        (when aset-return?
-          (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()"))))))
+  [{:keys [env code js-op segs args numeric tag form] :as ast}]
+  (if (and (-> form meta :top-level) (not *go-def-vars*))
+    (swap! *go-defs* conj ast)
+    (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
+          box? (= 'removed-leaf? (-> args first :info :name)) ;; horrific hack to cancel out another.
+          args (if box?
+                 args
+                 (case js-op
+                   cljs.core/make-array [(go-unbox 'number (first args))]
+                   cljs.core/alength [(go-unbox 'array (first args))]
+                   cljs.core/aget (cons (go-unbox 'array (first args))
+                                        (map (partial go-unbox 'number) (rest args)))
+                   cljs.core/aset (concat [(go-unbox 'array (first args))]
+                                          (map (partial go-unbox 'number) (butlast (rest args)))
+                                          [(last args)])
+                   args))]
+      (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
+                                  *go-return-tag*)]
+        (emit-wrap env
+                   (when aset-return?
+                     (emits "func() " (go-type (:tag (last args))) "{ "))
+                   (cond
+                    code (emits code)
+                    box? (emits (go-unbox 'cljs.core/Box (first args))
+                                ".Val" (when (= 'cljs.core/aset js-op)
+                                         (str " = " (emit-str (second args)))))
+                    :else (emits (interleave (concat segs (repeat nil))
+                                             (map (if numeric (partial go-unbox 'number) identity)
+                                                  (concat args [nil])))))
+                   (when aset-return?
+                     (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()")))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a
@@ -1172,7 +1165,7 @@ func main() {
 
 (defn compile-file*
   ([src dest] (compile-file* src dest nil))
-  ([src dest opts]
+  ([src dest {:keys [ns-ast] :as opts}]
     (env/ensure
       (with-core-cljs
         (with-open [out ^java.io.Writer (io/make-writer dest {})]
@@ -1182,18 +1175,34 @@ func main() {
                     reader/*alias-map* (or reader/*alias-map* {})
                     *go-line-numbers* (boolean (:source-map opts))]
             (emitln "// Compiled by ClojureScript to Go " (clojurescript-version))
+            (when ns-ast
+              (emitln ns-ast))
+            (emitln "func init() {")
             (loop [forms (ana/forms-seq src)
-                   ns-name nil
-                   deps nil]
+                   ns-name (:name ns-ast)
+                   deps (merge (:uses ns-ast) (:requires ns-ast))]
               (if (seq forms)
                 (let [env (ana/empty-env)
                       ast (ana/analyze env (first forms) nil opts)]
-                  (do (emit ast)
-                    (if (= (:op ast) :ns)
-                      (recur (rest forms) (:name ast) (merge (:uses ast) (:requires ast)))
-                      (recur (rest forms) ns-name deps))))
-                (when (get-in (ana/get-namespace ana/*cljs-ns*) [:defs '-main])
-                  (spit (io/file (.getParentFile ^File dest) "main.go") main-src))))))))))
+                  (do (when-not (= ns-ast ast)
+                        (emit ast))
+                      (recur (rest forms) ns-name deps)))
+                (do
+                  (emitln "}")
+                  (binding [*go-def-vars* true
+                            *go-assign-vars* false]
+                    (loop [[ast & defs] (vec @*go-defs*) emitted-names #{}]
+                      (when ast
+                        (if (= :def (:op ast))
+                          (do
+                            (when-not (emitted-names (:name ast))
+                              (emitln ast))
+                            (when (= "-main" (and (= :def (:op ast)) (some-> ast :name name)))
+                              (spit (io/file (.getParentFile ^File dest) "main.go") main-src))
+                            (recur defs (conj emitted-names (:name ast))))
+                          (do
+                            (emitln ast)
+                            (recur defs emitted-names)))))))))))))))
 
 (defn compiled-by-version [^File f]
   (with-open [reader (io/reader f)]
@@ -1238,7 +1247,8 @@ func main() {
                                          (get-in @env/*compiler* [:opts :emit-constants])
                                          (conj 'constants-table)))
                            :file dest
-                           :source-file src}
+                           :source-file src
+                           :ns-ast ast}
                           (when (and dest (.exists ^File dest))
                             {:lines (with-open [reader (io/reader dest)]
                                       (-> reader line-seq count))})))
@@ -1271,13 +1281,13 @@ func main() {
           dest-file (io/file dest)]
       (if (.exists src-file)
         (try
-          (let [{ns :ns :as ns-info} (parse-ns src-file dest-file opts)]
+          (let [{:keys [ns ns-ast] :as ns-info} (parse-ns src-file dest-file opts)]
             (if (requires-compilation? src-file dest-file opts)
               (do (mkdirs dest-file)
                   (when (and (contains? (::ana/namespaces @env/*compiler*) ns)
                              (not (:overrides? opts)))
                   (swap! env/*compiler* update-in [::ana/namespaces] dissoc ns))
-                (compile-file* src-file dest-file opts)
+                  (compile-file* src-file dest-file (assoc opts :ns-ast ns-ast))
                 ns-info)
               (do
                 (when-not (contains? (::ana/namespaces @env/*compiler*) ns)

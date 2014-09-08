@@ -152,7 +152,7 @@
 
 (defn add-to-string-hash-cache [k]
   (let [h (hash-string* k)]
-    (js* "~{}[~{}.(string)] = ~{}" string-hash-cache k h)
+    (js* "~{}.(map[string]interface{})[~{}.(string)] = ~{}" string-hash-cache k h)
     (set! string-hash-cache-count (inc string-hash-cache-count))
     h))
 
@@ -160,20 +160,20 @@
   (when (> string-hash-cache-count 255)
     (set! string-hash-cache (js* "map[string]interface{}{}"))
     (set! string-hash-cache-count 0))
-  (let [h (js* "~{}[~{}.(string)]" string-hash-cache k)]
+  (let [h (js* "~{}.(map[string]interface{})[~{}.(string)]" string-hash-cache k)]
     (if (number? h)
       h
       (add-to-string-hash-cache k))))
 
 ;; no reify support yet, needs to defer the anonymous deftype to toplevel, will fix later.
-(deftype T350 []
+(deftype T349 []
   Object
   (hasNext [_] false)
   (next [_] (js/Error. "No such element"))
   (remove [_] (js/Error. "Unsupported operation")))
 
 (defn nil-iter []
-  (T350.))
+  (T349.))
 
 (defn enable-console-print!
   "Set *print-fn* to console.log"
