@@ -1157,8 +1157,7 @@
 (defn url-path [^File f]
   (.getPath (.toURL (.toURI f))))
 
-(def main-src "
-// +build ignore
+(def main-src "// +build ignore
 
 package main
 
