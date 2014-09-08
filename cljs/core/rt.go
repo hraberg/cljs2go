@@ -191,6 +191,8 @@ type AFn struct {
 	Arity5IIBIII
 	Arity5BIIBII
 	Arity6IIIBIII
+
+	Meta CljsCoreIMap
 }
 
 func throwArity(f, arity interface{}) interface{} {
@@ -201,6 +203,35 @@ func throwArity(f, arity interface{}) interface{} {
 }
 
 func (this *AFn) CljsCoreIFn__() {
+}
+
+func (this *AFn) CljsCoreFn__() {
+}
+
+func (_ *AFn) CljsCoreICloneable__() {}
+
+func (this *AFn) X_clone_Arity1() interface{} {
+	clone := &AFn{}
+	vt := value(this)
+	vc := value(clone)
+	for i := 0; i < vt.Type().NumField(); i++ {
+		vc.Field(i).Set(vt.Field(i))
+	}
+	return clone
+}
+
+func (_ *AFn) CljsCoreIMeta__() {}
+
+func (this *AFn) X_meta_Arity1() interface{} {
+	return this.Meta
+}
+
+func (_ *AFn) CljsCoreIWithMeta__() {}
+
+func (this *AFn) X_with_meta_Arity2(meta interface{}) interface{} {
+	clone := this.X_clone_Arity1().(*AFn)
+	clone.Meta = meta.(CljsCoreIMap)
+	return clone
 }
 
 func (this *AFn) isVariadic() bool {
