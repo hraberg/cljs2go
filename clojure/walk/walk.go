@@ -67,17 +67,15 @@ func init() {
 					})
 				}(&cljs_core.AFn{})
 				_ = f
-				return Postwalk.X_invoke_Arity2(func(f cljs_core.CljsCoreIFn) *cljs_core.AFn {
-					return func(G__6 *cljs_core.AFn) *cljs_core.AFn {
-						return cljs_core.Fn(G__6, func(x interface{}) interface{} {
-							if cljs_core.Map_QMARK_.Arity1IB(x) {
-								return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
-							} else {
-								return x
-							}
-						})
-					}(&cljs_core.AFn{})
-				}(f), m)
+				return Postwalk.X_invoke_Arity2(func(G__6 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__6, func(x interface{}) interface{} {
+						if cljs_core.Map_QMARK_.Arity1IB(x) {
+							return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
+						} else {
+							return x
+						}
+					})
+				}(&cljs_core.AFn{}, f), m)
 			}
 		})
 	}(&cljs_core.AFn{})
@@ -101,17 +99,15 @@ func init() {
 					})
 				}(&cljs_core.AFn{})
 				_ = f
-				return Postwalk.X_invoke_Arity2(func(f cljs_core.CljsCoreIFn) *cljs_core.AFn {
-					return func(G__12 *cljs_core.AFn) *cljs_core.AFn {
-						return cljs_core.Fn(G__12, func(x interface{}) interface{} {
-							if cljs_core.Map_QMARK_.Arity1IB(x) {
-								return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
-							} else {
-								return x
-							}
-						})
-					}(&cljs_core.AFn{})
-				}(f), m)
+				return Postwalk.X_invoke_Arity2(func(G__12 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__12, func(x interface{}) interface{} {
+						if cljs_core.Map_QMARK_.Arity1IB(x) {
+							return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
+						} else {
+							return x
+						}
+					})
+				}(&cljs_core.AFn{}, f), m)
 			}
 		})
 	}(&cljs_core.AFn{})

@@ -696,18 +696,12 @@
       (let [loop-locals (->> (concat (mapcat :params (filter #(and % @(:flag %)) recur-frames))
                                      (mapcat :params loop-lets))
                              seq)]
-        (when loop-locals
-          (when (= :return (:context env))
-            (emits "return "))
-          (emitln "func(" (comma-sep (typed-params loop-locals)) ") *" (go-core "AFn") " {")
-          (when-not (= :return (:context env))
-            (emits "return ")))
         (let [name (or name (gensym))
               mname (munge name)]
           (when (= :return (:context env))
             (emits "return "))
           (when-not protocol-impl
-            (emitln "func(" mname " *" (go-core "AFn") ") *" (go-core "AFn") " {")
+            (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn")) (typed-params loop-locals))) ") *" (go-core "AFn") " {")
             (emits "return " (go-core "Fn") "(" mname ", "))
           (loop [[meth & methods] methods]
             (let [meth (assoc-in meth [:env :context] :expr)]
@@ -722,9 +716,7 @@
             (emitln)
             (do
               (emitln ")")
-              (emits "}(&" (go-core "AFn") "{})"))))
-        (when loop-locals
-          (emits "}(" (comma-sep loop-locals) ")"))))))
+              (emits "}(" (comma-sep (cons (str "&" (go-core "AFn") "{}") loop-locals)) ")"))))))))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
