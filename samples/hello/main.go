@@ -1,10 +1,11 @@
+
 // +build ignore
 
 package main
 
-import . "github.com/hraberg/cljs.go/cljs/core"
-import _ "."
+import cljs_core `github.com/hraberg/cljs.go/cljs/core`
+import _ `.`
 
 func main() {
-	Main_()
+	cljs_core.Main_()
 }

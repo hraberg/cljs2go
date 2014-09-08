@@ -1,12 +1,21 @@
+// Compiled by ClojureScript to Go 0.0-2322
+// hello
+
 package hello
 
-import . "github.com/hraberg/cljs.go/cljs/core"
+import cljs_core "github.com/hraberg/cljs.go/cljs/core"
 
-var _main = Fn(func(args ...interface{}) interface{} {
-	Println.X_invoke_ArityVariadic("Hello World")
-	return nil
-})
+// @param {...*} var_args
+var X_main *cljs_core.AFn
 
 func init() {
-	X_STAR_main_cli_fn_STAR_ = _main
+	X_main = func(_main *cljs_core.AFn) *cljs_core.AFn {
+		return cljs_core.Fn(_main, func(args__ ...interface{}) interface{} {
+			var args = cljs_core.Array_seq.X_invoke_Arity1(args__[0:])
+			_ = args
+			return cljs_core.Println.X_invoke_ArityVariadic("Hello World")
+		})
+	}(&cljs_core.AFn{})
+
+	cljs_core.X_STAR_main_cli_fn_STAR_ = X_main
 }

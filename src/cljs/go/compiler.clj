@@ -745,9 +745,12 @@
         (emits "}(" (comma-sep loop-locals) ")"))))
   (when (= '-main (:name name))
     (emitln)
-    (emitln"func init() {")
-    (emitln (go-core "STAR_main_cli_fn_STAR_") " = _main")
-    (emitln "}")))
+    (when-not *go-use-init-defs*
+      (emitln"func init() {"))
+    (emitln)
+    (emits (go-core "X_STAR_main_cli_fn_STAR_") " = X_main")
+    (when-not *go-use-init-defs*
+      (emitln"}"))))
 
 (defmethod emit* :do
   [{:keys [statements ret env]}]
@@ -1162,6 +1165,19 @@
 (defn url-path [^File f]
   (.getPath (.toURL (.toURI f))))
 
+(def main-src "
+// +build ignore
+
+package main
+
+import cljs_core `github.com/hraberg/cljs.go/cljs/core`
+import _ `.`
+
+func main() {
+	cljs_core.Main_()
+}
+")
+
 (defn compile-file*
   ([src dest] (compile-file* src dest nil))
   ([src dest opts]
@@ -1183,7 +1199,9 @@
                   (do (emit ast)
                     (if (= (:op ast) :ns)
                       (recur (rest forms) (:name ast) (merge (:uses ast) (:requires ast)))
-                      (recur (rest forms) ns-name deps))))))))))))
+                      (recur (rest forms) ns-name deps))))
+                (when (get-in (ana/get-namespace ana/*cljs-ns*) [:defs '-main])
+                  (spit (io/file (.getParentFile ^File dest) "main.go") main-src))))))))))
 
 (defn compiled-by-version [^File f]
   (with-open [reader (io/reader f)]
