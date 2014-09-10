@@ -5,6 +5,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 
 	"github.com/hraberg/cljs.go/goog"
@@ -1489,72 +1490,6 @@ func init() {
 						}
 					}
 				}
-			}
-		})
-	}(&AFn{})
-
-	Get = func(get *AFn) *AFn {
-		return Fn(get, func(o interface{}, k interface{}) interface{} {
-			if Nil_(o) {
-				return nil
-			} else {
-				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
-					return o.(CljsCoreILookup).X_lookup_Arity2(k)
-				} else {
-					if reflect.ValueOf(o).Kind() == reflect.Slice {
-						if k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64) {
-							return (o.([]interface{})[int(k.(float64))])
-						} else {
-							return nil
-						}
-					} else {
-						if reflect.ValueOf(o).Kind() == reflect.String {
-							if k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64) {
-								return (o.([]interface{})[int(k.(float64))])
-							} else {
-								return nil
-							}
-						} else {
-							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
-								return o.(CljsCoreILookup).X_lookup_Arity2(k)
-							} else {
-								return nil
-
-							}
-						}
-					}
-				}
-			}
-		}, func(o interface{}, k interface{}, not_found interface{}) interface{} {
-			if !(Nil_(o)) {
-				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
-					return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
-				} else {
-					if reflect.ValueOf(o).Kind() == reflect.Slice {
-						if k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64) {
-							return (o.([]interface{})[int(k.(float64))])
-						} else {
-							return not_found
-						}
-					} else {
-						if reflect.ValueOf(o).Kind() == reflect.String {
-							if k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64) {
-								return (o.([]interface{})[int(k.(float64))])
-							} else {
-								return not_found
-							}
-						} else {
-							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
-								return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
-							} else {
-								return not_found
-
-							}
-						}
-					}
-				}
-			} else {
-				return not_found
 			}
 		})
 	}(&AFn{})
@@ -3266,7 +3201,7 @@ func init() {
 
 	Hash_keyword = func(hash_keyword *AFn) *AFn {
 		return Fn(hash_keyword, func(k interface{}) interface{} {
-			return float64(int((Hash_symbol.X_invoke_Arity1(k).(float64) + float64(2654435769))) | int(float64(0)))
+			return math.Trunc((Hash_symbol.X_invoke_Arity1(k).(float64) + float64(2654435769)))
 		})
 	}(&AFn{})
 
@@ -11963,9 +11898,6 @@ var Linear_traversal_nth *AFn
 // also works for strings, arrays, regex Matchers and Lists, and,
 // in O(n) time, for sequences.
 var Nth *AFn
-
-// Returns the value mapped to key, not-found or nil if key not present.
-var Get *AFn
 
 // assoc[iate]. When applied to a map, returns a new map of the
 // same (hashed/sorted) type, that contains the mapping of key(s) to

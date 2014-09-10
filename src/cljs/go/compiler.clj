@@ -85,6 +85,7 @@
      cljs.core/integer?
      cljs.core/char
      cljs.core/apply
+     cljs.core/get
      cljs.core/truth_
      cljs.core/is_proto_
      cljs.core/type

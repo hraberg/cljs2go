@@ -43,6 +43,48 @@
          (= y (first more)))
        false)))
 
+(defn get
+  "Returns the value mapped to key, not-found or nil if key not present."
+  ([o k]
+    (when-not (nil? o)
+      (cond
+        (implements? ILookup o)
+        (-lookup ^not-native o k)
+
+        (array? o)
+        (when (and (number? k) (< k (.-length o)))
+          (aget o k))
+
+        (string? o)
+        (when (and (number? k) (< k (.-length o)))
+          (aget ^string (js* "~{}.(string)" o) k))
+
+        (native-satisfies? ILookup o)
+        (-lookup o k)
+
+        :else nil)))
+  ([o k not-found]
+    (if-not (nil? o)
+      (cond
+        (implements? ILookup o)
+        (-lookup ^not-native o k not-found)
+
+        (array? o)
+        (if (and (number? k) (< k (.-length o)))
+          (aget o k)
+          not-found)
+
+        (string? o)
+        (if (and (number? k) (< k (.-length o)))
+          (aget ^string (js* "~{}.(string)" o) k)
+          not-found)
+
+        (native-satisfies? ILookup o)
+        (-lookup o k not-found)
+
+        :else not-found)
+      not-found)))
+
 (defn ^:private quote-string
   [s]
   (str \"
@@ -198,17 +240,17 @@
   "Applies fn f to the argument list formed by prepending intervening arguments to args.
   First cut.  Not lazy.  Needs to use emitted toApply."
   ([f args]
-     (js* "~{}.(*AFn).Call(~{}...)" f (into-array args)))
+     (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array args)))
   ([f x args]
-     (js* "~{}.(*AFn).Call(append([]interface{}{~{}}, ~{}...)...)" f x (into-array args)))
+     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}}, ~{}...)...)" f x (into-array args)))
   ([f x y args]
-     (js* "~{}.(*AFn).Call(append([]interface{}{~{}, ~{}}, ~{}...)...)" f x y (into-array args)))
+     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}}, ~{}...)...)" f x y (into-array args)))
   ([f x y z args]
-     (js* "~{}.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}}, ~{}...)...)" f x y z (into-array args)))
+     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}, ~{}}, ~{}...)...)" f x y z (into-array args)))
   ([f a b c d & args]
      (let [arr (into-array (butlast args))
            varargs (into-array (last args))]
-       (js* "~{}.(*AFn).Call(append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...)...)...)" f a b c d arr varargs))))
+       (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...)...)...)" f a b c d arr varargs))))
 
 (defn ^boolean native-satisfies?
   "Internal - do not use!"

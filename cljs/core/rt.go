@@ -237,7 +237,7 @@ func (this *AFn) isVariadic() bool {
 
 func (this *AFn) Call(args ...interface{}) interface{} {
 	if this == X_invoke {
-		return args[0].(*AFn).Call(args[1:]...)
+		return Call_(args[0].(CljsCoreIFn), args[1:]...)
 	}
 	argc := len(args)
 	if argc > this.MaxFixedArity && this.isVariadic() {
@@ -348,6 +348,58 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 		return this.Arity19(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18])
 	case 20:
 		return this.Arity20(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18], args[19])
+	}
+	return throwArity(nil, argc)
+}
+
+func Call_(this CljsCoreIFn, args ...interface{}) interface{} {
+	if afn, ok := this.(*AFn); ok {
+		return afn.Call(args...)
+	}
+	argc := len(args)
+	switch argc {
+	case 0:
+		return this.X_invoke_Arity0()
+	case 1:
+		return this.X_invoke_Arity1(args[0])
+	case 2:
+		return this.X_invoke_Arity2(args[0], args[1])
+	case 3:
+		return this.X_invoke_Arity3(args[0], args[1], args[2])
+	case 4:
+		return this.X_invoke_Arity4(args[0], args[1], args[2], args[3])
+	case 5:
+		return this.X_invoke_Arity5(args[0], args[1], args[2], args[3], args[4])
+	case 6:
+		return this.X_invoke_Arity6(args[0], args[1], args[2], args[3], args[4], args[5])
+	case 7:
+		return this.X_invoke_Arity7(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+	case 8:
+		return this.X_invoke_Arity8(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+	case 9:
+		return this.X_invoke_Arity9(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+	case 10:
+		return this.X_invoke_Arity10(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
+	case 11:
+		return this.X_invoke_Arity11(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10])
+	case 12:
+		return this.X_invoke_Arity12(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11])
+	case 13:
+		return this.X_invoke_Arity13(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12])
+	case 14:
+		return this.X_invoke_Arity14(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13])
+	case 15:
+		return this.X_invoke_Arity15(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14])
+	case 16:
+		return this.X_invoke_Arity16(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15])
+	case 17:
+		return this.X_invoke_Arity17(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16])
+	case 18:
+		return this.X_invoke_Arity18(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17])
+	case 19:
+		return this.X_invoke_Arity19(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18])
+	case 20:
+		return this.X_invoke_Arity20(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18], args[19])
 	}
 	return throwArity(nil, argc)
 }

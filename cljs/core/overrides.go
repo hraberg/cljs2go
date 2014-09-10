@@ -96,6 +96,72 @@ func init() {
 		})
 	}(&AFn{})
 
+	Get = func(get *AFn) *AFn {
+		return Fn(get, func(o interface{}, k interface{}) interface{} {
+			if Nil_(o) {
+				return nil
+			} else {
+				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+					return o.(CljsCoreILookup).X_lookup_Arity2(k)
+				} else {
+					if reflect.ValueOf(o).Kind() == reflect.Slice {
+						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+							return (o.([]interface{})[int(k.(float64))])
+						} else {
+							return nil
+						}
+					} else {
+						if reflect.ValueOf(o).Kind() == reflect.String {
+							if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+								return (o.(string)[int(k.(float64))])
+							} else {
+								return nil
+							}
+						} else {
+							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+								return o.(CljsCoreILookup).X_lookup_Arity2(k)
+							} else {
+								return nil
+
+							}
+						}
+					}
+				}
+			}
+		}, func(o interface{}, k interface{}, not_found interface{}) interface{} {
+			if !(Nil_(o)) {
+				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+					return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
+				} else {
+					if reflect.ValueOf(o).Kind() == reflect.Slice {
+						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+							return (o.([]interface{})[int(k.(float64))])
+						} else {
+							return not_found
+						}
+					} else {
+						if reflect.ValueOf(o).Kind() == reflect.String {
+							if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+								return (o.(string)[int(k.(float64))])
+							} else {
+								return not_found
+							}
+						} else {
+							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+								return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
+							} else {
+								return not_found
+
+							}
+						}
+					}
+				}
+			} else {
+				return not_found
+			}
+		})
+	}(&AFn{})
+
 	Quote_string = func(quote_string *AFn) *AFn {
 		return Fn(quote_string, func(s interface{}) interface{} {
 			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__824 *AFn) *AFn {
@@ -378,13 +444,13 @@ func init() {
 
 	Apply = func(apply *AFn) *AFn {
 		return Fn(apply, func(f interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(Into_array.Arity1IA(args)...)
+			return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(args)...)
 		}, func(f interface{}, x interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x}, Into_array.Arity1IA(args)...)...)
+			return Call_(f.(CljsCoreIFn), append([]interface{}{x}, Into_array.Arity1IA(args)...)...)
 		}, func(f interface{}, x interface{}, y interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x, y}, Into_array.Arity1IA(args)...)...)
+			return Call_(f.(CljsCoreIFn), append([]interface{}{x, y}, Into_array.Arity1IA(args)...)...)
 		}, func(f interface{}, x interface{}, y interface{}, z interface{}, args interface{}) interface{} {
-			return f.(*AFn).Call(append([]interface{}{x, y, z}, Into_array.Arity1IA(args)...)...)
+			return Call_(f.(CljsCoreIFn), append([]interface{}{x, y, z}, Into_array.Arity1IA(args)...)...)
 		}, func(f_a_b_c_d_args__ ...interface{}) interface{} {
 			var f = f_a_b_c_d_args__[0]
 			var a = f_a_b_c_d_args__[1]
@@ -397,7 +463,7 @@ func init() {
 				var arr = Into_array.Arity1IA(Seq_(Butlast.X_invoke_Arity1(args)))
 				var varargs = Into_array.Arity1IA(Last.X_invoke_Arity1(args))
 				_, _ = arr, varargs
-				return f.(*AFn).Call(append([]interface{}{a, b, c, d}, append(arr, varargs...)...)...)
+				return Call_(f.(CljsCoreIFn), append([]interface{}{a, b, c, d}, append(arr, varargs...)...)...)
 			}
 		})
 	}(&AFn{})
@@ -431,6 +497,9 @@ var Complement *AFn
 // comparison.
 // @param {...*} var_args
 var X_EQ_ *AFn
+
+// Returns the value mapped to key, not-found or nil if key not present.
+var Get *AFn
 
 var Quote_string *AFn
 
