@@ -55,6 +55,47 @@ func init() {
 		})
 	}(&AFn{})
 
+	X_EQ_ = func(_EQ_ *AFn) *AFn {
+		return Fn(_EQ_, func(x interface{}) bool {
+			return true
+		}, func(x interface{}, y interface{}) bool {
+			if Nil_(x) {
+				return Nil_(y)
+			} else {
+				{
+					var or__175__auto__ = reflect.DeepEqual(x, y)
+					_ = or__175__auto__
+					if Truth_(or__175__auto__) {
+						return or__175__auto__
+					} else {
+						if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IEquiv", Str: "cljs.core/IEquiv", X_hash: float64(-1245752602), X_meta: nil}), x)) {
+							return x.(CljsCoreIEquiv).X_equiv_Arity2(y)
+						} else {
+							return false
+						}
+					}
+				}
+			}
+		}, func(x_y_more__ ...interface{}) interface{} {
+			var x = x_y_more__[0]
+			var y = x_y_more__[1]
+			var more = Array_seq.X_invoke_Arity1(x_y_more__[2:])
+			_, _, _ = x, y, more
+			for {
+				if _EQ_.Arity2IIB(x, y) {
+					if Truth_(Next.Arity1IQ(more)) {
+						x, y, more = y, First.X_invoke_Arity1(more), Next.Arity1IQ(more)
+						continue
+					} else {
+						return _EQ_.Arity2IIB(y, First.X_invoke_Arity1(more))
+					}
+				} else {
+					return false
+				}
+			}
+		})
+	}(&AFn{})
+
 	Quote_string = func(quote_string *AFn) *AFn {
 		return Fn(quote_string, func(s interface{}) interface{} {
 			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", "g"}), func(G__824 *AFn) *AFn {
@@ -383,6 +424,13 @@ var Symbol_QMARK_ *AFn
 // Takes a fn f and returns a fn that takes the same arguments as f,
 // has the same effects, if any, and returns the opposite truth value.
 var Complement *AFn
+
+// Equality. Returns true if x equals y, false if not. Compares
+// numbers and collections in a type-independent manner.  Clojure's immutable data
+// structures define -equiv (and thus =) as a value, not an identity,
+// comparison.
+// @param {...*} var_args
+var X_EQ_ *AFn
 
 var Quote_string *AFn
 

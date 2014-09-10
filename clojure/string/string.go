@@ -15,7 +15,7 @@ import (
 func init() {
 	Seq_reverse = func(seq_reverse *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(seq_reverse, func(coll interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(cljs_core.Conj, cljs_core.CljsCoreISeq(cljs_core.CljsCoreList_EMPTY), coll)
+			return cljs_core.Reduce.X_invoke_Arity3(cljs_core.Conj, cljs_core.CljsCoreIEmptyList(cljs_core.CljsCoreList_EMPTY), coll)
 		})
 	}(&cljs_core.AFn{})
 

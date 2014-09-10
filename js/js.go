@@ -107,6 +107,7 @@ func (this *RegExp) String() string {
 var Number = struct{ MAX_VALUE float64 }{math.MaxFloat64}
 
 var Infinity = math.Inf(1)
+var NaN = math.NaN()
 
 func IsNaN(x float64) bool {
 	return math.IsNaN(x)

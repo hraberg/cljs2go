@@ -146,6 +146,7 @@
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
                   ana/*cljs-static-fns* true
+                  cljs.compiler/*go-def-vars* false
                   cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom []))]
           (with-fresh-ids
             (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]
@@ -153,7 +154,8 @@
                         cljs.compiler/*go-skip-def* #{}]
                 (maybe-add-overrides dir))
               (goimports-file target)
-              (go-install dir))))))))
+              (when-not (re-find #"-test$" (str compiled-ns))
+                (go-install dir)))))))))
 
 (defn compile-clojurescript
   ([] (compile-clojurescript "."))

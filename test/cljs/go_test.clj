@@ -348,13 +348,16 @@
                     (recur (dec n) (* f n))))) 20))]
    (emit-test "go_test" "benchmarks_test")))
 
+(defn clojurescript-core-tests []
+  (compile-file "target" (io/file (io/resource "cljs/core_test.cljs"))))
+
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
             cljs.compiler/*go-line-numbers* true
             *ast-debug* false
             cljs.compiler/*go-def-vars* true
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
-    (doseq [gen [constants special-forms benchmarks]]
+    (doseq [gen [constants special-forms benchmarks clojurescript-core-tests]]
       (with-fresh-ids
         (env/ensure
          (cljs.compiler/with-core-cljs

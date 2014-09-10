@@ -77,6 +77,7 @@
      cljs.core/native-satisfies?
      cljs.core/instance?
      cljs.core/symbol?
+     cljs.core/=
      cljs.core/missing-protocol
      cljs.core/complement
      cljs.core/make-array
@@ -197,12 +198,14 @@
     (let [ns (symbol ns)
           goog? (= 'goog ns)
           type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
-      (str
-       (when (or type? goog?) "*")
-       (munge (cond
-               (= ana/*cljs-ns* ns) (go-type-fqn tag)
-               goog? (go-normalize-goog-type tag)
-               :else (str ns "." (go-type-fqn tag))))))
+      (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
+        "interface{}"
+        (str
+         (when (or type? goog?) "*")
+         (munge (cond
+                 (= ana/*cljs-ns* ns) (go-type-fqn tag)
+                 goog? (go-normalize-goog-type tag)
+                 :else (str ns "." (go-type-fqn tag)))))))
     (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
       tag
       ((merge '{number "float64" boolean "bool" string "string" array "[]interface{}"}
@@ -470,7 +473,7 @@
   (binding [*go-return-tag* nil]
     (emit-wrap env
       (if (empty? items)
-        (emits (go-core "CljsCoreISeq") "(" (go-core "CljsCoreList_EMPTY") ")")
+        (emits (go-core "CljsCoreIEmptyList") "(" (go-core "CljsCoreList_EMPTY") ")")
         (emits (go-core "List") ".X_invoke_ArityVariadic(" (comma-sep items) ").(*" (go-core "CljsCoreList") ")")))))
 
 (defmethod emit* :vector
@@ -869,11 +872,11 @@
                       (keyword? (-> f :form)))
         arity (count args)
         [params] ((group-by count (:method-params info)) arity)
-        primitive-sig (go-type-suffix params (-> f :info :ret-tag))
-        has-primitives? (not (re-find #"^I+$" primitive-sig))
-        tags-match? true ; (= (map :tag params) (map :tag args))
         variadic-invoke (and (:variadic info)
                              (> arity (:max-fixed-arity info)))
+        primitive-sig (go-type-suffix params (-> f :info :ret-tag))
+        has-primitives? (not (or (re-find #"^I+$" primitive-sig) variadic-invoke))
+        tags-match? true ; (= (map :tag params) (map :tag args))
         coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
                      (not (or fn? (= 'function (:tag info)))))
         static-field-receiver? (-> expr :args first :target :info :type)
@@ -892,13 +895,16 @@
          (emits "!(" (first args) ")")
 
          protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
-         (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))]
+         (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))
+               v (when-let [v (go-try-to-ressurect-impl (first args))]
+                   (when (symbol? v)
+                     (ana/resolve-existing-var (dissoc env :locals) v)))]
            (emits (if (and (or (= (go-type tag) "interface{}")
-                               (when-let [v (ana/resolve-existing-var (dissoc env :locals) (go-try-to-ressurect-impl (first args)))]
-                                 (and (:protocol-symbol v)
-                                      (not= (:name v) protocol))))
+                               (and (:protocol-symbol v)
+                                    (not= (:name v) protocol)))
+                           (not (get (:protocols v) protocol))
                            (not static-field-receiver?))
-                    (str (emit-str (first args)) ".(" (go-type-fqn protocol) ")")
+                    (str (emit-str (first args)) ".(" (go-type protocol) ")")
                     (first args) )
                   "." pimpl "(" (comma-sep (rest args)) ")"))
 

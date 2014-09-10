@@ -906,12 +906,12 @@ func init() {
 						if Truth_(s) {
 							return Seq_(s.X_rest_Arity1())
 						} else {
-							return CljsCoreISeq(CljsCoreList_EMPTY)
+							return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 						}
 					}
 				}
 			} else {
-				return CljsCoreISeq(CljsCoreList_EMPTY)
+				return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 			}
 		})
 	}(&AFn{})
@@ -925,35 +925,6 @@ func init() {
 					return Seq_(coll.(CljsCoreINext).X_next_Arity1())
 				} else {
 					return Seq.Arity1IQ(Rest.Arity1IQ(coll))
-				}
-			}
-		})
-	}(&AFn{})
-
-	X_EQ_ = func(_EQ_ *AFn) *AFn {
-		return Fn(_EQ_, func(x interface{}) bool {
-			return true
-		}, func(x interface{}, y interface{}) bool {
-			if Nil_(x) {
-				return Nil_(y)
-			} else {
-				return (reflect.DeepEqual(x, y)) || (x.(CljsCoreIEquiv).X_equiv_Arity2(y))
-			}
-		}, func(x_y_more__ ...interface{}) interface{} {
-			var x = x_y_more__[0]
-			var y = x_y_more__[1]
-			var more = Array_seq.X_invoke_Arity1(x_y_more__[2:])
-			_, _, _ = x, y, more
-			for {
-				if _EQ_.Arity2IIB(x, y) {
-					if Truth_(Next.Arity1IQ(more)) {
-						x, y, more = y, First.X_invoke_Arity1(more), Next.Arity1IQ(more)
-						continue
-					} else {
-						return _EQ_.Arity2IIB(y, First.X_invoke_Arity1(more))
-					}
-				} else {
-					return false
 				}
 			}
 		})
@@ -2006,7 +1977,7 @@ func init() {
 					if Truth_(or__175__auto__) {
 						return or__175__auto__
 					} else {
-						return CljsCoreISeq(CljsCoreList_EMPTY)
+						return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 					}
 				}
 			}
@@ -2115,7 +2086,7 @@ func init() {
 					return Seq.Arity1IQ(a)
 				}
 			} else {
-				return CljsCoreISeq(CljsCoreList_EMPTY)
+				return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 			}
 		})
 	}(&AFn{})
@@ -3212,7 +3183,7 @@ func init() {
 			if Reversible_QMARK_.Arity1IB(coll) {
 				return Rseq.Arity1IQ(coll)
 			} else {
-				return Reduce.X_invoke_Arity3(Conj, CljsCoreISeq(CljsCoreList_EMPTY), coll)
+				return Reduce.X_invoke_Arity3(Conj, CljsCoreIEmptyList(CljsCoreList_EMPTY), coll)
 			}
 		})
 	}(&AFn{})
@@ -3248,11 +3219,11 @@ func init() {
 				_ = arr
 				{
 					var i = float64(len(arr.([]interface{})))
-					var r = CljsCoreISeq(CljsCoreList_EMPTY)
+					var r = CljsCoreIEmptyList(CljsCoreList_EMPTY)
 					_, _ = i, r
 					for {
 						if i > float64(0) {
-							i, r = (i - float64(1)), r.(CljsCoreICollection).X_conj_Arity2((arr.([]interface{})[int((i - float64(1)))])).(*CljsCoreList)
+							i, r = (i - float64(1)), r.X_conj_Arity2((arr.([]interface{})[int((i - float64(1)))])).(*CljsCoreList)
 							continue
 						} else {
 							return r
@@ -4222,7 +4193,7 @@ func init() {
 					if Truth_(or__175__auto__) {
 						return or__175__auto__
 					} else {
-						return CljsCoreISeq(CljsCoreList_EMPTY)
+						return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 					}
 				}
 			}
@@ -6421,7 +6392,7 @@ func init() {
 					return Reduce.X_invoke_Arity3(X_conj, to, from)
 				}
 			} else {
-				return Reduce.X_invoke_Arity3(Conj, CljsCoreISeq(CljsCoreList_EMPTY), from)
+				return Reduce.X_invoke_Arity3(Conj, CljsCoreIEmptyList(CljsCoreList_EMPTY), from)
 			}
 		}, func(to interface{}, xform interface{}, from interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IEditableCollection", Str: "cljs.core/IEditableCollection", X_hash: float64(297050504), X_meta: nil}), to)) {
@@ -11643,13 +11614,6 @@ var Rest *AFn
 // argument.  If there are no more items, returns nil
 var Next *AFn
 
-// Equality. Returns true if x equals y, false if not. Compares
-// numbers and collections in a type-independent manner.  Clojure's immutable data
-// structures define -equiv (and thus =) as a value, not an identity,
-// comparison.
-// @param {...*} var_args
-var X_EQ_ *AFn
-
 // Mix final collection hash for ordered or unordered collections.
 // hash-basis is the combined collection hash, count is the number
 // of elements included in the basis. Note this is the hash code
@@ -11933,7 +11897,7 @@ func (coll *CljsCoreRSeq) X_rest_Arity1() interface{} {
 	if coll.I.(float64) > float64(0) {
 		return (&CljsCoreRSeq{coll.Ci, (coll.I.(float64) - float64(1)), nil})
 	} else {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	}
 }
 
@@ -12636,7 +12600,7 @@ func (coll *CljsCoreList) X_first_Arity1() interface{} {
 
 func (coll *CljsCoreList) X_rest_Arity1() interface{} {
 	if coll.Count.(float64) == float64(1) {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	} else {
 		return coll.Rest
 	}
@@ -12753,7 +12717,7 @@ func (coll *CljsCoreEmptyList) X_first_Arity1() interface{} {
 }
 
 func (coll *CljsCoreEmptyList) X_rest_Arity1() interface{} {
-	return CljsCoreISeq(CljsCoreList_EMPTY)
+	return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 }
 
 func (_ *CljsCoreEmptyList) CljsCoreISeqable__() {}
@@ -12885,7 +12849,7 @@ func (coll *CljsCoreCons) X_first_Arity1() interface{} {
 
 func (coll *CljsCoreCons) X_rest_Arity1() interface{} {
 	if Nil_(coll.Rest) {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	} else {
 		return coll.Rest
 	}
@@ -13198,7 +13162,7 @@ func (coll *CljsCoreLazySeq) X_rest_Arity1() interface{} {
 	if !(Nil_(coll.S)) {
 		return Rest.Arity1IQ(coll.S)
 	} else {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	}
 }
 
@@ -13416,7 +13380,7 @@ func (coll *CljsCoreChunkedCons) X_rest_Arity1() interface{} {
 		return (&CljsCoreChunkedCons{coll.Chunk.(CljsCoreIChunk).X_drop_first_Arity1(), coll.More, coll.Meta, nil})
 	} else {
 		if Nil_(coll.More) {
-			return CljsCoreISeq(CljsCoreList_EMPTY)
+			return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 		} else {
 			return coll.More
 		}
@@ -13439,7 +13403,7 @@ func (coll *CljsCoreChunkedCons) X_chunked_first_Arity1() interface{} {
 
 func (coll *CljsCoreChunkedCons) X_chunked_rest_Arity1() interface{} {
 	if Nil_(coll.More) {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	} else {
 		return coll.More
 	}
@@ -13861,7 +13825,7 @@ func (this *CljsCoreLazyTransformer) X_rest_Arity1() interface{} {
 		this.X_seq_Arity1()
 	}
 	if Nil_(this.Rest) {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	} else {
 		return this.Rest
 	}
@@ -13906,7 +13870,7 @@ func (_ *CljsCoreLazyTransformer) CljsCoreISequential__() {}
 func (_ *CljsCoreLazyTransformer) CljsCoreIEmptyableCollection__() {}
 
 func (this *CljsCoreLazyTransformer) X_empty_Arity1() interface{} {
-	return CljsCoreISeq(CljsCoreList_EMPTY)
+	return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 }
 
 func (_ *CljsCoreLazyTransformer) CljsCoreICollection__() {}
@@ -14963,7 +14927,7 @@ func (coll *CljsCoreChunkedSeq) X_rest_Arity1() interface{} {
 			var s = Chunked_seq.X_invoke_Arity4(coll.Vec, coll.Node, coll.I, (coll.Off.(float64) + float64(1))).(*CljsCoreChunkedSeq)
 			_ = s
 			if Nil_(s) {
-				return CljsCoreISeq(CljsCoreList_EMPTY)
+				return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 			} else {
 				return s
 			}
@@ -14994,7 +14958,7 @@ func (coll *CljsCoreChunkedSeq) X_chunked_rest_Arity1() interface{} {
 		if end < coll.Vec.(CljsCoreICounted).X_count_Arity1() {
 			return Chunked_seq.X_invoke_Arity4(coll.Vec, Unchecked_array_for.X_invoke_Arity2(coll.Vec, end), end, float64(0)).(*CljsCoreChunkedSeq)
 		} else {
-			return CljsCoreISeq(CljsCoreList_EMPTY)
+			return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 		}
 	}
 }
@@ -16427,7 +16391,7 @@ func (coll *CljsCorePersistentArrayMapSeq) X_rest_Arity1() interface{} {
 	if coll.I.(float64) < (float64(len(coll.Arr.([]interface{}))) - float64(2)) {
 		return (&CljsCorePersistentArrayMapSeq{coll.Arr, (coll.I.(float64) + float64(2)), coll.X_meta})
 	} else {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	}
 }
 
@@ -18866,7 +18830,7 @@ func (this *CljsCorePersistentTreeMapSeq) X_rest_Arity1() interface{} {
 		if !(Nil_(next_stack)) {
 			return (&CljsCorePersistentTreeMapSeq{nil, next_stack, this.Ascending_QMARK_, (this.Cnt.(float64) - float64(1)), nil})
 		} else {
-			return CljsCoreISeq(CljsCoreList_EMPTY)
+			return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 		}
 	}
 }
@@ -20077,7 +20041,7 @@ func (coll *CljsCoreKeySeq) X_rest_Arity1() interface{} {
 		if !(Nil_(nseq)) {
 			return (&CljsCoreKeySeq{nseq, coll.X_meta})
 		} else {
-			return CljsCoreISeq(CljsCoreList_EMPTY)
+			return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 		}
 	}
 }
@@ -20206,7 +20170,7 @@ func (coll *CljsCoreValSeq) X_rest_Arity1() interface{} {
 		if !(Nil_(nseq)) {
 			return (&CljsCoreValSeq{nseq, coll.X_meta})
 		} else {
-			return CljsCoreISeq(CljsCoreList_EMPTY)
+			return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 		}
 	}
 }
@@ -21262,7 +21226,7 @@ func (rng *CljsCoreRange) X_rest_Arity1() interface{} {
 	if !(Nil_(rng.X_seq_Arity1())) {
 		return (&CljsCoreRange{rng.Meta, (rng.Start.(float64) + rng.Step.(float64)), rng.End, rng.Step, nil})
 	} else {
-		return CljsCoreISeq(CljsCoreList_EMPTY)
+		return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 	}
 }
 

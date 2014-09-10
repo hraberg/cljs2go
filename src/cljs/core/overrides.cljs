@@ -23,6 +23,26 @@
     ([x y] (not (f x y)))
     ([x y & zs] (not (apply f x y zs)))))
 
+(defn ^boolean =
+  "Equality. Returns true if x equals y, false if not. Compares
+  numbers and collections in a type-independent manner.  Clojure's immutable data
+  structures define -equiv (and thus =) as a value, not an identity,
+  comparison."
+  ([x] true)
+  ([x y]
+    (if (nil? x)
+      (nil? y)
+      (or (identical? x y)
+          (if (implements? IEquiv x)
+            ^boolean (-equiv x y)
+            false))))
+  ([x y & more]
+     (if (= x y)
+       (if (next more)
+         (recur y (first more) (next more))
+         (= y (first more)))
+       false)))
+
 (defn ^:private quote-string
   [s]
   (str \"

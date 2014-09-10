@@ -117,6 +117,7 @@ type Arity2FFF func(_, _ float64) float64
 
 type Arity0B func() bool
 type Arity1IB func(interface{}) bool
+type Arity1BI func(bool) interface{}
 type Arity1FB func(float64) bool
 type Arity2IIB func(_, _ interface{}) bool
 type Arity2IBI func(_ interface{}, _ bool) interface{}
@@ -171,6 +172,7 @@ type AFn struct {
 	Arity0B
 	Arity1FB
 	Arity1IB
+	Arity1BI
 
 	Arity2IIB
 	Arity2IBI
@@ -261,6 +263,8 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 			return this.Arity1FF(args[0].(float64))
 		case this.Arity1IB != nil:
 			return this.Arity1IB(args[0])
+		case this.Arity1BI != nil:
+			return this.Arity1IB(args[0].(bool))
 		case this.Arity1FB != nil:
 			return this.Arity1FB(args[0].(float64))
 		case this.Arity1IA != nil:
@@ -582,6 +586,14 @@ type Object interface {
 	Equiv(other interface{}) bool
 }
 
+type CljsCoreIEmptyList interface {
+	CljsCoreIList
+	CljsCoreISeq
+	CljsCoreICollection
+}
+
+var X___ *AFn
+
 func init() {
 	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
 
@@ -592,6 +604,9 @@ func init() {
 		}
 		return throwArity(nil, len(args)-1)
 	}
+
+	// Hack, calls to minus gets over-munged.
+	X___ = X_
 }
 
 func Main_() {
