@@ -3,7 +3,7 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(defn test-stuff [assert]
+(defn test-stuff []
   ;; js primitives
   ;; (let [keys #(vec (js-keys %))]
   ;;   (assert (= [] (keys (js-obj)) (keys (apply js-obj []))))
@@ -2420,6 +2420,7 @@
   ;; :ok
   )
 
-^:top-level (js* "func Test_Runner(t *testing.T) {\n~{}\n}"
-                 (test-stuff (fn testify-assert [^boolean test]
-                               (js* "assert.True(t, ~{})\n" test))))
+^:top-level (js*
+"func Test_runner(t *testing.T) {
+    ~{}
+}" (test-stuff))
