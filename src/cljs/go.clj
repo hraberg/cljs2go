@@ -107,11 +107,16 @@
       (println err)
       {:file file :errors (count (s/split-lines err))})))
 
+(defn error-summary [dir {:keys [exit out err]}]
+  (when-not (zero? exit)
+    (println err)
+    {:dir dir :errors (count (filter #(re-find #"^.+.go:\d+: " %) (s/split-lines err)))}))
+
+(defn go-test-compile [dir]
+  (->> (sh/sh "go" "test" "-c" :dir dir) (error-summary dir)))
+
 (defn go-install [dir]
-  (let [{:keys [exit out err]} (sh/sh "go" "install" "--gcflags" "-e" :dir dir)]
-    (when-not (zero? exit)
-      (println err)
-      {:dir dir :errors (count (filter #(re-find #"^.+.go:\d+: " %) (s/split-lines err)))})))
+  (->> (sh/sh "go" "install" "--gcflags" "-e" :dir dir) (error-summary dir)))
 
 (defmacro with-fresh-ids [& body]
   `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
@@ -154,7 +159,8 @@
                         cljs.compiler/*go-skip-def* #{}]
                 (maybe-add-overrides dir))
               (goimports-file target)
-              (when-not (re-find #"-test$" (str compiled-ns))
+              (if (re-find #"-test$" (str compiled-ns))
+                (go-test-compile dir)
                 (go-install dir)))))))))
 
 (defn compile-clojurescript
