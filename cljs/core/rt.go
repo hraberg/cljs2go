@@ -571,7 +571,7 @@ func Fn(fns ...interface{}) *AFn {
 	v := reflect.ValueOf(f).Elem()
 
 	variadic := false
-	maxFixedArity := 0
+	maxFixedArity := -1
 	for _, a := range fns {
 		av := reflect.ValueOf(a)
 		at := av.Type()

@@ -88,8 +88,8 @@
 (defn ^:private quote-string
   [s]
   (str \"
-       (.replace s (js/RegExp. "[\\\\\"\b\f\n\r\t]" "g")
-         (fn [match] (js* "~{}.(map[string]interface{})[~{}.(string)]" char-escapes match)))
+       (.replace s (js/RegExp. "[\\\\\"\b\f\n\r\t]" "")
+         (js* "func(match interface{}) interface{} { return ~{}.(map[string]interface{})[match.(string)] }" char-escapes))
        \"))
 
 (defn- pr-writer
