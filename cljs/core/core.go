@@ -10101,15 +10101,15 @@ func init() {
 
 	Group_by = func(group_by *AFn) *AFn {
 		return Fn(group_by, func(f interface{}, coll interface{}) interface{} {
-			return Reduce.X_invoke_Arity3(func(G__770 *AFn) *AFn {
+			return Persistent_BANG_.X_invoke_Arity1(Reduce.X_invoke_Arity3(func(G__770 *AFn) *AFn {
 				return Fn(G__770, func(ret interface{}, x interface{}) interface{} {
 					{
 						var k = f.(CljsCoreIFn).X_invoke_Arity1(x)
 						_ = k
-						return Assoc.X_invoke_Arity3(ret, k, Conj.X_invoke_Arity2(Get.X_invoke_Arity3(ret, k, CljsCorePersistentVector_EMPTY), x))
+						return Assoc_BANG_.X_invoke_Arity3(ret, k, Conj.X_invoke_Arity2(Get.X_invoke_Arity3(ret, k, CljsCorePersistentVector_EMPTY), x))
 					}
 				})
-			}(&AFn{}), CljsCorePersistentArrayMap_EMPTY, coll)
+			}(&AFn{}), Transient.X_invoke_Arity1(CljsCorePersistentArrayMap_EMPTY), coll))
 		})
 	}(&AFn{})
 
