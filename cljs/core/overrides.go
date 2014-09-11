@@ -106,7 +106,7 @@ func init() {
 				} else {
 					if reflect.ValueOf(o).Kind() == reflect.Slice {
 						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
-							return (o.([]interface{})[int(k.(float64))])
+							return Aget_(o, k.(float64))
 						} else {
 							return nil
 						}
@@ -135,7 +135,7 @@ func init() {
 				} else {
 					if reflect.ValueOf(o).Kind() == reflect.Slice {
 						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
-							return (o.([]interface{})[int(k.(float64))])
+							return Aget_(o, k.(float64))
 						} else {
 							return not_found
 						}

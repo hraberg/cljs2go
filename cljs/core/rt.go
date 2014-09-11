@@ -626,6 +626,28 @@ func Nil_(x interface{}) bool {
 	return x == nil
 }
 
+func Alength_(x interface{}) float64 {
+	switch x := x.(type) {
+	case []interface{}:
+		return float64(len(x))
+	case string:
+		return float64(len(x))
+	default:
+		return float64(value(x).Len())
+	}
+}
+
+func Aget_(x interface{}, idx float64) interface{} {
+	switch x := x.(type) {
+	case []interface{}:
+		return x[int(idx)]
+	case string:
+		return x[int(idx)]
+	default:
+		return value(x).Index(int(idx)).Interface()
+	}
+}
+
 type Object interface {
 	ToString() string
 	Equiv(other interface{}) bool

@@ -1089,17 +1089,22 @@
     (swap! *go-defs* conj ast)
     (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
           box? (= 'removed-leaf? (-> args first :info :name)) ;; horrific hack to cancel out another.
-          args (if box?
-                 args
-                 (case js-op
-                   cljs.core/make-array [(go-unbox 'number (first args))]
-                   cljs.core/alength [(go-unbox 'array (first args))]
-                   cljs.core/aget (cons (go-unbox 'array (first args))
-                                        (map (partial go-unbox 'number) (rest args)))
-                   cljs.core/aset (concat [(go-unbox 'array (first args))]
-                                          (map (partial go-unbox 'number) (butlast (rest args)))
-                                          [(last args)])
-                   args))]
+          [segs args] (if box?
+                        [segs args]
+                        (case js-op
+                          cljs.core/make-array [segs [(go-unbox 'number (first args))]]
+                          cljs.core/alength (if ('#{string array} (-> args first :tag))
+                                              [segs args]
+                                              [[(str (go-core "Alength_") "(") ")"] args])
+                          cljs.core/aget (if (or ('#{string array} (-> args first :tag))
+                                                 (> (count args) 2))
+                                           [segs (cons (go-unbox 'array (first args)) (map (partial go-unbox 'number) (rest args)))]
+                                           [[(str (go-core "Aget_") "(") "," ")"]
+                                            [(first args) (go-unbox 'number (second args))]])
+                          cljs.core/aset [segs (concat [(go-unbox 'array (first args))]
+                                                       (map (partial go-unbox 'number) (butlast (rest args)))
+                                                       [(last args)])]
+                          [segs args]))]
       (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
                                   *go-return-tag*)]
         (emit-wrap env
