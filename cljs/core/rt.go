@@ -101,8 +101,6 @@ type Arity2IIA func(_, _ interface{}) []interface{}
 
 type Arity1IQ func(interface{}) CljsCoreISeq
 
-type Arity1IS func(interface{}) string
-
 type Arity0F func() float64
 type Arity1IF func(interface{}) float64
 type Arity1FI func(float64) interface{}
@@ -187,8 +185,6 @@ type AFn struct {
 
 	Arity1IQ
 
-	Arity1IS
-
 	// For positonal factories, needs better solution:
 	Arity5IIBIII
 	Arity5BIIBII
@@ -271,8 +267,6 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 			return this.Arity1IA(args[0])
 		case this.Arity1IQ != nil:
 			return this.Arity1IQ(args[0])
-		case this.Arity1IS != nil:
-			return this.Arity1IS(args[0])
 		default:
 			return this.Arity1(args[0])
 		}
@@ -502,7 +496,6 @@ var type2sig = map[string]string{
 	"[]interface {}":    "A",
 	"float64":           "F",
 	"bool":              "B",
-	"string":            "S",
 	"core.CljsCoreISeq": "Q"}
 
 func typedSignature(t reflect.Type) string {

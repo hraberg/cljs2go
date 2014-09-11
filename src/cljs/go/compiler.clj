@@ -194,27 +194,31 @@
     x
     (str "cljs_core." x)))
 
-(defn go-type [tag]
-  (if-let [ns (and (symbol? tag) (namespace tag))]
-    (let [ns (symbol ns)
-          goog? (= 'goog ns)
-          type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
-      (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
-        "interface{}"
-        (str
-         (when (or type? goog?) "*")
-         (munge (cond
-                 (= ana/*cljs-ns* ns) (go-type-fqn tag)
-                 goog? (go-normalize-goog-type tag)
-                 :else (str ns "." (go-type-fqn tag)))))))
-    (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
-      tag
-      ((merge '{number "float64" boolean "bool" string "string" array "[]interface{}"}
-              {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
-       tag "interface{}"))))
+(defn go-type
+  ([tag] (go-type tag true))
+  ([tag allow-native?]
+      (if-let [ns (and (symbol? tag) (namespace tag))]
+        (let [ns (symbol ns)
+              goog? (= 'goog ns)
+              type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
+          (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
+            "interface{}"
+            (str
+             (when (or type? goog?) "*")
+             (munge (cond
+                     (= ana/*cljs-ns* ns) (go-type-fqn tag)
+                     goog? (go-normalize-goog-type tag)
+                     :else (str ns "." (go-type-fqn tag)))))))
+        (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
+          tag
+          ((merge '{number "float64" boolean "bool" array "[]interface{}"}
+                  (when allow-native?
+                    {'string "string"})
+                  {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
+           tag "interface{}")))))
 
 (defn go-short-type [tag]
-  ('{number "F" boolean "B" string "S" array "A" seq "Q"} tag "I"))
+  ('{number "F" boolean "B" array "A" seq "Q"} tag "I"))
 
 (defn go-type-suffix [params ret-tag]
   (apply str (concat (map (comp go-short-type :tag) params) [(go-short-type ret-tag)])))
@@ -629,12 +633,12 @@
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
         (when-not (= :expr (:context env)) (emitln))))))
 
-(defn typed-params [params]
+(defn typed-params [params allow-native?]
   (for [param params]
-    (str (emit-str param) " " (-> param :tag go-type))))
+    (str (emit-str param) " " (-> param :tag (go-type allow-native?)))))
 
-(defn emit-fn-signature [params ret-tag]
-  (emits "(" (comma-sep (typed-params params)) ") " (go-type ret-tag)))
+(defn emit-fn-signature [params ret-tag allow-native?]
+  (emits "(" (comma-sep (typed-params params allow-native?)) ") " (go-type ret-tag allow-native?)))
 
 (defn assign-to-blank [bindings]
   (when-let [bindings (seq (remove '#{_} (map munge bindings)))]
@@ -653,7 +657,7 @@
   [{:keys [type params expr env recurs]} ret-tag]
   (emit-wrap env
     (emits "func")
-    (emit-fn-signature params ret-tag)
+    (emit-fn-signature params ret-tag false)
     (emits "{")
     (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
                                 ret-tag)]
@@ -662,20 +666,22 @@
 
 (defn emit-protocol-method
   [protocol name {:keys [type params expr env recurs]} ret-tag]
-  (emits "func (" (first params) " " (-> params first :tag go-type) ") "
-         (-> name munge go-short-name go-public)
-         (when-not ('#{cljs.core/Object} protocol)
-           (str "_Arity" (cond-> (count params)
-                                 (and (= 'cljs.core/IFn protocol)
-                                      (= '-invoke (:name name))) dec))))
-  (emit-fn-signature (rest params) ret-tag)
-  (emits "{")
-  (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
-                              ret-tag)
-            *go-protocol* protocol
-            *go-protocol-fn* (:name name)
-            *go-protocol-this* (first params)]
-    (emit-fn-body type expr recurs))
+  (let [object? (= 'cljs.core/Object protocol)
+        ifn? (= 'cljs.core/IFn protocol)]
+    (emits "func (" (first params) " " (-> params first :tag go-type) ") "
+           (-> name munge go-short-name go-public)
+           (when-not object?
+             (str "_Arity" (cond-> (count params)
+                                   (and ifn?
+                                        (= '-invoke (:name name))) dec))))
+    (emit-fn-signature (rest params) ret-tag object?)
+    (emits "{")
+    (binding [*go-return-tag* (when (go-needs-coercion? (:tag expr) ret-tag)
+                                ret-tag)
+              *go-protocol* protocol
+              *go-protocol-fn* (:name name)
+              *go-protocol-this* (first params)]
+      (emit-fn-body type expr recurs)))
   (emitln "}"))
 
 (defn emit-variadic-fn-method
@@ -705,7 +711,8 @@
         (when (= :return (:context env))
           (emits "return "))
         (when-not protocol-impl
-          (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn")) (typed-params loop-locals))) ") *" (go-core "AFn") " {")
+          (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn"))
+                                           (typed-params loop-locals true))) ") *" (go-core "AFn") " {")
           (emits "return " (go-core "Fn") "(" mname ", "))
         (loop [[meth & methods] methods]
           (let [meth (assoc-in meth [:env :context] :expr)]

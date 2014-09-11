@@ -929,6 +929,7 @@
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
         fq-psym (symbol (some-> ns-name name) (name psym))
+        object? (= 'Object p)
         go-psym (symbol (cljs.compiler/go-type fq-psym))
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
         expand-sig (fn [fname sig]
@@ -950,11 +951,12 @@
                                    (proto-slot-name fname sig)
                                    "("
                                    (->> (rest sig)
-                                        (map #(core/str (cljs.compiler/munge %) " " (cljs.compiler/go-type (-> % meta :tag))))
+                                        (map #(core/str (cljs.compiler/munge %) " "
+                                                        (cljs.compiler/go-type (-> % meta :tag) object?)))
                                         (interpose ", ")
                                         (apply core/str))
                                    ")"
-                                   " " (cljs.compiler/go-type (-> fname meta :tag))
+                                   " " (cljs.compiler/go-type (-> fname meta :tag) object?)
                                    "\n"))
                        (apply core/str)))]
     `(do

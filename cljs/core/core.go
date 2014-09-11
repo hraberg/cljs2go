@@ -530,13 +530,13 @@ func init() {
 	}(&AFn{})
 
 	X_name = func(_name *AFn) *AFn {
-		return Fn(_name, func(x interface{}) string {
+		return Fn(_name, func(x interface{}) interface{} {
 			return x.(CljsCoreINamed).X_name_Arity1()
 		})
 	}(&AFn{})
 
 	X_namespace = func(_namespace *AFn) *AFn {
-		return Fn(_namespace, func(x interface{}) string {
+		return Fn(_namespace, func(x interface{}) interface{} {
 			return x.(CljsCoreINamed).X_namespace_Arity1()
 		})
 	}(&AFn{})
@@ -3234,7 +3234,7 @@ func init() {
 	Namespace = func(namespace *AFn) *AFn {
 		return Fn(namespace, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
-				return x.(CljsCoreINamed).X_namespace_Arity1()
+				return x.(CljsCoreINamed).X_namespace_Arity1().(string)
 			} else {
 				panic((&js.Error{("Doesn't support namespace: " + Str.X_invoke_Arity1(x).(string))}))
 			}
@@ -8605,7 +8605,7 @@ func init() {
 	Name = func(name *AFn) *AFn {
 		return Fn(name, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
-				return x.(CljsCoreINamed).X_name_Arity1()
+				return x.(CljsCoreINamed).X_name_Arity1().(string)
 			} else {
 				if reflect.ValueOf(x).Kind() == reflect.String {
 					return x
@@ -11263,8 +11263,8 @@ var X_chunked_next *AFn
 
 type CljsCoreINamed interface {
 	CljsCoreINamed__()
-	X_name_Arity1() string
-	X_namespace_Arity1() string
+	X_name_Arity1() interface{}
+	X_namespace_Arity1() interface{}
 }
 
 func init() {
@@ -11374,11 +11374,11 @@ func (o *CljsCoreSymbol) X_pr_writer_Arity3(writer interface{}, ___ interface{})
 
 func (_ *CljsCoreSymbol) CljsCoreINamed__() {}
 
-func (___ *CljsCoreSymbol) X_name_Arity1() string {
+func (___ *CljsCoreSymbol) X_name_Arity1() interface{} {
 	return ___.Name.(string)
 }
 
-func (___ *CljsCoreSymbol) X_namespace_Arity1() string {
+func (___ *CljsCoreSymbol) X_namespace_Arity1() interface{} {
 	return ___.Ns.(string)
 }
 
@@ -12835,11 +12835,11 @@ func (o *CljsCoreKeyword) X_pr_writer_Arity3(writer interface{}, ___ interface{}
 
 func (_ *CljsCoreKeyword) CljsCoreINamed__() {}
 
-func (___ *CljsCoreKeyword) X_name_Arity1() string {
+func (___ *CljsCoreKeyword) X_name_Arity1() interface{} {
 	return ___.Name.(string)
 }
 
-func (___ *CljsCoreKeyword) X_namespace_Arity1() string {
+func (___ *CljsCoreKeyword) X_namespace_Arity1() interface{} {
 	return ___.Ns.(string)
 }
 
