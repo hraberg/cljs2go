@@ -214,27 +214,27 @@
   ;; ; (assert (= "foo/bar" (namespace 'foo/bar/baz)))
   ;; ; (assert (= "baz" (name :foo/bar/baz)))
   ;; ;(assert (= "foo/bar" (namespace :foo/bar/baz)))
-  ;; (assert (nil? (namespace '/)))
-  ;; (assert (= "/" (name '/)))
-  ;; (assert (= "keyword" (name :keyword)))
+  (assert (nil? (namespace '/)))
+  (assert (= "/" (name '/)))
+  (assert (= "keyword" (name :keyword)))
   ;; ;;TODO: These next two tests need Clojure 1.5
   ;; ;(assert (= "foo" (namespace 'foo//)))
   ;; ;(assert (= "/" (name 'foo//)))
 
   ;; ; str
-  ;; (assert (= ":hello" (str :hello)))
-  ;; (assert (= "hello" (str 'hello)))
-  ;; (assert (= "hello:world" (str "hello" :world)))
-  ;; (assert (= ":helloworld" (str :hello 'world)))
+  (assert (= ":hello" (str :hello)))
+  (assert (= "hello" (str 'hello)))
+  (assert (= "hello:world" (str "hello" :world)))
+  (assert (= ":helloworld" (str :hello 'world)))
 
   ;; ; symbol
-  ;; (assert (= 'a (symbol 'a)))
+  (assert (= 'a (symbol 'a)))
 
   ;; ; keyword
-  ;; (assert (= :a (keyword "a")))
-  ;; (assert (= :a (keyword 'a)))
-  ;; (assert (= :a/b (keyword 'a 'b)))
-  ;; (assert (= :a (keyword :a)))
+  (assert (= :a (keyword "a")))
+  (assert (= :a (keyword 'a)))
+  (assert (= :a/b (keyword 'a 'b)))
+  (assert (= :a (keyword :a)))
 
   ;; (assert (= {:a :b} (get {[1 2 3] {:a :b}, 4 5} [1 2 3])))
   ;; (assert (= :a (nth [:a :b :c :d] 0)))

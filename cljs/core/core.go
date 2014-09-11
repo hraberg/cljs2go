@@ -97,13 +97,13 @@ func init() {
 				var new_arr = make([]interface{}, int(len))
 				_, _ = len, new_arr
 				{
-					var n__1042__auto___287 = len
-					_ = n__1042__auto___287
+					var n__1043__auto___287 = len
+					_ = n__1043__auto___287
 					{
 						var i_288 = float64(0)
 						_ = i_288
 						for {
-							if i_288 < n__1042__auto___287 {
+							if i_288 < n__1043__auto___287 {
 								new_arr[int(i_288)] = (arr.([]interface{})[int(i_288)])
 								i_288 = (i_288 + float64(1))
 								continue
@@ -3057,9 +3057,9 @@ func init() {
 									_ = seq__311_326___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__311_326___1) {
 										{
-											var c__942__auto___327 = Chunk_first.X_invoke_Arity1(seq__311_326___1)
-											_ = c__942__auto___327
-											seq__311_317, chunk__312_318, count__313_319, i__314_320 = Chunk_rest.X_invoke_Arity1(seq__311_326___1).(CljsCoreISeq), c__942__auto___327, Count.X_invoke_Arity1(c__942__auto___327).(float64), float64(0)
+											var c__943__auto___327 = Chunk_first.X_invoke_Arity1(seq__311_326___1)
+											_ = c__943__auto___327
+											seq__311_317, chunk__312_318, count__313_319, i__314_320 = Chunk_rest.X_invoke_Arity1(seq__311_326___1).(CljsCoreISeq), c__943__auto___327, Count.X_invoke_Arity1(c__943__auto___327).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -3234,7 +3234,7 @@ func init() {
 	Namespace = func(namespace *AFn) *AFn {
 		return Fn(namespace, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
-				return x.(CljsCoreINamed).X_namespace_Arity1().(string)
+				return x.(CljsCoreINamed).X_namespace_Arity1()
 			} else {
 				panic((&js.Error{("Doesn't support namespace: " + Str.X_invoke_Arity1(x).(string))}))
 			}
@@ -3247,7 +3247,7 @@ func init() {
 				return name
 			} else {
 				if func() bool { _, instanceof := name.(*CljsCoreSymbol); return instanceof }() {
-					return (&CljsCoreKeyword{Namespace.X_invoke_Arity1(name).(string), Name.X_invoke_Arity1(name), Native_get_instance_field.X_invoke_Arity2(name, "Str"), nil})
+					return (&CljsCoreKeyword{Namespace.X_invoke_Arity1(name), Name.X_invoke_Arity1(name), Native_get_instance_field.X_invoke_Arity2(name, "Str"), nil})
 				} else {
 					if reflect.ValueOf(name).Kind() == reflect.String {
 						{
@@ -3445,13 +3445,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1042__auto___334 = size
-						_ = n__1042__auto___334
+						var n__1043__auto___334 = size
+						_ = n__1043__auto___334
 						{
 							var i_335 = float64(0)
 							_ = i_335
 							for {
-								if i_335 < n__1042__auto___334.(float64) {
+								if i_335 < n__1043__auto___334.(float64) {
 									a[int(i_335)] = init_val_or_seq
 									i_335 = (i_335 + float64(1))
 									continue
@@ -3507,13 +3507,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1042__auto___336 = size
-						_ = n__1042__auto___336
+						var n__1043__auto___336 = size
+						_ = n__1043__auto___336
 						{
 							var i_337 = float64(0)
 							_ = i_337
 							for {
-								if i_337 < n__1042__auto___336.(float64) {
+								if i_337 < n__1043__auto___336.(float64) {
 									a[int(i_337)] = init_val_or_seq
 									i_337 = (i_337 + float64(1))
 									continue
@@ -3569,13 +3569,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1042__auto___338 = size
-						_ = n__1042__auto___338
+						var n__1043__auto___338 = size
+						_ = n__1043__auto___338
 						{
 							var i_339 = float64(0)
 							_ = i_339
 							for {
-								if i_339 < n__1042__auto___338.(float64) {
+								if i_339 < n__1043__auto___338.(float64) {
 									a[int(i_339)] = init_val_or_seq
 									i_339 = (i_339 + float64(1))
 									continue
@@ -3631,13 +3631,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1042__auto___340 = size
-						_ = n__1042__auto___340
+						var n__1043__auto___340 = size
+						_ = n__1043__auto___340
 						{
 							var i_341 = float64(0)
 							_ = i_341
 							for {
-								if i_341 < n__1042__auto___340.(float64) {
+								if i_341 < n__1043__auto___340.(float64) {
 									a[int(i_341)] = init_val_or_seq
 									i_341 = (i_341 + float64(1))
 									continue
@@ -4522,13 +4522,13 @@ func init() {
 													var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 													_, _, _ = c, size, b
 													{
-														var n__1042__auto___379 = size
-														_ = n__1042__auto___379
+														var n__1043__auto___379 = size
+														_ = n__1043__auto___379
 														{
 															var i_380 = float64(0)
 															_ = i_380
 															for {
-																if i_380 < n__1042__auto___379 {
+																if i_380 < n__1043__auto___379 {
 																	Chunk_append.X_invoke_Arity2(b, f.(CljsCoreIFn).X_invoke_Arity2((idx.(float64)+i_380), c.(CljsCoreIIndexed).X_nth_Arity2(i_380)))
 																	i_380 = (i_380 + float64(1))
 																	continue
@@ -4598,13 +4598,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1042__auto___384 = size
-											_ = n__1042__auto___384
+											var n__1043__auto___384 = size
+											_ = n__1043__auto___384
 											{
 												var i_385 = float64(0)
 												_ = i_385
 												for {
-													if i_385 < n__1042__auto___384 {
+													if i_385 < n__1043__auto___384 {
 														{
 															var x_386 = f.(CljsCoreIFn).X_invoke_Arity1(c.(CljsCoreIIndexed).X_nth_Arity2(i_385))
 															_ = x_386
@@ -4814,13 +4814,13 @@ func init() {
 													var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 													_, _, _ = c, size, b
 													{
-														var n__1042__auto___406 = size
-														_ = n__1042__auto___406
+														var n__1043__auto___406 = size
+														_ = n__1043__auto___406
 														{
 															var i_407 = float64(0)
 															_ = i_407
 															for {
-																if i_407 < n__1042__auto___406 {
+																if i_407 < n__1043__auto___406 {
 																	{
 																		var x_408 = f.(CljsCoreIFn).X_invoke_Arity2((idx.(float64) + i_407), c.(CljsCoreIIndexed).X_nth_Arity2(i_407))
 																		_ = x_408
@@ -5689,13 +5689,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1042__auto___437 = size
-											_ = n__1042__auto___437
+											var n__1043__auto___437 = size
+											_ = n__1043__auto___437
 											{
 												var i_438 = float64(0)
 												_ = i_438
 												for {
-													if i_438 < n__1042__auto___437 {
+													if i_438 < n__1043__auto___437 {
 														Chunk_append.X_invoke_Arity2(b, f.(CljsCoreIFn).X_invoke_Arity1(c.(CljsCoreIIndexed).X_nth_Arity2(i_438)))
 														i_438 = (i_438 + float64(1))
 														continue
@@ -6233,13 +6233,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1042__auto___465 = size
-											_ = n__1042__auto___465
+											var n__1043__auto___465 = size
+											_ = n__1043__auto___465
 											{
 												var i_466 = float64(0)
 												_ = i_466
 												for {
-													if i_466 < n__1042__auto___465 {
+													if i_466 < n__1043__auto___465 {
 														if Truth_(pred.(CljsCoreIFn).X_invoke_Arity1(c.(CljsCoreIIndexed).X_nth_Arity2(i_466))) {
 															Chunk_append.X_invoke_Arity2(b, c.(CljsCoreIIndexed).X_nth_Arity2(i_466))
 														} else {
@@ -8393,14 +8393,14 @@ func init() {
 			{
 				var arr = Native_get_instance_field.X_invoke_Arity2(iseq, "Arr")
 				var ret = func() interface{} {
-					var a__1036__auto__ = arr
-					_ = a__1036__auto__
+					var a__1037__auto__ = arr
+					_ = a__1037__auto__
 					{
 						var i = float64(0)
 						var res = CljsCorePersistentHashSet_EMPTY.X_as_transient_Arity1()
 						_, _ = i, res
 						for {
-							if i < float64(len(a__1036__auto__.([]interface{}))) {
+							if i < float64(len(a__1037__auto__.([]interface{}))) {
 								i, res = (i + float64(1)), res.(CljsCoreITransientCollection).X_conj_BANG__Arity2((arr.([]interface{})[int(i)]))
 								continue
 							} else {
@@ -8605,7 +8605,7 @@ func init() {
 	Name = func(name *AFn) *AFn {
 		return Fn(name, func(x interface{}) interface{} {
 			if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "INamed", Str: "cljs.core/INamed", X_hash: float64(-857199025), X_meta: nil}), x)) {
-				return x.(CljsCoreINamed).X_name_Arity1().(string)
+				return x.(CljsCoreINamed).X_name_Arity1()
 			} else {
 				if reflect.ValueOf(x).Kind() == reflect.String {
 					return x
@@ -9421,9 +9421,9 @@ func init() {
 									_ = seq__676___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__676___1) {
 										{
-											var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__676___1)
-											_ = c__942__auto__
-											seq__676, chunk__677, count__678, i__679 = Chunk_rest.X_invoke_Arity1(seq__676___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+											var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__676___1)
+											_ = c__943__auto__
+											seq__676, chunk__677, count__678, i__679 = Chunk_rest.X_invoke_Arity1(seq__676___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -9494,9 +9494,9 @@ func init() {
 									_ = seq__686___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__686___1) {
 										{
-											var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__686___1)
-											_ = c__942__auto__
-											seq__686, chunk__687, count__688, i__689 = Chunk_rest.X_invoke_Arity1(seq__686___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+											var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__686___1)
+											_ = c__943__auto__
+											seq__686, chunk__687, count__688, i__689 = Chunk_rest.X_invoke_Arity1(seq__686___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -9926,9 +9926,9 @@ func init() {
 															_ = seq__718_736___1
 															if Chunked_seq_QMARK_.Arity1IB(seq__718_736___1) {
 																{
-																	var c__942__auto___737 = Chunk_first.X_invoke_Arity1(seq__718_736___1)
-																	_ = c__942__auto___737
-																	seq__718_728, chunk__719_729, count__720_730, i__721_731 = Chunk_rest.X_invoke_Arity1(seq__718_736___1).(CljsCoreISeq), c__942__auto___737, Count.X_invoke_Arity1(c__942__auto___737).(float64), float64(0)
+																	var c__943__auto___737 = Chunk_first.X_invoke_Arity1(seq__718_736___1)
+																	_ = c__943__auto___737
+																	seq__718_728, chunk__719_729, count__720_730, i__721_731 = Chunk_rest.X_invoke_Arity1(seq__718_736___1).(CljsCoreISeq), c__943__auto___737, Count.X_invoke_Arity1(c__943__auto___737).(float64), float64(0)
 																	continue
 																}
 															} else {
@@ -9982,9 +9982,9 @@ func init() {
 																_ = seq__724_747___1
 																if Chunked_seq_QMARK_.Arity1IB(seq__724_747___1) {
 																	{
-																		var c__942__auto___748 = Chunk_first.X_invoke_Arity1(seq__724_747___1)
-																		_ = c__942__auto___748
-																		seq__724_741, chunk__725_742, count__726_743, i__727_744 = Chunk_rest.X_invoke_Arity1(seq__724_747___1).(CljsCoreISeq), c__942__auto___748, Count.X_invoke_Arity1(c__942__auto___748).(float64), float64(0)
+																		var c__943__auto___748 = Chunk_first.X_invoke_Arity1(seq__724_747___1)
+																		_ = c__943__auto___748
+																		seq__724_741, chunk__725_742, count__726_743, i__727_744 = Chunk_rest.X_invoke_Arity1(seq__724_747___1).(CljsCoreISeq), c__943__auto___748, Count.X_invoke_Arity1(c__943__auto___748).(float64), float64(0)
 																		continue
 																	}
 																} else {
@@ -11375,11 +11375,11 @@ func (o *CljsCoreSymbol) X_pr_writer_Arity3(writer interface{}, ___ interface{})
 func (_ *CljsCoreSymbol) CljsCoreINamed__() {}
 
 func (___ *CljsCoreSymbol) X_name_Arity1() interface{} {
-	return ___.Name.(string)
+	return ___.Name
 }
 
 func (___ *CljsCoreSymbol) X_namespace_Arity1() interface{} {
-	return ___.Ns.(string)
+	return ___.Ns
 }
 
 func (_ *CljsCoreSymbol) CljsCoreIHash__() {}
@@ -12836,11 +12836,11 @@ func (o *CljsCoreKeyword) X_pr_writer_Arity3(writer interface{}, ___ interface{}
 func (_ *CljsCoreKeyword) CljsCoreINamed__() {}
 
 func (___ *CljsCoreKeyword) X_name_Arity1() interface{} {
-	return ___.Name.(string)
+	return ___.Name
 }
 
 func (___ *CljsCoreKeyword) X_namespace_Arity1() interface{} {
-	return ___.Ns.(string)
+	return ___.Ns
 }
 
 func (_ *CljsCoreKeyword) CljsCoreIHash__() {}
@@ -13661,13 +13661,13 @@ func (___ *CljsCoreMultiStepper) HasNext() interface{} {
 
 func (___ *CljsCoreMultiStepper) Next() interface{} {
 	{
-		var n__1042__auto___787 = float64(len(___.Iters.([]interface{})))
-		_ = n__1042__auto___787
+		var n__1043__auto___787 = float64(len(___.Iters.([]interface{})))
+		_ = n__1043__auto___787
 		{
 			var i_788 = float64(0)
 			_ = i_788
 			for {
-				if i_788 < n__1042__auto___787 {
+				if i_788 < n__1043__auto___787 {
 					___.Nexts.([]interface{})[int(i_788)] = Native_invoke_instance_method.X_invoke_Arity3((___.Iters.([]interface{})[int(i_788)]), "Next", []interface{}{})
 					i_788 = (i_788 + float64(1))
 					continue
@@ -13855,9 +13855,9 @@ var CljsCoreLazyTransformer_CreateMulti = func(G__790 *AFn) *AFn {
 									_ = seq__353_797___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__353_797___1) {
 										{
-											var c__942__auto___798 = Chunk_first.X_invoke_Arity1(seq__353_797___1)
-											_ = c__942__auto___798
-											seq__353_791, chunk__354_792, count__355_793, i__356_794 = Chunk_rest.X_invoke_Arity1(seq__353_797___1).(CljsCoreISeq), c__942__auto___798, Count.X_invoke_Arity1(c__942__auto___798).(float64), float64(0)
+											var c__943__auto___798 = Chunk_first.X_invoke_Arity1(seq__353_797___1)
+											_ = c__943__auto___798
+											seq__353_791, chunk__354_792, count__355_793, i__356_794 = Chunk_rest.X_invoke_Arity1(seq__353_797___1).(CljsCoreISeq), c__943__auto___798, Count.X_invoke_Arity1(c__943__auto___798).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -13983,9 +13983,9 @@ func (this *CljsCoreAtom) X_notify_watches_Arity3(oldval interface{}, newval int
 							_ = seq__393___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__393___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__393___1)
-									_ = c__942__auto__
-									seq__393, chunk__394, count__395, i__396 = Chunk_rest.X_invoke_Arity1(seq__393___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__393___1)
+									_ = c__943__auto__
+									seq__393, chunk__394, count__395, i__396 = Chunk_rest.X_invoke_Arity1(seq__393___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -14581,13 +14581,13 @@ func (coll *CljsCorePersistentVector) X_conj_Arity2(o interface{}) interface{} {
 			var new_tail = make([]interface{}, int((len + float64(1))))
 			_, _ = len, new_tail
 			{
-				var n__1042__auto___801 = len
-				_ = n__1042__auto___801
+				var n__1043__auto___801 = len
+				_ = n__1043__auto___801
 				{
 					var i_802 = float64(0)
 					_ = i_802
 					for {
-						if i_802 < n__1042__auto___801 {
+						if i_802 < n__1043__auto___801 {
 							new_tail[int(i_802)] = (coll.Tail.([]interface{})[int(i_802)])
 							i_802 = (i_802 + float64(1))
 							continue
@@ -16420,9 +16420,9 @@ func (coll *CljsCorePersistentArrayMap) ForEach(f interface{}) interface{} {
 							_ = seq__517___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__517___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__517___1)
-									_ = c__942__auto__
-									seq__517, chunk__518, count__519, i__520 = Chunk_rest.X_invoke_Arity1(seq__517___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__517___1)
+									_ = c__943__auto__
+									seq__517, chunk__518, count__519, i__520 = Chunk_rest.X_invoke_Arity1(seq__517___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -18067,9 +18067,9 @@ func (coll *CljsCorePersistentHashMap) ForEach(f interface{}) interface{} {
 							_ = seq__542___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__542___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__542___1)
-									_ = c__942__auto__
-									seq__542, chunk__543, count__544, i__545 = Chunk_rest.X_invoke_Arity1(seq__542___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__542___1)
+									_ = c__943__auto__
+									seq__542, chunk__543, count__544, i__545 = Chunk_rest.X_invoke_Arity1(seq__542___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -19429,9 +19429,9 @@ func (coll *CljsCorePersistentTreeMap) ForEach(f interface{}) interface{} {
 							_ = seq__559___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__559___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__559___1)
-									_ = c__942__auto__
-									seq__559, chunk__560, count__561, i__562 = Chunk_rest.X_invoke_Arity1(seq__559___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__559___1)
+									_ = c__943__auto__
+									seq__559, chunk__560, count__561, i__562 = Chunk_rest.X_invoke_Arity1(seq__559___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -20215,9 +20215,9 @@ func (coll *CljsCorePersistentHashSet) ForEach(f interface{}) interface{} {
 							_ = seq__581___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__581___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__581___1)
-									_ = c__942__auto__
-									seq__581, chunk__582, count__583, i__584 = Chunk_rest.X_invoke_Arity1(seq__581___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__581___1)
+									_ = c__943__auto__
+									seq__581, chunk__582, count__583, i__584 = Chunk_rest.X_invoke_Arity1(seq__581___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -20679,9 +20679,9 @@ func (coll *CljsCorePersistentTreeSet) ForEach(f interface{}) interface{} {
 							_ = seq__595___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__595___1) {
 								{
-									var c__942__auto__ = Chunk_first.X_invoke_Arity1(seq__595___1)
-									_ = c__942__auto__
-									seq__595, chunk__596, count__597, i__598 = Chunk_rest.X_invoke_Arity1(seq__595___1).(CljsCoreISeq), c__942__auto__, Count.X_invoke_Arity1(c__942__auto__).(float64), float64(0)
+									var c__943__auto__ = Chunk_first.X_invoke_Arity1(seq__595___1)
+									_ = c__943__auto__
+									seq__595, chunk__596, count__597, i__598 = Chunk_rest.X_invoke_Arity1(seq__595___1).(CljsCoreISeq), c__943__auto__, Count.X_invoke_Arity1(c__943__auto__).(float64), float64(0)
 									continue
 								}
 							} else {

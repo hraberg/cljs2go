@@ -7,9 +7,8 @@ import (
 	"reflect"
 
 	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	"github.com/hraberg/cljs.go/js"
-
 	goog_string "github.com/hraberg/cljs.go/goog/string"
+	"github.com/hraberg/cljs.go/js"
 )
 
 func init() {

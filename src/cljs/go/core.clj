@@ -687,10 +687,16 @@
 (core/defmethod extend-prefix :default
   [tsym sym] `(.. ~tsym -prototype ~(to-property sym)))
 
+(defn real-tag [tag object?]
+  (if object?
+    tag
+    ('{string nil} tag tag))  )
+
 (defn adapt-proto-params [type proto-fn [[this & args :as sig] & body]]
   (let [[proto-params] ((group-by count (:method-params proto-fn)) (count sig))
-        this (vary-meta this assoc :tag type)]
-    `(~(vec (cons this (map #(vary-meta % assoc :tag (-> %2 meta :tag))
+        this (vary-meta this assoc :tag type)
+        object? (= (:protocol proto-fn) 'cljs.core/Object)]
+    `(~(vec (cons this (map #(vary-meta % assoc :tag (real-tag (-> %2 meta :tag) object?))
                             args (core/or (next proto-params) args))))
       ~@body)))
 
@@ -732,7 +738,7 @@
   (let [proto-fn (get-in (ana/get-namespace (symbol (namespace psym))) [:defs f])]
     (map (fn [[sig & body :as meth]]
            `(do
-              ~(with-meta `(fn ~(vary-meta f assoc :tag (:ret-tag proto-fn))
+              ~(with-meta `(fn ~(vary-meta f assoc :tag (real-tag (:ret-tag proto-fn) false))
                              ~(adapt-proto-params type proto-fn meth)) (meta form))))
          (cond-> meths (vector? (first meths)) core/vector))))
 
@@ -929,7 +935,7 @@
         psym (vary-meta psym assoc :protocol-symbol true)
         ns-name (-> &env :ns :name)
         fq-psym (symbol (some-> ns-name name) (name psym))
-        object? (= 'Object p)
+        object? (= 'cljs.core/Object p)
         go-psym (symbol (cljs.compiler/go-type fq-psym))
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
         expand-sig (fn [fname sig]
@@ -939,10 +945,10 @@
                        ~(vary-meta
                          `(~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                             "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))
-                         assoc :tag (-> fname meta :tag))))
+                         assoc :tag (real-tag (-> fname meta :tag) object?))))
         method-sigs (fn [arity-limit sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
-                 (let [fname (vary-meta fname assoc :protocol p)]
+                 (let [fname (vary-meta fname assoc :protocol p :tag (real-tag (-> fname meta :tag) object?))]
                    `(defn ~fname ~@(map (partial expand-sig fname) (method-sigs (core/inc arity-limit) sigs)))))
         method-decl (fn [[fname & sigs]]
                       (->>
