@@ -21,6 +21,9 @@ func value(x interface{}) reflect.Value {
 	if v, ok := x.(reflect.Value); ok {
 		return v
 	}
+	if x == nil {
+		return reflect.ValueOf(&x).Elem()
+	}
 	return reflect.ValueOf(x)
 }
 
@@ -48,14 +51,14 @@ var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface
 })
 
 var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
-	element(decorate(target)).FieldByName(fieldName.(string)).Set(reflect.ValueOf(val))
+	element(decorate(target)).FieldByName(fieldName.(string)).Set(value(val))
 	return val
 })
 
 var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 	in := make([]reflect.Value, len(args.([]interface{})))
-	for i, a := range args.([]interface{}) {
-		in[i] = reflect.ValueOf(a)
+	for i, v := range args.([]interface{}) {
+		in[i] = value(v)
 	}
 	return value(f).Call(in)[0].Interface()
 })
@@ -518,11 +521,7 @@ func typedSignature(t reflect.Type) string {
 func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
-			if iv := v.Interface(); iv == nil {
-				in[i] = reflect.ValueOf(&iv).Elem()
-			} else {
-				in[i] = reflect.ValueOf(iv)
-			}
+			in[i] = value(v.Interface())
 		}
 		out := f.Call(in)
 		for i, v := range out {
@@ -657,6 +656,10 @@ type CljsCoreIEmptyList interface {
 	CljsCoreIList
 	CljsCoreISeq
 	CljsCoreICollection
+}
+
+func (this *CljsCorePersistentVector) X_contains_key_QMARK__Arity2(k interface{}) bool {
+	panic("Not implemented.")
 }
 
 var X___ *AFn

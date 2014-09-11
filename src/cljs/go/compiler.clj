@@ -200,14 +200,16 @@
       (if-let [ns (and (symbol? tag) (namespace tag))]
         (let [ns (symbol ns)
               goog? (= 'goog ns)
+              js? (= 'js ns)
               type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
           (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
             "interface{}"
             (str
-             (when (or type? goog?) "*")
+             (when (or type? goog? js?) "*")
              (munge (cond
                      (= ana/*cljs-ns* ns) (go-type-fqn tag)
                      goog? (go-normalize-goog-type tag)
+                     js? tag
                      :else (str ns "." (go-type-fqn tag)))))))
         (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
           tag
@@ -1087,7 +1089,7 @@
   [{:keys [env code js-op segs args numeric tag form] :as ast}]
   (if (and (-> form meta :top-level) (not *go-def-vars*))
     (swap! *go-defs* conj ast)
-    (let [aset-return? (and (= 'cljs.core/aset js-op) (= :return (:context env)))
+    (let [aset-return? (and (= 'cljs.core/aset js-op) (#{:expr :return} (:context env)))
           box? (= 'removed-leaf? (-> args first :info :name)) ;; horrific hack to cancel out another.
           [segs args] (if box?
                         [segs args]
@@ -1119,7 +1121,8 @@
                                              (map (if numeric (partial go-unbox 'number) identity)
                                                   (concat args [nil])))))
                    (when aset-return?
-                     (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args))) " }()")))))))
+                     (emits "; return " (first args) (map #(str "[int(" % ")]") (butlast (rest args)))
+                            (go-unbox-no-emit (:tag (last args)) nil) " }()")))))))
 
 (defn rename-to-js
   "Change the file extension from .cljs to .js. Takes a File or a

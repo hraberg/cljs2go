@@ -7,19 +7,19 @@ func TypeOf(x interface{}) string {
 }
 
 func IsArray(x interface{}) bool {
-	return reflect.TypeOf(x).Kind() == reflect.Slice
+	return reflect.ValueOf(x).Kind() == reflect.Slice
 }
 
 func IsObject(x interface{}) bool {
-	return reflect.TypeOf(x).Kind() == reflect.Map
+	return reflect.ValueOf(x).Kind() == reflect.Map
 }
 
 func IsString(x interface{}) bool {
-	return reflect.TypeOf(x).Kind() == reflect.String
+	return reflect.ValueOf(x).Kind() == reflect.String
 }
 
 func IsFunction(x interface{}) bool {
-	return reflect.TypeOf(x).Kind() == reflect.Func
+	return reflect.ValueOf(x).Kind() == reflect.Func
 }
 
 func GetUid(obj interface{}) float64 {

@@ -548,74 +548,74 @@
   ;;   (set! (.-foo x) :hello)
   ;;   (assert (= (.-foo x) :hello)))
 
-  ;; (assert (set []))
-  ;; (assert (= #{} (set [])))
-  ;; (assert (= #{} (hash-set)))
+  (assert (set []))
+  (assert (= #{} (set [])))
+  (assert (= #{} (hash-set)))
   ;; (assert (identical? cljs.core.PersistentHashSet (type (hash-set))))
 
-  ;; (assert (= #{"foo"} (set ["foo"])))
-  ;; (assert (= #{"foo"} (hash-set "foo")))
-  ;; (assert (= #{1 2 3} #{1 3 2}))
-  ;; (assert (= #{#{1 2 3} [4 5 6] {7 8} 9 10}
-  ;;            #{10 9 [4 5 6] {7 8} #{1 2 3}}))
-  ;; (assert (not (= #{nil [] {} 0 #{}} #{})))
-  ;; (assert (= (count #{nil [] {} 0 #{}}) 5))
-  ;; (assert (= (conj #{1} 1) #{1}))
-  ;; (assert (= (conj #{1} 2) #{2 1}))
-  ;; (assert (= #{} (-empty #{1 2 3 4})))
-  ;; (assert (= (reduce + #{1 2 3 4 5}) 15))
-  ;; (assert (= 4 (get #{1 2 3 4} 4)))
-  ;; (assert (contains? #{1 2 3 4} 4))
-  ;; (assert (contains? #{[] nil 0 {} #{}} {}))
-  ;; (assert (contains? #{[1 2 3]} [1 2 3]))
-  ;; (assert (not (contains? (-disjoin #{1 2 3} 3) 3)))
-  ;; (assert (neg? -1))
-  ;; (assert (not (neg? 1)))
-  ;; (assert (neg? -1.765))
-  ;; (assert (not (neg? 0)))
-  ;; (assert (= [true false true false true false true false]
-  ;;            (map integer?
-  ;;                 [1 1.00001 0x7e7 [] (- 88 1001991881) :foo 0 "0"])))
-  ;; (assert (= [true false true false true false]
-  ;;            (map odd? [1 2 3 4 -1 0])))
-  ;; (assert (= [true false true false true true]
-  ;;            (map even? [2 3 4 5 -2 0])))
-  ;; (assert (contains? {:a 1 :b 2} :a))
-  ;; (assert (not (contains? {:a 1 :b 2} :z)))
-  ;; (assert (contains? [5 6 7] 1))
-  ;; (assert (contains? [5 6 7] 2))
-  ;; (assert (not (contains? [5 6 7] 3)))
-  ;; (assert (contains? (to-array [5 6 7]) 1))
-  ;; (assert (contains? (to-array [5 6 7]) 2))
-  ;; (assert (not (contains? (to-array [5 6 7]) 3)))
-  ;; (assert (not (contains? nil 42)))
-  ;; (assert (contains? "f" 0))
-  ;; (assert (not (contains? "f" 55)))
-  ;; (assert (distinct? 1 2 3))
-  ;; (assert (not (distinct? 1 2 3 1)))
+  (assert (= #{"foo"} (set ["foo"])))
+  (assert (= #{"foo"} (hash-set "foo")))
+  (assert (= #{1 2 3} #{1 3 2}))
+  (assert (= #{#{1 2 3} [4 5 6] {7 8} 9 10}
+             #{10 9 [4 5 6] {7 8} #{1 2 3}}))
+  (assert (not (= #{nil [] {} 0 #{}} #{})))
+  (assert (= (count #{nil [] {} 0 #{}}) 5))
+  (assert (= (conj #{1} 1) #{1}))
+  (assert (= (conj #{1} 2) #{2 1}))
+  (assert (= #{} (-empty #{1 2 3 4})))
+  (assert (= (reduce + #{1 2 3 4 5}) 15))
+  (assert (= 4 (get #{1 2 3 4} 4)))
+  (assert (contains? #{1 2 3 4} 4))
+  (assert (contains? #{[] nil 0 {} #{}} {}))
+  (assert (contains? #{[1 2 3]} [1 2 3]))
+  (assert (not (contains? (-disjoin #{1 2 3} 3) 3)))
+  (assert (neg? -1))
+  (assert (not (neg? 1)))
+  (assert (neg? -1.765))
+  (assert (not (neg? 0)))
+  (assert (= [true false true false true false true false]
+             (map integer?
+                  [1 1.00001 0x7e7 [] (- 88 1001991881) :foo 0 "0"])))
+  (assert (= [true false true false true false]
+             (map odd? [1 2 3 4 -1 0])))
+  (assert (= [true false true false true true]
+             (map even? [2 3 4 5 -2 0])))
+  (assert (contains? {:a 1 :b 2} :a))
+  (assert (not (contains? {:a 1 :b 2} :z)))
+  (assert (contains? [5 6 7] 1))
+  (assert (contains? [5 6 7] 2))
+  (assert (not (contains? [5 6 7] 3)))
+  (assert (contains? (to-array [5 6 7]) 1))
+  (assert (contains? (to-array [5 6 7]) 2))
+  (assert (not (contains? (to-array [5 6 7]) 3)))
+  (assert (not (contains? nil 42)))
+  (assert (contains? "f" 0))
+  (assert (not (contains? "f" 55)))
+  (assert (distinct? 1 2 3))
+  (assert (not (distinct? 1 2 3 1)))
 
   ;; ;; distinct
-  ;; (assert (= (distinct ()) ()))
-  ;; (assert (= (distinct '(1)) '(1)))
-  ;; (assert (= (distinct '(1 2 3 1 1 1)) '(1 2 3)))
-  ;; (assert (= (distinct [1 1 1 2]) '(1 2)))
-  ;; (assert (= (distinct [1 2 1 2]) '(1 2)))
-  ;; (assert (= (distinct "a") ["a"]))
-  ;; (assert (= (distinct "abcabab") ["a" "b" "c"]))
-  ;; (assert (= (distinct ["abc" "abc"]) ["abc"]))
-  ;; (assert (= (distinct [nil nil]) [nil]))
-  ;; (assert (= (distinct [0.0 0.0]) [0.0]))
-  ;; (assert (= (distinct ['sym 'sym]) '[sym]))
-  ;; (assert (= (distinct [:kw :kw]) [:kw]))
-  ;; (assert (= (distinct [42 42]) [42]))
-  ;; (assert (= (distinct [[] []]) [[]]))
-  ;; (assert (= (distinct ['(1 2) '(1 2)]) '[(1 2)]))
-  ;; (assert (= (distinct [() ()]) [()]))
-  ;; (assert (= (distinct [[1 2] [1 2]]) [[1 2]]))
-  ;; (assert (= (distinct [{:a 1 :b 2} {:a 1 :b 2}]) [{:a 1 :b 2}]))
-  ;; (assert (= (distinct [{} {}]) [{}]))
-  ;; (assert (= (distinct [#{1 2} #{1 2}]) [#{1 2}]))
-  ;; (assert (= (distinct [#{} #{}]) [#{}]))
+  (assert (= (distinct ()) ()))
+  (assert (= (distinct '(1)) '(1)))
+  (assert (= (distinct '(1 2 3 1 1 1)) '(1 2 3)))
+  (assert (= (distinct [1 1 1 2]) '(1 2)))
+  (assert (= (distinct [1 2 1 2]) '(1 2)))
+  (assert (= (distinct "a") ["a"]))
+  (assert (= (distinct "abcabab") ["a" "b" "c"]))
+  (assert (= (distinct ["abc" "abc"]) ["abc"]))
+  (assert (= (distinct [nil nil]) [nil]))
+  (assert (= (distinct [0.0 0.0]) [0.0]))
+  (assert (= (distinct ['sym 'sym]) '[sym]))
+  (assert (= (distinct [:kw :kw]) [:kw]))
+  (assert (= (distinct [42 42]) [42]))
+  (assert (= (distinct [[] []]) [[]]))
+  (assert (= (distinct ['(1 2) '(1 2)]) '[(1 2)]))
+  (assert (= (distinct [() ()]) [()]))
+  (assert (= (distinct [[1 2] [1 2]]) [[1 2]]))
+  (assert (= (distinct [{:a 1 :b 2} {:a 1 :b 2}]) [{:a 1 :b 2}]))
+  (assert (= (distinct [{} {}]) [{}]))
+  (assert (= (distinct [#{1 2} #{1 2}]) [#{1 2}]))
+  (assert (= (distinct [#{} #{}]) [#{}]))
 
   ;; ;;regexps
   ;; (assert (= (str (re-pattern "f(.)o")) (str (js* "/f(.)o/"))))
@@ -631,53 +631,54 @@
   ;; (assert (#{"#\"\"" "#\"(?:)\""} (pr-str #"")))
 
   ;; ;; destructuring
-  ;; (assert (= [2 1] (let [[a b] [1 2]] [b a])))
-  ;; (assert (= #{1 2} (let [[a b] [1 2]] #{a b})))
-  ;; (assert (= [1 2] (let [{a :a b :b} {:a 1 :b 2}] [a b])))
-  ;; (assert (= [1 2] (let [{:keys [a b]} {:a 1 :b 2}] [a b])))
-  ;; (assert (= [1 2 [1 2]] (let [[a b :as v] [1 2]] [a b v])))
-  ;; (assert (= [1 42] (let [{:keys [a b] :or {b 42}} {:a 1}] [a b])))
-  ;; (assert (= [1 nil] (let [{:keys [a b] :or {c 42}} {:a 1}] [a b])))
-  ;; (assert (= [2 1] (let [[a b] '(1 2)] [b a])))
-  ;; (assert (= {1 2} (let [[a b] [1 2]] {a b})))
-  ;; (assert (= [2 1] (let [[a b] (seq [1 2])] [b a])))
+  (assert (= [2 1] (let [[a b] [1 2]] [b a])))
+  (assert (= #{1 2} (let [[a b] [1 2]] #{a b})))
+  (assert (= [1 2] (let [{a :a b :b} {:a 1 :b 2}] [a b])))
+  (assert (= [1 2] (let [{:keys [a b]} {:a 1 :b 2}] [a b])))
+  (assert (= [1 2 [1 2]] (let [[a b :as v] [1 2]] [a b v])))
+  (assert (= [1 42] (let [{:keys [a b] :or {b 42}} {:a 1}] [a b])))
+  (assert (= [1 nil] (let [{:keys [a b] :or {c 42}} {:a 1}] [a b])))
+  (assert (= [2 1] (let [[a b] '(1 2)] [b a])))
+  (assert (= {1 2} (let [[a b] [1 2]] {a b})))
+  (assert (= [2 1] (let [[a b] (seq [1 2])] [b a])))
 
   ;; ;; update-in
-  ;; (assert (= {:foo {:bar {:baz 1}}}
-  ;;            (update-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] inc)))
-  ;; (assert (= {:foo 1 :bar 2 :baz 10}
-  ;;            (update-in {:foo 1 :bar 2 :baz 3} [:baz] + 7)))
-  ;; (assert (= [{:foo 1, :bar 2} {:foo 1, :bar 3}]
-  ;;              (update-in [{:foo 1 :bar 2}, {:foo 1 :bar 2}] [1 :bar] inc)))
-  ;; (assert (= [{:foo {:bar 2}} {:foo {:bar 3}}]
-  ;;              (update-in [{:foo {:bar 2}}, {:foo {:bar 2}}] [1 :foo :bar] inc)))
+  (assert (= {:foo {:bar {:baz 1}}}
+             (update-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] inc)))
+  (assert (= {:foo 1 :bar 2 :baz 10}
+             (update-in {:foo 1 :bar 2 :baz 3} [:baz] + 7)))
+  (assert (= [{:foo 1, :bar 2} {:foo 1, :bar 3}]
+               (update-in [{:foo 1 :bar 2}, {:foo 1 :bar 2}] [1 :bar] inc)))
+  (assert (= [{:foo {:bar 2}} {:foo {:bar 3}}]
+               (update-in [{:foo {:bar 2}}, {:foo {:bar 2}}] [1 :foo :bar] inc)))
 
   ;; ;; assoc-in
-  ;; (assert (= {:foo {:bar {:baz 100}}}
-  ;;            (assoc-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] 100)))
-  ;; (assert (= {:foo 1 :bar 2 :baz 100}
-  ;;            (assoc-in {:foo 1 :bar 2 :baz 3} [:baz] 100)))
-  ;; (assert (= [{:foo [{:bar 2} {:baz 3}]} {:foo [{:bar 2} {:baz 100}]}]
-  ;;            (assoc-in [{:foo [{:bar 2} {:baz 3}]}, {:foo [{:bar 2} {:baz 3}]}]
-  ;;                      [1 :foo 1 :baz] 100)))
-  ;; (assert (= [{:foo 1, :bar 2} {:foo 1, :bar 100}]
-  ;;            (assoc-in [{:foo 1 :bar 2}, {:foo 1 :bar 2}] [1 :bar] 100)))
+  (assert (= {:foo {:bar {:baz 100}}}
+             (assoc-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] 100)))
+  (assert (= {:foo 1 :bar 2 :baz 100}
+             (assoc-in {:foo 1 :bar 2 :baz 3} [:baz] 100)))
+  (assert (= [{:foo [{:bar 2} {:baz 3}]} {:foo [{:bar 2} {:baz 100}]}]
+             (assoc-in [{:foo [{:bar 2} {:baz 3}]}, {:foo [{:bar 2} {:baz 3}]}]
+                       [1 :foo 1 :baz] 100)))
+  (assert (= [{:foo 1, :bar 2} {:foo 1, :bar 100}]
+             (assoc-in [{:foo 1 :bar 2}, {:foo 1 :bar 2}] [1 :bar] 100)))
 
   ;; ;; get-in
-  ;; (assert (= 1 (get-in {:foo 1 :bar 2} [:foo])))
-  ;; (assert (= 2 (get-in {:foo {:bar 2}} [:foo :bar])))
-  ;; (assert (= 1 (get-in [{:foo 1}, {:foo 2}] [0 :foo])))
-  ;; (assert (= 4 (get-in [{:foo 1 :bar [{:baz 1}, {:buzz 2}]}, {:foo 3 :bar [{:baz 3}, {:buzz 4}]}]
-  ;;                      [1 :bar 1 :buzz])))
+  (assert (= 1 (get-in {:foo 1 :bar 2} [:foo])))
+  (assert (= 2 (get-in {:foo {:bar 2}} [:foo :bar])))
+  (assert (= 1 (get-in [{:foo 1}, {:foo 2}] [0 :foo])))
+  (assert (= 4 (get-in [{:foo 1 :bar [{:baz 1}, {:buzz 2}]}, {:foo 3 :bar [{:baz 3}, {:buzz 4}]}]
+                       [1 :bar 1 :buzz])))
 
   ;; ;; arrays
-  ;; (let [a (to-array [1 2 3])]
-  ;;   (assert (= [10 20 30] (seq (amap a i ret (* 10 (aget a i))))))
-  ;;   (assert (= 6 (areduce a i ret 0 (+ ret (aget a i)))))
-  ;;   (assert (= (seq a) (seq (to-array [1 2 3]))))
-  ;;   (assert (= 42 (aset a 0 42)))
-  ;;   (assert (not= (seq a) (seq (to-array [1 2 3]))))
-  ;;   (assert (not= a (aclone a))))
+  (let [a (to-array [1 2 3])]
+    (assert (= [10 20 30] (seq (amap a i ret (* 10 (aget a i))))))
+    (assert (= 6 (areduce a i ret 0 (+ ret (aget a i)))))
+    (assert (= (seq a) (seq (to-array [1 2 3]))))
+    (assert (= 42 (aset a 0 42)))
+    (assert (not= (seq a) (seq (to-array [1 2 3]))))
+;    (assert (not= a (aclone a)))
+    )
 
   ;; (let [a (array (array 1 2 3) (array 4 5 6))]
   ;;   (assert (= (aget a 0 1) 2))
@@ -699,11 +700,11 @@
   ;; (assert (= ["foo" [1 2] "a"] (sort-by count > ["foo" "a" [1 2]])))
 
   ;; ;; shuffle
-  ;; (let [coll [1 2 3 4 5 6 7 8 9 10]
-  ;;       ; while it is technically possible for this test to fail with a false negative,
-  ;;       ; it's _extraordinarily_ unlikely.
-  ;;       shuffles (filter #(not= coll %) (take 100 (iterate shuffle coll)))]
-  ;;   (assert (not (empty? shuffles))))
+  (let [coll [1 2 3 4 5 6 7 8 9 10]
+        ; while it is technically possible for this test to fail with a false negative,
+        ; it's _extraordinarily_ unlikely.
+        shuffles (filter #(not= coll %) (take 100 (iterate shuffle coll)))]
+    (assert (not (empty? shuffles))))
 
   ;; ;; js->clj
   ;; (assert (= {"a" 1, "b" 2} (js->clj (js* "{\"a\":1,\"b\":2}"))))
@@ -736,169 +737,169 @@
   ;;            "d"))
 
   ;; ;; last
-  ;; (assert (= nil (last nil)))
-  ;; (assert (= 3 (last [1 2 3])))
+  (assert (= nil (last nil)))
+  (assert (= 3 (last [1 2 3])))
 
   ;; ;; dotimes
-  ;; (let [s (atom [])]
-  ;;   (dotimes [n 5]
-  ;;     (swap! s conj n))
-  ;;   (assert (= [0 1 2 3 4] @s)))
+  (let [s (atom [])]
+    (dotimes [n 5]
+      (swap! s conj n))
+    (assert (= [0 1 2 3 4] @s)))
 
   ;; ;; doseq
-  ;; (let [v [1 2 3 4 5]
-  ;;       s (atom ())]
-  ;;   (doseq [n v] (swap! s conj n))
-  ;;   (assert (= @s (reverse v))))
+  (let [v [1 2 3 4 5]
+        s (atom ())]
+    (doseq [n v] (swap! s conj n))
+    (assert (= @s (reverse v))))
 
   ;; ;; delay
-  ;; (let [a (atom 0)
-  ;;       d (delay (swap! a inc))]
-  ;;   (assert (false? (realized? d)))
-  ;;   (assert (zero? @a)) ;; delay hasn't triggered yet
-  ;;   (assert (= 1 @d)) ;; trigger it
-  ;;   (assert (= 1 @a)) ;; make sure side effect has happened
-  ;;   (assert (true? (realized? d)))
-  ;;   (assert (= 1 @d)) ;; body doesn't happen again
-  ;;   (assert (= 1 @a)) ;; atom hasn't changed either
-  ;;   (assert (= (force d) @d))
-  ;;   (assert (= 1 (force 1)))) ;; you can safely force non-delays
+  (let [a (atom 0)
+        d (delay (swap! a inc))]
+    (assert (false? (realized? d)))
+    (assert (zero? @a)) ;; delay hasn't triggered yet
+    (assert (= 1 @d)) ;; trigger it
+    (assert (= 1 @a)) ;; make sure side effect has happened
+    (assert (true? (realized? d)))
+    (assert (= 1 @d)) ;; body doesn't happen again
+    (assert (= 1 @a)) ;; atom hasn't changed either
+    (assert (= (force d) @d))
+    (assert (= 1 (force 1)))) ;; you can safely force non-delays
 
   ;; ;; assoc
-  ;; (assert (= {1 2 3 4} (assoc {} 1 2 3 4)))
-  ;; (assert (= {1 2} (assoc {} 1 2)))
-  ;; (assert (= [42 2] (assoc [1 2] 0 42)))
+  (assert (= {1 2 3 4} (assoc {} 1 2 3 4)))
+  (assert (= {1 2} (assoc {} 1 2)))
+  (assert (= [42 2] (assoc [1 2] 0 42)))
 
   ;; ;; dissoc
-  ;; (assert (= {} (dissoc {1 2 3 4} 1 3)))
-  ;; (assert (= {1 2} (dissoc {1 2 3 4} 3)))
-  ;; (assert (nil? (dissoc nil :foo)))
+  (assert (= {} (dissoc {1 2 3 4} 1 3)))
+  (assert (= {1 2} (dissoc {1 2 3 4} 3)))
+  (assert (nil? (dissoc nil :foo)))
 
   ;; ;; disj
-  ;; (assert (= #{1 2 3} (disj #{1 2 3})))
-  ;; (assert (= #{1 2} (disj #{1 2 3} 3)))
-  ;; (assert (= #{1} (disj #{1 2 3} 2 3)))
-  ;; (assert (nil? (disj nil :foo)))
+  (assert (= #{1 2 3} (disj #{1 2 3})))
+  (assert (= #{1 2} (disj #{1 2 3} 3)))
+  (assert (= #{1} (disj #{1 2 3} 2 3)))
+  (assert (nil? (disj nil :foo)))
 
   ;; ;; memoize
-  ;; (let [f (memoize (fn [] (rand)))]
-  ;;   (f)
-  ;;   (assert (= (f) (f))))
+  (let [f (memoize (fn [] (rand)))]
+    (f)
+    (assert (= (f) (f))))
 
   ;; ;; find
-  ;; (assert (= (find {} :a) nil))
-  ;; (assert (= (find {:a 1} :a) [:a 1]))
-  ;; (assert (= (find {:a 1} :b) nil))
-  ;; (assert (= (find {:a 1 :b 2} :a) [:a 1]))
-  ;; (assert (= (find {:a 1 :b 2} :b) [:b 2]))
-  ;; (assert (= (find {:a 1 :b 2} :c) nil))
-  ;; (assert (= (find {} nil) nil))
-  ;; (assert (= (find {:a 1} nil) nil))
-  ;; (assert (= (find {:a 1 :b 2} nil) nil))
-  ;; (assert (= (find [1 2 3] 0) [0 1]))
+  (assert (= (find {} :a) nil))
+  (assert (= (find {:a 1} :a) [:a 1]))
+  (assert (= (find {:a 1} :b) nil))
+  (assert (= (find {:a 1 :b 2} :a) [:a 1]))
+  (assert (= (find {:a 1 :b 2} :b) [:b 2]))
+  (assert (= (find {:a 1 :b 2} :c) nil))
+  (assert (= (find {} nil) nil))
+  (assert (= (find {:a 1} nil) nil))
+  (assert (= (find {:a 1 :b 2} nil) nil))
+  (assert (= (find [1 2 3] 0) [0 1]))
 
   ;; ;; mod,quot,rem
-  ;; (assert (= (quot 4 2) 2))
-  ;; (assert (= (quot 3 2) 1))
-  ;; (assert (= (quot 6 4) 1))
-  ;; (assert (= (quot 0 5) 0))
-  ;; (assert (= (quot 42 5) 8))
-  ;; (assert (= (quot 42 -5) -8))
-  ;; (assert (= (quot -42 -5) 8))
-  ;; (assert (= (quot 9 3) 3))
-  ;; (assert (= (quot 9 -3) -3))
-  ;; (assert (= (quot -9 3) -3))
-  ;; (assert (= (quot 2 -5) 0))
-  ;; (assert (= (quot -2 5) 0))
-  ;; (assert (= (quot 0 3) 0))
-  ;; (assert (= (quot 0 -3) 0))
+  (assert (= (quot 4 2) 2))
+  (assert (= (quot 3 2) 1))
+  (assert (= (quot 6 4) 1))
+  (assert (= (quot 0 5) 0))
+  (assert (= (quot 42 5) 8))
+  (assert (= (quot 42 -5) -8))
+  (assert (= (quot -42 -5) 8))
+  (assert (= (quot 9 3) 3))
+  (assert (= (quot 9 -3) -3))
+  (assert (= (quot -9 3) -3))
+  (assert (= (quot 2 -5) 0))
+  (assert (= (quot -2 5) 0))
+  (assert (= (quot 0 3) 0))
+  (assert (= (quot 0 -3) 0))
 
-  ;; (assert (= (mod 4 2) 0))
-  ;; (assert (= (mod 3 2) 1))
-  ;; (assert (= (mod 6 4) 2))
-  ;; (assert (= (mod 0 5) 0))
-  ;; (assert (= (mod 4.5 2.0) 0.5))
-  ;; (assert (= (mod 42 5) 2))
-  ;; (assert (= (mod 9 3) 0))
-  ;; (assert (= (mod 9 -3) 0))
-  ;; (assert (= (mod -9 3) 0))
-  ;; (assert (= (mod -9 -3) 0))
-  ;; (assert (= (mod 0 3) 0))
-  ;; (assert (= (mod 3216478362187432 432143214) 120355456))
+  (assert (= (mod 4 2) 0))
+  (assert (= (mod 3 2) 1))
+  (assert (= (mod 6 4) 2))
+  (assert (= (mod 0 5) 0))
+;  (assert (= (mod 4.5 2.0) 0.5))
+  (assert (= (mod 42 5) 2))
+  (assert (= (mod 9 3) 0))
+  (assert (= (mod 9 -3) 0))
+  (assert (= (mod -9 3) 0))
+  (assert (= (mod -9 -3) 0))
+  (assert (= (mod 0 3) 0))
+  (assert (= (mod 3216478362187432 432143214) 120355456))
 
-  ;; (assert (= (rem 4 2) 0))
-  ;; (assert (= (rem 0 5) 0))
-  ;; (assert (= (rem 4.5 2.0) 0.5))
-  ;; (assert (= (rem 42 5) 2))
-  ;; (assert (= (rem 2 5) 2))
-  ;; (assert (= (rem 2 -5) 2))
-  ;; (assert (= (rem 0 3) 0))
+  (assert (= (rem 4 2) 0))
+  (assert (= (rem 0 5) 0))
+  (assert (= (rem 4.5 2.0) 0.5))
+  (assert (= (rem 42 5) 2))
+  (assert (= (rem 2 5) 2))
+  (assert (= (rem 2 -5) 2))
+  (assert (= (rem 0 3) 0))
 
   ;; ;; range
-  ;; (assert (= (range 10) (list 0 1 2 3 4 5 6 7 8 9)))
-  ;; (assert (= (range 10 20) (list 10 11 12 13 14 15 16 17 18 19)))
-  ;; (assert (= (range 10 20 2) (list 10 12 14 16 18)))
-  ;; (assert (= (take 20 (range)) (list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)))
+  (assert (= (range 10) (list 0 1 2 3 4 5 6 7 8 9)))
+  (assert (= (range 10 20) (list 10 11 12 13 14 15 16 17 18 19)))
+  (assert (= (range 10 20 2) (list 10 12 14 16 18)))
+  (assert (= (take 20 (range)) (list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)))
 
   ;; ;; group-by
-  ;; (let [d (group-by second {:a 1 :b 2 :c 1 :d 4 :e 1 :f 2})]
-  ;;   (assert (= 3 (count (get d 1))))
-  ;;   (assert (= 2 (count (get d 2))))
-  ;;   (assert (= 1 (count (get d 4)))))
+  (let [d (group-by second {:a 1 :b 2 :c 1 :d 4 :e 1 :f 2})]
+    (assert (= 3 (count (get d 1))))
+    (assert (= 2 (count (get d 2))))
+    (assert (= 1 (count (get d 4)))))
 
-  ;; (assert (= {1 2 3 4 5 6} (merge {1 2} {3 4} {5 6})))
-  ;; (assert (= {1 2 3 4} (merge {1 2} {3 4} nil)))
+  (assert (= {1 2 3 4 5 6} (merge {1 2} {3 4} {5 6})))
+  (assert (= {1 2 3 4} (merge {1 2} {3 4} nil)))
 
   ;; ;; frequencies
-  ;; (assert (= {:a 3 :b 2} (frequencies [:a :b :a :b :a])))
+  (assert (= {:a 3 :b 2} (frequencies [:a :b :a :b :a])))
 
   ;; ;; reductions
-  ;; (assert (= [1 3 6 10 15] (reductions + [1 2 3 4 5])))
+  (assert (= [1 3 6 10 15] (reductions + [1 2 3 4 5])))
 
   ;; ;; keep
-  ;; (assert (= [1 3 5 7 9] (keep #(if (odd? %) %) [1 2 3 4 5 6 7 8 9 10])))
-  ;; (assert (= [2 4 6 8 10] (keep #(if (even? %) %) [1 2 3 4 5 6 7 8 9 10])))
+  (assert (= [1 3 5 7 9] (keep #(if (odd? %) %) [1 2 3 4 5 6 7 8 9 10])))
+  (assert (= [2 4 6 8 10] (keep #(if (even? %) %) [1 2 3 4 5 6 7 8 9 10])))
 
   ;; ;; keep-indexed
-  ;; (assert (= [1 3 5 7 9] (keep-indexed #(if (odd? %1) %2) [0 1 2 3 4 5 6 7 8 9 10])))
-  ;; (assert (= [2 4 5] (keep-indexed #(if (pos? %2) %1) [-9 0 29 -7 45 3 -8])))
+  (assert (= [1 3 5 7 9] (keep-indexed #(if (odd? %1) %2) [0 1 2 3 4 5 6 7 8 9 10])))
+  (assert (= [2 4 5] (keep-indexed #(if (pos? %2) %1) [-9 0 29 -7 45 3 -8])))
 
   ;; ;; map-indexed
-  ;; (assert (= [[0 :a] [1 :b] [2 :c]] (map-indexed #(vector % %2) [:a :b :c])))
+  (assert (= [[0 :a] [1 :b] [2 :c]] (map-indexed #(vector % %2) [:a :b :c])))
 
   ;; ;; merge-with
-  ;; (assert (= '{"Foo" ("foo" "FOO" "fOo"), "Bar" ("bar" "BAR" "BAr"), "Baz" ["baz"], "Qux" ["qux" "quux"]}
-  ;;            (merge-with concat
-  ;;                 {"Foo" ["foo" "FOO"]
-  ;;                  "Bar" ["bar" "BAR"]
-  ;;                  "Baz" ["baz"]}
-  ;;                 {"Foo" ["fOo"]
-  ;;                  "Bar" ["BAr"]
-  ;;                  "Qux" ["qux" "quux"]})))
-  ;; (assert (= {:a 111, :b 102, :c 13}
-  ;;            (merge-with +
-  ;;                        {:a 1 :b 2 :c 3}
-  ;;                        {:a 10 :c 10}
-  ;;                        {:a 100 :b 100})))
+  (assert (= '{"Foo" ("foo" "FOO" "fOo"), "Bar" ("bar" "BAR" "BAr"), "Baz" ["baz"], "Qux" ["qux" "quux"]}
+             (merge-with concat
+                  {"Foo" ["foo" "FOO"]
+                   "Bar" ["bar" "BAR"]
+                   "Baz" ["baz"]}
+                  {"Foo" ["fOo"]
+                   "Bar" ["BAr"]
+                   "Qux" ["qux" "quux"]})))
+  (assert (= {:a 111, :b 102, :c 13}
+             (merge-with +
+                         {:a 1 :b 2 :c 3}
+                         {:a 10 :c 10}
+                         {:a 100 :b 100})))
 
-  ;; (assert (= {:a 3, :b 102, :c 13}
-  ;;            (apply merge-with [+
-  ;;                               {:a 1 :b 100}
-  ;;                               {:a 1 :b 2 :c 3}
-  ;;                               {:a 1 :c 10}])))
+  (assert (= {:a 3, :b 102, :c 13}
+             (apply merge-with [+
+                                {:a 1 :b 100}
+                                {:a 1 :b 2 :c 3}
+                                {:a 1 :c 10}])))
 
-  ;; (assert (= '[a c e] (replace '[a b c d e] [0 2 4])))
-  ;; (assert (= [:one :zero :two :zero]
-  ;;            (replace {0 :zero 1 :one 2 :two} '(1 0 2 0))))
+  (assert (= '[a c e] (replace '[a b c d e] [0 2 4])))
+  (assert (= [:one :zero :two :zero]
+             (replace {0 :zero 1 :one 2 :two} '(1 0 2 0))))
 
   ;; ;; split-at
-  ;; (assert (= [[1 2] [3 4 5]] (split-at 2 [1 2 3 4 5])))
+  (assert (= [[1 2] [3 4 5]] (split-at 2 [1 2 3 4 5])))
 
   ;; ;; split-with
-  ;; (assert (= [[1 2 3] [4 5]] (split-with (partial >= 3) [1 2 3 4 5])))
+  (assert (= [[1 2 3] [4 5]] (split-with (partial >= 3) [1 2 3 4 5])))
 
   ;; ;; trampoline
-  ;; (assert (= 10000 (trampoline (fn f [n] (if (>= n 10000) n #(f (inc n)))) 0)))
+  (assert (= 10000 (trampoline (fn f [n] (if (>= n 10000) n #(f (inc n)))) 0)))
 
   ;; ;; vary-meta
   ;; (assert (= {:a 1} (meta (vary-meta [] assoc :a 1))))
