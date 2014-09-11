@@ -1151,7 +1151,8 @@
   [& body]
   `(do (when-not (get-in @env/*compiler* [::ana/namespaces 'cljs.core :defs])
          (setup-native-defs (ana/empty-env))
-         (ana/analyze-file "cljs/core.cljs"))
+         (ana/analyze-file "cljs/core.cljs")
+         (ana/analyze-file "cljs/core/overrides.cljs"))
        ~@body))
 
 (defn url-path [^File f]

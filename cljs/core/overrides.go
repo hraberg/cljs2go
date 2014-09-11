@@ -22,9 +22,9 @@ func init() {
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
 			return func() interface{} {
-				var return__823 = f.(*AFn)
-				X_STAR_print_fn_STAR_ = return__823
-				return return__823
+				var return__825 = f.(*AFn)
+				X_STAR_print_fn_STAR_ = return__825
+				return return__825
 			}()
 		})
 	}(&AFn{})
@@ -219,8 +219,8 @@ func init() {
 									} else {
 										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
 											{
-												var normalize = func(G__824 *AFn) *AFn {
-													return Fn(G__824, func(n interface{}, len interface{}) interface{} {
+												var normalize = func(G__826 *AFn) *AFn {
+													return Fn(G__826, func(n interface{}, len interface{}) interface{} {
 														{
 															var ns = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
@@ -264,11 +264,11 @@ func init() {
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
 		return Fn(pr_sequential_writer, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
-				var _STAR_print_level_STAR_826 = X_STAR_print_level_STAR_
-				_ = _STAR_print_level_STAR_826
+				var _STAR_print_level_STAR_828 = X_STAR_print_level_STAR_
+				_ = _STAR_print_level_STAR_828
 				return func() interface{} {
 					defer func() {
-						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_826
+						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_828
 
 					}()
 					{
@@ -289,29 +289,29 @@ func init() {
 							} else {
 							}
 							{
-								var coll_827___1 = Next.Arity1IQ(coll)
-								var n_828 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
-								_, _ = coll_827___1, n_828
+								var coll_829___1 = Next.Arity1IQ(coll)
+								var n_830 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
+								_, _ = coll_829___1, n_830
 								for {
 									if Truth_(func() interface{} {
-										var and__163__auto__ = coll_827___1
+										var and__163__auto__ = coll_829___1
 										_ = and__163__auto__
 										if Truth_(and__163__auto__) {
-											return (Nil_(n_828)) || (!(n_828 == float64(0)))
+											return (Nil_(n_830)) || (!(n_830 == float64(0)))
 										} else {
 											return and__163__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
-										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_827___1), writer, opts)
-										coll_827___1, n_828 = Next.Arity1IQ(coll_827___1), (n_828 - float64(1))
+										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_829___1), writer, opts)
+										coll_829___1, n_830 = Next.Arity1IQ(coll_829___1), (n_830 - float64(1))
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__163__auto__ = Seq.Arity1IQ(coll_827___1)
+											var and__163__auto__ = Seq.Arity1IQ(coll_829___1)
 											_ = and__163__auto__
 											if Truth_(and__163__auto__) {
-												return (n_828 == float64(0))
+												return (n_830 == float64(0))
 											} else {
 												return and__163__auto__
 											}
@@ -426,14 +426,14 @@ func init() {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
-				var return__829 = func(fmt_println *AFn) *AFn {
+				var return__831 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
 				}(&AFn{})
-				X_STAR_print_fn_STAR_ = return__829
-				return return__829
+				X_STAR_print_fn_STAR_ = return__831
+				return return__831
 			}()
 		})
 	}(&AFn{})
