@@ -196,7 +196,7 @@
 
 (defn go-type
   ([tag] (go-type tag true))
-  ([tag allow-native?]
+  ([tag native-string?]
       (if-let [ns (and (symbol? tag) (namespace tag))]
         (let [ns (symbol ns)
               goog? (= 'goog ns)
@@ -212,7 +212,7 @@
         (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
           tag
           ((merge '{number "float64" boolean "bool" array "[]interface{}"}
-                  (when allow-native?
+                  (when native-string?
                     {'string "string"})
                   {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
            tag "interface{}")))))
@@ -633,12 +633,12 @@
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
         (when-not (= :expr (:context env)) (emitln))))))
 
-(defn typed-params [params allow-native?]
+(defn typed-params [params native-string?]
   (for [param params]
-    (str (emit-str param) " " (-> param :tag (go-type allow-native?)))))
+    (str (emit-str param) " " (-> param :tag (go-type native-string?)))))
 
-(defn emit-fn-signature [params ret-tag allow-native?]
-  (emits "(" (comma-sep (typed-params params allow-native?)) ") " (go-type ret-tag allow-native?)))
+(defn emit-fn-signature [params ret-tag native-string?]
+  (emits "(" (comma-sep (typed-params params native-string?)) ") " (go-type ret-tag native-string?)))
 
 (defn assign-to-blank [bindings]
   (when-let [bindings (seq (remove '#{_} (map munge bindings)))]
