@@ -33,6 +33,8 @@ type JSNil struct{}
 type JSBoolean bool
 type JSNumber float64
 
+var Undefined interface{}
+
 type Date struct {
 	Millis float64
 }

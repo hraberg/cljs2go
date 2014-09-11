@@ -642,7 +642,7 @@ func Aget_(x interface{}, idx float64) interface{} {
 	case []interface{}:
 		return x[int(idx)]
 	case string:
-		return x[int(idx)]
+		return string(x[int(idx)])
 	default:
 		return value(x).Index(int(idx)).Interface()
 	}

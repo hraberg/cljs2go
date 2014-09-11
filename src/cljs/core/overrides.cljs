@@ -53,11 +53,11 @@
 
         (array? o)
         (when (and (number? k) (< k (.-length o)))
-          (aget o k))
+          (aget ^array (js* "~{}.([]interface{})" o) k))
 
         (string? o)
         (when (and (number? k) (< k (.-length o)))
-          (aget ^string (js* "~{}.(string)" o) k))
+          (js* "string(~{})" (aget ^string (js* "~{}.(string)" o) k)))
 
         (native-satisfies? ILookup o)
         (-lookup o k)
@@ -71,12 +71,12 @@
 
         (array? o)
         (if (and (number? k) (< k (.-length o)))
-          (aget o k)
+          (aget ^array (js* "~{}.([]interface{})" o) k)
           not-found)
 
         (string? o)
         (if (and (number? k) (< k (.-length o)))
-          (aget ^string (js* "~{}.(string)" o) k)
+          (js* "string(~{})" (aget ^string (js* "~{}.(string)" o) k))
           not-found)
 
         (native-satisfies? ILookup o)
