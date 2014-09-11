@@ -56,6 +56,12 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "l", (JSString_("Hello").CharAt(2)))
 	assert.Equal(t, 108, (JSString_("Hello").CharCodeAt(2)))
 
+	assert.Equal(t, []interface{}{"Hello", "World"}, JSString_("Hello World").Split(" "))
+	assert.Equal(t, []interface{}{"Hello"}, JSString_("Hello World").Split(" ", 1.0))
+	assert.Equal(t, []interface{}{"Hello", "World"}, JSString_("Hello World").Split(RegExp{"\\s+", ""}))
+	assert.Equal(t, []interface{}{"F", "o", "o"}, JSString_("Foo").Split())
+	assert.Equal(t, []interface{}{"Foo"}, JSString_("Foo").Split(1.0))
+
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))
 	assert.Equal(t, []interface{}{"Hello", "Hyper", "Space", "!"}, arr)

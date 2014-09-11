@@ -51,4 +51,29 @@ func Test_Goog(t *testing.T) {
 	x, y := "Hello", "Hello"
 	assert.Equal(t, x, y)
 	assert.NotEqual(t, GetUid(x), GetUid(y))
+
+	assert.Equal(t, "\\[\\]\\(\\)", goog_string.RegExpEscape("[]()"))
+
+	assert.Equal(t, "Hello", goog_string.Trim("  Hello\t\n"))
+	assert.Equal(t, "Hello\t\n", goog_string.TrimLeft("  Hello\t\n"))
+	assert.Equal(t, "  Hello", goog_string.TrimRight("  Hello\t\n"))
+
+	assert.False(t, goog_string.IsEmptySafe("Hello"))
+	assert.False(t, goog_string.IsEmptySafe("  Hello"))
+	assert.True(t, goog_string.IsEmptySafe("  \t \r"))
+	assert.True(t, goog_string.IsEmptySafe(""))
+	assert.True(t, goog_string.IsEmptySafe(nil))
+
+	assert.True(t, goog_string.IsNumeric("2"))
+	assert.True(t, goog_string.IsNumeric("314"))
+	assert.False(t, goog_string.IsNumeric("-1"))
+	assert.False(t, goog_string.IsNumeric("2.0"))
+	assert.False(t, goog_string.IsNumeric(" "))
+	assert.False(t, goog_string.IsNumeric("Foo"))
+
+	assert.True(t, goog_string.IsBreakingWhitespace("  \t \r"))
+	assert.False(t, goog_string.IsBreakingWhitespace("  \t Hello \r"))
+
+	assert.False(t, goog_string.Contains("Hello", "foo"))
+	assert.True(t, goog_string.Contains("Hello", "ello"))
 }

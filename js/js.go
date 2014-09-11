@@ -6,6 +6,7 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -170,7 +171,33 @@ func (this *JSString) CharCodeAt(index float64) float64 {
 }
 
 func (this *JSString) Split(separator_limit ...interface{}) []interface{} {
-	panic("Not implemented")
+	var parts []string
+	argc := len(separator_limit)
+	if argc == 0 {
+		parts = strings.Split(this.String(), "")
+	}
+	if argc > 0 {
+		switch separator := separator_limit[0].(type) {
+		case string:
+			parts = strings.Split(this.String(), separator)
+		case RegExp:
+			parts = separator.compile().Split(this.String(), -1)
+		default:
+			parts = []string{this.String()}
+		}
+	}
+	limit := -1
+	if argc == 2 {
+		limit = int(separator_limit[1].(float64))
+	}
+	strs := make([]interface{}, len(parts))
+	for i, v := range parts {
+		strs[i] = v
+	}
+	if limit < 0 {
+		return strs
+	}
+	return strs[:limit]
 }
 
 func (this *JSString) ToString() string {

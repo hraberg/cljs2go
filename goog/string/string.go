@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"hash/fnv"
+	"regexp"
+	"strings"
+	"unicode"
 )
 
 type StringBuffer struct {
@@ -51,4 +54,41 @@ func HashCode(str string) float64 {
 	return float64(h.Sum32())
 }
 
-var RegExpEscape, Trim, TrimLeft, TrimRight, IsEmptySafe, IsNumeric, IsBreakingWhitespace, Contains interface{}
+func RegExpEscape(s string) string {
+	return regexp.QuoteMeta(s)
+}
+
+func Trim(str string) string {
+	return strings.TrimSpace(str)
+}
+
+func TrimLeft(str string) string {
+	return strings.TrimLeftFunc(str, unicode.IsSpace)
+}
+
+func TrimRight(str string) string {
+	return strings.TrimRightFunc(str, unicode.IsSpace)
+}
+
+func IsEmptySafe(str interface{}) bool {
+	switch str := str.(type) {
+	case string:
+		return IsBreakingWhitespace(str)
+	case nil:
+		return true
+	default:
+		return false
+	}
+}
+
+func IsNumeric(str string) bool {
+	return len(strings.FieldsFunc(str, unicode.IsNumber)) == 0
+}
+
+func IsBreakingWhitespace(str string) bool {
+	return len(strings.FieldsFunc(str, unicode.IsSpace)) == 0
+}
+
+func Contains(str, subString string) bool {
+	return strings.Contains(str, subString)
+}
