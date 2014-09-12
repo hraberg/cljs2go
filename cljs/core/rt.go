@@ -662,6 +662,10 @@ func (this *CljsCorePersistentVector) X_contains_key_QMARK__Arity2(k interface{}
 	panic("Not implemented.")
 }
 
+func (this *CljsCoreSubvec) X_contains_key_QMARK__Arity2(k interface{}) bool {
+	panic("Not implemented.")
+}
+
 var X___ *AFn
 
 func init() {

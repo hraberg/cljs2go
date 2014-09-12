@@ -906,14 +906,14 @@
   (assert (= {:a 1 :b 2} (meta (vary-meta (with-meta [] {:b 2}) assoc :a 1))))
 
   ;; ;; hierarchy tests
-  ;; (derive ::rect ::shape)
-  ;; (derive ::square ::rect)
+  (derive ::rect ::shape)
+  (derive ::square ::rect)
 
-  ;; (assert (= #{:cljs.core-test/shape} (parents ::rect)))
-  ;; (assert (= #{:cljs.core-test/rect :cljs.core-test/shape} (ancestors ::square)))
-  ;; (assert (= #{:cljs.core-test/rect :cljs.core-test/square} (descendants ::shape)))
-  ;; (assert (true? (isa? 42 42)))
-  ;; (assert (true? (isa? ::square ::shape)))
+  (assert (= #{:cljs.core-test/shape} (parents ::rect)))
+  (assert (= #{:cljs.core-test/rect :cljs.core-test/shape} (ancestors ::square)))
+  (assert (= #{:cljs.core-test/rect :cljs.core-test/square} (descendants ::shape)))
+  (assert (true? (isa? 42 42)))
+  (assert (true? (isa? ::square ::shape)))
 
   ;; (derive cljs.core.ObjMap ::collection)
   ;; (derive cljs.core.PersistentHashSet ::collection)
@@ -927,9 +927,9 @@
   ;; ;; ?? isa? based dispatch tests
 
   ;; ;; prefer-method test
-  ;; (defmulti bar (fn [x y] [x y]))
-  ;; (defmethod bar [::rect ::shape] [x y] :rect-shape)
-  ;; (defmethod bar [::shape ::rect] [x y] :shape-rect)
+  (defmulti bar (fn [x y] [x y]))
+  (defmethod bar [::rect ::shape] [x y] :rect-shape)
+  (defmethod bar [::shape ::rect] [x y] :shape-rect)
 
   ;; ;;(bar ::rect ::rect)
   ;; ;; -> java.lang.IllegalArgumentException:
@@ -938,165 +938,167 @@
   ;; ;;  and [:cljs.core-test/shape :cljs.core-test/rect],
   ;; ;;  and neither is preferred
 
-  ;; (assert (zero? (count (prefers bar))))
-  ;; (prefer-method bar [::rect ::shape] [::shape ::rect])
-  ;; (assert (= 1 (count (prefers bar))))
-  ;; (assert (= :rect-shape (bar ::rect ::rect)))
-  ;; (assert (= :rect-shape (apply (-get-method bar [::rect ::shape]) [::rect ::shape])))
+  (assert (zero? (count (prefers bar))))
+  (prefer-method bar [::rect ::shape] [::shape ::rect])
+  (assert (= 1 (count (prefers bar))))
+  (assert (= :rect-shape (bar ::rect ::rect)))
+  (assert (= :rect-shape (apply (-get-method bar [::rect ::shape]) [::rect ::shape])))
 
   ;; ;; nested data structures tests
-  ;; (defmulti nested-dispatch (fn [m] (-> m :a :b)))
-  ;; (defmethod nested-dispatch :c [m] :nested-a)
-  ;; (defmethod nested-dispatch :default [m] :nested-default)
-  ;; (assert (= :nested-a (nested-dispatch {:a {:b :c}})))
+  (defmulti nested-dispatch (fn [m] (-> m :a :b)))
+  (defmethod nested-dispatch :c [m] :nested-a)
+  (defmethod nested-dispatch :default [m] :nested-default)
+  (assert (= :nested-a (nested-dispatch {:a {:b :c}})))
 
-  ;; (defmulti nested-dispatch2 ffirst)
-  ;; (defmethod nested-dispatch2 :a [m] :nested-a)
-  ;; (defmethod nested-dispatch2 :default [m] :nested-default)
-  ;; (assert (= :nested-a (nested-dispatch2 [[:a :b]])))
+  (defmulti nested-dispatch2 ffirst)
+  (defmethod nested-dispatch2 :a [m] :nested-a)
+  (defmethod nested-dispatch2 :default [m] :nested-default)
+  (assert (= :nested-a (nested-dispatch2 [[:a :b]])))
 
   ;; ;; general tests
-  ;; (defmulti foo1 (fn [& args] (first args)))
-  ;; (defmethod foo1 :a [& args] :a-return)
-  ;; (defmethod foo1 :default [& args] :default-return)
-  ;; (assert (= :a-return (foo1 :a)))
-  ;; (assert (= :default-return (foo1 1)))
+  (defmulti foo1 (fn [& args] (first args)))
+  (defmethod foo1 :a [& args] :a-return)
+  (defmethod foo1 :default [& args] :default-return)
+  (assert (= :a-return (foo1 :a)))
+  (assert (= :default-return (foo1 1)))
 
-  ;; (defmulti area :Shape)
-  ;; (defn rect [wd ht] {:Shape :Rect :wd wd :ht ht})
-  ;; (defn circle [radius] {:Shape :Circle :radius radius})
-  ;; (defmethod area :Rect [r]
-  ;;   (* (:wd r) (:ht r)))
-  ;; (defmethod area :Circle [c]
-  ;;   (*  Math/PI (* (:radius c) (:radius c))))
-  ;; (defmethod area :default [x] :oops)
-  ;; (def r (rect 4 13))
-  ;; (def c (circle 12))
-  ;; (assert (= 52 (area r)))
-  ;; (assert (= :oops (area {})))
+  (defmulti area :Shape)
+  (defn rect [wd ht] {:Shape :Rect :wd wd :ht ht})
+  (defn circle [radius] {:Shape :Circle :radius radius})
+  (defmethod area :Rect [r]
+    (* (:wd r) (:ht r)))
+  (defmethod area :Circle [c]
+    (*  Math/PI (* (:radius c) (:radius c))))
+  (defmethod area :default [x] :oops)
+  (def r (rect 4 13))
+  (def c (circle 12))
+  (assert (= 52 (area r)))
+  (assert (= :oops (area {})))
 
   ;; ;; remove method tests
-  ;; (assert (= 2 (count (methods bar))))
-  ;; (remove-method bar [::rect ::shape])
-  ;; (assert (= 1 (count (methods bar))))
-  ;; (remove-all-methods bar)
-  ;; (assert (zero? (count (methods bar))))
+  (assert (= 2 (count (methods bar))))
+  (remove-method bar [::rect ::shape])
+  (assert (= 1 (count (methods bar))))
+  (remove-all-methods bar)
+  (assert (zero? (count (methods bar))))
 
   ;; ;; test apply
-  ;; (defmulti apply-multi-test (fn ([_] 0) ([_ _] 0) ([_ _ _] 0)))
-  ;; (defmethod apply-multi-test 0
-  ;;   ([x] :one)
-  ;;   ([x y] :two)
-  ;;   ([x y & r] [:three r]))
-  ;; (assert (= [:three '(2)] (apply apply-multi-test [0 1 2])))
+  (defmulti apply-multi-test (fn ([_] 0) ([_ _] 0) ([_ _ _] 0)))
+  (defmethod apply-multi-test 0
+    ([x] :one)
+    ([x y] :two)
+    ([x y & r] [:three r]))
+  (assert (= [:three '(2)] (apply apply-multi-test [0 1 2])))
 
   ;; ;; custom hierarchy tests
-  ;; (def my-map-hierarchy (atom (-> (make-hierarchy)
-  ;;                                 (derive (type (obj-map)) ::map)
-  ;;                                 (derive (type (array-map)) ::map)
-  ;;                                 (derive (type (hash-map)) ::map)
-  ;;                                 (derive (type (sorted-map)) ::map))))
-  ;; (defmulti my-map? type :hierarchy my-map-hierarchy)
-  ;; (defmethod my-map? ::map [_] true)
-  ;; (defmethod my-map? :default [_] false)
-  ;; (doseq [m [(obj-map) (array-map) (hash-map) (sorted-map)]]
-  ;;   (assert (my-map? m)))
-  ;; (doseq [not-m [[] 1 "asdf" :foo]]
-  ;;   (assert (not (my-map? not-m))))
+  (def my-map-hierarchy (atom (-> (make-hierarchy)
+                                  ;; (derive (type (obj-map)) ::map)
+                                  (derive (type (array-map)) ::map)
+                                  (derive (type (hash-map)) ::map)
+                                  (derive (type (sorted-map)) ::map))))
+  (defmulti my-map? type :hierarchy my-map-hierarchy)
+  (defmethod my-map? ::map [_] true)
+  (defmethod my-map? :default [_] false)
+  (doseq [m [;; (obj-map)
+             (array-map) (hash-map) (sorted-map)]]
+    (assert (my-map? m)))
+  (doseq [not-m [[] 1 "asdf" :foo]]
+    (assert (not (my-map? not-m))))
 
   ;; ;; Range
-  ;; (assert (= (range 0 10 3) (list 0 3 6 9)))
-  ;; (assert (= (count (range 0 10 3)) 4))
-  ;; (assert (= (range 0 -10 -3) (list 0 -3 -6 -9)))
-  ;; (assert (= (count (range 0 -10 -3)) 4))
-  ;; (assert (= (range -10 10 3) (list -10 -7 -4 -1 2 5 8)))
-  ;; (assert (= (count (range -10 10 3)) 7))
-  ;; (assert (= (range 0 1 1) (list 0)))
-  ;; (assert (= (range 0 -3 -1) (list 0 -1 -2)))
-  ;; (assert (= (range 3 0 -1) (list 3 2 1)))
-  ;; (assert (= (range 0 10 -1) (list)))
-  ;; (assert (= (range 0 1 0) (list)))
-  ;; (assert (= (range 10 0 1) (list)))
-  ;; (assert (= (range 0 0 0) (list)))
-  ;; (assert (= (count (range 0 10 -1)) 0))
-  ;; (assert (= (count (range 0 1 0)) 0))
-  ;; (assert (= (count (range 10 0 1)) 0))
-  ;; (assert (= (count (range 0 0 0)) 0))
-  ;; (assert (= (take 3 (range 1 0 0)) (list 1 1 1)))
-  ;; (assert (= (take 3 (range 3 1 0)) (list 3 3 3)))
+  (assert (= (range 0 10 3) (list 0 3 6 9)))
+  (assert (= (count (range 0 10 3)) 4))
+  (assert (= (range 0 -10 -3) (list 0 -3 -6 -9)))
+  (assert (= (count (range 0 -10 -3)) 4))
+  (assert (= (range -10 10 3) (list -10 -7 -4 -1 2 5 8)))
+  (assert (= (count (range -10 10 3)) 7))
+  (assert (= (range 0 1 1) (list 0)))
+  (assert (= (range 0 -3 -1) (list 0 -1 -2)))
+  (assert (= (range 3 0 -1) (list 3 2 1)))
+  (assert (= (range 0 10 -1) (list)))
+  (assert (= (range 0 1 0) (list)))
+  (assert (= (range 10 0 1) (list)))
+  (assert (= (range 0 0 0) (list)))
+  (assert (= (count (range 0 10 -1)) 0))
+  (assert (= (count (range 0 1 0)) 0))
+  (assert (= (count (range 10 0 1)) 0))
+  (assert (= (count (range 0 0 0)) 0))
+  (assert (= (take 3 (range 1 0 0)) (list 1 1 1)))
+  (assert (= (take 3 (range 3 1 0)) (list 3 3 3)))
 
   ;; ;; PersistentVector
-  ;; (let [pv (vec (range 97))]
-  ;;   (assert (= (nth pv 96) 96))
-  ;;   (assert (= (nth pv 97 nil) nil))
-  ;;   (assert (= (pv 96) 96))
-  ;;   (assert (nil? (rseq [])))
-  ;;   (assert (= (reverse pv) (rseq pv))))
+  (let [pv (vec (range 97))]
+    (assert (= (nth pv 96) 96))
+    (assert (= (nth pv 97 nil) nil))
+    (assert (= (pv 96) 96))
+    (assert (nil? (rseq [])))
+    (assert (= (reverse pv) (rseq pv))))
 
 
-  ;; (let [pv (vec (range 33))]
-  ;;   (assert (= pv
-  ;;              (-> pv
-  ;;                  pop
-  ;;                  pop
-  ;;                  (conj 31)
-  ;;                  (conj 32)))))
+  (let [pv (vec (range 33))]
+    (assert (= pv
+               (-> pv
+                   pop
+                   pop
+                   (conj 31)
+                   (conj 32)))))
 
-  ;; (let [stack1 (pop (vec (range 97)))
-  ;;       stack2 (pop stack1)]
-  ;;   (assert (= 95 (peek stack1)))
-  ;;   (assert (= 94 (peek stack2))))
+  (let [stack1 (pop (vec (range 97)))
+        stack2 (pop stack1)]
+    (assert (= 95 (peek stack1)))
+    (assert (= 94 (peek stack2))))
 
   ;; ;; CLJS-513
-  ;; (let [sentinel (js-obj)]
-  ;;   (assert (identical? sentinel (try ([] 0) (catch js/Error _ sentinel)))))
+  (let [sentinel (rand)               ; (js-obj)
+        ]
+    (assert (identical? sentinel (try ([] 0) (catch js/Error _ sentinel)))))
 
   ;; ;; subvec
-  ;; (let [v1 (vec (range 10))
-  ;;       v2 (vec (range 5))
-  ;;       s (subvec v1 2 8)]
-  ;;   (assert (= s
-  ;;              (-> v1
-  ;;                  (subvec 2)
-  ;;                  (subvec 0 6))
-  ;;              (->> v1
-  ;;                   (drop 2)
-  ;;                   (take 6))))
-  ;;   (assert (= 6 (count s)))
-  ;;   (assert (= [2 3 4 5 6] (pop s)))
-  ;;   (assert (= 7 (peek s)))
-  ;;   (assert (= [2 3 4 5 6 7 1]
-  ;;              (assoc s 6 1)
-  ;;              (conj s 1)))
-  ;;   (assert (= 27 (reduce + s)))
-  ;;   (assert (= s (vec s))) ; pour into plain vector
-  ;;   (let [m {:x 1}] (assert (= m (meta (with-meta s m)))))
-  ;;   ;; go outside ranges
-  ;;   (assert (= :fail (try (subvec v2 0 6) (catch js/Error e :fail))))
-  ;;   (assert (= :fail (try (subvec v2 6 10) (catch js/Error e :fail))))
-  ;;   (assert (= :fail (try (subvec v2 6 10) (catch js/Error e :fail))))
-  ;;   (assert (= :fail (try (subvec v2 3 6) (catch js/Error e :fail))))
-  ;;   ;; no layered subvecs
-  ;;   (assert (identical? v1 (.-v (subvec s 1 4))))
-  ;;   ;; CLJS-513
-  ;;   (let [sentinel (js-obj)
-  ;;         s (subvec [0 1 2 3] 1 2)]
-  ;;     (assert (identical? sentinel (try (s -1) (catch js/Error _ sentinel))))
-  ;;     (assert (identical? sentinel (try (s 1) (catch js/Error _ sentinel)))))
-  ;;   ;; CLJS-765
-  ;;   (let [sv1 (subvec [0 1 2 3] 1 2)
-  ;;         sv2 (subvec [0 1 2 3] 1 1)]
-  ;;     (assert (= (rseq sv1) '(1)))
-  ;;     (assert (nil? (rseq sv2)))))
+  (let [v1 (vec (range 10))
+        v2 (vec (range 5))
+        s (subvec v1 2 8)]
+    (assert (= s
+               (-> v1
+                   (subvec 2)
+                   (subvec 0 6))
+               (->> v1
+                    (drop 2)
+                    (take 6))))
+    (assert (= 6 (count s)))
+    (assert (= [2 3 4 5 6] (pop s)))
+    (assert (= 7 (peek s)))
+    (assert (= [2 3 4 5 6 7 1]
+               (assoc s 6 1)
+               (conj s 1)))
+    (assert (= 27 (reduce + s)))
+    (assert (= s (vec s))) ; pour into plain vector
+    (let [m {:x 1}] (assert (= m (meta (with-meta s m)))))
+    ;; go outside ranges
+    (assert (= :fail (try (subvec v2 0 6) (catch js/Error e :fail))))
+    (assert (= :fail (try (subvec v2 6 10) (catch js/Error e :fail))))
+    (assert (= :fail (try (subvec v2 6 10) (catch js/Error e :fail))))
+    (assert (= :fail (try (subvec v2 3 6) (catch js/Error e :fail))))
+    ;; no layered subvecs
+    (assert (identical? v1 (.-v (subvec s 1 4))))
+    ;; CLJS-513
+    (let [sentinel (rand) ; (js-obj)
+          s ^any (subvec [0 1 2 3] 1 2)]
+      (assert (identical? sentinel (try (s -1) (catch js/Error _ sentinel))))
+      (assert (identical? sentinel (try (s 1) (catch js/Error _ sentinel)))))
+    ;; CLJS-765
+    (let [sv1 (subvec [0 1 2 3] 1 2)
+          sv2 (subvec [0 1 2 3] 1 1)]
+      (assert (= (rseq sv1) '(1)))
+      (assert (nil? (rseq sv2)))))
 
   ;; ;; TransientVector
-  ;; (let [v1 (vec (range 15 48))
-  ;;       v2 (vec (range 40 57))
-  ;;       v1 (persistent! (assoc! (conj! (pop! (transient v1)) :foo) 0 :quux))
-  ;;       v2 (persistent! (assoc! (conj! (transient v2) :bar) 0 :quux))
-  ;;       v  (into v1 v2)]
-  ;;   (assert (= v (vec (concat [:quux] (range 16 47) [:foo]
-  ;;                             [:quux] (range 41 57) [:bar])))))
+  (let [v1 (vec (range 15 48))
+        v2 (vec (range 40 57))
+        v1 (persistent! (assoc! (conj! (pop! (transient v1)) :foo) 0 :quux))
+        v2 (persistent! (assoc! (conj! (transient v2) :bar) 0 :quux))
+        v  (into v1 v2)]
+    (assert (= v (vec (concat [:quux] (range 16 47) [:foo]
+                              [:quux] (range 41 57) [:bar])))))
   ;; (loop [v  (transient [])
   ;;        xs (range 100)]
   ;;   (if-let [x (first xs)]

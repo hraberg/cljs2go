@@ -5,6 +5,8 @@ import (
 	"math/rand"
 )
 
+var PI = math.Pi
+
 func Floor(x float64) float64 {
 	return math.Floor(x)
 }

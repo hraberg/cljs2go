@@ -1482,7 +1482,8 @@
                       m)
         m           (if (meta mm-name)
                       (conj (meta mm-name) m)
-                      m)]
+                      m)
+        m (assoc m :tag 'cljs.core/MultiFn)]
     (when (= (count options) 1)
       (throw (Exception. "The syntax for defmulti has changed. Example: (defmulti name dispatch-fn :default dispatch-value)")))
     (let [options   (apply core/hash-map options)
