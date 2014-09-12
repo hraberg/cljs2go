@@ -1099,15 +1099,15 @@
         v  (into v1 v2)]
     (assert (= v (vec (concat [:quux] (range 16 47) [:foo]
                               [:quux] (range 41 57) [:bar])))))
-  ;; (loop [v  (transient [])
-  ;;        xs (range 100)]
-  ;;   (if-let [x (first xs)]
-  ;;     (recur
-  ;;      (condp #(%1 (mod %2 3)) x
-  ;;        #{0 2} (conj! v x)
-  ;;        #{1}   (assoc! v (count v) x))
-  ;;      (next xs))
-  ;;     (assert (= (vec (range 100)) (persistent! v)))))
+  (loop [v  (transient [])
+         xs (range 100)]
+    (if-let [x (first xs)]
+      (recur
+       (condp #(%1 (mod %2 3)) x
+         #{0 2} (conj! v x)
+         #{1}   (assoc! v (count v) x))
+       (next xs))
+      (assert (= (vec (range 100)) (persistent! v)))))
 
   ;; ;; PersistentHashMap & TransientHashMap
   ;; (loop [m1 cljs.core.PersistentHashMap.EMPTY

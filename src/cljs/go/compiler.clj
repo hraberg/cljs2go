@@ -823,16 +823,30 @@
       cljs.core/IVector cljs.core/PersistentVector
       cljs.core/IMap cljs.core/PersistentHashMap} tag tag)))
 
+(defn go-unbox-no-emit-with-nil-check [tag x]
+  (let [coercion (when-not ('#{goog js} (and (symbol? tag)
+                                             (some-> tag namespace symbol)))
+                   (go-unbox-no-emit tag x))
+        type? (= \* (first (go-type tag)))
+        nil-check? (and type? coercion)
+        return (gensym "return__")]
+    (str
+     (when nil-check?
+       (str "func() (" return " " (go-type tag) ") { " return ", _ = "))
+     (emit-str x)
+     coercion
+     (when nil-check?
+       "; return }()"))))
+
 (defmethod emit* :recur
   [{:keys [frame exprs]}]
   (when-let [params (seq (:params frame))]
     (emitln (comma-sep params)
             " = "
-            (comma-sep (for [[e p] (map vector exprs params)]
-                         (str (emit-str e)
-                              (when-not ('#{goog js} (and (symbol? (:tag p))
-                                                          (some-> p :tag namespace symbol)))
-                                (go-unbox-no-emit (go-try-to-ressurect-impl p) e)))))))
+            (comma-sep (for [[e p] (map vector exprs params)
+                             :let [tag (go-try-to-ressurect-impl p)]]
+                         (go-unbox-no-emit-with-nil-check tag e)
+))))
   (emitln "continue"))
 
 (defmethod emit* :letfn

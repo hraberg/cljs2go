@@ -622,7 +622,16 @@ func Seq_(x interface{}) CljsCoreISeq {
 }
 
 func Nil_(x interface{}) bool {
-	return x == nil
+	if x == nil {
+		return true
+	}
+	v := value(x)
+	switch v.Kind() {
+	case reflect.Ptr, reflect.Interface:
+		return v.IsNil()
+	default:
+		return false
+	}
 }
 
 func Alength_(x interface{}) float64 {

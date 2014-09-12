@@ -109,13 +109,13 @@ func init() {
 				return cljs_core.Conj.X_invoke_Arity2(cljs_core.Vec.X_invoke_Arity1(cljs_core.Cons.X_invoke_Arity2("", cljs_core.Map_.X_invoke_Arity2(cljs_core.Str, cljs_core.Seq.Arity1IQ(s)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)), "")
 			} else {
 				{
-					var pred__4 = cljs_core.X_EQ_
-					var expr__5 = limit
-					_, _ = pred__4, expr__5
-					if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(1), expr__5)) {
+					var pred__5 = cljs_core.X_EQ_
+					var expr__6 = limit
+					_, _ = pred__5, expr__6
+					if cljs_core.Truth_(pred__5.X_invoke_Arity2(float64(1), expr__6)) {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{s}, nil})
 					} else {
-						if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(2), expr__5)) {
+						if cljs_core.Truth_(pred__5.X_invoke_Arity2(float64(2), expr__6)) {
 							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"", s}, nil})
 						} else {
 							{
@@ -161,7 +161,10 @@ func init() {
 													{
 														var index = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "IndexOf", []interface{}{m})
 														_ = index
-														s___1, limit___1, parts = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{(index.(float64) + cljs_core.Count.X_invoke_Arity1(m).(float64))}), (limit___1.(float64) - float64(1)), cljs_core.Conj.X_invoke_Arity2(parts, cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{float64(0), index})).(*cljs_core.CljsCorePersistentVector)
+														s___1, limit___1, parts = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{(index.(float64) + cljs_core.Count.X_invoke_Arity1(m).(float64))}), (limit___1.(float64) - float64(1)), func() (return__10 *cljs_core.CljsCorePersistentVector) {
+															return__10, _ = cljs_core.Conj.X_invoke_Arity2(parts, cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{float64(0), index})).(*cljs_core.CljsCorePersistentVector)
+															return
+														}()
 														continue
 													}
 												}
@@ -251,13 +254,13 @@ func init() {
 								var ch = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "CharAt", []interface{}{index})
 								_ = ch
 								{
-									var temp__4220__auto___7 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
-									_ = temp__4220__auto___7
-									if cljs_core.Truth_(temp__4220__auto___7) {
+									var temp__4220__auto___12 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
+									_ = temp__4220__auto___12
+									if cljs_core.Truth_(temp__4220__auto___12) {
 										{
-											var replacement_8 = temp__4220__auto___7
-											_ = replacement_8
-											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_8).(string)))
+											var replacement_13 = temp__4220__auto___12
+											_ = replacement_13
+											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_13).(string)))
 										}
 									} else {
 										buffer.Append(ch)
