@@ -2009,23 +2009,6 @@ func init() {
 		})
 	}(&AFn{})
 
-	Sort = func(sort *AFn) *AFn {
-		return Fn(sort, func(coll interface{}) interface{} {
-			return sort.X_invoke_Arity2(Compare, coll)
-		}, func(comp interface{}, coll interface{}) interface{} {
-			if Truth_(Seq.Arity1IQ(coll)) {
-				{
-					var a = To_array.X_invoke_Arity1(coll).([]interface{})
-					_ = a
-					Native_invoke_func.X_invoke_Arity2(goog_array.StableSort, []interface{}{a, Fn__GT_comparator.X_invoke_Arity1(comp)})
-					return Seq.Arity1IQ(a)
-				}
-			} else {
-				return CljsCoreIEmptyList(CljsCoreList_EMPTY)
-			}
-		})
-	}(&AFn{})
-
 	Sort_by = func(sort_by *AFn) *AFn {
 		return Fn(sort_by, func(keyfn interface{}, coll interface{}) interface{} {
 			return sort_by.X_invoke_Arity3(keyfn, Compare, coll)
@@ -4684,7 +4667,7 @@ func init() {
 					} else {
 						if Truth_(validate.(CljsCoreIFn).X_invoke_Arity1(new_value)) {
 						} else {
-							panic((&js.Error{("Assert failed: Validator rejected reference state\n" + Str.X_invoke_Arity1(Pr_str.X_invoke_ArityVariadic(List.X_invoke_ArityVariadic((&CljsCoreSymbol{Ns: nil, Name: "validate", Str: "validate", X_hash: float64(1439230700), X_meta: nil}), (&CljsCoreSymbol{Ns: nil, Name: "new-value", Str: "new-value", X_hash: float64(-1567397401), X_meta: nil})).(*CljsCoreList)).(string)).(string))}))
+							panic((&js.Error{("Assert failed: Validator rejected reference state\n(validate new-value)")}))
 						}
 					}
 					{
@@ -10229,14 +10212,14 @@ func init() {
 		return Fn(derive, func(tag interface{}, parent interface{}) interface{} {
 			if Truth_(Namespace.X_invoke_Arity1(parent)) {
 			} else {
-				panic((&js.Error{("Assert failed: " + Str.X_invoke_Arity1(Pr_str.X_invoke_ArityVariadic(List.X_invoke_ArityVariadic((&CljsCoreSymbol{Ns: nil, Name: "namespace", Str: "namespace", X_hash: float64(1263021155), X_meta: nil}), (&CljsCoreSymbol{Ns: nil, Name: "parent", Str: "parent", X_hash: float64(761652748), X_meta: nil})).(*CljsCoreList)).(string)).(string))}))
+				panic((&js.Error{("Assert failed: (namespace parent)")}))
 			}
 			Swap_global_hierarchy_BANG_.X_invoke_ArityVariadic(derive, tag, parent)
 			return nil
 		}, func(h interface{}, tag interface{}, parent interface{}) interface{} {
 			if Not_EQ_.Arity2IIB(tag, parent) {
 			} else {
-				panic((&js.Error{("Assert failed: " + Str.X_invoke_Arity1(Pr_str.X_invoke_ArityVariadic(List.X_invoke_ArityVariadic((&CljsCoreSymbol{Ns: nil, Name: "not=", Str: "not=", X_hash: float64(1466536204), X_meta: nil}), (&CljsCoreSymbol{Ns: nil, Name: "tag", Str: "tag", X_hash: float64(350170304), X_meta: nil}), (&CljsCoreSymbol{Ns: nil, Name: "parent", Str: "parent", X_hash: float64(761652748), X_meta: nil})).(*CljsCoreList)).(string)).(string))}))
+				panic((&js.Error{("Assert failed: (not= tag parent)")}))
 			}
 			{
 				var tp = (&CljsCoreKeyword{Ns: nil, Name: "parents", Fqn: "parents", X_hash: float64(-2027538891)}).X_invoke_Arity1(h)
@@ -12127,11 +12110,6 @@ var Compare_indexed *AFn
 // Given a fn that might be boolean valued or a comparator,
 // return a fn that is a comparator.
 var Fn__GT_comparator *AFn
-
-// Returns a sorted sequence of the items in coll. Comp can be
-// boolean-valued comparison funcion, or a -/0/+ valued comparator.
-// Comp defaults to compare.
-var Sort *AFn
 
 // Returns a sorted sequence of the items in coll, where the sort
 // order is determined by comparing (keyfn item).  Comp can be

@@ -12,7 +12,7 @@ import (
 func Test_Goog(t *testing.T) {
 	is := []interface{}{1.0, 2.0, 3.0, 4.0, 5.0}
 	goog_array.Shuffle(is)
-	goog_array.StableSort(is, func(a, b interface{}) interface{} { return a.(float64) - b.(float64) })
+	goog_array.StableSort(is, func(a, b interface{}) interface{} { return b.(float64) - a.(float64) })
 	assert.Equal(t, []interface{}{5.0, 4.0, 3.0, 2.0, 1.0}, is)
 	goog_array.Shuffle(is)
 	goog_array.StableSort(is, goog_array.DefaultCompare)

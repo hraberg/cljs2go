@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	"github.com/hraberg/cljs.go/goog"
+	goog_array "github.com/hraberg/cljs.go/goog/array"
 	"github.com/hraberg/cljs.go/js"
 )
 
@@ -92,6 +93,24 @@ func init() {
 				} else {
 					return false
 				}
+			}
+		})
+	}(&AFn{})
+
+	Sort = func(sort *AFn) *AFn {
+		return Fn(sort, func(coll interface{}) interface{} {
+			return sort.X_invoke_Arity2(Compare, coll)
+		}, func(comp interface{}, coll interface{}) interface{} {
+			if Truth_(Seq.Arity1IQ(coll)) {
+				{
+					var a = To_array.X_invoke_Arity1(coll).([]interface{})
+					var comp___1 = Fn__GT_comparator.X_invoke_Arity1(comp).(CljsCoreIFn)
+					_, _ = a, comp___1
+					Native_invoke_func.X_invoke_Arity2(goog_array.StableSort, []interface{}{a, func(x, y interface{}) interface{} { return comp___1.X_invoke_Arity2(x, y) }})
+					return Seq.Arity1IQ(a)
+				}
+			} else {
+				return CljsCoreIEmptyList(CljsCoreList_EMPTY)
 			}
 		})
 	}(&AFn{})
@@ -493,6 +512,11 @@ var Complement *AFn
 // comparison.
 // @param {...*} var_args
 var X_EQ_ *AFn
+
+// Returns a sorted sequence of the items in coll. Comp can be
+// boolean-valued comparison funcion, or a -/0/+ valued comparator.
+// Comp defaults to compare.
+var Sort *AFn
 
 // Returns the value mapped to key, not-found or nil if key not present.
 var Get *AFn

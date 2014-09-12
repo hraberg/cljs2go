@@ -78,6 +78,7 @@
      cljs.core/instance?
      cljs.core/symbol?
      cljs.core/=
+     cljs.core/sort
      cljs.core/missing-protocol
      cljs.core/complement
      cljs.core/make-array

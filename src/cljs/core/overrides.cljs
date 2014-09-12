@@ -1,5 +1,6 @@
 (ns ^{:doc "Go overrides."}
-  cljs.core)
+  cljs.core
+  (:require [goog.array :as garray]))
 
 (def *clojurescript-version* (clojurescript-version))
 
@@ -42,6 +43,21 @@
          (recur y (first more) (next more))
          (= y (first more)))
        false)))
+
+(defn sort
+  "Returns a sorted sequence of the items in coll. Comp can be
+   boolean-valued comparison funcion, or a -/0/+ valued comparator.
+   Comp defaults to compare."
+  ([coll]
+   (sort compare coll))
+  ([comp coll]
+   (if (seq coll)
+     (let [a (to-array coll)
+           comp ^function (fn->comparator comp)]
+       ;; matching Clojure's stable sort, though docs don't promise it
+       (garray/stableSort a (js* "func(x, y interface{}) interface{} { return ~{}.X_invoke_Arity2(x, y) }" comp))
+       (seq a))
+     ())))
 
 (defn get
   "Returns the value mapped to key, not-found or nil if key not present."

@@ -6,18 +6,20 @@ import (
 	"sort"
 )
 
+//func (p Float64Slice) Less(i, j int) bool { return p[i] < p[j] || isNaN(p[i]) && !isNaN(p[j]) }
+
 func DefaultCompare(x, y interface{}) interface{} {
 	switch t := y.(type) {
 	case string:
 		if y.(string) > x.(string) {
-			return 1.0
+			return -1.0
 		} else if y.(string) == x.(string) {
 			return 0.0
 		} else {
-			return -1.0
+			return 1.0
 		}
 	case float64:
-		return y.(float64) - x.(float64)
+		return x.(float64) - y.(float64)
 	default:
 		panic(fmt.Sprintf("Cannot compare %v", t))
 	}
@@ -30,7 +32,7 @@ type JSComparator struct {
 
 func (this JSComparator) Len() int           { return len(this.a) }
 func (this JSComparator) Swap(i, j int)      { this.a[i], this.a[j] = this.a[j], this.a[i] }
-func (this JSComparator) Less(i, j int) bool { return this.comp(this.a[i], this.a[j]).(float64) > 0 }
+func (this JSComparator) Less(i, j int) bool { return this.comp(this.a[i], this.a[j]).(float64) < 0 }
 
 func StableSort(a []interface{}, comp func(a, b interface{}) interface{}) interface{} {
 	sort.Sort(JSComparator{a, comp})
