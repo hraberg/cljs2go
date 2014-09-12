@@ -759,6 +759,8 @@
 
 (core/declare dt->et collect-protocols)
 
+(def go-skip-type '#{cljs.core/ObjMap})
+
 (defmacro extend-type [type-sym & impls]
   (let [env &env
         resolve (partial resolve-var env)
@@ -774,11 +776,12 @@
                         impls (cljs.compiler/go-fields-of-type fq-type-sym) true)
                 impls)
         impl-map (->impl-map impls)]
-    (when (core/and (:extending-base-js-type cljs.analyzer/*cljs-warnings*)
-                    (js-base-type type-sym))
-      (cljs.analyzer/warning :extending-base-js-type env
-          {:current-symbol type-sym :suggested-symbol (js-base-type type-sym)}))
-    `(do ~@(mapcat #(assign-impls env resolve type-sym type %) impl-map))))
+    (when-not (go-skip-type fq-type-sym)
+      (when (core/and (:extending-base-js-type cljs.analyzer/*cljs-warnings*)
+                      (js-base-type type-sym))
+        (cljs.analyzer/warning :extending-base-js-type env
+                               {:current-symbol type-sym :suggested-symbol (js-base-type type-sym)}))
+      `(do ~@(mapcat #(assign-impls env resolve type-sym type %) impl-map)))))
 
 (defn annotate-specs [annots v [f sigs]]
   (conj v
@@ -824,16 +827,17 @@
         protocols (collect-protocols impls &env)
         t (vary-meta t assoc
             :protocols protocols) ]
-    (if (seq impls)
-      `(do
-         (deftype* ~t ~fields nil)
-         (extend-type ~t ~@(dt->et t impls fields true))
-         ~(build-positional-factory t r fields)
-         ~t)
-      `(do
-         (deftype* ~t ~fields nil)
-         ~(build-positional-factory t r fields)
-         ~t))))
+    (when-not (go-skip-type r)
+      (if (seq impls)
+        `(do
+           (deftype* ~t ~fields nil)
+           (extend-type ~t ~@(dt->et t impls fields true))
+           ~(build-positional-factory t r fields)
+           ~t)
+        `(do
+           (deftype* ~t ~fields nil)
+           ~(build-positional-factory t r fields)
+           ~t)))))
 
 (defn- emit-defrecord
   "Do not use this directly - use defrecord"
@@ -1388,11 +1392,13 @@
                      (filter (complement sym-or-str?) (keys kvs))
                      (repeatedly gensym))
         obj (gensym "obj")]
-    `(let [~@(apply concat (clojure.set/map-invert expr->local))
-           ~obj ~(js-obj* (filter-on-keys core/string? kvs))]
-       ~@(map (fn [[k v]] `(aset ~obj ~k ~v)) sym-pairs)
-       ~@(map (fn [[k v]] `(aset ~obj ~v ~(core/get kvs k))) expr->local)
-       ~obj)))
+    (if (seq rest)
+      `(let [~@(apply concat (clojure.set/map-invert expr->local))
+             ~obj ~(js-obj* (filter-on-keys core/string? kvs))]
+         ~@(map (fn [[k v]] `(aset ~obj ~k ~v)) sym-pairs)
+         ~@(map (fn [[k v]] `(aset ~obj ~v ~(core/get kvs k))) expr->local)
+         ~obj)
+      `(do true)))) ;; hack as transients use {} as edit marker.
 
 (defmacro alength [a]
   (vary-meta

@@ -94,9 +94,13 @@
      cljs.core/quote-string
      cljs.core/pr-writer
      cljs.core/pr-sequential-writer
+     cljs.core/obj-map
+     cljs.core/obj-clone
      cljs.core/js-obj
      cljs.core/js-keys
-     cljs.core/js->clj})
+     cljs.core/js->clj
+     cljs.core/key->js
+     cljs.core/clj->js})
 
 (defmacro ^:private debug-prn
   [& args]
@@ -280,7 +284,10 @@
                           'clj-nil (fn [s] (str "js.JSNil{}"))})
 
 (def go-skip-set! '#{(set! (.-prototype ExceptionInfo) (js/Error.))
-                     (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)})
+                     (set! (.. ExceptionInfo -prototype -constructor) ExceptionInfo)
+                     (set! (.-EMPTY ObjMap) (ObjMap. nil (array) (js-obj) 0 0))
+                     (set! (.-HASHMAP_THRESHOLD ObjMap) 8)
+                     (set! (.-fromObject ObjMap) (fn [ks obj] (ObjMap. nil ks obj 0 nil)))})
 
 (defn warn-on-reflection [{:keys [env field method f]}]
   (when *warn-on-reflection*
