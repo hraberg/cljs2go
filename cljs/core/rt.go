@@ -599,10 +599,10 @@ func Fn(fns ...interface{}) *AFn {
 	for i := 0; i < v.Type().NumField(); i++ {
 		vf := v.Field(i)
 		vt := vf.Type()
-		if vf.Kind() == reflect.Func && vf.IsNil() {
+		if vf.Kind() == reflect.Func && vf.IsNil() && typedSignature(vt) == "" {
 			if variadic && vt.NumIn() > maxFixedArity {
 				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vf.Type()))
-			} else if sig := typedSignature(vt); sig == "" {
+			} else {
 				vf.Set(makeInvalidArity(vf.Type()))
 			}
 		}

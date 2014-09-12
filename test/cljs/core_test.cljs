@@ -358,8 +358,8 @@
   (assert (= 63 (apply + 1 2 4 8 16 (list 32))))
   (assert (= 127 (apply + 1 2 4 8 16 (list 32 64))))
   (assert (= 4950 (apply + (take 100 (iterate inc 0)))))
-;  (assert (= () (apply list [])))
-;  (assert (= [1 2 3] (apply list [1 2 3])))
+  (assert (= () (apply list [])))
+  (assert (= [1 2 3] (apply list [1 2 3])))
   (assert (= 6 (apply apply [+ [1 2 3]])))
   ;; ;; apply with infinite sequence
   ;; (assert (= 3 (apply (fn [& args]
@@ -443,11 +443,11 @@
     (assert (= 4 (swap! a + 1 2)))
     (assert (= 10 (swap! a + 1 2 3)))
     (assert (= 20 (swap! a + 1 2 3 4))))
-  ;; (let [a (atom [1] :validator coll? :meta {:a 1})]
-  ;;   (assert (= coll? (get-validator a)))
-  ;;   (assert (= {:a 1} (meta a)))
-  ;;   (alter-meta! a assoc :b 2)
-  ;;   (assert (= {:a 1 :b 2} (meta a))))
+  (let [a (atom [1] :validator coll? :meta {:a 1})]
+    (assert (= coll? (get-validator a)))
+    (assert (= {:a 1} (meta a)))
+    (alter-meta! a assoc :b 2)
+    (assert (= {:a 1 :b 2} (meta a))))
   (assert (nil? (empty nil)))
   (let [e-lazy-seq (empty (with-meta (lazy-seq (cons :a nil)) {:b :c}))]
     (assert (seq? e-lazy-seq))
