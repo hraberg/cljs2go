@@ -488,12 +488,12 @@
     (assert (= 42 (deref a))))
 
   (assert (= [3] (nthnext [1 2 3] 2)))
-  ;; (let [v [1 2 3]]
-  ;;   (assert (= v (for [e v] e)))
-  ;;   (assert (= [[1 1] [2 4] [3 9]] (for [e v :let [m (* e e)]] [e m])))
-  ;;   (assert (= [1 2] (for [e v :while (< e 3)] e)))
-  ;;   (assert (= [3] (for [e v :when (> e 2)] e)))
-  ;;   (assert (= [[1 1] [2 4]] (for [e v :while (< e 3) :let [m (* e e)]] [e m]))))
+  (let [v [1 2 3]]
+    (assert (= v (for [e v] e)))
+    (assert (= [[1 1] [2 4] [3 9]] (for [e v :let [m (* e e)]] [e m])))
+    (assert (= [1 2] (for [e v :while (< e 3)] e)))
+    (assert (= [3] (for [e v :when (> e 2)] e)))
+    (assert (= [[1 1] [2 4]] (for [e v :while (< e 3) :let [m (* e e)]] [e m]))))
   (assert (not= 1 2))
   (assert (not (not= 1 1)))
   (assert (not (not-empty [])))

@@ -1228,12 +1228,11 @@
                                      (let [c# ^not-native (chunk-first ~gxs)
                                            size# (count c#)
                                            ~gb (chunk-buffer size#)]
-                                       (if (coercive-boolean
-                                            (loop [~gi 0]
-                                              (if (< ~gi size#)
-                                                (let [~bind (-nth c# ~gi)]
-                                                  ~(do-cmod mod-pairs))
-                                                true)))
+                                       (if (loop [~gi 0]
+                                             (if (< ~gi size#)
+                                               (let [~bind (-nth c# ~gi)]
+                                                 ~(do-cmod mod-pairs))
+                                               true))
                                          (chunk-cons
                                            (chunk ~gb)
                                            (~giter (chunk-rest ~gxs)))
