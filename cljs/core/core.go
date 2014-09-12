@@ -722,7 +722,7 @@ func init() {
 				return o.(CljsCoreIHash).X_hash_Arity1()
 			} else {
 				if reflect.ValueOf(o).Kind() == reflect.Float64 {
-					return float64(int(Native_invoke_func.X_invoke_Arity2(Math.Floor, []interface{}{o}).(float64)) % int(float64(2147483647)))
+					return math.Mod(Native_invoke_func.X_invoke_Arity2(Math.Floor, []interface{}{o}).(float64), float64(2147483647))
 				} else {
 					if o == true {
 						return float64(1)
@@ -2659,20 +2659,20 @@ func init() {
 
 	Js_mod = func(js_mod *AFn) *AFn {
 		return Fn(js_mod, func(n interface{}, d interface{}) interface{} {
-			return float64(int(n.(float64)) % int(d.(float64)))
+			return math.Mod(n.(float64), d.(float64))
 		})
 	}(&AFn{})
 
 	Mod = func(mod *AFn) *AFn {
 		return Fn(mod, func(n interface{}, d interface{}) interface{} {
-			return float64(int((float64(int(n.(float64))%int(d.(float64))) + d.(float64))) % int(d.(float64)))
+			return math.Mod((math.Mod(n.(float64), d.(float64)) + d.(float64)), d.(float64))
 		})
 	}(&AFn{})
 
 	Quot = func(quot *AFn) *AFn {
 		return Fn(quot, func(n interface{}, d interface{}) interface{} {
 			{
-				var rem = float64(int(n.(float64)) % int(d.(float64)))
+				var rem = math.Mod(n.(float64), d.(float64))
 				_ = rem
 				return Fix.Arity1IF(((n.(float64) - rem) / d.(float64)))
 			}
@@ -2970,7 +2970,7 @@ func init() {
 						{
 							var e = First.X_invoke_Arity1(s)
 							_ = e
-							h, s = float64(int((h+float64(int(Hash.X_invoke_Arity1(Key.X_invoke_Arity1(e)).(float64))^int(Hash.X_invoke_Arity1(Val.X_invoke_Arity1(e)).(float64)))))%int(float64(4503599627370496))), Next.Arity1IQ(s)
+							h, s = math.Mod((h+float64(int(Hash.X_invoke_Arity1(Key.X_invoke_Arity1(e)).(float64))^int(Hash.X_invoke_Arity1(Val.X_invoke_Arity1(e)).(float64)))), float64(4503599627370496)), Next.Arity1IQ(s)
 							continue
 						}
 					} else {
@@ -2992,7 +2992,7 @@ func init() {
 						{
 							var e = First.X_invoke_Arity1(s___1)
 							_ = e
-							h, s___1 = float64(int((h+Hash.X_invoke_Arity1(e).(float64)))%int(float64(4503599627370496))), Next.Arity1IQ(s___1)
+							h, s___1 = math.Mod((h+Hash.X_invoke_Arity1(e).(float64)), float64(4503599627370496)), Next.Arity1IQ(s___1)
 							continue
 						}
 					} else {

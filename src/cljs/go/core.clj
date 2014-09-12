@@ -477,7 +477,7 @@
   ([x y & more] `(min (min ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric js-mod [num div]
-  (core/list 'js* "float64(int(~{}) % int(~{}))" num div))
+  (core/list 'js* "math.Mod(~{}, ~{})" num div))
 
 (defmacro ^::ana/numeric bit-not [x]
   (core/list 'js* "float64(^ int(~{}))" x))

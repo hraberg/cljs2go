@@ -818,7 +818,7 @@
   (assert (= (mod 3 2) 1))
   (assert (= (mod 6 4) 2))
   (assert (= (mod 0 5) 0))
-;  (assert (= (mod 4.5 2.0) 0.5))
+  (assert (= (mod 4.5 2.0) 0.5))
   (assert (= (mod 42 5) 2))
   (assert (= (mod 9 3) 0))
   (assert (= (mod 9 -3) 0))
