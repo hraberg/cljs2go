@@ -58,7 +58,11 @@ var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) inte
 var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 	fv := value(f)
 	argsArray := args.([]interface{}) // this should really take a seq
-	in := make([]reflect.Value, fv.Type().NumIn())
+	argc := fv.Type().NumIn()
+	if len(argsArray) > argc {
+		argc = len(argsArray)
+	}
+	in := make([]reflect.Value, argc)
 	for i, v := range argsArray {
 		in[i] = value(v)
 	}

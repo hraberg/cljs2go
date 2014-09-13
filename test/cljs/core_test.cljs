@@ -1212,94 +1212,94 @@
       (assert (= (count m) 98))))
 
   ;; ;; PersistentArrayMap & TransientArrayMap
-  ;; (def array-map-conversion-threshold
-  ;;   cljs.core.PersistentArrayMap.HASHMAP_THRESHOLD)
-  ;; (loop [m1 cljs.core.PersistentArrayMap.EMPTY
-  ;;        m2 (transient cljs.core.PersistentArrayMap.EMPTY)
-  ;;        i 0]
-  ;;   (if (< i array-map-conversion-threshold)
-  ;;     (recur (assoc m1 i i) (assoc! m2 i i) (inc i))
-  ;;     (let [m2 (persistent! m2)]
-  ;;       (assert (= (count m1) array-map-conversion-threshold))
-  ;;       (assert (= (count m2) array-map-conversion-threshold))
-  ;;       (assert (= m1 m2))
-  ;;       (loop [i 0]
-  ;;         (if (< i array-map-conversion-threshold)
-  ;;           (do (assert (= (m1 i) i))
-  ;;               (assert (= (m2 i) i))
-  ;;               (assert (= (get m1 i) i))
-  ;;               (assert (= (get m2 i) i))
-  ;;               (assert (contains? m1 i))
-  ;;               (assert (contains? m2 i))
-  ;;               (recur (inc i)))))
-  ;;       (assert (= (map vector
-  ;;                       (range array-map-conversion-threshold)
-  ;;                       (range array-map-conversion-threshold))
-  ;;                  (sort-by first (seq m1))))
-  ;;       (assert (= (map vector
-  ;;                       (range array-map-conversion-threshold)
-  ;;                       (range array-map-conversion-threshold))
-  ;;                  (sort-by first (seq m2))))
-  ;;       (assert (not (contains? (dissoc m1 3) 3))))))
-  ;; (let [m (-> (->> (interleave (range 10) (range 10))
-  ;;                  (apply assoc cljs.core.PersistentArrayMap.EMPTY))
-  ;;             (dissoc 3 5 7))]
-  ;;   (assert (= (count m) 7))
-  ;;   (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9})))
-  ;; (let [m (-> (->> (interleave (range 10) (range 10))
-  ;;                  (apply assoc cljs.core.PersistentArrayMap.EMPTY))
-  ;;             (conj [:foo 1]))]
-  ;;   (assert (= (count m) 11))
-  ;;   (assert (= m {0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 :foo 1})))
-  ;; (let [m (-> (->> (interleave (range 10) (range 10))
-  ;;                  (apply assoc cljs.core.PersistentArrayMap.EMPTY)
-  ;;                  transient)
-  ;;             (conj! [:foo 1])
-  ;;             persistent!)]
-  ;;   (assert (= (count m) 11))
-  ;;   (assert (= m {0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 :foo 1})))
-  ;; (let [tm (->> (interleave (range 10) (range 10))
-  ;;               (apply assoc cljs.core.PersistentArrayMap.EMPTY)
-  ;;               transient)]
-  ;;   (loop [tm tm ks [3 5 7]]
-  ;;     (if-let [k (first ks)]
-  ;;       (recur (dissoc! tm k) (next ks))
-  ;;       (let [m (persistent! tm)]
-  ;;         (assert (= (count m) 7))
-  ;;         (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9}))))))
-  ;; (let [tm (-> (->> (interleave (range 10) (range 10))
-  ;;                   (apply assoc cljs.core.PersistentArrayMap.EMPTY))
-  ;;              (dissoc 3 5 7)
-  ;;              transient)]
-  ;;   (doseq [k [0 1 2 4 6 8 9]]
-  ;;     (assert (= k (get tm k))))
-  ;;   (let [m (persistent! tm)]
-  ;;     (assert (= 2 (try (dissoc! tm 1) 1 (catch js/Error e 2))))
-  ;;     (assert (= 2 (try (assoc! tm 10 10) 1 (catch js/Error e 2))))
-  ;;     (assert (= 2 (try (persistent! tm) 1 (catch js/Error e 2))))
-  ;;     (assert (= 2 (try (count tm) 1 (catch js/Error e 2))))
-  ;;     (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9}))))
-  ;; (let [m (apply assoc cljs.core.PersistentArrayMap.EMPTY
-  ;;                (interleave (range (* 2 array-map-conversion-threshold))
-  ;;                            (range (* 2 array-map-conversion-threshold))))]
-  ;;   (assert (= (count m) (* 2 array-map-conversion-threshold)))
-  ;;   (assert (= (m array-map-conversion-threshold) array-map-conversion-threshold))
-  ;;   (assert (= m (into cljs.core.PersistentHashMap.EMPTY
-  ;;                      (map #(vector % %)
-  ;;                           (range (* 2 array-map-conversion-threshold)))))))
+  (def ^number array-map-conversion-threshold
+    (.-HASHMAP_THRESHOLD cljs.core/PersistentArrayMap))
+  (loop [m1 (.-EMPTY cljs.core/PersistentArrayMap)
+         m2 (transient (.-EMPTY cljs.core/PersistentArrayMap))
+         i 0]
+    (if (< i array-map-conversion-threshold)
+      (recur (assoc m1 i i) (assoc! m2 i i) (inc i))
+      (let [m2 (persistent! m2)]
+        (assert (= (count m1) array-map-conversion-threshold))
+        (assert (= (count m2) array-map-conversion-threshold))
+        (assert (= m1 m2))
+        (loop [i 0]
+          (if (< i array-map-conversion-threshold)
+            (do (assert (= (m1 i) i))
+                (assert (= (m2 i) i))
+                (assert (= (get m1 i) i))
+                (assert (= (get m2 i) i))
+                (assert (contains? m1 i))
+                (assert (contains? m2 i))
+                (recur (inc i)))))
+        (assert (= (map vector
+                        (range array-map-conversion-threshold)
+                        (range array-map-conversion-threshold))
+                   (sort-by first (seq m1))))
+        (assert (= (map vector
+                        (range array-map-conversion-threshold)
+                        (range array-map-conversion-threshold))
+                   (sort-by first (seq m2))))
+        (assert (not (contains? (dissoc m1 3) 3))))))
+  (let [m (-> (->> (interleave (range 10) (range 10))
+                   (apply assoc (.-EMPTY cljs.core/PersistentArrayMap)))
+              (dissoc 3 5 7))]
+    (assert (= (count m) 7))
+    (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9})))
+  (let [m (-> (->> (interleave (range 10) (range 10))
+                   (apply assoc (.-EMPTY cljs.core/PersistentArrayMap)))
+              (conj [:foo 1]))]
+    (assert (= (count m) 11))
+    (assert (= m {0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 :foo 1})))
+  (let [m (-> (->> (interleave (range 10) (range 10))
+                   (apply assoc (.-EMPTY cljs.core/PersistentArrayMap))
+                   transient)
+              (conj! [:foo 1])
+              persistent!)]
+    (assert (= (count m) 11))
+    (assert (= m {0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 :foo 1})))
+  (let [tm (->> (interleave (range 10) (range 10))
+                (apply assoc (.-EMPTY cljs.core/PersistentArrayMap))
+                transient)]
+    (loop [tm tm ks [3 5 7]]
+      (if-let [k (first ks)]
+        (recur (dissoc! tm k) (next ks))
+        (let [m (persistent! tm)]
+          (assert (= (count m) 7))
+          (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9}))))))
+  (let [tm (-> (->> (interleave (range 10) (range 10))
+                    (apply assoc (.-EMPTY cljs.core/PersistentArrayMap)))
+               (dissoc 3 5 7)
+               transient)]
+    (doseq [k [0 1 2 4 6 8 9]]
+      (assert (= k (get tm k))))
+    (let [m (persistent! tm)]
+      (assert (= 2 (try (dissoc! tm 1) 1 (catch js/Error e 2))))
+      (assert (= 2 (try (assoc! tm 10 10) 1 (catch js/Error e 2))))
+      (assert (= 2 (try (persistent! tm) 1 (catch js/Error e 2))))
+      (assert (= 2 (try (count tm) 1 (catch js/Error e 2))))
+      (assert (= m {0 0 1 1 2 2 4 4 6 6 8 8 9 9}))))
+  (let [m (apply assoc (.-EMPTY cljs.core/PersistentArrayMap)
+                 (interleave (range (* 2 array-map-conversion-threshold))
+                             (range (* 2 array-map-conversion-threshold))))]
+    (assert (= (count m) (* 2 array-map-conversion-threshold)))
+    (assert (= (m array-map-conversion-threshold) array-map-conversion-threshold))
+    (assert (= m (into (.-EMPTY cljs.core/PersistentHashMap)
+                       (map #(vector % %)
+                            (range (* 2 array-map-conversion-threshold)))))))
 
   ;; ;; literal maps
-  ;; (loop [m1 {} m2 {} i 0]
-  ;;   (if (< i 100)
-  ;;     (recur (assoc m1 i i) (assoc m2 (str "foo" i) i) (inc i))
-  ;;     (do (assert (= m1 (into cljs.core.PersistentHashMap.EMPTY
-  ;;                             (map vector (range 100) (range 100)))))
-  ;;         (assert (= m2 (into cljs.core.PersistentHashMap.EMPTY
-  ;;                             (map vector
-  ;;                                  (map (partial str "foo") (range 100))
-  ;;                                  (range 100)))))
-  ;;         (assert (= (count m1) 100))
-  ;;         (assert (= (count m2) 100)))))
+  (loop [m1 {} m2 {} i 0]
+    (if (< i 100)
+      (recur (assoc m1 i i) (assoc m2 (str "foo" i) i) (inc i))
+      (do (assert (= m1 (into (.-EMPTY cljs.core/PersistentHashMap)
+                              (map vector (range 100) (range 100)))))
+          (assert (= m2 (into (.-EMPTY cljs.core/PersistentHashMap)
+                              (map vector
+                                   (map (partial str "foo") (range 100))
+                                   (range 100)))))
+          (assert (= (count m1) 100))
+          (assert (= (count m2) 100)))))
 
   ;; ;; CLJS-461: automatic map conversions
   ;; (loop [i 0 m (with-meta {} {:foo :bar}) result []]
@@ -1308,12 +1308,12 @@
   ;;     (let [n (inc (+ cljs.core.ObjMap.HASHMAP_THRESHOLD 2))
   ;;           expected (repeat n {:foo :bar})]
   ;;       (assert (= result expected)))))
-  ;; (loop [i 0 m (with-meta {-1 :quux} {:foo :bar}) result []]
-  ;;   (if (<= i (+ cljs.core.PersistentArrayMap.HASHMAP_THRESHOLD 2))
-  ;;     (recur (inc i) (assoc m i i) (conj result (meta m)))
-  ;;     (let [n (inc (+ cljs.core.PersistentArrayMap.HASHMAP_THRESHOLD 2))
-  ;;           expected (repeat n {:foo :bar})]
-  ;;       (assert (= result expected)))))
+  (loop [i 0 m (with-meta {-1 :quux} {:foo :bar}) result []]
+    (if (<= i (+ (.-HASHMAP_THRESHOLD cljs.core/PersistentArrayMap) 2))
+      (recur (inc i) (assoc m i i) (conj result (meta m)))
+      (let [n (inc (+ (.-HASHMAP_THRESHOLD cljs.core/PersistentArrayMap) 2))
+            expected (repeat n {:foo :bar})]
+        (assert (= result expected)))))
 
   ;; ;; TransientHashSet
   ;; (loop [s (transient #{})
