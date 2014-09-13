@@ -1691,19 +1691,19 @@
 
   ;; ;; Chunked Sequences
 
-  ;; (let [r (range 64)
-  ;;       v (into [] r)]
-  ;;   (assert (= (hash (seq v)) (hash (seq v))))
-  ;;   (assert (= 6 (reduce + (array-chunk (array 1 2 3)))))
-  ;;   (assert (instance? ChunkedSeq (seq v)))
-  ;;   (assert (= r (seq v)))
-  ;;   (assert (= (map inc r) (map inc v)))
-  ;;   (assert (= (filter even? r) (filter even? v)))
-  ;;   (assert (= (filter odd? r) (filter odd? v)))
-  ;;   (assert (= (concat r r r) (concat v v v)))
-  ;;   (assert (satisfies? IReduce (seq v)))
-  ;;   (assert (== 2010 (reduce + (nnext (nnext (seq v))))))
-  ;;   (assert (== 2020 (reduce + 10 (nnext (nnext (seq v)))))))
+  (let [r (range 64)
+        v (into [] r)]
+    (assert (= (hash (seq v)) (hash (seq v))))
+    (assert (= 6 (reduce + (array-chunk (array 1 2 3)))))
+    (assert (instance? ChunkedSeq (seq v)))
+    (assert (= r (seq v)))
+    (assert (= (map inc r) (map inc v)))
+    (assert (= (filter even? r) (filter even? v)))
+    (assert (= (filter odd? r) (filter odd? v)))
+    (assert (= (concat r r r) (concat v v v)))
+    (assert (satisfies? IReduce (seq v)))
+    (assert (== 2010 (reduce + (nnext (nnext (seq v))))))
+    (assert (== 2020 (reduce + 10 (nnext (nnext (seq v)))))))
 
   ;; ;; INext
 
