@@ -138,6 +138,9 @@
           (symbol (str munged-name "___" depth))))
       ; String munging
       (let [ss (string/replace (str s) #"\/(.)" ".$1") ; Division is special
+            ss (if (= ".." ss)
+                 "_DOT__DOT_"
+                 ss)
             ss (string/replace ss "$" "_")
             ss (apply str (map #(if (reserved %) (str % "_") %)
                                (string/split ss #"(?<=\.)|(?=\.)")))
@@ -704,7 +707,7 @@
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]
-  (let [varargs (str (string/join "_" (map :name params)) "__")]
+  (let [varargs (munge (str (string/join "_" (map :name params)) "__"))]
     (emit-wrap env
       (emits "func(")
       (emitln varargs " ...interface{}" ") interface{} {")
@@ -1356,11 +1359,14 @@ func main() {
   ([parts sep]
     (apply str (interpose sep parts))))
 
+(defn relative-path-parts [cljs-file]
+  (string/split
+   (ana/munge-path
+    (str (:ns (parse-ns cljs-file)))) #"\."))
+
 (defn ^File to-target-file
   [target cljs-file]
-  (let [relative-path (string/split
-                        (ana/munge-path
-                          (str (:ns (parse-ns cljs-file)))) #"\.")
+  (let [relative-path (relative-path-parts cljs-file)
         parents (butlast relative-path)]
     (io/file
      (io/file (to-path (concat (cons target parents) [(last relative-path)])))

@@ -3,6 +3,9 @@
             [cljs.env :as env]
             [cljs.go.compiler]
             [clojure.string :as s]
+            [clojure.pprint :as pp]
+            [clojure.repl :as repl]
+            [clojure.walk :as w]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh]))
 
@@ -144,9 +147,11 @@
 
 (defn compile-file
   ([] (compile-file "." (io/resource "cljs/core.cljs")))
-  ([target-dir src]
+  ([target src]
      (let [src (io/file src)
-           target (cljs.compiler/to-target-file target-dir src)
+           target (if (.isDirectory (io/file target))
+                    (cljs.compiler/to-target-file target src)
+                    (io/file target))
            dir (.getParentFile target)]
        (env/ensure
         (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
@@ -179,6 +184,49 @@
          (do
            (println "compiling" (str resource))
            (compile-file target-dir resource)))))))
+
+
+;; Doesn't work yet by far, will require at least three things:
+;; 1. thin java.io compability layer.
+;; 2. a working reader, including syntax quoting once we want to support macros.
+;; 3. compiling macro fns and ability for the analyzer to use them to macroexpand.
+(defn compile-clojurescript-compiler
+  ([] (compile-clojurescript-compiler "."))
+  ([target-dir]
+     (env/ensure
+      (doseq [ns '[cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
+                   cljs.env ;; will mostly be replaced, drags in js-deps.
+                   cljs.tagged-literals ;; drags in clojure.instant, so we'll probably skip these for a bit.
+                   cljs.go.compiler ;; same deps as analyzer.
+                   cljs.go.core  ;; drags in lots of macros from clojure.core
+                   ]
+              :let [resource (io/resource (str (-> ns str (s/replace "." "/") (s/replace "-" "_")) ".clj"))
+                    src (io/file "target/generated"
+                                 (str (s/join "/" (cljs.compiler/relative-path-parts resource))
+                                      ".cljs"))]]
+        (time
+         (do
+           (println "compiling" (str resource))
+           (io/make-parents src)
+           (spit src (with-out-str
+                       (binding [*ns* (find-ns ('{cljs.go.core cljs.core cljs.go.compiler cljs.compiler} ns ns))]
+                        (doseq [f (read-string (str "[" (slurp resource) "]"))]
+                          (pp/pprint ((fn expander [f]
+                                         (w/prewalk
+                                          (fn [x] (if (and (seq? x) (symbol? (first x))
+                                                           (not ('#{deftype defmulti defmethod ns case}
+                                                                 (symbol (name (first x))))))
+                                                    (if (= 'import-macros (first x))
+                                                      (let [from (second x)]
+                                                        (apply list 'do
+                                                               (for [m (nth x 2)]
+                                                                 (expander
+                                                                  (read-string (repl/source-fn (symbol (str from) (str m))))))))
+                                                      (macroexpand x))
+                                                    x)) f)) f))))))
+           (compile-file (if (= 'cljs.go.core ns)
+                           (str target-dir "/cljs/core/macros.go")
+                           target-dir) src)))))))
 
 (defn -main [& args]
   (println "ClojureScript to Go [clojure]")
