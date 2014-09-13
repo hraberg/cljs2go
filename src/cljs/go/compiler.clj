@@ -588,8 +588,7 @@
       (emitln "var " gs ""))
     (emitln "switch " v " {")
     (doseq [[ts then] (partition 2 (interleave tests thens))]
-      (doseq [test ts]
-        (emitln "case " test ":"))
+      (emitln "case " (comma-sep ts) ":")
       (if (= :expr (:context env))
         (emitln gs "=" then)
         (emitln then)))

@@ -1603,40 +1603,40 @@
                  (catch js/Error e
                      :fail))
                :fail)))
-  ;; (let [x 1]
-  ;;   (assert (= (case x
-  ;;                (1 2 3) :ok
-  ;;                :fail)
-  ;;              :ok)))
+  (let [x 1]
+    (assert (= (case x
+                 (1 2 3) :ok
+                 :fail)
+               :ok)))
 
-  ;; (let [x [:a :b]]
-  ;;   (assert (= (case x
-  ;;                [:a :b] :ok)
-  ;;              :ok)))
+  (let [x [:a :b]]
+    (assert (= (case x
+                 [:a :b] :ok)
+               :ok)))
 
-  ;; (let [a 'a]
-  ;;   (assert (= (case a
-  ;;                nil nil
-  ;;                & :amp
-  ;;                :none)
-  ;;              :none)))
+  (let [a 'a]
+    (assert (= (case a
+                 nil nil
+                 & :amp
+                 :none)
+               :none)))
 
-  ;; (let [a '&]
-  ;;   (assert (= (case a
-  ;;                nil nil
-  ;;                & :amp
-  ;;                :none)
-  ;;              :amp)))
+  (let [a '&]
+    (assert (= (case a
+                 nil nil
+                 & :amp
+                 :none)
+               :amp)))
 
-  ;; (let [foo 'a]
-  ;;   (assert (= (case foo
-  ;;                (a b c) :sym
-  ;;                :none)
-  ;;              :sym))
-  ;;   (assert (= (case foo
-  ;;                (b c d) :sym
-  ;;                :none)
-  ;;              :none)))
+  (let [foo 'a]
+    (assert (= (case foo
+                 (a b c) :sym
+                 :none)
+               :sym))
+    (assert (= (case foo
+                 (b c d) :sym
+                 :none)
+               :none)))
 
   ;; ;; IComparable
   ;; (assert (=  0 (compare false false)))
