@@ -214,9 +214,13 @@
                           (pp/pprint ((fn expander [f]
                                          (w/prewalk
                                           (fn [x] (if (and (seq? x) (symbol? (first x))
-                                                           (not ('#{deftype defmulti defmethod ns case}
+                                                           (not ('#{deftype defmulti defmethod ns case binding}
                                                                  (symbol (name (first x))))))
-                                                    (if (= 'import-macros (first x))
+                                                    (case (first x)
+                                                      defmacro
+                                                      (when (= 'cljs.go.core ns)
+                                                        (macroexpand x))
+                                                      import-macros
                                                       (let [from (second x)]
                                                         (apply list 'do
                                                                (for [m (nth x 2)]
