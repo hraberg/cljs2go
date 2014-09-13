@@ -9,19 +9,33 @@ import (
 //func (p Float64Slice) Less(i, j int) bool { return p[i] < p[j] || isNaN(p[i]) && !isNaN(p[j]) }
 
 func DefaultCompare(x, y interface{}) interface{} {
-	switch t := y.(type) {
+	switch y := y.(type) {
 	case string:
-		if y.(string) > x.(string) {
-			return -1.0
-		} else if y.(string) == x.(string) {
+		if y == x {
 			return 0.0
+		} else if y < x.(string) {
+			return 1.0
+		} else {
+			return -1.0
+		}
+	case float64:
+		if y == x {
+			return 0.0
+		} else if y < x.(float64) {
+			return 1.0
+		} else {
+			return -1.0
+		}
+	case bool:
+		if y == x {
+			return 0.0
+		} else if y {
+			return -1.0
 		} else {
 			return 1.0
 		}
-	case float64:
-		return x.(float64) - y.(float64)
 	default:
-		panic(fmt.Sprintf("Cannot compare %v", t))
+		panic(fmt.Sprintf("Cannot compare %v", y))
 	}
 }
 
