@@ -401,6 +401,12 @@
 
 ;; tagged literal support
 
+(defn read-queue
+  [form]
+  (when-not (vector? form)
+    (throw (RuntimeException. "Queue literal expects a vector for its elements.")))
+  (list 'cljs.core/into '(.-EMPTY cljs.core/PersistentQueue) form))
+
 (defmethod emit-constant java.util.Date [^java.util.Date date]
   (emits "(&js.Date{Millis: " (.getTime date) "})"))
 
@@ -1222,6 +1228,7 @@ func main() {
           (binding [*out* out
                     ana/*cljs-ns* (or (:name ns-ast) 'cljs.user)
                     ana/*cljs-file* (.getPath ^File src)
+                    tags/*cljs-data-readers* (assoc tags/*cljs-data-readers* 'queue read-queue)
                     reader/*alias-map* (or reader/*alias-map* {})
                     *go-line-numbers* (boolean (:source-map opts))]
             (emitln "// Compiled by ClojureScript to Go " (clojurescript-version))
