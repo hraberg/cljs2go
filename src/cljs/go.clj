@@ -209,7 +209,8 @@
            (println "compiling" (str resource))
            (io/make-parents src)
            (spit src (with-out-str
-                       (binding [*ns* (find-ns ('{cljs.go.core cljs.core cljs.go.compiler cljs.compiler} ns ns))]
+                       (binding [*ns* (find-ns ('{cljs.go.core cljs.core cljs.go.compiler cljs.compiler} ns ns))
+                                 *print-meta* true]
                         (doseq [f (read-string (str "[" (slurp resource) "]"))]
                           (pp/pprint ((fn expander [f]
                                          (w/prewalk
