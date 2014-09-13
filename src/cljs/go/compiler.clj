@@ -341,9 +341,7 @@
   (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Boolean [x] (emits (if x "true" "false")))
 (defmethod emit-constant Character [x]
-  (emits (wrap-in-double-quotes (case x
-                                  \" "\\\""
-                                  (escape-char x)))))
+  (emits (wrap-in-double-quotes (escape-char x))))
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
