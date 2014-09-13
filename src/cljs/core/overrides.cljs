@@ -4,8 +4,8 @@
 
 (def *clojurescript-version* (clojurescript-version))
 
-(def ^:dynamic *print-length* -1)
-(def ^:dynamic *print-level* -1)
+(def ^:dynamic *print-length* ^number js/NaN)
+(def ^:dynamic *print-level* ^number js/NaN)
 
 (defn set-print-fn!
   "Set *print-fn* to f."
@@ -103,10 +103,7 @@
 
 (defn ^:private quote-string
   [s]
-  (str \"
-       (.replace s (js/RegExp. "[\\\\\"\b\f\n\r\t]" "")
-         (js* "func(match interface{}) interface{} { return ~{}.(map[string]interface{})[match.(string)] }" char-escapes))
-       \"))
+  ^string (js* "strconv.Quote(~{}.(string))" s))
 
 (defn- pr-writer
   "Prefer this to pr-seq, because it makes the printing function
@@ -164,7 +161,7 @@
                   (normalize (.getUTCMilliseconds obj) 3) "-"
                   "00:00\""))
 
-              (regexp? obj) (write-all writer "#\"" (.-source obj) "\"")
+              (regexp? obj) (write-all writer "#\"" (.-pattern obj) "\"")
 
               (satisfies? IPrintWithWriter obj)
               (-pr-writer obj writer opts)
@@ -172,8 +169,8 @@
               :else (write-all writer "#<" (str obj) ">")))))
 
 (defn pr-sequential-writer [writer print-one begin sep end opts coll]
-  (binding [*print-level* (if (== -1 *print-level*) -1 (dec *print-level*))]
-    (if (and (not (nil? *print-level*)) (neg? *print-level*))
+  (binding [*print-level* (if (== js/NaN *print-level*) ^number *print-level* (dec *print-level*))]
+    (if (neg? *print-level*)
       (-write writer "#")
       (do
         (-write writer begin)

@@ -92,6 +92,7 @@
      cljs.core/is_proto_
      cljs.core/type
      cljs.core/type->str
+     cljs.core/char-escapes
      cljs.core/quote-string
      cljs.core/pr-writer
      cljs.core/pr-sequential-writer
@@ -340,10 +341,10 @@
   (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Boolean [x] (emits (if x "true" "false")))
 (defmethod emit-constant Character [x]
-  (emits (str "`" (case x
-                    \' "\\'"
-                    \" "\""
-                    (escape-char x)) "`")))
+  (emits (wrap-in-double-quotes (case x
+                                  \' "\\'"
+                                  \" "\""
+                                  (escape-char x)))))
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
@@ -767,7 +768,7 @@
       (let [out (when name (gensym "return__"))]
         (when (= :return (:context env))
           (emits "return "))
-        (emits "func() (" out " " (go-type ret-tag) " ) {")
+        (emits "func() " (when-not (= :statement (:context env)) (str "(" out " " (go-type ret-tag) " )")) " {")
         (when finally
           (assert (not= :constant (:op finally)) "finally block cannot contain constant")
           (emitln "defer func() {" finally "}()"))

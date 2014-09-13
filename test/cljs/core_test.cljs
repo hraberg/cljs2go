@@ -1,7 +1,8 @@
 (ns cljs.core-test
   (:refer-clojure :exclude [iter])
   (:require [clojure.string :as s]
-            [clojure.set :as set]))
+            [clojure.set :as set])
+  (:import goog.string.StringBuffer))
 
 (defn test-stuff []
   ;; js primitives
@@ -256,21 +257,21 @@
   ;; (assert (= (hash-map :foo 5)
   ;;            (assoc (cljs.core.ObjMap. nil (array) (js-obj)) :foo 5)))
 
-  ;; (assert (= "\"asdf\" \"asdf\"" (pr-str "asdf" "asdf")))
-  ;; (assert (= "[1 true {:a 2, :b #\"x\\\"y\"} #js [3 4]]"
-  ;;            (pr-str [1 true {:a 2 :b #"x\"y"} (array 3 4)])))
+  (assert (= "\"asdf\" \"asdf\"" (pr-str "asdf" "asdf")))
+  (assert (= "[1 true {:a 2, :b #\"x\\\"y\"} #js [3 4]]"
+             (pr-str [1 true {:a 2 :b #"x\"y"} (array 3 4)])))
 
-  ;; (assert (= "\"asdf\"\n" (prn-str "asdf")))
-  ;; (assert (= "[1 true {:a 2, :b 42} #js [3 4]]\n"
-  ;;            (prn-str [1 true {:a 2 :b 42} (array 3 4)])))
+  (assert (= "\"asdf\"\n" (prn-str "asdf")))
+  (assert (= "[1 true {:a 2, :b 42} #js [3 4]]\n"
+             (prn-str [1 true {:a 2 :b 42} (array 3 4)])))
 
-  ;; (assert (= "asdf" (print-str "asdf")))
-  ;; (assert (= "asdf\n" (println-str "asdf")))
+  (assert (= "asdf" (print-str "asdf")))
+  (assert (= "asdf\n" (println-str "asdf")))
 
-  ;; (assert (= "" (pr-str)))
-  ;; (assert (= "\n" (prn-str)))
-  ;; (assert  (= "12" (with-out-str (print 1) (print 2))))
-  ;; (assert  (= "12" (with-out-str (*print-fn* 1) (*print-fn* 2))))
+  (assert (= "" (pr-str)))
+  (assert (= "\n" (prn-str)))
+  (assert  (= "12" (with-out-str (print 1) (print 2))))
+  (assert  (= "12" (with-out-str (*print-fn* 1) (*print-fn* 2))))
 
   ;; ;;this fails in v8 - why?
   ;; ;(assert (= "symbol\"'string" (pr-str (str 'symbol \" \' "string"))))
@@ -1760,36 +1761,37 @@
 
   ;; ;; pr-str
 
-  ;; (assert (= (pr-str 1) "1"))
-  ;; (assert (= (pr-str -1) "-1"))
-  ;; (assert (= (pr-str -1.5) "-1.5"))
-  ;; (assert (= (pr-str [3 4]) "[3 4]"))
-  ;; (assert (= (pr-str "foo") "\"foo\""))
-  ;; (assert (= (pr-str :hello) ":hello"))
-  ;; (assert (= (pr-str 'goodbye) "goodbye"))
-  ;; ;;(assert (= (pr-str #{1 2 3}) "#{1 2 3}"))
-  ;; (assert (= (pr-str '(7 8 9)) "(7 8 9)"))
-  ;; (assert (= (pr-str '(deref foo)) "(deref foo)"))
-  ;; (assert (= (pr-str '(quote bar)) "(quote bar)"))
-  ;; (assert (= (pr-str 'foo/bar) "foo/bar"))
-  ;; (assert (= (pr-str \a) "\"a\""))
-  ;; (assert (= (pr-str :foo/bar) ":foo/bar"))
-  ;; (assert (= (pr-str nil) "nil"))
-  ;; (assert (= (pr-str true) "true"))
-  ;; (assert (= (pr-str false) "false"))
-  ;; (assert (= (pr-str "string") "\"string\""))
-  ;; (assert (= (pr-str ["üñîçó∂£" :ทดสอบ/你好 'こんにちは]) "[\"üñîçó∂£\" :ทดสอบ/你好 こんにちは]"))
-  ;; (assert (= (pr-str "escape chars \t \r \n \\ \" \b \f") "\"escape chars \\t \\r \\n \\\\ \\\" \\b \\f\""))
+  (assert (= (pr-str 1) "1"))
+  (assert (= (pr-str -1) "-1"))
+  (assert (= (pr-str -1.5) "-1.5"))
+  (assert (= (pr-str [3 4]) "[3 4]"))
+  (assert (= (pr-str "foo") "\"foo\""))
+  (assert (= (pr-str :hello) ":hello"))
+  (assert (= (pr-str 'goodbye) "goodbye"))
+  ;;(assert (= (pr-str #{1 2 3}) "#{1 2 3}"))
+  (assert (= (pr-str '(7 8 9)) "(7 8 9)"))
+  (assert (= (pr-str '(deref foo)) "(deref foo)"))
+  (assert (= (pr-str '(quote bar)) "(quote bar)"))
+  (assert (= (pr-str 'foo/bar) "foo/bar"))
+  (assert (= (pr-str \a) "\"a\""))
+  (assert (= (pr-str :foo/bar) ":foo/bar"))
+  (assert (= (pr-str nil) "nil"))
+  (assert (= (pr-str true) "true"))
+  (assert (= (pr-str false) "false"))
+  (assert (= (pr-str "string") "\"string\""))
+  (assert (= (pr-str ["üñîçó∂£" :ทดสอบ/你好 'こんにちは]) "[\"üñîçó∂£\" :ทดสอบ/你好 こんにちは]"))
+  (assert (= (pr-str "escape chars \t \r \n \\ \" \b \f") "\"escape chars \\t \\r \\n \\\\ \\\" \\b \\f\""))
 
   ;; ;;; pr-str records
 
-  ;; (defrecord PrintMe [a b])
-  ;; (assert (= (pr-str (PrintMe. 1 2)) "#cljs.core-test.PrintMe{:a 1, :b 2}"))
+  (defrecord PrintMe [a b])
+  (assert (= (pr-str (PrintMe. 1 2)) "#cljs.core-test.PrintMe{:a 1, :b 2}"))
 
   ;; ;;; pr-str inst
 
-  ;; (assert (= (pr-str (js/Date. "2010-11-12T13:14:15.666-05:00"))
-  ;;            "#inst \"2010-11-12T18:14:15.666-00:00\""))
+  (assert (= (pr-str (js/Date. 1289585655666 ;"2010-11-12T13:14:15.666-05:00"
+                               ))
+             "#inst \"2010-11-12T18:14:15.666-00:00\""))
 
   ;; (doseq [month (range 1 13) day (range 1 29) hour (range 1 23)]
   ;;   (let [pad (fn [n]
@@ -1801,12 +1803,12 @@
 
   ;; ;;; pr-str uuid
 
-  ;; (let [uuid-str "550e8400-e29b-41d4-a716-446655440000"
-  ;;       uuid (UUID. uuid-str)]
-  ;;   (assert (= (pr-str uuid) (str "#uuid \"" uuid-str "\""))))
+  (let [uuid-str "550e8400-e29b-41d4-a716-446655440000"
+        uuid (UUID. uuid-str)]
+    (assert (= (pr-str uuid) (str "#uuid \"" uuid-str "\""))))
 
   ;; ;;; pr-str PersistentQueueSeq - CLJS-800
-  ;; (assert (= (pr-str (rest (conj cljs.core.PersistentQueue.EMPTY 1 2 3))) "(2 3)"))
+  (assert (= (pr-str (rest (conj (.-EMPTY cljs.core/PersistentQueue) 1 2 3))) "(2 3)"))
 
   ;; ;; CLJS-405
 

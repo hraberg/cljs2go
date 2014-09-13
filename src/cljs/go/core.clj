@@ -904,7 +904,7 @@
 
                   'IPrintWithWriter
                   `(~'-pr-writer [this# writer# opts#]
-                                 (let [pr-pair# (fn [keyval#] (pr-sequential-writer writer# pr-writer "" " " "" opts# keyval#))]
+                                 (let [pr-pair# (fn [keyval# _# _#] (pr-sequential-writer writer# pr-writer "" " " "" opts# keyval#))]
                                    (pr-sequential-writer
                                     writer# pr-pair# ~pr-open ", " "}" opts#
                                     (concat [~@(map #(core/list `vector (keyword %) %) base-fields)]

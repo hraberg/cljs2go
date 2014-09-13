@@ -7,6 +7,7 @@ package core
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 
 	"github.com/hraberg/cljs.go/goog"
 	goog_array "github.com/hraberg/cljs.go/goog/array"
@@ -16,9 +17,9 @@ import (
 func init() {
 	X_STAR_clojurescript_version_STAR_ = "0.0-2322"
 
-	X_STAR_print_length_STAR_ = float64(-1)
+	X_STAR_print_length_STAR_ = js.NaN
 
-	X_STAR_print_level_STAR_ = float64(-1)
+	X_STAR_print_level_STAR_ = js.NaN
 
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
@@ -183,7 +184,7 @@ func init() {
 
 	Quote_string = func(quote_string *AFn) *AFn {
 		return Fn(quote_string, func(s interface{}) interface{} {
-			return ("\"" + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{"[\\\\\"\b\f\n\r\t]", ""}), func(match interface{}) interface{} { return Char_escapes.(map[string]interface{})[match.(string)] }})).(string) + "\"")
+			return strconv.Quote(s.(string))
 		})
 	}(&AFn{})
 
@@ -259,7 +260,7 @@ func init() {
 											}
 										} else {
 											if Truth_(Regexp_QMARK_.X_invoke_Arity1(obj)) {
-												return Write_all.X_invoke_ArityVariadic(writer, "#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Source"), "\"")
+												return Write_all.X_invoke_ArityVariadic(writer, "#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Pattern"), "\"")
 											} else {
 												if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IPrintWithWriter", Str: "cljs.core/IPrintWithWriter", X_hash: float64(1349251417), X_meta: nil}), obj)) {
 													return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
@@ -292,14 +293,14 @@ func init() {
 					}()
 					{
 						X_STAR_print_level_STAR_ = func() float64 {
-							if float64(-1) == X_STAR_print_level_STAR_ {
-								return float64(-1)
+							if js.NaN == X_STAR_print_level_STAR_ {
+								return X_STAR_print_level_STAR_
 							} else {
 								return (X_STAR_print_level_STAR_ - float64(1))
 							}
 						}()
 
-						if (!(Nil_(X_STAR_print_level_STAR_))) && (X_STAR_print_level_STAR_ < float64(0)) {
+						if X_STAR_print_level_STAR_ < float64(0) {
 							return writer.(CljsCoreIWriter).X_write_Arity2("#")
 						} else {
 							writer.(CljsCoreIWriter).X_write_Arity2(begin)
