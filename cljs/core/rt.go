@@ -699,6 +699,8 @@ func init() {
 
 	// Hack, calls to minus gets over-munged.
 	X___ = X_
+
+	CljsCorePersistentTreeMap_EMPTY.Comp = Compare
 }
 
 func Main_() {
