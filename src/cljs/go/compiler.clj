@@ -981,19 +981,24 @@
         (assoc-in [:info :ns] (symbol (namespace type))))))
 
 (defmethod emit* :new
-  [{:keys [ctor args env]}]
-  (binding [*go-return-tag* nil]
-    (emit-wrap env
-      (emits "(&" (case (-> ctor :info :ns)
-                    js ctor
-                    goog (normalize-goog-ctor ctor)
-                    (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
-                    (comma-sep
-                     (if-let [types (seq (map (comp :tag meta) (go-fields-of-type (-> ctor :info :name))))]
-                       (map go-unbox types args)
-                       args))
-                    "})"
-))))
+  [{:keys [ctor args env tag]}]
+  (let [record? ('cljs.core/IRecord (:protocols (ana/resolve-existing-var (dissoc env :locals) tag)))
+        fields (go-fields-of-type (-> ctor :info :name))]
+    (binding [*go-return-tag* nil]
+      (emit-wrap env
+        (emits "(&" (case (-> ctor :info :ns)
+                      js ctor
+                      goog (normalize-goog-ctor ctor)
+                      (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
+                      (comma-sep
+                       (concat
+                        (if-let [types (seq (map (comp :tag meta) fields))]
+                          (map go-unbox (concat types (when record? (repeat nil))) args)
+                          args)
+                        (when record?
+                          (repeat (- (+ (count fields) 3) (count args)) "nil"))))
+                      "})"
+                      )))))
 
 (defmethod emit* :set!
   [{:keys [target val env form] :as ast}]
@@ -1074,7 +1079,7 @@
   (if *go-def-vars*
     (let [fields (map (comp go-public munge) fields)]
       (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields))
-              "\nX__meta interface{}\nX__extmap interface{} }"))
+              "\nX__meta interface{}\nX__extmap interface{}\nX__hash interface{} }"))
     (swap! *go-defs* conj ast)))
 
 (defmethod emit* :dot

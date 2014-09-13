@@ -404,14 +404,14 @@ func init() {
 		})
 	}(&AFn{})
 
-	String_hash_cache = map[string]interface{}{}
+	String_hash_cache = map[interface{}]interface{}{}
 
 	Add_to_string_hash_cache = func(add_to_string_hash_cache *AFn) *AFn {
 		return Fn(add_to_string_hash_cache, func(k interface{}) interface{} {
 			{
 				var h = Hash_string_STAR_.X_invoke_Arity1(k).(float64)
 				_ = h
-				String_hash_cache[k.(string)] = h
+				String_hash_cache[k] = h
 				String_hash_cache_count = (String_hash_cache_count + float64(1))
 
 				return h
@@ -422,14 +422,14 @@ func init() {
 	Hash_string = func(hash_string *AFn) *AFn {
 		return Fn(hash_string, func(k interface{}) interface{} {
 			if String_hash_cache_count > float64(255) {
-				String_hash_cache = map[string]interface{}{}
+				String_hash_cache = map[interface{}]interface{}{}
 
 				String_hash_cache_count = float64(0)
 
 			} else {
 			}
 			{
-				var h = String_hash_cache[k.(string)]
+				var h = String_hash_cache[k]
 				_ = h
 				if reflect.ValueOf(h).Kind() == reflect.Float64 {
 					return h
@@ -547,7 +547,7 @@ var Make_array *AFn
 // Coerce to char
 var Char *AFn
 
-var String_hash_cache map[string]interface{}
+var String_hash_cache map[interface{}]interface{}
 
 var Add_to_string_hash_cache *AFn
 

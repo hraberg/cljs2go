@@ -613,10 +613,10 @@
         munge  cljs.compiler/munge]
     `(do
        (deftype ~t [~@locals ~meta-sym]
-         IWithMeta
+         ~'IWithMeta
          (~'-with-meta [~this-sym ~meta-sym]
            (new ~t ~@locals ~meta-sym))
-         IMeta
+         ~'IMeta
          (~'-meta [~this-sym] ~meta-sym)
          ~@impls)
        (new ~t ~@locals nil))))
@@ -859,8 +859,8 @@
                   'IEquiv
                   `(~'-equiv [this# other#]
                              (if (and other#
-                                      (identical? (.-constructor this#)
-                                                  (.-constructor other#))
+                                      (identical? (type this#)
+                                                  (type other#))
                                       (equiv-map this# other#))
                                true
                                false))
@@ -890,6 +890,8 @@
                                            [(keyword fld) (list* `new tagname (replace {fld gs '__hash nil} fields))])
                                          base-fields)
                                (new ~tagname ~@(remove #{'__extmap '__hash} fields) (assoc ~'__extmap k# ~gs) nil)))
+                  `(~'-contains-key? [this# k#]
+                                     ^boolean (throw (js/Error. "Not implemented.")))
                   'IMap
                   `(~'-dissoc [this# k#] (if (contains? #{~@(map keyword base-fields)} k#)
                                            (dissoc (with-meta (into {} this#) ~'__meta) k#)

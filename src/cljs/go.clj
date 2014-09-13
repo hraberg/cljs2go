@@ -113,7 +113,7 @@
     {:dir dir :errors (count (filter #(re-find #"^.+.go:\d+: " %) (s/split-lines err)))}))
 
 (defn go-test-compile [dir]
-  (->> (sh/sh "go" "test" "-c" :dir dir) (error-summary dir)))
+  (->> (sh/sh "go" "test" "-c" "--gcflags" "-e" :dir dir) (error-summary dir)))
 
 (defn go-install [dir]
   (->> (sh/sh "go" "install" "--gcflags" "-e" :dir dir) (error-summary dir)))

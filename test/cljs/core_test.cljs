@@ -1423,13 +1423,13 @@
   ;;       (assert (= (count s2) 2)))))
 
   ;; ;; defrecord
-  ;; (defrecord Person [firstname lastname])
-  ;; (def fred (Person. "Fred" "Mertz"))
-  ;; (assert (= (:firstname fred) "Fred"))
-  ;; (def fred-too (Person. "Fred" "Mertz"))
-  ;; (assert (= fred fred-too))
-  ;; (assert (false? (= fred nil)))
-  ;; (assert (false? (= nil fred)))
+  (defrecord Person [firstname lastname])
+  (def fred (Person. "Fred" "Mertz"))
+  (assert (= (:firstname fred) "Fred"))
+  (def fred-too (Person. "Fred" "Mertz"))
+  (assert (= fred fred-too))
+  (assert (false? (= fred nil)))
+  (assert (false? (= nil fred)))
 
   ;; ;; invalid tests, cannot set meta and extmap directly - David
   ;; (def ethel (with-meta (assoc (Person. "Ethel" "Mertz") :husband :fred)
@@ -1439,24 +1439,24 @@
   ;;                  {:married true}))
   ;; (assert (= ethel ethel-too))
 
-  ;; (assert (= (map->Person {:firstname "Fred" :lastname "Mertz"}) fred))
-  ;; (assert (= (->Person "Fred" "Mertz") fred))
+  (assert (= (map->Person {:firstname "Fred" :lastname "Mertz"}) fred))
+  (assert (= (->Person "Fred" "Mertz") fred))
 
-  ;; (assert (= (count fred) 2))
+  (assert (= (count fred) 2))
   ;; (assert (= (count ethel) 3))
 
-  ;; (defrecord A [])
-  ;; (assert (= {:foo 'bar} (meta (with-meta (A.) {:foo 'bar}))))
-  ;; (assert (= 'bar (:foo (assoc (A.) :foo 'bar))))
+  (defrecord A [])
+  (assert (= {:foo 'bar} (meta (with-meta (A.) {:foo 'bar}))))
+  (assert (= 'bar (:foo (assoc (A.) :foo 'bar))))
 
-  ;; (defrecord C [a b c])
-  ;; (def letters (C. "a" "b" "c"))
-  ;; (assert (= (set (keys letters)) #{:a :b :c}))
-  ;; (def more-letters (assoc letters :d "d" :e "e" :f "f"))
-  ;; (assert (= (set (keys more-letters)) #{:a :b :c :d :e :f}))
-  ;; (assert (= (set (keys (dissoc more-letters :d))) #{:a :b :c :e :f}))
-  ;; (assert (= (set (keys (dissoc more-letters :d :e))) #{:a :b :c :f}))
-  ;; (assert (= (set (keys (dissoc more-letters :d :e :f))) #{:a :b :c}))
+  (defrecord C [a b c])
+  (def letters (C. "a" "b" "c"))
+  (assert (= (set (keys letters)) #{:a :b :c}))
+  (def more-letters (assoc letters :d "d" :e "e" :f "f"))
+  (assert (= (set (keys more-letters)) #{:a :b :c :d :e :f}))
+  (assert (= (set (keys (dissoc more-letters :d))) #{:a :b :c :e :f}))
+  (assert (= (set (keys (dissoc more-letters :d :e))) #{:a :b :c :f}))
+  (assert (= (set (keys (dissoc more-letters :d :e :f))) #{:a :b :c}))
 
   ;; ;; ObjMap
   ;; (let [ks (map (partial str "foo") (range 500))
@@ -1488,66 +1488,68 @@
   ;;   (assert (= "BC" (. (. s (toUpperCase)) substring 1)))
   ;;   (assert (= 2 (.-length (. (. s (toUpperCase)) substring 1)))))
 
-  ;; (assert (= (conj fred {:wife :ethel :friend :ricky})
-  ;;            (map->Person {:firstname "Fred" :lastname "Mertz" :wife :ethel :friend :ricky})))
-  ;; (assert (= (conj fred {:lastname "Flintstone"})
-  ;;            (map->Person {:firstname "Fred" :lastname "Flintstone"})))
-  ;; (assert (= (assoc fred :lastname "Flintstone")
-  ;;            (map->Person {:firstname "Fred" :lastname "Flintstone"})))
-  ;; (assert (= (assoc fred :wife :ethel)
-  ;;            (map->Person {:firstname "Fred" :lastname "Mertz" :wife :ethel})))
+  (assert (= (conj fred {:wife :ethel :friend :ricky})
+             (map->Person {:firstname "Fred" :lastname "Mertz" :wife :ethel :friend :ricky})))
+  (assert (= (conj fred {:lastname "Flintstone"})
+             (map->Person {:firstname "Fred" :lastname "Flintstone"})))
+  (assert (= (assoc fred :lastname "Flintstone")
+             (map->Person {:firstname "Fred" :lastname "Flintstone"})))
+  (assert (= (assoc fred :wife :ethel)
+             (map->Person {:firstname "Fred" :lastname "Mertz" :wife :ethel})))
   ;; (assert (= (dissoc ethel :husband)
   ;;            (map->Person {:firstname "Ethel" :lastname "Mertz"})))
 
-  ;; (defrecord A [x])
-  ;; (defrecord B [x])
-  ;; (assert (not= (A. nil) (B. nil)))
+  (defrecord A2 [x])
+  (defrecord B [x])
+  (assert (not= (A2. nil) (B. nil)))
 
-  ;; (defprotocol IFoo (foo [this]))
-  ;; (assert (= (meta (with-meta (reify IFoo (foo [this] :foo)) {:foo :bar}))
-  ;;            {:foo :bar}))
+  (defprotocol IFoo (foo [this]))
+  (assert (= (meta (with-meta (reify IFoo (foo [this] :foo)) {:foo :bar}))
+             {:foo :bar}))
 
-  ;; (defmulti foo2 identity)
-  ;; (defmethod foo2 0 [x] x)
-  ;; (assert (= foo2 (ffirst {foo2 1})))
+  (defmulti foo2 identity)
+  (defmethod foo2 0 [x] x)
+  (assert (= foo2 (ffirst {foo2 1})))
 
-  ;; (defprotocol IMutate
-  ;;   (mutate [this]))
+  (defprotocol IMutate
+    (mutate [this]))
 
-  ;; (deftype Mutate [^:mutable a]
-  ;;   IMutate
-  ;;   (mutate [_]
-  ;;     (set! a 'foo)))
+  (deftype Mutate [^:mutable a]
+    IMutate
+    (mutate [_]
+      (set! a 'foo)))
+
+  nil
 
   ;; ;; IFn
-  ;; (deftype FnLike []
-  ;;   IFn
-  ;;   (-invoke [_] :a)
-  ;;   (-invoke [_ a] :b)
-  ;;   (-invoke [_ a b] :c))
+  (deftype FnLike []
+    IFn
+    (-invoke [_] :a)
+    (-invoke [_ a] :b)
+    (-invoke [_ a b] :c))
 
-  ;; (assert (= :a ((FnLike.))))
-  ;; (assert (= :b ((FnLike.) 1)))
-  ;; (assert (= :c ((FnLike.) 1 2)))
+  (assert (= :a ((FnLike.))))
+  (assert (= :b ((FnLike.) 1)))
+  (assert (= :c ((FnLike.) 1 2)))
 
-  ;; (assert (= [:b :b :b] (map (FnLike.) [0 0 0])))
+  (assert (= [:b :b :b] (map (FnLike.) [0 0 0])))
 
-  ;; (deftype FnLikeB [a]
-  ;;   IFn
-  ;;   (-invoke [_] a))
+  (deftype FnLikeB [a]
+    IFn
+    (-invoke [_] a))
 
-  ;; (assert (= 1 ((FnLikeB. 1))))
+  (assert (= 1 ((FnLikeB. 1))))
 
   ;; ;; hashing bug in many JS runtimes CLJ-118
-  ;; (let [g #{(conj #{:2} :alt)}
-  ;;       h #{#{:2 :alt}}]
-  ;;   (assert (= g h)))
-  ;; (assert (= (hash {:a 1 :b 2})
-  ;;            (hash {:b 2 :a 1})))
-  ;; (assert (= (hash (hash-map :a 1 :b 2))
-  ;;            (hash (hash-map :b 2 :a 1))))
-  ;; (assert (= (hash {:start 133 :end 134})
-  ;;            (hash (apply hash-map [:start 133 :end 134]))))
+  (let [g #{(conj #{:2} :alt)}
+        h #{#{:2 :alt}}]
+    (assert (= g h)))
+  (assert (= (hash {:a 1 :b 2})
+             (hash {:b 2 :a 1})))
+  (assert (= (hash (hash-map :a 1 :b 2))
+             (hash (hash-map :b 2 :a 1))))
+  (assert (= (hash {:start 133 :end 134})
+             (hash (apply hash-map [:start 133 :end 134]))))
   ;; (assert (= (hash :a)
   ;;            (hash (keyword "a"))))
 
