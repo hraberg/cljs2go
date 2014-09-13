@@ -56,11 +56,16 @@ var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) inte
 })
 
 var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
-	in := make([]reflect.Value, len(args.([]interface{})))
-	for i, v := range args.([]interface{}) {
+	fv := value(f)
+	argsArray := args.([]interface{}) // this should really take a seq
+	in := make([]reflect.Value, fv.Type().NumIn())
+	for i, v := range argsArray {
 		in[i] = value(v)
 	}
-	return value(f).Call(in)[0].Interface()
+	for i := len(argsArray); i < len(in); i++ {
+		in[i] = value(nil)
+	}
+	return fv.Call(in)[0].Interface()
 })
 
 var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}) interface{} {
