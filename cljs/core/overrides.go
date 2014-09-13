@@ -23,9 +23,9 @@ func init() {
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
 			return func() interface{} {
-				var return__1200 = f.(*AFn)
-				X_STAR_print_fn_STAR_ = return__1200
-				return return__1200
+				var return__798 = f.(*AFn)
+				X_STAR_print_fn_STAR_ = return__798
+				return return__798
 			}()
 		})
 	}(&AFn{})
@@ -238,10 +238,10 @@ func init() {
 									} else {
 										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
 											{
-												var normalize = func(G__1204 *AFn) *AFn {
-													return Fn(G__1204, func(n interface{}, len interface{}) interface{} {
+												var normalize = func(G__799 *AFn) *AFn {
+													return Fn(G__799, func(n interface{}, len interface{}) interface{} {
 														{
-															var ns = (`` + Str.X_invoke_Arity1(n).(string))
+															var ns interface{} = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
 															for {
 																if Count.X_invoke_Arity1(ns).(float64) < len.(float64) {
@@ -283,11 +283,11 @@ func init() {
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
 		return Fn(pr_sequential_writer, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
-				var _STAR_print_level_STAR_1207 = X_STAR_print_level_STAR_
-				_ = _STAR_print_level_STAR_1207
+				var _STAR_print_level_STAR_801 = X_STAR_print_level_STAR_
+				_ = _STAR_print_level_STAR_801
 				return func() interface{} {
 					defer func() {
-						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_1207
+						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_801
 
 					}()
 					{
@@ -308,29 +308,29 @@ func init() {
 							} else {
 							}
 							{
-								var coll_1208___1 = Next.Arity1IQ(coll)
-								var n_1209 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
-								_, _ = coll_1208___1, n_1209
+								var coll_802___1 interface{} = Next.Arity1IQ(coll)
+								var n_803 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
+								_, _ = coll_802___1, n_803
 								for {
 									if Truth_(func() interface{} {
-										var and__163__auto__ = coll_1208___1
+										var and__163__auto__ = coll_802___1
 										_ = and__163__auto__
 										if Truth_(and__163__auto__) {
-											return (Nil_(n_1209)) || (!(n_1209 == float64(0)))
+											return (Nil_(n_803)) || (!(n_803 == float64(0)))
 										} else {
 											return and__163__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
-										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_1208___1), writer, opts)
-										coll_1208___1, n_1209 = Next.Arity1IQ(coll_1208___1), (n_1209 - float64(1))
+										print_one.(CljsCoreIFn).X_invoke_Arity3(First.X_invoke_Arity1(coll_802___1), writer, opts)
+										coll_802___1, n_803 = Next.Arity1IQ(coll_802___1), (n_803 - float64(1))
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__163__auto__ = Seq.Arity1IQ(coll_1208___1)
+											var and__163__auto__ = Seq.Arity1IQ(coll_802___1)
 											_ = and__163__auto__
 											if Truth_(and__163__auto__) {
-												return (n_1209 == float64(0))
+												return (n_803 == float64(0))
 											} else {
 												return and__163__auto__
 											}
@@ -445,14 +445,14 @@ func init() {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
-				var return__1212 = func(fmt_println *AFn) *AFn {
+				var return__804 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
 				}(&AFn{})
-				X_STAR_print_fn_STAR_ = return__1212
-				return return__1212
+				X_STAR_print_fn_STAR_ = return__804
+				return return__804
 			}()
 		})
 	}(&AFn{})

@@ -60,6 +60,7 @@
 (def ^:dynamic *go-protocol-fn* nil)
 (def ^:dynamic *go-protocol-this* nil)
 (def ^:dynamic *go-protocol* nil)
+(def ^:dynamic *go-loop-vars* #{})
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-def-vars* false)
 (def ^:dynamic *go-assign-vars* true)
@@ -199,6 +200,8 @@
     x
     (str "cljs_core." x)))
 
+(def go-primitive '{number "float64" boolean "bool" array "[]interface{}"})
+
 (defn go-type
   ([tag] (go-type tag true))
   ([tag native-string?]
@@ -218,7 +221,7 @@
                      :else (str ns "." (go-type-fqn tag)))))))
         (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
           tag
-          ((merge '{number "float64" boolean "bool" array "[]interface{}"}
+          ((merge go-primitive
                   (when native-string?
                     {'string "string"})
                   {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
@@ -645,7 +648,9 @@
 
 (defn typed-params [params native-string?]
   (for [param params]
-    (str (emit-str param) " " (-> param :tag (go-type native-string?)))))
+    (str (emit-str param) " " (if (*go-loop-vars* (:name param))
+                                (-> param :tag (go-primitive "interface{}"))
+                                (-> param :tag (go-type native-string?))))))
 
 (defn emit-fn-signature [params ret-tag native-string?]
   (emits "(" (comma-sep (typed-params params native-string?)) ") " (go-type ret-tag native-string?)))
@@ -779,10 +784,13 @@
                                       (when (= :statement context)
                                         (map #(vector (System/identityHashCode %)
                                                       (gensym (str (:name %) "-")))
-                                             bindings)))]
+                                             bindings)))
+              *go-loop-vars* (into *go-loop-vars* (when is-loop
+                                                    (map :name bindings)))]
       (doseq [{:keys [init] :as binding} bindings]
         (emitln "var " binding
-                (when (untyped-nil-needs-type? init)
+                (when (or (untyped-nil-needs-type? init)
+                          (and is-loop (not (go-primitive (:tag init)))))
                   " interface{}")
                 " = " init))  ; Binding will be treated as a var
       (assign-to-blank bindings)
@@ -844,8 +852,8 @@
     (emitln (comma-sep params)
             " = "
             (comma-sep (for [[e p] (map vector exprs params)
-                             :let [tag (go-try-to-ressurect-impl p)]]
-                         (go-unbox-no-emit-with-nil-check tag e)
+                             :let [tag (go-primitive (:tag p))]]
+                         (str (emit-str e) (go-unbox-no-emit tag e))
 ))))
   (emitln "continue"))
 
@@ -928,15 +936,17 @@
 
          protocol ;; needs to take the imported name of protocols into account, very lenient now, assumes any type implements it.
          (let [pimpl (str (-> info :name name munge go-public) "_Arity" (count args))
-               v (when-let [v (go-try-to-ressurect-impl (first args))]
+               receiver (first args)
+               v (when-let [v (go-try-to-ressurect-impl receiver)]
                    (when (symbol? v)
                      (ana/resolve-existing-var (dissoc env :locals) v)))]
-           (emits (if (and (or (= (go-type tag) "interface{}")
-                               (and (:protocol-symbol v)
-                                    (not= (:name v) protocol)))
-                           (not (get (:protocols v) protocol))
-                           (not static-field-receiver?))
-                    (str (emit-str (first args)) ".(" (go-type protocol) ")")
+           (emits (if (or (*go-loop-vars* (-> receiver :info :name))
+                          (and (or (= (go-type tag) "interface{}")
+                                   (and (:protocol-symbol v)
+                                        (not= (:name v) protocol)))
+                               (not (get (:protocols v) protocol))
+                               (not static-field-receiver?)))
+                    (str (emit-str receiver) ".(" (go-type protocol) ")")
                     (first args) )
                   "." pimpl "(" (comma-sep (rest args)) ")"))
 
@@ -1076,7 +1086,8 @@
                            ('#{push pop splice slice} method))
         decorator (or decorator (when assume-array?
                                   (go-native-decorator 'array)))
-        reflection? (and (= "interface{}" (go-type tag)) (not static?) (not decorator))]
+        reflection? (or (*go-loop-vars* (-> target :info :name))
+                        (and (= "interface{}" (go-type tag)) (not static?) (not decorator)))]
     (binding [*go-return-tag* (when (and (not static?)
                                          (go-needs-coercion? tag *go-return-tag*))
                                 *go-return-tag*)]

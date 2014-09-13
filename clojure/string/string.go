@@ -79,7 +79,7 @@ func init() {
 	Pop_last_while_empty = func(pop_last_while_empty *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(pop_last_while_empty, func(v interface{}) interface{} {
 			{
-				var v___1 = v
+				var v___1 interface{} = v
 				_ = v___1
 				for {
 					if cljs_core.X_EQ_.Arity2IIB("", cljs_core.Peek.X_invoke_Arity1(v___1)) {
@@ -109,13 +109,13 @@ func init() {
 				return cljs_core.Conj.X_invoke_Arity2(cljs_core.Vec.X_invoke_Arity1(cljs_core.Cons.X_invoke_Arity2("", cljs_core.Map_.X_invoke_Arity2(cljs_core.Str, cljs_core.Seq.Arity1IQ(s)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)), "")
 			} else {
 				{
-					var pred__5 = cljs_core.X_EQ_
-					var expr__6 = limit
-					_, _ = pred__5, expr__6
-					if cljs_core.Truth_(pred__5.X_invoke_Arity2(float64(1), expr__6)) {
+					var pred__4 = cljs_core.X_EQ_
+					var expr__5 = limit
+					_, _ = pred__4, expr__5
+					if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(1), expr__5)) {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{s}, nil})
 					} else {
-						if cljs_core.Truth_(pred__5.X_invoke_Arity2(float64(2), expr__6)) {
+						if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(2), expr__5)) {
 							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"", s}, nil})
 						} else {
 							{
@@ -143,9 +143,9 @@ func init() {
 							return cljs_core.Vec.X_invoke_Arity1(js.JSString_((`` + cljs_core.Str.X_invoke_Arity1(s).(string))).Split(re))
 						} else {
 							return func() interface{} {
-								var s___1 = s
-								var limit___1 = limit
-								var parts = cljs_core.CljsCorePersistentVector_EMPTY
+								var s___1 interface{} = s
+								var limit___1 interface{} = limit
+								var parts interface{} = cljs_core.CljsCorePersistentVector_EMPTY
 								_, _, _ = s___1, limit___1, parts
 								for {
 									if cljs_core.X_EQ_.Arity2IIB(limit___1, float64(1)) {
@@ -161,10 +161,7 @@ func init() {
 													{
 														var index = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "IndexOf", []interface{}{m})
 														_ = index
-														s___1, limit___1, parts = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{(index.(float64) + cljs_core.Count.X_invoke_Arity1(m).(float64))}), (limit___1.(float64) - float64(1)), func() (return__10 *cljs_core.CljsCorePersistentVector) {
-															return__10, _ = cljs_core.Conj.X_invoke_Arity2(parts, cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{float64(0), index})).(*cljs_core.CljsCorePersistentVector)
-															return
-														}()
+														s___1, limit___1, parts = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{(index.(float64) + cljs_core.Count.X_invoke_Arity1(m).(float64))}), (limit___1.(float64) - float64(1)), cljs_core.Conj.X_invoke_Arity2(parts, cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "Substring", []interface{}{float64(0), index}))
 														continue
 													}
 												}
@@ -209,7 +206,7 @@ func init() {
 	Trim_newline = func(trim_newline *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(trim_newline, func(s interface{}) interface{} {
 			{
-				var index = cljs_core.Native_get_instance_field.X_invoke_Arity2(s, "Length")
+				var index interface{} = cljs_core.Native_get_instance_field.X_invoke_Arity2(s, "Length")
 				_ = index
 				for {
 					if index.(float64) == float64(0) {
@@ -254,13 +251,13 @@ func init() {
 								var ch = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "CharAt", []interface{}{index})
 								_ = ch
 								{
-									var temp__4220__auto___12 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
-									_ = temp__4220__auto___12
-									if cljs_core.Truth_(temp__4220__auto___12) {
+									var temp__4220__auto___7 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
+									_ = temp__4220__auto___7
+									if cljs_core.Truth_(temp__4220__auto___7) {
 										{
-											var replacement_13 = temp__4220__auto___12
-											_ = replacement_13
-											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_13).(string)))
+											var replacement_8 = temp__4220__auto___7
+											_ = replacement_8
+											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_8).(string)))
 										}
 									} else {
 										buffer.Append(ch)
