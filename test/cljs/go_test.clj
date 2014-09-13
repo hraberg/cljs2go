@@ -98,7 +98,7 @@
           2 '(inc 1)
           10 '(* 4 2.5)
           "`foo`" "foo"
-          "'x'" \x
+          "`x`" \x
           "map[string]interface{}{`foo`: `bar`}" (read-string "#js {:foo \"bar\"}")
           "[]interface{}{\"foo\", \"bar\"}" (read-string "#js [\"foo\", \"bar\"])")
           "&js.Date{Millis: 1408642409602}" #inst "2014-08-21T17:33:29.602-00:00"

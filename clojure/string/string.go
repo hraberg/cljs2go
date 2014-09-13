@@ -215,7 +215,7 @@ func init() {
 						{
 							var ch = cljs_core.Get.X_invoke_Arity2(s, (index.(float64) - float64(1)))
 							_ = ch
-							if (cljs_core.X_EQ_.Arity2IIB(ch, '\n')) || (cljs_core.X_EQ_.Arity2IIB(ch, '\r')) {
+							if (cljs_core.X_EQ_.Arity2IIB(ch, `\n`)) || (cljs_core.X_EQ_.Arity2IIB(ch, `\r`)) {
 								index = (index.(float64) - float64(1))
 								continue
 							} else {

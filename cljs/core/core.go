@@ -9458,7 +9458,7 @@ func init() {
 				{
 					var sb = Pr_sb_with_opts.X_invoke_Arity2(objs, opts).(*goog_string.StringBuffer)
 					_ = sb
-					sb.Append('\n')
+					sb.Append(`\n`)
 					return (`` + Str.X_invoke_Arity1(sb).(string))
 				}
 			}
@@ -9561,7 +9561,7 @@ func init() {
 			return Pr_sequential_writer.X_invoke_Arity7(writer, func(G__689 *AFn) *AFn {
 				return Fn(G__689, func(e interface{}, w interface{}, opts___1 interface{}) interface{} {
 					print_one.(CljsCoreIFn).X_invoke_Arity3(Key.X_invoke_Arity1(e), w, opts___1)
-					w.(CljsCoreIWriter).X_write_Arity2(' ')
+					w.(CljsCoreIWriter).X_write_Arity2(` `)
 					return print_one.(CljsCoreIFn).X_invoke_Arity3(Val.X_invoke_Arity1(e), w, opts___1)
 				})
 			}(&AFn{}), "{", ", ", "}", opts, Seq.Arity1IQ(m))

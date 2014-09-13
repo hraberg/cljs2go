@@ -340,10 +340,10 @@
   (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Boolean [x] (emits (if x "true" "false")))
 (defmethod emit-constant Character [x]
-  (emits (str "'" (case x
+  (emits (str "`" (case x
                     \' "\\'"
                     \" "\""
-                    (escape-char x)) "'")))
+                    (escape-char x)) "`")))
 
 (defmethod emit-constant java.util.regex.Pattern [x]
   (if (= "" (str x))
@@ -683,7 +683,7 @@
   [protocol name {:keys [type params expr env recurs]} ret-tag]
   (let [object? (= 'cljs.core/Object protocol)
         ifn? (= 'cljs.core/IFn protocol)]
-    (emits "func (" (first params) " " (-> params first :tag go-type) ") "
+    (emits "func (" (first params) " " (go-type (symbol (str ana/*cljs-ns*) (str type))) ") "
            (-> name munge go-short-name go-public)
            (when-not object?
              (str "_Arity" (cond-> (count params)
@@ -917,8 +917,10 @@
         primitive-sig (go-type-suffix params (-> f :info :ret-tag))
         has-primitives? (not (or (re-find #"^I+$" primitive-sig) variadic-invoke))
         tags-match? true ; (= (map :tag params) (map :tag args))
+        ifn? (when (symbol? (:tag info))
+               ('cljs.core/IFn (some->> (:tag info) (ana/resolve-existing-var (dissoc env :locals)) :protocols)))
         coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
-                     (not (or fn? (= 'function (:tag info)))))
+                     (not (or fn? (= 'function (:tag info)) ifn?)))
         static-field-receiver? (-> expr :args first :target :info :type)
         ret-tag (:tag expr)
         real-ret-tag (when (go-needs-coercion? ret-tag *go-return-tag*)
