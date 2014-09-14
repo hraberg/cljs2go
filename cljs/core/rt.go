@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
-	"strings"
+	"regexp"
 
 	"github.com/hraberg/cljs.go/js"
 )
@@ -510,6 +510,8 @@ var type2sig = map[string]rune{
 	"bool":              'B',
 	"core.CljsCoreISeq": 'Q'}
 
+var noPrimitivesRegexp = regexp.MustCompile("^I+$")
+
 func typedSignature_(t reflect.Type) string {
 	if t.IsVariadic() {
 		return ""
@@ -522,10 +524,10 @@ func typedSignature_(t reflect.Type) string {
 	for i := 0; i < out; i++ {
 		sig[i+in] = type2sig[t.Out(i).String()]
 	}
-	if sig := string(sig); strings.Replace(sig, "I", "", -1) == "" {
+	if noPrimitivesRegexp.MatchString(string(sig)) {
 		return ""
 	} else {
-		return sig
+		return string(sig)
 	}
 }
 
@@ -584,9 +586,8 @@ func makeInvalidArity(from reflect.Type) reflect.Value {
 func Fn(fns ...interface{}) *AFn {
 	var f *AFn = &AFn{}
 	if len(fns) > 0 {
-		switch reflect.ValueOf(fns[0]).Type() {
-		case reflect.TypeOf(f):
-			f = fns[0].(*AFn)
+		if afn, ok := fns[0].(*AFn); ok {
+			f = afn
 			fns = fns[1:]
 		}
 	}
@@ -605,7 +606,7 @@ func Fn(fns ...interface{}) *AFn {
 			if maxFixedArity < at.NumIn() {
 				maxFixedArity = at.NumIn()
 			}
-			af := v.FieldByName(fmt.Sprint("Arity", at.NumIn()))
+			af := v.FieldByName(fmt.Sprintf("Arity%d", at.NumIn()))
 			if sig := typedSignature(at); sig != "" {
 				v.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
 				af.Set(makeTypedBridge(av, af.Type()))
