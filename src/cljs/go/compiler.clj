@@ -80,8 +80,11 @@
      cljs.core/symbol?
      cljs.core/=
      cljs.core/sort
+     cljs.core/rand
      cljs.core/missing-protocol
      cljs.core/complement
+     cljs.core/remove
+     cljs.core/identity
      cljs.core/make-array
      cljs.core/array
      cljs.core/integer?

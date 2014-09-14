@@ -24,6 +24,24 @@
     ([x y] (not (f x y)))
     ([x y & zs] (not (apply f x y zs)))))
 
+(defn remove
+  "Returns a lazy sequence of the items in coll for which
+  (pred item) returns false. pred must be free of side-effects.
+  Returns a transducer when no collection is provided."
+  ([pred] (filter (complement pred)))
+  ([pred coll]
+     (filter (complement pred) coll)))
+
+(defn identity
+  ([x] x)
+  ([x & _] x))
+
+(defn ^number rand
+  "Returns a random floating point number between 0 (inclusive) and
+  n (default 1) (exclusive)."
+  ([] (rand 1))
+  ([n] (* (Math/random) n)))
+
 (defn ^boolean =
   "Equality. Returns true if x equals y, false if not. Compares
   numbers and collections in a type-independent manner.  Clojure's immutable data

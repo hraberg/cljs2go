@@ -197,9 +197,7 @@
         ;; clean-xs now has no nils, chars, or string-adjoining-string. bools,
         ;; ints and floats will be emitted literally to allow JS string coersion.
         strs (->> clean-xs
-                  (map #(if (core/or (core/string? %) (core/integer? %)
-                                     (core/float? %) (core/true? %)
-                                     (core/false? %))
+                  (map #(if (core/string? %)
                             "~{}"
                             (core/str (cljs.compiler/go-core "Str") ".X_invoke_Arity1(~{}).(string)")))
                   (interpose "+")

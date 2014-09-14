@@ -200,12 +200,12 @@ func init() {
 	Join = func(join *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(join, func(xrel interface{}, yrel interface{}) interface{} {
 			if cljs_core.Truth_(func() interface{} {
-				var and__163__auto__ = cljs_core.Seq.Arity1IQ(xrel)
-				_ = and__163__auto__
-				if cljs_core.Truth_(and__163__auto__) {
+				var and__159__auto__ = cljs_core.Seq.Arity1IQ(xrel)
+				_ = and__159__auto__
+				if cljs_core.Truth_(and__159__auto__) {
 					return cljs_core.Seq.Arity1IQ(yrel)
 				} else {
-					return and__163__auto__
+					return and__159__auto__
 				}
 			}()) {
 				{

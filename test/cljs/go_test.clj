@@ -349,7 +349,7 @@
    (emit-test "go_test" "benchmarks_test")))
 
 (defn clojurescript-core-tests []
-  (compile-file "target" (io/file (io/resource "cljs/core_test.cljs"))))
+  (compile-file "." (io/file (io/resource "cljs/core_test.cljs"))))
 
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))

@@ -12,6 +12,7 @@ import (
 	"github.com/hraberg/cljs.go/goog"
 	goog_array "github.com/hraberg/cljs.go/goog/array"
 	"github.com/hraberg/cljs.go/js"
+	"github.com/hraberg/cljs.go/js/Math"
 )
 
 func init() {
@@ -57,6 +58,33 @@ func init() {
 		})
 	}(&AFn{})
 
+	Remove = func(remove *AFn) *AFn {
+		return Fn(remove, func(pred interface{}) interface{} {
+			return Filter.X_invoke_Arity1(Complement.X_invoke_Arity1(pred).(CljsCoreIFn)).(CljsCoreIFn)
+		}, func(pred interface{}, coll interface{}) interface{} {
+			return Filter.X_invoke_Arity2(Complement.X_invoke_Arity1(pred).(CljsCoreIFn), coll).(*CljsCoreLazySeq)
+		})
+	}(&AFn{})
+
+	Identity = func(identity *AFn) *AFn {
+		return Fn(identity, func(x interface{}) interface{} {
+			return x
+		}, func(x____ ...interface{}) interface{} {
+			var x = x____[0]
+			var ___ = Array_seq.X_invoke_Arity1(x____[1:])
+			_, _ = x, ___
+			return x
+		})
+	}(&AFn{})
+
+	Rand = func(rand *AFn) *AFn {
+		return Fn(rand, func() float64 {
+			return rand.Arity1IF(float64(1))
+		}, func(n interface{}) float64 {
+			return (Native_invoke_func.X_invoke_Arity2(Math.Random, []interface{}{}).(float64) * n.(float64))
+		})
+	}(&AFn{})
+
 	X_EQ_ = func(_EQ_ *AFn) *AFn {
 		return Fn(_EQ_, func(x interface{}) bool {
 			return true
@@ -65,10 +93,10 @@ func init() {
 				return Nil_(y)
 			} else {
 				{
-					var or__175__auto__ = reflect.DeepEqual(x, y)
-					_ = or__175__auto__
-					if Truth_(or__175__auto__) {
-						return or__175__auto__
+					var or__171__auto__ = reflect.DeepEqual(x, y)
+					_ = or__171__auto__
+					if Truth_(or__171__auto__) {
+						return or__171__auto__
 					} else {
 						if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IEquiv", Str: "cljs.core/IEquiv", X_hash: float64(-1245752602), X_meta: nil}), x)) {
 							return x.(CljsCoreIEquiv).X_equiv_Arity2(y)
@@ -194,20 +222,20 @@ func init() {
 				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
 				if Truth_(func() interface{} {
-					var and__163__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
-					_ = and__163__auto__
-					if Truth_(and__163__auto__) {
+					var and__159__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
+					_ = and__159__auto__
+					if Truth_(and__159__auto__) {
 						{
-							var and__163__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
-							_ = and__163__auto_____1
-							if Truth_(and__163__auto_____1) {
+							var and__159__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
+							_ = and__159__auto_____1
+							if Truth_(and__159__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
 							} else {
-								return and__163__auto_____1
+								return and__159__auto_____1
 							}
 						}
 					} else {
-						return and__163__auto__
+						return and__159__auto__
 					}
 				}()) {
 					writer.(CljsCoreIWriter).X_write_Arity2("^")
@@ -314,12 +342,12 @@ func init() {
 								_, _ = coll_802___1, n_803
 								for {
 									if Truth_(func() interface{} {
-										var and__163__auto__ = coll_802___1
-										_ = and__163__auto__
-										if Truth_(and__163__auto__) {
+										var and__159__auto__ = coll_802___1
+										_ = and__159__auto__
+										if Truth_(and__159__auto__) {
 											return (Nil_(n_803)) || (!(n_803 == float64(0)))
 										} else {
-											return and__163__auto__
+											return and__159__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -328,12 +356,12 @@ func init() {
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__163__auto__ = Seq.Arity1IQ(coll_802___1)
-											_ = and__163__auto__
-											if Truth_(and__163__auto__) {
+											var and__159__auto__ = Seq.Arity1IQ(coll_802___1)
+											_ = and__159__auto__
+											if Truth_(and__159__auto__) {
 												return (n_803 == float64(0))
 											} else {
-												return and__163__auto__
+												return and__159__auto__
 											}
 										}()) {
 											writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -506,6 +534,18 @@ var Symbol_QMARK_ *AFn
 // Takes a fn f and returns a fn that takes the same arguments as f,
 // has the same effects, if any, and returns the opposite truth value.
 var Complement *AFn
+
+// Returns a lazy sequence of the items in coll for which
+// (pred item) returns false. pred must be free of side-effects.
+// Returns a transducer when no collection is provided.
+var Remove *AFn
+
+// @param {...*} var_args
+var Identity *AFn
+
+// Returns a random floating point number between 0 (inclusive) and
+// n (default 1) (exclusive).
+var Rand *AFn
 
 // Equality. Returns true if x equals y, false if not. Compares
 // numbers and collections in a type-independent manner.  Clojure's immutable data

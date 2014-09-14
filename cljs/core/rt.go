@@ -684,6 +684,10 @@ func (this *CljsCoreSubvec) X_contains_key_QMARK__Arity2(k interface{}) bool {
 	panic("Not implemented.")
 }
 
+func (e *CljsCoreExceptionInfo) Error() string {
+	return fmt.Sprint(e.Message)
+}
+
 var X___ *AFn
 
 func init() {

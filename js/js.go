@@ -172,6 +172,26 @@ func (this *JSString) CharCodeAt(index float64) float64 {
 	return float64([]rune(this.String())[int(index)])
 }
 
+func (this *JSString) ToUpperCase() string {
+	return strings.ToUpper(this.String())
+}
+
+func (this *JSString) ToLowerCase() string {
+	return strings.ToLower(this.String())
+}
+
+func (this *JSString) Substring(indexA_indexB ...float64) string {
+	indexA := indexA_indexB[0]
+	indexB := float64(len(this.String()))
+	if len(indexA_indexB) > 1 {
+		indexB = indexA_indexB[1]
+	}
+	if indexA > indexB {
+		indexA, indexB = indexB, indexA
+	}
+	return string(this.String()[int(indexA):int(indexB)])
+}
+
 func (this *JSString) Split(separator_limit ...interface{}) []interface{} {
 	var parts []string
 	argc := len(separator_limit)

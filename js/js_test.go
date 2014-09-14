@@ -62,6 +62,13 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, []interface{}{"F", "o", "o"}, JSString_("Foo").Split())
 	assert.Equal(t, []interface{}{"Foo"}, JSString_("Foo").Split(1.0))
 
+	assert.Equal(t, "HELLO", JSString_("Hello").ToUpperCase())
+	assert.Equal(t, "hello", JSString_("Hello").ToLowerCase())
+
+	assert.Equal(t, "llo", JSString_("Hello").Substring(2.0))
+	assert.Equal(t, "ell", JSString_("Hello").Substring(1.0, 4.0))
+	assert.Equal(t, "l", JSString_("Hello").Substring(3.0, 2.0))
+
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))
 	assert.Equal(t, []interface{}{"Hello", "Hyper", "Space", "!"}, arr)
