@@ -503,28 +503,42 @@ func (this ArityVariadic) X_invoke_ArityVariadic(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p
 	return this(a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_t_rest...)
 }
 
-var type2sig = map[string]string{
-	"interface {}":      "I",
-	"[]interface {}":    "A",
-	"float64":           "F",
-	"bool":              "B",
-	"core.CljsCoreISeq": "Q"}
+var type2sig = map[string]rune{
+	"interface {}":      'I',
+	"[]interface {}":    'A',
+	"float64":           'F',
+	"bool":              'B',
+	"core.CljsCoreISeq": 'Q'}
 
-func typedSignature(t reflect.Type) string {
-	sig := ""
+func typedSignature_(t reflect.Type) string {
 	if t.IsVariadic() {
-		return sig
-	}
-	for i := 0; i < t.NumIn(); i++ {
-		sig += type2sig[t.In(i).String()]
-	}
-	for i := 0; i < t.NumOut(); i++ {
-		sig += type2sig[t.Out(i).String()]
-	}
-	if strings.Replace(sig, "I", "", -1) == "" {
 		return ""
 	}
-	return sig
+	in, out := t.NumIn(), t.NumOut()
+	sig := make([]rune, in+out)
+	for i := 0; i < in; i++ {
+		sig[i] = type2sig[t.In(i).String()]
+	}
+	for i := 0; i < out; i++ {
+		sig[i+in] = type2sig[t.Out(i).String()]
+	}
+	if sig := string(sig); strings.Replace(sig, "I", "", -1) == "" {
+		return ""
+	} else {
+		return sig
+	}
+}
+
+var signaturesByType = map[reflect.Type]string{}
+
+func typedSignature(t reflect.Type) string {
+	if sig, exists := signaturesByType[t]; exists {
+		return sig
+	} else {
+		sig = typedSignature_(t)
+		signaturesByType[t] = sig
+		return sig
+	}
 }
 
 func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {

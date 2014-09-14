@@ -12,3 +12,5 @@ pom.xml.asc
 *~
 *.test
 cljs.go
+cpu.out
+mem.out
