@@ -531,14 +531,15 @@ func typedSignature_(t reflect.Type) string {
 	}
 }
 
-var signaturesByType = map[reflect.Type]string{}
+var signaturesByType = map[string]string{}
 
 func typedSignature(t reflect.Type) string {
-	if sig, exists := signaturesByType[t]; exists {
+	key := t.String()
+	if sig, exists := signaturesByType[key]; exists {
 		return sig
 	} else {
 		sig = typedSignature_(t)
-		signaturesByType[t] = sig
+		signaturesByType[key] = sig
 		return sig
 	}
 }
@@ -584,12 +585,15 @@ func makeInvalidArity(from reflect.Type) reflect.Value {
 }
 
 func Fn(fns ...interface{}) *AFn {
-	var f *AFn = &AFn{}
+	var f *AFn
 	if len(fns) > 0 {
 		if afn, ok := fns[0].(*AFn); ok {
 			f = afn
 			fns = fns[1:]
 		}
+	}
+	if f == nil {
+		f = &AFn{}
 	}
 	v := reflect.ValueOf(f).Elem()
 
@@ -620,14 +624,15 @@ func Fn(fns ...interface{}) *AFn {
 	} else {
 		f.MaxFixedArity = -1
 	}
-	for i := 0; i < v.Type().NumField(); i++ {
+	fields := v.Type().NumField()
+	for i := 0; i < fields; i++ {
 		vf := v.Field(i)
 		vt := vf.Type()
 		if vf.Kind() == reflect.Func && vf.IsNil() && typedSignature(vt) == "" {
 			if variadic && vt.NumIn() > maxFixedArity {
-				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vf.Type()))
+				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vt))
 			} else {
-				vf.Set(makeInvalidArity(vf.Type()))
+				vf.Set(makeInvalidArity(vt))
 			}
 		}
 	}
