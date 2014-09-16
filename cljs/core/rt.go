@@ -249,7 +249,7 @@ func (this *AFn) Call(args ...interface{}) interface{} {
 	}
 	argc := len(args)
 	if argc > this.MaxFixedArity && this.isVariadic() {
-		return this.X_invoke_ArityVariadic(args...)
+		return this.X_invoke_ArityVariadic(append(args, Array_seq.X_invoke_Arity1([]interface{}{}))...)
 	}
 	switch argc {
 	case 0:
@@ -571,9 +571,17 @@ func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	})
 }
 
-func makeVarargsBridge(varargs reflect.Value, from reflect.Type) reflect.Value {
+func makeVarargsBridge(maxFixedArity int, varargs reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
-		return varargs.Call(in)
+		fixedArgs, restArgs := in[:maxFixedArity], in[maxFixedArity:]
+		unpackedRestArgs := make([]interface{}, len(restArgs))
+		for i, v := range restArgs {
+			unpackedRestArgs[i] = v.Interface()
+		}
+		if len(unpackedRestArgs) == 0 {
+			return varargs.Call(append(fixedArgs, reflect.ValueOf(CljsCoreList_EMPTY)))
+		}
+		return varargs.Call(append(fixedArgs, reflect.ValueOf(Array_seq.X_invoke_Arity1(unpackedRestArgs))))
 	})
 }
 
@@ -586,33 +594,40 @@ func makeInvalidArity(from reflect.Type) reflect.Value {
 
 func Fn(fns ...interface{}) *AFn {
 	var f *AFn
+	maxFixedArity := -1
+
 	if len(fns) > 0 {
 		if afn, ok := fns[0].(*AFn); ok {
 			f = afn
 			fns = fns[1:]
 		}
 	}
+
+	if len(fns) > 0 {
+		if arity, ok := fns[0].(int); ok {
+			maxFixedArity = arity
+			fns = fns[1:]
+		}
+	}
+
 	if f == nil {
 		f = &AFn{}
 	}
 	v := reflect.ValueOf(f).Elem()
 
 	variadic := false
-	maxFixedArity := -1
 	for _, a := range fns {
 		av := reflect.ValueOf(a)
 		at := av.Type()
+		in := at.NumIn()
 
 		if at.IsVariadic() {
 			variadic = true
 			f.ArityVariadic = a.(func(...interface{}) interface{})
 		} else {
-			if maxFixedArity < at.NumIn() {
-				maxFixedArity = at.NumIn()
-			}
-			af := v.FieldByName(fmt.Sprintf("Arity%d", at.NumIn()))
+			af := v.FieldByName(fmt.Sprintf("Arity%d", in))
 			if sig := typedSignature(at); sig != "" {
-				v.FieldByName(fmt.Sprintf("Arity%d%s", at.NumIn(), sig)).Set(av)
+				v.FieldByName(fmt.Sprintf("Arity%d%s", in, sig)).Set(av)
 				af.Set(makeTypedBridge(av, af.Type()))
 			} else {
 				af.Set(av)
@@ -629,8 +644,8 @@ func Fn(fns ...interface{}) *AFn {
 		vf := v.Field(i)
 		vt := vf.Type()
 		if vf.Kind() == reflect.Func && vf.IsNil() && typedSignature(vt) == "" {
-			if variadic && vt.NumIn() > maxFixedArity {
-				vf.Set(makeVarargsBridge(reflect.ValueOf(f.ArityVariadic), vt))
+			if variadic && vt.NumIn() >= maxFixedArity {
+				vf.Set(makeVarargsBridge(maxFixedArity, reflect.ValueOf(f.ArityVariadic), vt))
 			} else {
 				vf.Set(makeInvalidArity(vt))
 			}
@@ -661,6 +676,13 @@ func Nil_(x interface{}) bool {
 	default:
 		return false
 	}
+}
+
+func MaxFixedArity_(x interface{}) float64 {
+	if afn, ok := x.(*AFn); ok {
+		return float64(afn.MaxFixedArity)
+	}
+	return -1
 }
 
 func Alength_(x interface{}) float64 {

@@ -14,19 +14,19 @@ import (
 
 func init() {
 	Seq_reverse = func(seq_reverse *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(seq_reverse, func(coll interface{}) interface{} {
+		return cljs_core.Fn(seq_reverse, 1, func(coll interface{}) interface{} {
 			return cljs_core.Reduce.X_invoke_Arity3(cljs_core.Conj, cljs_core.CljsCoreIEmptyList(cljs_core.CljsCoreList_EMPTY), coll)
 		})
 	}(&cljs_core.AFn{})
 
 	Reverse = func(reverse *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(reverse, func(s interface{}) interface{} {
+		return cljs_core.Fn(reverse, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Split", []interface{}{""}), "Reverse", []interface{}{}), "Join", []interface{}{""})
 		})
 	}(&cljs_core.AFn{})
 
 	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(replace, func(s interface{}, match interface{}, replacement interface{}) interface{} {
+		return cljs_core.Fn(replace, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
 			if reflect.ValueOf(match).Kind() == reflect.String {
 				return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.RegExpEscape, []interface{}{match}), "g"}), replacement})
 			} else {
@@ -41,13 +41,13 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Replace_first = func(replace_first *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(replace_first, func(s interface{}, match interface{}, replacement interface{}) interface{} {
+		return cljs_core.Fn(replace_first, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
 			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{match, replacement})
 		})
 	}(&cljs_core.AFn{})
 
 	Join = func(join *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(join, func(coll interface{}) interface{} {
+		return cljs_core.Fn(join, 2, func(coll interface{}) interface{} {
 			return cljs_core.Apply.X_invoke_Arity2(cljs_core.Str, coll)
 		}, func(separator interface{}, coll interface{}) interface{} {
 			return cljs_core.Apply.X_invoke_Arity2(cljs_core.Str, cljs_core.Interpose.X_invoke_Arity2(separator, coll).(*cljs_core.CljsCoreLazySeq))
@@ -55,19 +55,19 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Upper_case = func(upper_case *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(upper_case, func(s interface{}) interface{} {
+		return cljs_core.Fn(upper_case, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "ToUpperCase", []interface{}{})
 		})
 	}(&cljs_core.AFn{})
 
 	Lower_case = func(lower_case *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(lower_case, func(s interface{}) interface{} {
+		return cljs_core.Fn(lower_case, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "ToLowerCase", []interface{}{})
 		})
 	}(&cljs_core.AFn{})
 
 	Capitalize = func(capitalize *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(capitalize, func(s interface{}) interface{} {
+		return cljs_core.Fn(capitalize, 1, func(s interface{}) interface{} {
 			if cljs_core.Count.X_invoke_Arity1(s).(float64) < float64(2) {
 				return Upper_case.X_invoke_Arity1(s)
 			} else {
@@ -77,7 +77,7 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Pop_last_while_empty = func(pop_last_while_empty *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(pop_last_while_empty, func(v interface{}) interface{} {
+		return cljs_core.Fn(pop_last_while_empty, 1, func(v interface{}) interface{} {
 			{
 				var v___1 interface{} = v
 				_ = v___1
@@ -94,7 +94,7 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Discard_trailing_if_needed = func(discard_trailing_if_needed *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(discard_trailing_if_needed, func(limit interface{}, v interface{}) interface{} {
+		return cljs_core.Fn(discard_trailing_if_needed, 2, func(limit interface{}, v interface{}) interface{} {
 			if cljs_core.X_EQ_.Arity2IIB(float64(0), limit) {
 				return Pop_last_while_empty.X_invoke_Arity1(v)
 			} else {
@@ -104,7 +104,7 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Split_with_empty_regex = func(split_with_empty_regex *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(split_with_empty_regex, func(s interface{}, limit interface{}) interface{} {
+		return cljs_core.Fn(split_with_empty_regex, 2, func(s interface{}, limit interface{}) interface{} {
 			if (limit.(float64) <= float64(0)) || (limit.(float64) >= (float64(2) + cljs_core.Count.X_invoke_Arity1(s).(float64))) {
 				return cljs_core.Conj.X_invoke_Arity2(cljs_core.Vec.X_invoke_Arity1(cljs_core.Cons.X_invoke_Arity2("", cljs_core.Map_.X_invoke_Arity2(cljs_core.Str, cljs_core.Seq.Arity1IQ(s)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)), "")
 			} else {
@@ -131,7 +131,7 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Split = func(split *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(split, func(s interface{}, re interface{}) interface{} {
+		return cljs_core.Fn(split, 3, func(s interface{}, re interface{}) interface{} {
 			return split.X_invoke_Arity3(s, re, float64(0))
 		}, func(s interface{}, re interface{}, limit interface{}) interface{} {
 			return Discard_trailing_if_needed.X_invoke_Arity2(limit, func() interface{} {
@@ -180,31 +180,31 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Split_lines = func(split_lines *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(split_lines, func(s interface{}) interface{} {
+		return cljs_core.Fn(split_lines, 1, func(s interface{}) interface{} {
 			return Split.X_invoke_Arity2(s, (&js.RegExp{Pattern: `\n|\r\n`, Flags: ``}))
 		})
 	}(&cljs_core.AFn{})
 
 	Trim = func(trim *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(trim, func(s interface{}) interface{} {
+		return cljs_core.Fn(trim, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.Trim, []interface{}{s})
 		})
 	}(&cljs_core.AFn{})
 
 	Triml = func(triml *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(triml, func(s interface{}) interface{} {
+		return cljs_core.Fn(triml, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimLeft, []interface{}{s})
 		})
 	}(&cljs_core.AFn{})
 
 	Trimr = func(trimr *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(trimr, func(s interface{}) interface{} {
+		return cljs_core.Fn(trimr, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimRight, []interface{}{s})
 		})
 	}(&cljs_core.AFn{})
 
 	Trim_newline = func(trim_newline *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(trim_newline, func(s interface{}) interface{} {
+		return cljs_core.Fn(trim_newline, 1, func(s interface{}) interface{} {
 			{
 				var index interface{} = cljs_core.Native_get_instance_field.X_invoke_Arity2(s, "Length")
 				_ = index
@@ -229,13 +229,13 @@ func init() {
 	}(&cljs_core.AFn{})
 
 	Blank_QMARK_ = func(blank_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(blank_QMARK_, func(s interface{}) interface{} {
+		return cljs_core.Fn(blank_QMARK_, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.IsEmptySafe, []interface{}{s})
 		})
 	}(&cljs_core.AFn{})
 
 	Escape = func(escape___1 *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(escape___1, func(s interface{}, cmap interface{}) interface{} {
+		return cljs_core.Fn(escape___1, 2, func(s interface{}, cmap interface{}) interface{} {
 			{
 				var buffer = (&goog_string.StringBuffer{})
 				var length = cljs_core.Native_get_instance_field.X_invoke_Arity2(s, "Length")

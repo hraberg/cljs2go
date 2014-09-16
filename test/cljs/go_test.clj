@@ -161,7 +161,7 @@
                   (defn baz
                     ([] (foo))
                     ([x] x)
-                    ([x & ys] ys))])
+                    ([x & ys] (into-array ys)))])
     (test "Invoke"
           "`bar`" '(letfn [(bar [f] (f))]
                      (bar foo))
@@ -169,9 +169,9 @@
           2 '(bar 1 2)
           "`bar`" '(baz)
           1 '(baz 1)
-          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3}, I:0}" '(baz 1 2 3)
+          "[]interface{}{2, 3}" '(baz 1 2 3)
           ;; last arg here to apply should be a seq
-          "&cljs_core.CljsCoreIndexedSeq{Arr:[]interface {}{2, 3, 4}, I:0}" '(apply baz 1 2 [3 4])
+          "[]interface{}{2, 3, 4}" '(apply baz 1 2 [3 4])
           "`bar`" '((fn [x] x) "bar")
           3.14 '(js/ParseFloat "3.14")
           3 '(Math/floor 3.14)

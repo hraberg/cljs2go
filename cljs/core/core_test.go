@@ -22,11 +22,11 @@ func Test_Main(t *testing.T) {
 	assert.True(t, mainWasCalled)
 }
 
-var Baz = Fn(func(args ...interface{}) interface{} {
+var Baz = Fn(1, func(args ...interface{}) interface{} {
 	x := args[0]
-	xs := args[1:] // this should be an array-seq (an IndexedSeq backed by slices or arrays)
+	xs := args[1]
 	_ = x
-	return xs
+	return Into_array.X_invoke_Arity1(xs)
 }, func(x interface{}) interface{} {
 	return x
 })
@@ -39,14 +39,29 @@ func Test_Invoke(t *testing.T) {
 	assert.True(t, Baz.isVariadic())
 	assert.Equal(t, "Hello", Baz.X_invoke_Arity1("Hello"))
 	assert.Equal(t, "Hello", X_invoke.X_invoke_Arity2(Baz, "Hello"))
-	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, Baz.X_invoke_ArityVariadic("Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, X_invoke.X_invoke_ArityVariadic(Baz, "Hello", "World"))
-	assert.Equal(t, []interface{}{"World"}, X_invoke.Call(Baz, "Hello", "World"))
+	assert.Equal(t, []interface{}{"World"}, Baz.Call("Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
+	assert.Equal(t, []interface{}{"World"}, Baz.X_invoke_ArityVariadic("Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
+	assert.Equal(t, []interface{}{"World"}, X_invoke.X_invoke_ArityVariadic(Baz, "Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
+	assert.Equal(t, []interface{}{"World"}, X_invoke.Call(Baz, "Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
+	assert.Equal(t, []interface{}{"World"}, Apply.X_invoke_Arity2(Baz, Array_seq.X_invoke_Arity1([]interface{}{"Hello", "World"})))
 	assert.Equal(t, []interface{}{"World"}, Apply.X_invoke_Arity3(Baz, "Hello", Array_seq.X_invoke_Arity1([]interface{}{"World"})))
 
 	assert.Equal(t, []interface{}{"Another", "Brave", "And", "New", "World"},
-		Apply.X_invoke_ArityVariadic(Baz, "Hello", "Another", "Brave", "And", Array_seq.X_invoke_Arity1([]interface{}{"New", "World"})))
+		Apply.X_invoke_ArityVariadic(Baz, "Hello", "Another", "Brave", "And", Array_seq.X_invoke_Arity1([]interface{}{"New", Array_seq.X_invoke_Arity1([]interface{}{"World"})})))
+
+	assert.Equal(t, 0, Apply.X_invoke_Arity2(X_PLUS_, Array_seq.X_invoke_Arity1([]interface{}{})))
+	assert.Equal(t, 0, Apply.X_invoke_Arity2(X_PLUS_, CljsCorePersistentVector_EMPTY))
+	assert.Equal(t, 5, Apply.X_invoke_Arity2(X_PLUS_, Array_seq.X_invoke_Arity1([]interface{}{5.0})))
+	assert.Equal(t, 5, Apply.X_invoke_Arity2(X_PLUS_, Array_seq.X_invoke_Arity1([]interface{}{2.0, 3.0})))
+	assert.Equal(t, 1, Apply.X_invoke_Arity3(X_PLUS_, 1.0, CljsCorePersistentVector_EMPTY))
+	assert.Equal(t, 6, Apply.X_invoke_Arity3(X_PLUS_, 1.0, Array_seq.X_invoke_Arity1([]interface{}{2.0, 3.0})))
+	assert.Equal(t, 8, Apply.X_invoke_Arity4(X_PLUS_, 1.0, 2.0, Array_seq.X_invoke_Arity1([]interface{}{5.0})))
+	assert.Equal(t, 15, Apply.X_invoke_ArityVariadic(X_PLUS_, 1.0, 2.0, 3.0, 4.0, Array_seq.X_invoke_Arity1([]interface{}{Array_seq.X_invoke_Arity1([]interface{}{5.0})})))
+
+	assert.Equal(t, 3, Apply.X_invoke_Arity3(X_PLUS_, float64(1), CljsCoreList_EMPTY.X_conj_Arity2(float64(2))))
+	assert.Equal(t, 1, Count.X_invoke_Arity1(Apply.X_invoke_Arity3(List, 1.0, CljsCorePersistentVector_EMPTY)))
+	assert.Equal(t, 1, Count.X_invoke_Arity1(Apply.X_invoke_Arity2(List, Array_seq.X_invoke_Arity1([]interface{}{5.0}))))
+	assert.Equal(t, 0, Count.X_invoke_Arity1(Apply.X_invoke_Arity2(List, CljsCorePersistentVector_EMPTY)))
 
 	assert.Equal(t, []interface{}{"World"}, Baz.X_invoke_Arity2("Hello", "World"))
 	assert.Equal(t, []interface{}{"World", "Space"}, Baz.X_invoke_Arity3("Hello", "World", "Space"))
@@ -54,7 +69,7 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, "", Str.X_invoke_Arity0())
 	assert.Equal(t, "Hello", Str.X_invoke_Arity1("Hello"))
 	assert.Equal(t, "1", Str.X_invoke_Arity1(1.0))
-	assert.Equal(t, "HelloClojureWorld", Str.X_invoke_ArityVariadic("Hello", "Clojure", "World"))
+	assert.Equal(t, "HelloClojureWorld", Str.X_invoke_ArityVariadic("Hello", Array_seq.X_invoke_Arity1([]interface{}{"Clojure", "World"})))
 }
 
 func Test_PrimitiveFn(t *testing.T) {

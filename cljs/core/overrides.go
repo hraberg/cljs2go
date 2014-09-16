@@ -23,7 +23,7 @@ func init() {
 	X_STAR_print_level_STAR_ = js.NaN
 
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
-		return Fn(set_print_fn_BANG_, func(f interface{}) interface{} {
+		return Fn(set_print_fn_BANG_, 1, func(f interface{}) interface{} {
 			return func() interface{} {
 				var return__798 = f.(*AFn)
 				X_STAR_print_fn_STAR_ = return__798
@@ -33,15 +33,15 @@ func init() {
 	}(&AFn{})
 
 	Symbol_QMARK_ = func(symbol_QMARK_ *AFn) *AFn {
-		return Fn(symbol_QMARK_, func(x interface{}) bool {
+		return Fn(symbol_QMARK_, 1, func(x interface{}) bool {
 			return func() bool { _, instanceof := x.(*CljsCoreSymbol); return instanceof }()
 		})
 	}(&AFn{})
 
 	Complement = func(complement *AFn) *AFn {
-		return Fn(complement, func(f interface{}) interface{} {
+		return Fn(complement, 1, func(f interface{}) interface{} {
 			return func(complement_fn *AFn) *AFn {
-				return Fn(complement_fn, func() interface{} {
+				return Fn(complement_fn, 2, func() interface{} {
 					return Not.Arity1IB(f.(CljsCoreIFn).X_invoke_Arity0())
 				}, func(x interface{}) interface{} {
 					return Not.Arity1IB(f.(CljsCoreIFn).X_invoke_Arity1(x))
@@ -50,7 +50,7 @@ func init() {
 				}, func(x_y_zs__ ...interface{}) interface{} {
 					var x = x_y_zs__[0]
 					var y = x_y_zs__[1]
-					var zs = Array_seq.X_invoke_Arity1(x_y_zs__[2:])
+					var zs = Seq.Arity1IQ(x_y_zs__[2])
 					_, _, _ = x, y, zs
 					return Not.Arity1IB(Apply.X_invoke_Arity4(f, x, y, zs))
 				})
@@ -59,7 +59,7 @@ func init() {
 	}(&AFn{})
 
 	Remove = func(remove *AFn) *AFn {
-		return Fn(remove, func(pred interface{}) interface{} {
+		return Fn(remove, 2, func(pred interface{}) interface{} {
 			return Filter.X_invoke_Arity1(Complement.X_invoke_Arity1(pred).(CljsCoreIFn)).(CljsCoreIFn)
 		}, func(pred interface{}, coll interface{}) interface{} {
 			return Filter.X_invoke_Arity2(Complement.X_invoke_Arity1(pred).(CljsCoreIFn), coll).(*CljsCoreLazySeq)
@@ -67,18 +67,18 @@ func init() {
 	}(&AFn{})
 
 	Identity = func(identity *AFn) *AFn {
-		return Fn(identity, func(x interface{}) interface{} {
+		return Fn(identity, 1, func(x interface{}) interface{} {
 			return x
 		}, func(x____ ...interface{}) interface{} {
 			var x = x____[0]
-			var ___ = Array_seq.X_invoke_Arity1(x____[1:])
+			var ___ = Seq.Arity1IQ(x____[1])
 			_, _ = x, ___
 			return x
 		})
 	}(&AFn{})
 
 	Rand = func(rand *AFn) *AFn {
-		return Fn(rand, func() float64 {
+		return Fn(rand, 1, func() float64 {
 			return rand.Arity1IF(float64(1))
 		}, func(n interface{}) float64 {
 			return (Native_invoke_func.X_invoke_Arity2(Math.Random, []interface{}{}).(float64) * n.(float64))
@@ -86,7 +86,7 @@ func init() {
 	}(&AFn{})
 
 	X_EQ_ = func(_EQ_ *AFn) *AFn {
-		return Fn(_EQ_, func(x interface{}) bool {
+		return Fn(_EQ_, 2, func(x interface{}) bool {
 			return true
 		}, func(x interface{}, y interface{}) bool {
 			if Nil_(x) {
@@ -109,7 +109,7 @@ func init() {
 		}, func(x_y_more__ ...interface{}) interface{} {
 			var x = x_y_more__[0]
 			var y = x_y_more__[1]
-			var more = Array_seq.X_invoke_Arity1(x_y_more__[2:])
+			var more = Seq.Arity1IQ(x_y_more__[2])
 			_, _, _ = x, y, more
 			for {
 				if _EQ_.Arity2IIB(x, y) {
@@ -127,7 +127,7 @@ func init() {
 	}(&AFn{})
 
 	Sort = func(sort *AFn) *AFn {
-		return Fn(sort, func(coll interface{}) interface{} {
+		return Fn(sort, 2, func(coll interface{}) interface{} {
 			return sort.X_invoke_Arity2(Compare, coll)
 		}, func(comp interface{}, coll interface{}) interface{} {
 			if Truth_(Seq.Arity1IQ(coll)) {
@@ -145,7 +145,7 @@ func init() {
 	}(&AFn{})
 
 	Get = func(get *AFn) *AFn {
-		return Fn(get, func(o interface{}, k interface{}) interface{} {
+		return Fn(get, 3, func(o interface{}, k interface{}) interface{} {
 			if Nil_(o) {
 				return nil
 			} else {
@@ -211,13 +211,13 @@ func init() {
 	}(&AFn{})
 
 	Quote_string = func(quote_string *AFn) *AFn {
-		return Fn(quote_string, func(s interface{}) interface{} {
+		return Fn(quote_string, 1, func(s interface{}) interface{} {
 			return strconv.Quote(s.(string))
 		})
 	}(&AFn{})
 
 	Pr_writer = func(pr_writer *AFn) *AFn {
-		return Fn(pr_writer, func(obj interface{}, writer interface{}, opts interface{}) interface{} {
+		return Fn(pr_writer, 3, func(obj interface{}, writer interface{}, opts interface{}) interface{} {
 			if Nil_(obj) {
 				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
@@ -263,12 +263,12 @@ func init() {
 									}
 								} else {
 									if Fn_QMARK_.Arity1IB(obj) {
-										return Write_all.X_invoke_ArityVariadic(writer, "#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">")
+										return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">"}))
 									} else {
 										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
 											{
 												var normalize = func(G__799 *AFn) *AFn {
-													return Fn(G__799, func(n interface{}, len interface{}) interface{} {
+													return Fn(G__799, 2, func(n interface{}, len interface{}) interface{} {
 														{
 															var ns interface{} = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
@@ -284,16 +284,16 @@ func init() {
 													})
 												}(&AFn{})
 												_ = normalize
-												return Write_all.X_invoke_ArityVariadic(writer, "#inst \"", (`` + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCFullYear", []interface{}{})).(string)), "-", normalize.X_invoke_Arity2((Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMonth", []interface{}{}).(float64)+float64(1)), float64(2)).(string), "-", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCDate", []interface{}{}), float64(2)).(string), "T", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCHours", []interface{}{}), float64(2)).(string), ":", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMinutes", []interface{}{}), float64(2)).(string), ":", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCSeconds", []interface{}{}), float64(2)).(string), ".", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMilliseconds", []interface{}{}), float64(3)).(string), "-", "00:00\"")
+												return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#inst \"", (`` + Str.X_invoke_Arity1(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCFullYear", []interface{}{})).(string)), "-", normalize.X_invoke_Arity2((Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMonth", []interface{}{}).(float64) + float64(1)), float64(2)).(string), "-", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCDate", []interface{}{}), float64(2)).(string), "T", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCHours", []interface{}{}), float64(2)).(string), ":", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMinutes", []interface{}{}), float64(2)).(string), ":", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCSeconds", []interface{}{}), float64(2)).(string), ".", normalize.X_invoke_Arity2(Native_invoke_instance_method.X_invoke_Arity3(obj, "GetUTCMilliseconds", []interface{}{}), float64(3)).(string), "-", "00:00\""}))
 											}
 										} else {
 											if Truth_(Regexp_QMARK_.X_invoke_Arity1(obj)) {
-												return Write_all.X_invoke_ArityVariadic(writer, "#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Pattern"), "\"")
+												return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Pattern"), "\""}))
 											} else {
 												if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IPrintWithWriter", Str: "cljs.core/IPrintWithWriter", X_hash: float64(1349251417), X_meta: nil}), obj)) {
 													return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 												} else {
-													return Write_all.X_invoke_ArityVariadic(writer, "#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">")
+													return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">"}))
 
 												}
 											}
@@ -310,7 +310,7 @@ func init() {
 	}(&AFn{})
 
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
-		return Fn(pr_sequential_writer, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
+		return Fn(pr_sequential_writer, 7, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
 				var _STAR_print_level_STAR_801 = X_STAR_print_level_STAR_
 				_ = _STAR_print_level_STAR_801
@@ -381,7 +381,7 @@ func init() {
 	}(&AFn{})
 
 	Type_ = func(type_ *AFn) *AFn {
-		return Fn(type_, func(x interface{}) interface{} {
+		return Fn(type_, 1, func(x interface{}) interface{} {
 			if Nil_(x) {
 				return nil
 			} else {
@@ -391,27 +391,27 @@ func init() {
 	}(&AFn{})
 
 	Type__GT_str = func(type__GT_str *AFn) *AFn {
-		return Fn(type__GT_str, func(ty interface{}) interface{} {
+		return Fn(type__GT_str, 1, func(ty interface{}) interface{} {
 			return (`` + Str.X_invoke_Arity1(ty).(string))
 		})
 	}(&AFn{})
 
 	Integer_QMARK_ = func(integer_QMARK_ *AFn) *AFn {
-		return Fn(integer_QMARK_, func(n interface{}) bool {
+		return Fn(integer_QMARK_, 1, func(n interface{}) bool {
 			return (reflect.ValueOf(n).Kind() == reflect.Float64) && (!(Truth_(Native_invoke_func.X_invoke_Arity2(js.IsNaN, []interface{}{n})))) && (!(reflect.DeepEqual(n, js.Infinity))) && (n.(float64) == float64(int(n.(float64))))
 		})
 	}(&AFn{})
 
 	Array = func(array *AFn) *AFn {
-		return Fn(array, func(items__ ...interface{}) interface{} {
-			var items = Array_seq.X_invoke_Arity1(items__[0:])
+		return Fn(array, 0, func(items__ ...interface{}) interface{} {
+			var items = Seq.Arity1IQ(items__[0])
 			_ = items
 			return Into_array.Arity1IA(items)
 		})
 	}(&AFn{})
 
 	Make_array = func(make_array *AFn) *AFn {
-		return Fn(make_array, func(size interface{}) []interface{} {
+		return Fn(make_array, 2, func(size interface{}) []interface{} {
 			return make_array.Arity2IIA(nil, size)
 		}, func(type_ interface{}, size interface{}) []interface{} {
 			return make([]interface{}, int(size.(float64)))
@@ -419,7 +419,7 @@ func init() {
 	}(&AFn{})
 
 	Char = func(char *AFn) *AFn {
-		return Fn(char, func(x interface{}) interface{} {
+		return Fn(char, 1, func(x interface{}) interface{} {
 			if reflect.ValueOf(x).Kind() == reflect.Float64 {
 				return js.String.FromCharCode(x.(float64))
 			} else {
@@ -436,7 +436,7 @@ func init() {
 	String_hash_cache = map[interface{}]interface{}{}
 
 	Add_to_string_hash_cache = func(add_to_string_hash_cache *AFn) *AFn {
-		return Fn(add_to_string_hash_cache, func(k interface{}) interface{} {
+		return Fn(add_to_string_hash_cache, 1, func(k interface{}) interface{} {
 			{
 				var h = Hash_string_STAR_.X_invoke_Arity1(k).(float64)
 				_ = h
@@ -449,7 +449,7 @@ func init() {
 	}(&AFn{})
 
 	Hash_string = func(hash_string *AFn) *AFn {
-		return Fn(hash_string, func(k interface{}) interface{} {
+		return Fn(hash_string, 1, func(k interface{}) interface{} {
 			if String_hash_cache_count > float64(255) {
 				String_hash_cache = map[interface{}]interface{}{}
 
@@ -470,12 +470,12 @@ func init() {
 	}(&AFn{})
 
 	Enable_console_print_BANG_ = func(enable_console_print_BANG_ *AFn) *AFn {
-		return Fn(enable_console_print_BANG_, func() interface{} {
+		return Fn(enable_console_print_BANG_, 0, func() interface{} {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
 				var return__804 = func(fmt_println *AFn) *AFn {
-					return Fn(fmt_println, func(x interface{}) interface{} {
+					return Fn(fmt_println, 1, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
@@ -487,33 +487,76 @@ func init() {
 	}(&AFn{})
 
 	Apply = func(apply *AFn) *AFn {
-		return Fn(apply, func(f interface{}, args interface{}) interface{} {
-			return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(args)...)
+		return Fn(apply, 5, func(f interface{}, args interface{}) interface{} {
+			{
+				var fixed_arity = MaxFixedArity_(f)
+				_ = fixed_arity
+				if (X_EQ_.Arity2IIB(float64(-1), fixed_arity)) || (Bounded_count.X_invoke_Arity2(args, (fixed_arity+float64(1))).(float64) <= fixed_arity) {
+					return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(args)...)
+				} else {
+					if Empty_QMARK_.Arity1IB(args) {
+						return f.(*AFn).X_invoke_ArityVariadic(args)
+					} else {
+						return f.(*AFn).X_invoke_ArityVariadic(append(Into_array.Arity1IA(Take.X_invoke_Arity2(fixed_arity, args).(*CljsCoreLazySeq)), Drop.X_invoke_Arity2(fixed_arity, args).(*CljsCoreLazySeq))...)
+					}
+				}
+			}
 		}, func(f interface{}, x interface{}, args interface{}) interface{} {
-			return Call_(f.(CljsCoreIFn), append([]interface{}{x}, Into_array.Arity1IA(args)...)...)
+			{
+				var arglist = List_STAR_.X_invoke_Arity2(x, args).(*CljsCoreCons)
+				var fixed_arity = MaxFixedArity_(f)
+				_, _ = arglist, fixed_arity
+				if (X_EQ_.Arity2IIB(float64(-1), fixed_arity)) || (Bounded_count.X_invoke_Arity2(arglist, (fixed_arity+float64(1))).(float64) <= fixed_arity) {
+					return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(arglist)...)
+				} else {
+					return f.(*AFn).X_invoke_ArityVariadic(append(Into_array.Arity1IA(Take.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq)), Drop.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq))...)
+				}
+			}
 		}, func(f interface{}, x interface{}, y interface{}, args interface{}) interface{} {
-			return Call_(f.(CljsCoreIFn), append([]interface{}{x, y}, Into_array.Arity1IA(args)...)...)
+			{
+				var arglist = List_STAR_.X_invoke_Arity3(x, y, args).(*CljsCoreCons)
+				var fixed_arity = MaxFixedArity_(f)
+				_, _ = arglist, fixed_arity
+				if (X_EQ_.Arity2IIB(float64(-1), fixed_arity)) || (Bounded_count.X_invoke_Arity2(arglist, (fixed_arity+float64(1))).(float64) <= fixed_arity) {
+					return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(arglist)...)
+				} else {
+					return f.(*AFn).X_invoke_ArityVariadic(append(Into_array.Arity1IA(Take.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq)), Drop.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq))...)
+				}
+			}
 		}, func(f interface{}, x interface{}, y interface{}, z interface{}, args interface{}) interface{} {
-			return Call_(f.(CljsCoreIFn), append([]interface{}{x, y, z}, Into_array.Arity1IA(args)...)...)
+			{
+				var arglist = List_STAR_.X_invoke_Arity4(x, y, z, args).(*CljsCoreCons)
+				var fixed_arity = MaxFixedArity_(f)
+				_, _ = arglist, fixed_arity
+				if (X_EQ_.Arity2IIB(float64(-1), fixed_arity)) || (Bounded_count.X_invoke_Arity2(arglist, (fixed_arity+float64(1))).(float64) <= fixed_arity) {
+					return Call_(f.(CljsCoreIFn), Into_array.Arity1IA(arglist)...)
+				} else {
+					return f.(*AFn).X_invoke_ArityVariadic(append(Into_array.Arity1IA(Take.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq)), Drop.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq))...)
+				}
+			}
 		}, func(f_a_b_c_d_args__ ...interface{}) interface{} {
 			var f = f_a_b_c_d_args__[0]
 			var a = f_a_b_c_d_args__[1]
 			var b = f_a_b_c_d_args__[2]
 			var c = f_a_b_c_d_args__[3]
 			var d = f_a_b_c_d_args__[4]
-			var args = Array_seq.X_invoke_Arity1(f_a_b_c_d_args__[5:])
+			var args = Seq.Arity1IQ(f_a_b_c_d_args__[5])
 			_, _, _, _, _, _ = f, a, b, c, d, args
 			{
-				var arr = Into_array.Arity1IA(Seq_(Butlast.X_invoke_Arity1(args)))
-				var varargs = Into_array.Arity1IA(Last.X_invoke_Arity1(args))
-				_, _ = arr, varargs
-				return Call_(f.(CljsCoreIFn), append([]interface{}{a, b, c, d}, append(arr, varargs...)...)...)
+				var arglist = Cons.X_invoke_Arity2(a, Cons.X_invoke_Arity2(b, Cons.X_invoke_Arity2(c, Cons.X_invoke_Arity2(d, Spread.X_invoke_Arity1(args)).(*CljsCoreCons)).(*CljsCoreCons)).(*CljsCoreCons)).(*CljsCoreCons)
+				var fixed_arity = MaxFixedArity_(f)
+				_, _ = arglist, fixed_arity
+				if (X_EQ_.Arity2IIB(float64(-1), fixed_arity)) || (Bounded_count.X_invoke_Arity2(arglist, (fixed_arity+float64(1))).(float64) <= fixed_arity) {
+					return Call_(f.(CljsCoreIFn), append(Into_array.Arity1IA(Seq_(Butlast.X_invoke_Arity1(arglist))), Into_array.Arity1IA(Last.X_invoke_Arity1(arglist))...))
+				} else {
+					return f.(*AFn).X_invoke_ArityVariadic(append(Into_array.Arity1IA(Take.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq)), Drop.X_invoke_Arity2(fixed_arity, arglist).(*CljsCoreLazySeq))...)
+				}
 			}
 		})
 	}(&AFn{})
 
 	Native_satisfies_QMARK_ = func(native_satisfies_QMARK_ *AFn) *AFn {
-		return Fn(native_satisfies_QMARK_, func(p interface{}, x interface{}) bool {
+		return Fn(native_satisfies_QMARK_, 2, func(p interface{}, x interface{}) bool {
 			return value(decorate(x)).Type().Implements(protocols[(`` + Str.X_invoke_Arity1(p).(string))])
 		})
 	}(&AFn{})

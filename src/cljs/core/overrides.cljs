@@ -271,17 +271,46 @@
   "Applies fn f to the argument list formed by prepending intervening arguments to args.
   First cut.  Not lazy.  Needs to use emitted toApply."
   ([f args]
-     (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array args)))
+     (let [fixed-arity ^number (js* "MaxFixedArity_(~{})" f)]
+       (if (or (= -1 fixed-arity)
+               (<= (bounded-count args (inc fixed-arity)) fixed-arity))
+         (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array args))
+         (if (empty? args)
+           (js* "~{}.(*AFn).X_invoke_ArityVariadic(~{})" f args)
+           (js* "~{}.(*AFn).X_invoke_ArityVariadic(append(~{}, ~{})...)"
+                f (into-array (take fixed-arity args)) (drop fixed-arity args))))))
   ([f x args]
-     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}}, ~{}...)...)" f x (into-array args)))
+     (let [arglist (list* x args)
+           fixed-arity ^number (js* "MaxFixedArity_(~{})" f)]
+       (if (or (= -1 fixed-arity)
+               (<= (bounded-count arglist (inc fixed-arity)) fixed-arity))
+         (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array arglist))
+         (js* "~{}.(*AFn).X_invoke_ArityVariadic(append(~{}, ~{})...)"
+              f (into-array (take fixed-arity arglist)) (drop fixed-arity arglist)))))
   ([f x y args]
-     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}}, ~{}...)...)" f x y (into-array args)))
+     (let [arglist (list* x y args)
+           fixed-arity ^number (js* "MaxFixedArity_(~{})" f)]
+       (if (or (= -1 fixed-arity)
+               (<= (bounded-count arglist (inc fixed-arity)) fixed-arity))
+         (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array arglist))
+         (js* "~{}.(*AFn).X_invoke_ArityVariadic(append(~{}, ~{})...)"
+              f (into-array (take fixed-arity arglist)) (drop fixed-arity arglist)))))
   ([f x y z args]
-     (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}, ~{}}, ~{}...)...)" f x y z (into-array args)))
+     (let [arglist (list* x y z args)
+           fixed-arity ^number (js* "MaxFixedArity_(~{})" f)]
+       (if (or (= -1 fixed-arity)
+               (<= (bounded-count arglist (inc fixed-arity)) fixed-arity))
+         (js* "Call_(~{}.(CljsCoreIFn), ~{}...)" f (into-array arglist))
+         (js* "~{}.(*AFn).X_invoke_ArityVariadic(append(~{}, ~{})...)"
+              f (into-array (take fixed-arity arglist)) (drop fixed-arity arglist)))))
   ([f a b c d & args]
-     (let [arr (into-array (butlast args))
-           varargs (into-array (last args))]
-       (js* "Call_(~{}.(CljsCoreIFn), append([]interface{}{~{}, ~{}, ~{}, ~{}}, append(~{}, ~{}...)...)...)" f a b c d arr varargs))))
+     (let [arglist (cons a (cons b (cons c (cons d (spread args)))))
+           fixed-arity ^number (js* "MaxFixedArity_(~{})" f)]
+       (if (or (= -1 fixed-arity)
+               (<= (bounded-count arglist (inc fixed-arity)) fixed-arity))
+         (js* "Call_(~{}.(CljsCoreIFn), append(~{}, ~{}...))" f (into-array (butlast arglist)) (into-array (last arglist)))
+         (js* "~{}.(*AFn).X_invoke_ArityVariadic(append(~{}, ~{})...)"
+              f (into-array (take fixed-arity arglist)) (drop fixed-arity arglist))))))
 
 (defn ^boolean native-satisfies?
   "Internal - do not use!"

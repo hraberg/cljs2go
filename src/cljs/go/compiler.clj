@@ -502,7 +502,8 @@
     (emit-wrap env
       (if (empty? items)
         (emits (go-core "CljsCoreIEmptyList") "(" (go-core "CljsCoreList_EMPTY") ")")
-        (emits (go-core "List") ".X_invoke_ArityVariadic(" (comma-sep items) ").(*" (go-core "CljsCoreList") ")")))))
+        (emits (go-core "List") ".X_invoke_ArityVariadic(" (go-core "Array_seq") ".X_invoke_Arity1([]interface{}{" (comma-sep items) "})).(*"
+               (go-core "CljsCoreList") ")")))))
 
 (defmethod emit* :vector
   [{:keys [items env]}]
@@ -716,7 +717,7 @@
       (emitln varargs " ...interface{}" ") interface{} {")
       (doseq [[idx p] (map-indexed vector (butlast params))]
         (emitln "var " p " = " varargs "[" idx "]"))
-      (emitln "var " (last params) " = " (go-core "Array_seq") ".X_invoke_Arity1(" varargs "[" max-fixed-arity ":]" ")")
+      (emitln "var " (last params) " = " (go-core "Seq") ".Arity1IQ(" varargs "[" max-fixed-arity "]" ")")
       (assign-to-blank params)
       (emit-fn-body type expr recurs)
       (emits "}"))))
@@ -737,7 +738,7 @@
         (when-not protocol-impl
           (emitln "func(" (comma-sep (cons (str mname " *" (go-core "AFn"))
                                            (typed-params loop-locals true))) ") *" (go-core "AFn") " {")
-          (emits "return " (go-core "Fn") "(" mname ", "))
+          (emits "return " (go-core "Fn") "(" mname ", " max-fixed-arity ", "))
         (loop [[meth & methods] methods]
           (let [meth (assoc-in meth [:env :context] :expr)]
             (cond
@@ -921,8 +922,8 @@
                       (keyword? (-> f :form)))
         arity (count args)
         [params] ((group-by count (:method-params info)) arity)
-        variadic-invoke (and (:variadic info)
-                             (> arity (:max-fixed-arity info)))
+        mfa (:max-fixed-arity info)
+        variadic-invoke (and (:variadic info) (or (> arity mfa) (= 1 (count (:method-params info)))))
         primitive-sig (go-type-suffix params (-> f :info :ret-tag))
         has-primitives? (not (or (re-find #"^I+$" primitive-sig) variadic-invoke))
         tags-match? true ; (= (map :tag params) (map :tag args))
@@ -965,7 +966,9 @@
          (emits f ".X_invoke_Arity" arity "(" (comma-sep args) ")")
 
          variadic-invoke
-         (emits f ".X_invoke_ArityVariadic(" (comma-sep args) ")")
+         (emits f ".X_invoke_ArityVariadic(" (comma-sep (take mfa args))
+                (when (pos? mfa) ",")
+                (go-core "Array_seq") ".X_invoke_Arity1([]interface{}{" (comma-sep (drop mfa args)) "}))")
 
          native?
          (do
