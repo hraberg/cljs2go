@@ -678,6 +678,14 @@ func Nil_(x interface{}) bool {
 	}
 }
 
+func Int32_(x float64) int32 {
+	return int32(int(x))
+}
+
+func UInt32_(x float64) uint32 {
+	return uint32(uint(x))
+}
+
 func MaxFixedArity_(x interface{}) float64 {
 	if afn, ok := x.(*AFn); ok {
 		return float64(afn.MaxFixedArity)

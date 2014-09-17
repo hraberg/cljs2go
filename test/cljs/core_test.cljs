@@ -2255,20 +2255,18 @@
              (str 0 "a" true nil :key/word 'symb/ol false [1 2 3 4] 1234.5678 0x09)))
 
   ;; ;; int-rotate-left
-  ;; FAILURE - doesn't give the right results.
-  ;; (assert (== (int-rotate-left (bit-or 0x87654321 0) 4) (bit-or 0x76543218 0)))
-  ;; (assert (== (int-rotate-left (bit-or 0x87654321 0) 8) (bit-or 0x65432187 0)))
-  ;; (assert (== (int-rotate-left (bit-or 0x80000000 0) 1) 0x1))
-  ;; (assert (== (int-rotate-left (bit-or 0x78123456 0) 4) (bit-or 0x81234567 0)))
-  ;; (assert (== (int-rotate-left (bit-or 0xffffffff 0) 4) (bit-or 0xffffffff 0)))
+  (assert (== (int-rotate-left (bit-or 0x87654321 0) 4) (bit-or 0x76543218 0)))
+  (assert (== (int-rotate-left (bit-or 0x87654321 0) 8) (bit-or 0x65432187 0)))
+  (assert (== (int-rotate-left (bit-or 0x80000000 0) 1) 0x1))
+  (assert (== (int-rotate-left (bit-or 0x78123456 0) 4) (bit-or 0x81234567 0)))
+  (assert (== (int-rotate-left (bit-or 0xffffffff 0) 4) (bit-or 0xffffffff 0)))
 
   ;; ;; imul
   (assert (== (imul 3 3) 9))
   (assert (== (imul -1 8) -8))
   (assert (== (imul -2 -2) 4))
-  ;; FAILURE - doesn't give the right results for wrapped uints.
-  ;; (assert (== (imul 0xffffffff 5) -5))
-  ;; (assert (== (imul 0xfffffffe 5) -10))
+  (assert (== (imul 0xffffffff 5) -5))
+  (assert (== (imul 0xfffffffe 5) -10))
 
   ;; ;; CLJS-812
   (defn case-recur [value]

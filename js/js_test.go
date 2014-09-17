@@ -18,6 +18,9 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 3, Math.Ceil(2.6))
 	assert.Equal(t, 2, Math.Floor(2.6))
 	assert.Equal(t, 12, Math.Imul(2.3, 6.7))
+	assert.Equal(t, -5.0, Math.Imul(float64(0xffffffff), 5.0))
+	assert.Equal(t, -10.0, Math.Imul(float64(0xfffffffe), 5.0))
+
 	assert.Equal(t, "ABC", String.FromCharCode(65, 66, 67))
 	assert.Nil(t, (&RegExp{"Hello", ""}).Exec("World"))
 	assert.Equal(t, []interface{}{"Hello", "Hello"}, (&RegExp{"hello", "i"}).Exec("World Hello Hello"))

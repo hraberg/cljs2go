@@ -20,5 +20,5 @@ func Random() float64 {
 }
 
 func Imul(a, b float64) float64 {
-	return float64(int64(a) * int64(b))
+	return float64(int32(int32(int(a)) * int32(int(b))))
 }

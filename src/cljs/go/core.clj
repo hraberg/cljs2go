@@ -40,6 +40,7 @@
   (:require clojure.walk
             clojure.set
             cljs.go.compiler
+            clojure.string
             [cljs.env :as env]))
 
 (alias 'core 'clojure.core)
@@ -477,64 +478,74 @@
 (defmacro ^::ana/numeric js-mod [num div]
   (core/list 'js* "math.Mod(~{}, ~{})" num div))
 
+(defn with-32bit-ints
+  ([s] (with-32bit-ints s true))
+  ([s float64]
+     (let [s (-> s
+                 (clojure.string/replace "uint" (cljs.compiler/go-core "UInt32_"))
+                 (clojure.string/replace "int" (cljs.compiler/go-core "Int32_")))]
+       (if float64
+         (core/str "float64(" s ")")
+         s))))
+
 (defmacro ^::ana/numeric bit-not [x]
-  (core/list 'js* "float64(^ int(~{}))" x))
+  (core/list 'js* (with-32bit-ints "(^ int(~{}))") x))
 
 (defmacro ^::ana/numeric bit-and
-  ([x y] (core/list 'js* "float64(int(~{}) & int(~{}))" x y))
+  ([x y] (core/list 'js* (with-32bit-ints "(int(~{}) & int(~{}))") x y))
   ([x y & more] `(bit-and (bit-and ~x ~y) ~@more)))
 
 ;; internal do not use
 (defmacro ^::ana/numeric unsafe-bit-and
-  ([x y] (bool-expr (core/list 'js* "float64(int(~{}) & int(~{}))" x y)))
+  ([x y] (bool-expr (core/list 'js* (with-32bit-ints "(int(~{}) & int(~{}))") x y)))
   ([x y & more] `(unsafe-bit-and (unsafe-bit-and ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-or
-  ([x y] (core/list 'js* "float64(int(~{}) | int(~{}))" x y))
+  ([x y] (core/list 'js* (with-32bit-ints "(int(~{}) | int(~{}))") x y))
   ([x y & more] `(bit-or (bit-or ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric int [x]
   `(~'js* "math.Trunc(~{})" ~x))
 
 (defmacro ^::ana/numeric bit-xor
-  ([x y] (core/list 'js* "float64(int(~{}) ^ int(~{}))" x y))
+  ([x y] (core/list 'js* (with-32bit-ints "(int(~{}) ^ int(~{}))") x y))
   ([x y & more] `(bit-xor (bit-xor ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-and-not
-  ([x y] (core/list 'js* "float64(int(~{}) &^ int(~{}))" x y))
+  ([x y] (core/list 'js* (with-32bit-ints "(int(~{}) &^ int(~{}))") x y))
   ([x y & more] `(bit-and-not (bit-and-not ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric bit-clear [x n]
-  (core/list 'js* "float64(int(~{}) &^ (int(1) << uint(~{})))" x n))
+  (core/list 'js* (with-32bit-ints "(int(~{}) &^ (int(1) << uint(~{})))") x n))
 
 (defmacro ^::ana/numeric bit-flip [x n]
-  (core/list 'js* "float64(int(~{}) ^ (int(1) << uint(~{})))" x n))
+  (core/list 'js* (with-32bit-ints "(int(~{}) ^ (int(1) << uint(~{})))") x n))
 
 (defmacro ^::ana/numeric bit-test [x n]
-  (bool-expr (core/list 'js* "float64((int(~{}) & (int(1) << uint(~{})))) != 0" x n)))
+  (bool-expr (core/list 'js* (with-32bit-ints "((int(~{}) & (int(1) << uint(~{})))) != 0" false) x n)))
 
 (defmacro ^::ana/numeric bit-shift-left [x n]
-  (core/list 'js* "float64(int(~{}) << uint(~{}))" x n))
+  (core/list 'js* (with-32bit-ints "(int(~{}) << uint(~{}))") x n))
 
 (defmacro ^::ana/numeric bit-shift-right [x n]
-  (core/list 'js* "float64(int(~{}) >> uint(~{}))" x n))
+  (core/list 'js* (with-32bit-ints "(int(~{}) >> uint(~{}))") x n))
 
 (defmacro ^::ana/numeric bit-shift-right-zero-fill [x n]
-  (core/list 'js* "float64(uint(~{}) >> uint(~{}))" x n))
+  (core/list 'js* (with-32bit-ints "(uint(~{}) >> uint(float64((32 + int(~{})) % 32)))") x n))
 
 (defmacro ^::ana/numeric unsigned-bit-shift-right [x n]
-  (core/list 'js* "float64(uint(~{}) >> uint(~{}))" x n))
+  (core/list 'js* (with-32bit-ints "(uint(~{}) >> uint(float64((32 + int(~{})) % 32)))") x n))
 
 (defmacro ^::ana/numeric bit-set [x n]
-  (core/list 'js* "float64(int(~{}) | (int(1) << uint(~{})))" x n))
+  (core/list 'js* (with-32bit-ints "(int(~{}) | (int(1) << uint(~{})))") x n))
 
 ;; internal
 (defmacro ^::ana/numeric mask [hash shift]
-  (core/list 'js* "float64((uint(~{}) >> uint(~{})) & 0x01f)" hash shift))
+  (core/list 'js* (with-32bit-ints "((uint(~{}) >> uint(~{})) & 0x01f)") hash shift))
 
 ;; internal
 (defmacro ^::ana/numeric bitpos [hash shift]
-  (core/list 'js* "float64(int(1) << uint(~{}))" `(mask ~hash ~shift)))
+  (core/list 'js* (with-32bit-ints "(int(1) << uint(~{}))") `(mask ~hash ~shift)))
 
 ;; internal
 (defmacro caching-hash [coll hash-fn hash-key]

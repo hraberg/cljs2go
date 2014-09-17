@@ -72,6 +72,24 @@ func Test_Invoke(t *testing.T) {
 	assert.Equal(t, "HelloClojureWorld", Str.X_invoke_ArityVariadic("Hello", Array_seq.X_invoke_Arity1([]interface{}{"Clojure", "World"})))
 }
 
+func Test_Int32BitOperations(t *testing.T) {
+	assert.Equal(t, -2023406815.0, Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0))
+	assert.Equal(t, 1985229336.0, Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
+	assert.Equal(t, 1985229328.0, Bit_shift_left.X_invoke_Arity2(float64(0x87654321), 4.0))
+	assert.Equal(t, 141972530.0, Unsigned_bit_shift_right.X_invoke_Arity2(float64(0x87654321), 4.0))
+	assert.Equal(t, 8.0, Unsigned_bit_shift_right.X_invoke_Arity2(float64(0x87654321), -4.0))
+
+	assert.Equal(t, 8.0, Unsigned_bit_shift_right.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), -4.0))
+	assert.Equal(t, 141972530, Unsigned_bit_shift_right.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0))
+	assert.Equal(t, 1985229336.0, Int_rotate_left.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0))
+	assert.Equal(t, 1985229336.0, Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
+
+	assert.Equal(t, Int_rotate_left.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0),
+		Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
+
+	assert.Equal(t, -2023406815.0, Int32_(float64(int(float64(2271560481))|int(float64(0)))))
+}
+
 func Test_PrimitiveFn(t *testing.T) {
 	fib := func(this *AFn) *AFn {
 		return Fn(this, func(n float64) float64 {
