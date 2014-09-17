@@ -505,6 +505,7 @@
   (assert (= (partition-all 4 2 [1 2 3 4 5 6 7 8 9])
              [[1 2 3 4] [3 4 5 6] [5 6 7 8] [7 8 9] [9]]))
   (assert (= [true true] (take-while true? [true true 2 3 4])))
+  ;; FAILURE - unknown
   ;; (assert (= [[true true] [false false false] [true true]]
   ;;            (partition-by true? [true true false false false true true])))
   (assert (= [0 2 4 6 8 10] (take-nth 2 [0 1 2 3 4 5 6 7 8 9 10])))
@@ -551,6 +552,7 @@
   (assert (set []))
   (assert (= #{} (set [])))
   (assert (= #{} (hash-set)))
+  ;; FAILURE - need support for type literals
   ;; (assert (identical? cljs.core.PersistentHashSet (type (hash-set))))
 
   (assert (= #{"foo"} (set ["foo"])))
@@ -617,6 +619,7 @@
   (assert (= (distinct [#{1 2} #{1 2}]) [#{1 2}]))
   (assert (= (distinct [#{} #{}]) [#{}]))
 
+  ;; FAILURE - need just enough support for "js" regexps
   ;; ;;regexps
   ;; (assert (= (str (re-pattern "f(.)o")) (str (js* "/f(.)o/"))))
   ;; (assert (= (re-find (re-pattern "foo") "foo bar foo baz foo zot") "foo"))
@@ -677,9 +680,11 @@
     (assert (= (seq a) (seq (to-array [1 2 3]))))
     (assert (= 42 (aset a 0 42)))
     (assert (not= (seq a) (seq (to-array [1 2 3]))))
-;    (assert (not= a (aclone a)))
-    )
+    ;; FAILURE - array equals, no fix.
+    ;; (assert (not= a (aclone a)))
+)
 
+  ;; FAILURE - nested array indexing, needs nested unboxing.
   ;; (let [a (array (array 1 2 3) (array 4 5 6))]
   ;;   (assert (= (aget a 0 1) 2))
   ;;   (assert (= (apply aget a [0 1]) 2))
@@ -915,6 +920,7 @@
   (assert (true? (isa? 42 42)))
   (assert (true? (isa? ::square ::shape)))
 
+  ;; FAILURE - ObjMap isn't supported, buy PHS should work, needs type literals.
   ;; (derive cljs.core.ObjMap ::collection)
   ;; (derive cljs.core.PersistentHashSet ::collection)
   ;; (assert (true? (isa? cljs.core.ObjMap ::collection)))
@@ -1315,6 +1321,7 @@
             expected (repeat n {:foo :bar})]
         (assert (= result expected)))))
 
+  ;; FAILURE - needs fewer type assertions
   ;; ;; TransientHashSet
   ;; (loop [s (transient #{})
   ;;        i 0]
@@ -1336,6 +1343,7 @@
   (let [m1 (sorted-map)
         c2 (comp - compare)
         m2 (sorted-map-by c2)]
+    ;; FAILURE - needs type literals
     ;; (assert (identical? cljs.core.PersistentTreeMap (type m1)))
     ;; (assert (identical? cljs.core.PersistentTreeMap (type m2)))
     (assert (identical? compare (.-comp m1)))
@@ -1383,6 +1391,7 @@
         c3 #(compare (quot %1 2) (quot %2 2))
         s3 (sorted-set-by c3)
         s4 (sorted-set-by <)]
+    ;; FAILURE - needs type literals
     ;; (assert (identical? cljs.core.PersistentTreeSet (type s1)))
     ;; (assert (identical? cljs.core.PersistentTreeSet (type s2)))
     (assert (identical? compare (-comparator s1)))
@@ -1406,6 +1415,7 @@
       (assert (= (subseq s3 > 5) (list 7 8)))
       (assert (= (subseq s3 > 6) (list 8)))
       (assert (= (subseq s3 >= 6) (list 7 8)))
+      ;; FAILURE - tries to >= with nil, unsure if this is a bug or a JS vs Go thing.
 ;;      (assert (= (subseq s3 >= 12) nil))
       (assert (= (subseq s3 < 0) (list)))
       (assert (= (subseq s3 < 5) (list 1 2)))
@@ -1465,6 +1475,7 @@
   ;;   (assert (= 500 (count m)))
   ;;   (assert (= 123 (m "foo123"))))
 
+  ;; FAILURE - needs .sort on JSArray and a way to convert comparators to funcs, unsure if it's worth fixing.
   ;; ;; comparator
   ;; (assert (= [1 1 2 2 3 5] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator <)))))
   ;; (assert (= [5 3 2 2 1 1] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator >)))))
@@ -1550,6 +1561,7 @@
              (hash (hash-map :b 2 :a 1))))
   (assert (= (hash {:start 133 :end 134})
              (hash (apply hash-map [:start 133 :end 134]))))
+  ;; FAILURE - compile time and runtime hashes are different.
   ;; (assert (= (hash :a)
   ;;            (hash (keyword "a"))))
 
@@ -1732,6 +1744,7 @@
   (assert (= (UUID. "550e8400-e29b-41d4-a716-446655440000")
              (UUID. "550e8400-e29b-41d4-a716-446655440000")))
 
+  ;; FAILURE - identical? is using DeepEqual, needs general fix.
   ;; (assert (not (identical? (UUID. "550e8400-e29b-41d4-a716-446655440000")
   ;;                          (UUID. "550e8400-e29b-41d4-a716-446655440000"))))
 
@@ -1792,6 +1805,7 @@
                                ))
              "#inst \"2010-11-12T18:14:15.666-00:00\""))
 
+  ;; FAILURE - would need Date to handle string initial value, use of JS compability question.
   ;; (doseq [month (range 1 13) day (range 1 29) hour (range 1 23)]
   ;;   (let [pad (fn [n]
   ;;               (if (< n 10)
@@ -1868,6 +1882,7 @@
              (try (throw (ex-info "asdf" {:foo 1}))
                   (catch ExceptionInfo e
                     (ex-data e)))))
+  ;; FAILURE - ex-info is a Go error, but doesn't inherit js/Error. More generally, instance? is only working for protocols.
   ;; (assert (instance? js/Error (ex-info "asdf" {:foo 1})))
   ;; (assert (not (instance? cljs.core.ExceptionInfo (js/Error.))))
 
@@ -1926,6 +1941,7 @@
 
   ;; ;; compile time run symbol hash codes
 
+  ;; FAILURE - as the comment says.
   ;; (assert (= (hash 'foo) (hash (symbol "foo"))))
   ;; (assert (= (hash 'foo/bar) (hash (symbol "foo" "bar"))))
 
@@ -1979,6 +1995,7 @@
              (set (map identity (into [] (range 32))))))
 
   ;; ;; CLJS-580
+  ;; FAILURE - doesn't unbox the nested fns properly.
   ;; (def foo580)
   ;; (def foo580 {:a (fn []) :b (fn [] (foo580 :a))})
   ;; (assert (nil? (((:b foo580)))))
@@ -2096,6 +2113,7 @@
   (assert (= (-> (transient []) (conj! 1 2) persistent!) [1 2]))
   (assert (= (-> (transient #{1 2 3}) (disj! 1 2) persistent!) #{3}))
   (assert (= (-> (transient {}) (assoc! :a 1 :b 2) persistent!) {:a 1 :b 2}))
+  ;; FAILURE - haven't looked to why.
   ;; (assert (= (-> (transient {:a 1 :b 2 :c 3}) (dissoc! :a :b) persistent!) {:c 3}))
 
   ;; ;; CLJS-767
@@ -2229,6 +2247,7 @@
              "{:foo \"bar\", :baz \"woz\"}"))
 
   ;; ;; case keyword
+  ;; FAILURE - doesn't compile.
   ;; (assert (= (let [x "a"] (case x :a 1 "a")) "a"))
 
   ;; ;; CLJS-801
@@ -2236,6 +2255,7 @@
              (str 0 "a" true nil :key/word 'symb/ol false [1 2 3 4] 1234.5678 0x09)))
 
   ;; ;; int-rotate-left
+  ;; FAILURE - doesn't give the right results.
   ;; (assert (== (int-rotate-left (bit-or 0x87654321 0) 4) (bit-or 0x76543218 0)))
   ;; (assert (== (int-rotate-left (bit-or 0x87654321 0) 8) (bit-or 0x65432187 0)))
   ;; (assert (== (int-rotate-left (bit-or 0x80000000 0) 1) 0x1))
@@ -2246,6 +2266,7 @@
   (assert (== (imul 3 3) 9))
   (assert (== (imul -1 8) -8))
   (assert (== (imul -2 -2) 4))
+  ;; FAILURE - doesn't give the right results for wrapped uints.
   ;; (assert (== (imul 0xffffffff 5) -5))
   ;; (assert (== (imul 0xfffffffe 5) -10))
 
@@ -2265,6 +2286,7 @@
 
   ;; ;; basic iteration
 
+  ;; FAILURE - doesn't work for some reason.
   ;; (def iter (iterator [1 2 3]))
 
   ;; (assert (= (.-value (.next iter)) 1))
