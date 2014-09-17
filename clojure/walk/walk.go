@@ -24,12 +24,24 @@ func init() {
 	Walk = func(walk *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(walk, 3, func(inner interface{}, outer interface{}, form interface{}) interface{} {
 			if cljs_core.Seq_QMARK_.Arity1IB(form) {
-				return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(cljs_core.Doall.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(inner, form).(*cljs_core.CljsCoreLazySeq)))
+				{
+					var G__4 = cljs_core.Doall.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(inner, form).(*cljs_core.CljsCoreLazySeq))
+					_ = G__4
+					return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__4)
+				}
 			} else {
 				if cljs_core.Coll_QMARK_.Arity1IB(form) {
-					return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(cljs_core.Into.X_invoke_Arity2(cljs_core.Empty.X_invoke_Arity1(form), cljs_core.Map_.X_invoke_Arity2(inner, form).(*cljs_core.CljsCoreLazySeq)))
+					{
+						var G__5 = cljs_core.Into.X_invoke_Arity2(cljs_core.Empty.X_invoke_Arity1(form), cljs_core.Map_.X_invoke_Arity2(inner, form).(*cljs_core.CljsCoreLazySeq))
+						_ = G__5
+						return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__5)
+					}
 				} else {
-					return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(form)
+					{
+						var G__6 = form
+						_ = G__6
+						return outer.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__6)
+					}
 
 				}
 			}
@@ -44,20 +56,24 @@ func init() {
 
 	Prewalk = func(prewalk *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(prewalk, 2, func(f interface{}, form interface{}) interface{} {
-			return Walk.X_invoke_Arity3(cljs_core.Partial.X_invoke_Arity2(prewalk, f).(cljs_core.CljsCoreIFn), cljs_core.Identity, f.(cljs_core.CljsCoreIFn).X_invoke_Arity1(form))
+			return Walk.X_invoke_Arity3(cljs_core.Partial.X_invoke_Arity2(prewalk, f).(cljs_core.CljsCoreIFn), cljs_core.Identity, func() interface{} {
+				var G__8 = form
+				_ = G__8
+				return f.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__8)
+			}())
 		})
 	}(&cljs_core.AFn{})
 
 	Keywordize_keys = func(keywordize_keys *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(keywordize_keys, 1, func(m interface{}) interface{} {
 			{
-				var f = func(G__5 *cljs_core.AFn) *cljs_core.AFn {
-					return cljs_core.Fn(G__5, 1, func(p__3 interface{}) interface{} {
+				var f = func(G__13 *cljs_core.AFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__13, 1, func(p__11 interface{}) interface{} {
 						{
-							var vec__4 = p__3
-							var k = cljs_core.Nth.X_invoke_Arity3(vec__4, float64(0), nil)
-							var v = cljs_core.Nth.X_invoke_Arity3(vec__4, float64(1), nil)
-							_, _, _ = vec__4, k, v
+							var vec__12 = p__11
+							var k = cljs_core.Nth.X_invoke_Arity3(vec__12, float64(0), nil)
+							var v = cljs_core.Nth.X_invoke_Arity3(vec__12, float64(1), nil)
+							_, _, _ = vec__12, k, v
 							if reflect.ValueOf(k).Kind() == reflect.String {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Keyword.X_invoke_Arity1(k), v}, nil})
 							} else {
@@ -67,8 +83,8 @@ func init() {
 					})
 				}(&cljs_core.AFn{})
 				_ = f
-				return Postwalk.X_invoke_Arity2(func(G__6 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
-					return cljs_core.Fn(G__6, 1, func(x interface{}) interface{} {
+				return Postwalk.X_invoke_Arity2(func(G__14 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__14, 1, func(x interface{}) interface{} {
 						if cljs_core.Map_QMARK_.Arity1IB(x) {
 							return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
 						} else {
@@ -83,13 +99,13 @@ func init() {
 	Stringify_keys = func(stringify_keys *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(stringify_keys, 1, func(m interface{}) interface{} {
 			{
-				var f = func(G__11 *cljs_core.AFn) *cljs_core.AFn {
-					return cljs_core.Fn(G__11, 1, func(p__9 interface{}) interface{} {
+				var f = func(G__19 *cljs_core.AFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__19, 1, func(p__17 interface{}) interface{} {
 						{
-							var vec__10 = p__9
-							var k = cljs_core.Nth.X_invoke_Arity3(vec__10, float64(0), nil)
-							var v = cljs_core.Nth.X_invoke_Arity3(vec__10, float64(1), nil)
-							_, _, _ = vec__10, k, v
+							var vec__18 = p__17
+							var k = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(0), nil)
+							var v = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(1), nil)
+							_, _, _ = vec__18, k, v
 							if func() bool { _, instanceof := k.(*cljs_core.CljsCoreKeyword); return instanceof }() {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Name.X_invoke_Arity1(k), v}, nil})
 							} else {
@@ -99,8 +115,8 @@ func init() {
 					})
 				}(&cljs_core.AFn{})
 				_ = f
-				return Postwalk.X_invoke_Arity2(func(G__12 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
-					return cljs_core.Fn(G__12, 1, func(x interface{}) interface{} {
+				return Postwalk.X_invoke_Arity2(func(G__20 *cljs_core.AFn, f cljs_core.CljsCoreIFn) *cljs_core.AFn {
+					return cljs_core.Fn(G__20, 1, func(x interface{}) interface{} {
 						if cljs_core.Map_QMARK_.Arity1IB(x) {
 							return cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, cljs_core.Map_.X_invoke_Arity2(f, x).(*cljs_core.CljsCoreLazySeq))
 						} else {
@@ -114,10 +130,14 @@ func init() {
 
 	Prewalk_replace = func(prewalk_replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(prewalk_replace, 2, func(smap interface{}, form interface{}) interface{} {
-			return Prewalk.X_invoke_Arity2(func(G__13 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__13, 1, func(x interface{}) interface{} {
+			return Prewalk.X_invoke_Arity2(func(G__23 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__23, 1, func(x interface{}) interface{} {
 					if cljs_core.Contains_QMARK_.Arity2IIB(smap, x) {
-						return smap.(cljs_core.CljsCoreIFn).X_invoke_Arity1(x)
+						{
+							var G__22 = x
+							_ = G__22
+							return smap.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__22)
+						}
 					} else {
 						return x
 					}
@@ -128,10 +148,14 @@ func init() {
 
 	Postwalk_replace = func(postwalk_replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(postwalk_replace, 2, func(smap interface{}, form interface{}) interface{} {
-			return Postwalk.X_invoke_Arity2(func(G__14 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__14, 1, func(x interface{}) interface{} {
+			return Postwalk.X_invoke_Arity2(func(G__26 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__26, 1, func(x interface{}) interface{} {
 					if cljs_core.Contains_QMARK_.Arity2IIB(smap, x) {
-						return smap.(cljs_core.CljsCoreIFn).X_invoke_Arity1(x)
+						{
+							var G__25 = x
+							_ = G__25
+							return smap.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__25)
+						}
 					} else {
 						return x
 					}

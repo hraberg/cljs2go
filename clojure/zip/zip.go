@@ -55,7 +55,11 @@ func init() {
 
 	Node = func(node *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(node, 1, func(loc interface{}) interface{} {
-			return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(0))
+			{
+				var G__5 = float64(0)
+				_ = G__5
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__5)
+			}
 		})
 	}(&cljs_core.AFn{})
 
@@ -83,19 +87,31 @@ func init() {
 
 	Path = func(path *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(path, 1, func(loc interface{}) interface{} {
-			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
+			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}).X_invoke_Arity1(func() interface{} {
+				var G__7 = float64(1)
+				_ = G__7
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__7)
+			}())
 		})
 	}(&cljs_core.AFn{})
 
 	Lefts = func(lefts *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(lefts, 1, func(loc interface{}) interface{} {
-			return cljs_core.Seq.Arity1IQ((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1))))
+			return cljs_core.Seq.Arity1IQ((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}).X_invoke_Arity1(func() interface{} {
+				var G__9 = float64(1)
+				_ = G__9
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__9)
+			}()))
 		})
 	}(&cljs_core.AFn{})
 
 	Rights = func(rights *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rights, 1, func(loc interface{}) interface{} {
-			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}).X_invoke_Arity1(loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
+			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}).X_invoke_Arity1(func() interface{} {
+				var G__11 = float64(1)
+				_ = G__11
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__11)
+			}())
 		})
 	}(&cljs_core.AFn{})
 
@@ -103,14 +119,14 @@ func init() {
 		return cljs_core.Fn(down, 1, func(loc interface{}) interface{} {
 			if cljs_core.Truth_(Branch_QMARK_.X_invoke_Arity1(loc)) {
 				{
-					var vec__6 = loc
-					var node = cljs_core.Nth.X_invoke_Arity3(vec__6, float64(0), nil)
-					var path = cljs_core.Nth.X_invoke_Arity3(vec__6, float64(1), nil)
-					var vec__7 = Children.X_invoke_Arity1(loc)
-					var c = cljs_core.Nth.X_invoke_Arity3(vec__7, float64(0), nil)
-					var cnext = cljs_core.Seq_(cljs_core.Nthnext.X_invoke_Arity2(vec__7, float64(1)))
-					var cs = vec__7
-					_, _, _, _, _, _, _ = vec__6, node, path, vec__7, c, cnext, cs
+					var vec__14 = loc
+					var node = cljs_core.Nth.X_invoke_Arity3(vec__14, float64(0), nil)
+					var path = cljs_core.Nth.X_invoke_Arity3(vec__14, float64(1), nil)
+					var vec__15 = Children.X_invoke_Arity1(loc)
+					var c = cljs_core.Nth.X_invoke_Arity3(vec__15, float64(0), nil)
+					var cnext = cljs_core.Seq_(cljs_core.Nthnext.X_invoke_Arity2(vec__15, float64(1)))
+					var cs = vec__15
+					_, _, _, _, _, _, _ = vec__14, node, path, vec__15, c, cnext, cs
 					if cljs_core.Truth_(cs) {
 						return cljs_core.With_meta.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{c, (&cljs_core.CljsCorePersistentArrayMap{nil, float64(4), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}), cljs_core.CljsCorePersistentVector_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}), func() interface{} {
 							if cljs_core.Truth_(path) {
@@ -132,23 +148,23 @@ func init() {
 	Up = func(up *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(up, 1, func(loc interface{}) interface{} {
 			{
-				var vec__10 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__10, float64(0), nil)
-				var map__11 = cljs_core.Nth.X_invoke_Arity3(vec__10, float64(1), nil)
-				var map__11___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__11) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__11)
+				var vec__18 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(0), nil)
+				var map__19 = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(1), nil)
+				var map__19___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__19) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__19)
 					} else {
-						return map__11
+						return map__19
 					}
 				}()
-				var path = map__11___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__11___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var ppath = cljs_core.Get.X_invoke_Arity2(map__11___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "ppath", Fqn: "ppath", X_hash: float64(-1758182784)}))
-				var pnodes = cljs_core.Get.X_invoke_Arity2(map__11___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}))
-				var r = cljs_core.Get.X_invoke_Arity2(map__11___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				var changed_QMARK_ = cljs_core.Get.X_invoke_Arity2(map__11___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "changed?", Fqn: "changed?", X_hash: float64(-437828330)}))
-				_, _, _, _, _, _, _, _, _, _ = vec__10, node, map__11, map__11___1, path, l, ppath, pnodes, r, changed_QMARK_
+				var path = map__19___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__19___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var ppath = cljs_core.Get.X_invoke_Arity2(map__19___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "ppath", Fqn: "ppath", X_hash: float64(-1758182784)}))
+				var pnodes = cljs_core.Get.X_invoke_Arity2(map__19___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}))
+				var r = cljs_core.Get.X_invoke_Arity2(map__19___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				var changed_QMARK_ = cljs_core.Get.X_invoke_Arity2(map__19___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "changed?", Fqn: "changed?", X_hash: float64(-437828330)}))
+				_, _, _, _, _, _, _, _, _, _ = vec__18, node, map__19, map__19___1, path, l, ppath, pnodes, r, changed_QMARK_
 				if cljs_core.Truth_(pnodes) {
 					{
 						var pnode = cljs_core.Peek.X_invoke_Arity1(pnodes)
@@ -179,7 +195,11 @@ func init() {
 	Root = func(root *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(root, 1, func(loc interface{}) interface{} {
 			for {
-				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1))) {
+				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), func() interface{} {
+					var G__21 = float64(1)
+					_ = G__21
+					return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__21)
+				}()) {
 					return Node.X_invoke_Arity1(loc)
 				} else {
 					{
@@ -200,23 +220,23 @@ func init() {
 	Right = func(right *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(right, 1, func(loc interface{}) interface{} {
 			{
-				var vec__15 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__15, float64(0), nil)
-				var map__16 = cljs_core.Nth.X_invoke_Arity3(vec__15, float64(1), nil)
-				var map__16___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__16) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__16)
+				var vec__25 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__25, float64(0), nil)
+				var map__26 = cljs_core.Nth.X_invoke_Arity3(vec__25, float64(1), nil)
+				var map__26___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__26) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__26)
 					} else {
-						return map__16
+						return map__26
 					}
 				}()
-				var path = map__16___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__16___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var vec__17 = cljs_core.Get.X_invoke_Arity2(map__16___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				var r = cljs_core.Nth.X_invoke_Arity3(vec__17, float64(0), nil)
-				var rnext = cljs_core.Seq_(cljs_core.Nthnext.X_invoke_Arity2(vec__17, float64(1)))
-				var rs = vec__17
-				_, _, _, _, _, _, _, _, _, _ = vec__15, node, map__16, map__16___1, path, l, vec__17, r, rnext, rs
+				var path = map__26___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__26___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var vec__27 = cljs_core.Get.X_invoke_Arity2(map__26___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				var r = cljs_core.Nth.X_invoke_Arity3(vec__27, float64(0), nil)
+				var rnext = cljs_core.Seq_(cljs_core.Nthnext.X_invoke_Arity2(vec__27, float64(1)))
+				var rs = vec__27
+				_, _, _, _, _, _, _, _, _, _ = vec__25, node, map__26, map__26___1, path, l, vec__27, r, rnext, rs
 				if cljs_core.Truth_(func() interface{} {
 					var and__159__auto__ = path
 					_ = and__159__auto__
@@ -237,20 +257,20 @@ func init() {
 	Rightmost = func(rightmost *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rightmost, 1, func(loc interface{}) interface{} {
 			{
-				var vec__20 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__20, float64(0), nil)
-				var map__21 = cljs_core.Nth.X_invoke_Arity3(vec__20, float64(1), nil)
-				var map__21___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__21) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__21)
+				var vec__30 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(0), nil)
+				var map__31 = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(1), nil)
+				var map__31___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__31) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__31)
 					} else {
-						return map__21
+						return map__31
 					}
 				}()
-				var path = map__21___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__21___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var r = cljs_core.Get.X_invoke_Arity2(map__21___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				_, _, _, _, _, _, _ = vec__20, node, map__21, map__21___1, path, l, r
+				var path = map__31___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__31___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var r = cljs_core.Get.X_invoke_Arity2(map__31___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				_, _, _, _, _, _, _ = vec__30, node, map__31, map__31___1, path, l, r
 				if cljs_core.Truth_(func() interface{} {
 					var and__159__auto__ = path
 					_ = and__159__auto__
@@ -271,20 +291,20 @@ func init() {
 	Left = func(left *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(left, 1, func(loc interface{}) interface{} {
 			{
-				var vec__24 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__24, float64(0), nil)
-				var map__25 = cljs_core.Nth.X_invoke_Arity3(vec__24, float64(1), nil)
-				var map__25___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__25) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__25)
+				var vec__34 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__34, float64(0), nil)
+				var map__35 = cljs_core.Nth.X_invoke_Arity3(vec__34, float64(1), nil)
+				var map__35___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__35) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__35)
 					} else {
-						return map__25
+						return map__35
 					}
 				}()
-				var path = map__25___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__25___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var r = cljs_core.Get.X_invoke_Arity2(map__25___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				_, _, _, _, _, _, _ = vec__24, node, map__25, map__25___1, path, l, r
+				var path = map__35___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__35___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var r = cljs_core.Get.X_invoke_Arity2(map__35___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				_, _, _, _, _, _, _ = vec__34, node, map__35, map__35___1, path, l, r
 				if cljs_core.Truth_(func() interface{} {
 					var and__159__auto__ = path
 					_ = and__159__auto__
@@ -305,20 +325,20 @@ func init() {
 	Leftmost = func(leftmost *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(leftmost, 1, func(loc interface{}) interface{} {
 			{
-				var vec__28 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__28, float64(0), nil)
-				var map__29 = cljs_core.Nth.X_invoke_Arity3(vec__28, float64(1), nil)
-				var map__29___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__29) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__29)
+				var vec__38 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__38, float64(0), nil)
+				var map__39 = cljs_core.Nth.X_invoke_Arity3(vec__38, float64(1), nil)
+				var map__39___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__39) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__39)
 					} else {
-						return map__29
+						return map__39
 					}
 				}()
-				var path = map__29___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__29___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var r = cljs_core.Get.X_invoke_Arity2(map__29___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				_, _, _, _, _, _, _ = vec__28, node, map__29, map__29___1, path, l, r
+				var path = map__39___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__39___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var r = cljs_core.Get.X_invoke_Arity2(map__39___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				_, _, _, _, _, _, _ = vec__38, node, map__39, map__39___1, path, l, r
 				if cljs_core.Truth_(func() interface{} {
 					var and__159__auto__ = path
 					_ = and__159__auto__
@@ -339,19 +359,19 @@ func init() {
 	Insert_left = func(insert_left *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(insert_left, 2, func(loc interface{}, item interface{}) interface{} {
 			{
-				var vec__32 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__32, float64(0), nil)
-				var map__33 = cljs_core.Nth.X_invoke_Arity3(vec__32, float64(1), nil)
-				var map__33___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__33) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__33)
+				var vec__42 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__42, float64(0), nil)
+				var map__43 = cljs_core.Nth.X_invoke_Arity3(vec__42, float64(1), nil)
+				var map__43___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__43) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__43)
 					} else {
-						return map__33
+						return map__43
 					}
 				}()
-				var path = map__33___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__33___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				_, _, _, _, _, _ = vec__32, node, map__33, map__33___1, path, l
+				var path = map__43___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__43___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				_, _, _, _, _, _ = vec__42, node, map__43, map__43___1, path, l
 				if cljs_core.Nil_(path) {
 					panic("Insert at top")
 				} else {
@@ -364,19 +384,19 @@ func init() {
 	Insert_right = func(insert_right *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(insert_right, 2, func(loc interface{}, item interface{}) interface{} {
 			{
-				var vec__36 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__36, float64(0), nil)
-				var map__37 = cljs_core.Nth.X_invoke_Arity3(vec__36, float64(1), nil)
-				var map__37___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__37) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__37)
+				var vec__46 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__46, float64(0), nil)
+				var map__47 = cljs_core.Nth.X_invoke_Arity3(vec__46, float64(1), nil)
+				var map__47___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__47) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__47)
 					} else {
-						return map__37
+						return map__47
 					}
 				}()
-				var path = map__37___1
-				var r = cljs_core.Get.X_invoke_Arity2(map__37___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				_, _, _, _, _, _ = vec__36, node, map__37, map__37___1, path, r
+				var path = map__47___1
+				var r = cljs_core.Get.X_invoke_Arity2(map__47___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				_, _, _, _, _, _ = vec__46, node, map__47, map__47___1, path, r
 				if cljs_core.Nil_(path) {
 					panic("Insert at top")
 				} else {
@@ -389,10 +409,10 @@ func init() {
 	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(replace, 2, func(loc interface{}, node interface{}) interface{} {
 			{
-				var vec__39 = loc
-				var ___ = cljs_core.Nth.X_invoke_Arity3(vec__39, float64(0), nil)
-				var path = cljs_core.Nth.X_invoke_Arity3(vec__39, float64(1), nil)
-				_, _, _ = vec__39, ___, path
+				var vec__49 = loc
+				var ___ = cljs_core.Nth.X_invoke_Arity3(vec__49, float64(0), nil)
+				var path = cljs_core.Nth.X_invoke_Arity3(vec__49, float64(1), nil)
+				_, _, _ = vec__49, ___, path
 				return cljs_core.With_meta.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{node, cljs_core.Assoc.X_invoke_Arity3(path, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "changed?", Fqn: "changed?", X_hash: float64(-437828330)}), true)}, nil}), cljs_core.Meta.X_invoke_Arity1(loc))
 			}
 		})
@@ -422,7 +442,11 @@ func init() {
 
 	Next = func(next *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(next, 1, func(loc interface{}) interface{} {
-			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1))) {
+			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), func() interface{} {
+				var G__51 = float64(1)
+				_ = G__51
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__51)
+			}()) {
 				return loc
 			} else {
 				{
@@ -520,29 +544,33 @@ func init() {
 
 	End_QMARK_ = func(end_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(end_QMARK_, 1, func(loc interface{}) interface{} {
-			return cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(float64(1)))
+			return cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "end", Fqn: "end", X_hash: float64(-268185958)}), func() interface{} {
+				var G__53 = float64(1)
+				_ = G__53
+				return loc.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__53)
+			}())
 		})
 	}(&cljs_core.AFn{})
 
 	Remove = func(remove *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(remove, 1, func(loc interface{}) interface{} {
 			{
-				var vec__42 = loc
-				var node = cljs_core.Nth.X_invoke_Arity3(vec__42, float64(0), nil)
-				var map__43 = cljs_core.Nth.X_invoke_Arity3(vec__42, float64(1), nil)
-				var map__43___1 = func() interface{} {
-					if cljs_core.Seq_QMARK_.Arity1IB(map__43) {
-						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__43)
+				var vec__56 = loc
+				var node = cljs_core.Nth.X_invoke_Arity3(vec__56, float64(0), nil)
+				var map__57 = cljs_core.Nth.X_invoke_Arity3(vec__56, float64(1), nil)
+				var map__57___1 = func() interface{} {
+					if cljs_core.Seq_QMARK_.Arity1IB(map__57) {
+						return cljs_core.Apply.X_invoke_Arity2(cljs_core.Hash_map, map__57)
 					} else {
-						return map__43
+						return map__57
 					}
 				}()
-				var path = map__43___1
-				var l = cljs_core.Get.X_invoke_Arity2(map__43___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
-				var ppath = cljs_core.Get.X_invoke_Arity2(map__43___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "ppath", Fqn: "ppath", X_hash: float64(-1758182784)}))
-				var pnodes = cljs_core.Get.X_invoke_Arity2(map__43___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}))
-				var rs = cljs_core.Get.X_invoke_Arity2(map__43___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
-				_, _, _, _, _, _, _, _, _ = vec__42, node, map__43, map__43___1, path, l, ppath, pnodes, rs
+				var path = map__57___1
+				var l = cljs_core.Get.X_invoke_Arity2(map__57___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "l", Fqn: "l", X_hash: float64(1395893423)}))
+				var ppath = cljs_core.Get.X_invoke_Arity2(map__57___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "ppath", Fqn: "ppath", X_hash: float64(-1758182784)}))
+				var pnodes = cljs_core.Get.X_invoke_Arity2(map__57___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "pnodes", Fqn: "pnodes", X_hash: float64(1739080565)}))
+				var rs = cljs_core.Get.X_invoke_Arity2(map__57___1, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "r", Fqn: "r", X_hash: float64(-471384190)}))
+				_, _, _, _, _, _, _, _, _ = vec__56, node, map__57, map__57___1, path, l, ppath, pnodes, rs
 				if cljs_core.Nil_(path) {
 					panic("Remove at top")
 				} else {

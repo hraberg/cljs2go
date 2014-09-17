@@ -47,14 +47,19 @@ func init() {
 			{
 				var va = cljs_core.Get.X_invoke_Arity2(a, k)
 				var vb = cljs_core.Get.X_invoke_Arity2(b, k)
-				var vec__7 = Diff.X_invoke_Arity2(va, vb)
-				var a_STAR_ = cljs_core.Nth.X_invoke_Arity3(vec__7, float64(0), nil)
-				var b_STAR_ = cljs_core.Nth.X_invoke_Arity3(vec__7, float64(1), nil)
-				var ab = cljs_core.Nth.X_invoke_Arity3(vec__7, float64(2), nil)
+				var vec__9 = func() interface{} {
+					var G__10 = va
+					var G__11 = vb
+					_, _ = G__10, G__11
+					return Diff.X_invoke_Arity2(G__10, G__11)
+				}()
+				var a_STAR_ = cljs_core.Nth.X_invoke_Arity3(vec__9, float64(0), nil)
+				var b_STAR_ = cljs_core.Nth.X_invoke_Arity3(vec__9, float64(1), nil)
+				var ab = cljs_core.Nth.X_invoke_Arity3(vec__9, float64(2), nil)
 				var in_a = cljs_core.Contains_QMARK_.Arity2IIB(a, k)
 				var in_b = cljs_core.Contains_QMARK_.Arity2IIB(b, k)
 				var same = (in_a) && (in_b) && ((!(cljs_core.Nil_(ab))) || ((cljs_core.Nil_(va)) && (cljs_core.Nil_(vb))))
-				_, _, _, _, _, _, _, _, _ = va, vb, vec__7, a_STAR_, b_STAR_, ab, in_a, in_b, same
+				_, _, _, _, _, _, _, _, _ = va, vb, vec__9, a_STAR_, b_STAR_, ab, in_a, in_b, same
 				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{func() interface{} {
 					if (in_a) && ((!(cljs_core.Nil_(a_STAR_))) || (!(same))) {
 						return cljs_core.CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3([]interface{}{k, a_STAR_}, true, false).(*cljs_core.CljsCorePersistentArrayMap)
@@ -82,8 +87,8 @@ func init() {
 		return cljs_core.Fn(diff_associative, 3, func(a interface{}, b interface{}) interface{} {
 			return diff_associative.X_invoke_Arity3(a, b, clojure_set.Union.X_invoke_Arity2(cljs_core.Keys.X_invoke_Arity1(a), cljs_core.Keys.X_invoke_Arity1(b)))
 		}, func(a interface{}, b interface{}, ks interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(func(G__8 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__8, 2, func(diff1 interface{}, diff2 interface{}) interface{} {
+			return cljs_core.Reduce.X_invoke_Arity3(func(G__15 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__15, 2, func(diff1 interface{}, diff2 interface{}) interface{} {
 					return cljs_core.Doall.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity3(cljs_core.Merge, diff1, diff2).(*cljs_core.CljsCoreLazySeq))
 				})
 			}(&cljs_core.AFn{}), (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, nil}, nil}), cljs_core.Map_.X_invoke_Arity2(cljs_core.Partial.X_invoke_Arity3(Diff_associative_key, a, b).(cljs_core.CljsCoreIFn), ks).(*cljs_core.CljsCoreLazySeq))

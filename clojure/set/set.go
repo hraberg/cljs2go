@@ -115,9 +115,13 @@ func init() {
 
 	Select_ = func(select_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(select_, 2, func(pred interface{}, xset interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(func(G__7 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__7, 2, func(s interface{}, k interface{}) interface{} {
-					if cljs_core.Truth_(pred.(cljs_core.CljsCoreIFn).X_invoke_Arity1(k)) {
+			return cljs_core.Reduce.X_invoke_Arity3(func(G__9 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__9, 2, func(s interface{}, k interface{}) interface{} {
+					if cljs_core.Truth_(func() interface{} {
+						var G__8 = k
+						_ = G__8
+						return pred.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__8)
+					}()) {
 						return s
 					} else {
 						return cljs_core.Disj.X_invoke_Arity2(s, k)
@@ -129,9 +133,9 @@ func init() {
 
 	Project = func(project *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(project, 2, func(xrel interface{}, ks interface{}) interface{} {
-			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__9 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__9, 1, func(p1__8_SHARP_ interface{}) interface{} {
-					return cljs_core.Select_keys.X_invoke_Arity2(p1__8_SHARP_, ks).(cljs_core.CljsCoreIMap)
+			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__11 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__11, 1, func(p1__10_SHARP_ interface{}) interface{} {
+					return cljs_core.Select_keys.X_invoke_Arity2(p1__10_SHARP_, ks).(cljs_core.CljsCoreIMap)
 				})
 			}(&cljs_core.AFn{}), xrel).(*cljs_core.CljsCoreLazySeq))
 		})
@@ -139,13 +143,13 @@ func init() {
 
 	Rename_keys = func(rename_keys *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rename_keys, 2, func(map_ interface{}, kmap interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(func(G__14 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__14, 2, func(m interface{}, p__12 interface{}) interface{} {
+			return cljs_core.Reduce.X_invoke_Arity3(func(G__16 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__16, 2, func(m interface{}, p__14 interface{}) interface{} {
 					{
-						var vec__13 = p__12
-						var old = cljs_core.Nth.X_invoke_Arity3(vec__13, float64(0), nil)
-						var new = cljs_core.Nth.X_invoke_Arity3(vec__13, float64(1), nil)
-						_, _, _ = vec__13, old, new
+						var vec__15 = p__14
+						var old = cljs_core.Nth.X_invoke_Arity3(vec__15, float64(0), nil)
+						var new = cljs_core.Nth.X_invoke_Arity3(vec__15, float64(1), nil)
+						_, _, _ = vec__15, old, new
 						if cljs_core.Contains_QMARK_.Arity2IIB(map_, old) {
 							return cljs_core.Assoc.X_invoke_Arity3(m, new, cljs_core.Get.X_invoke_Arity2(map_, old))
 						} else {
@@ -159,9 +163,9 @@ func init() {
 
 	Rename = func(rename *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(rename, 2, func(xrel interface{}, kmap interface{}) interface{} {
-			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__16 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__16, 1, func(p1__15_SHARP_ interface{}) interface{} {
-					return Rename_keys.X_invoke_Arity2(p1__15_SHARP_, kmap)
+			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__18 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__18, 1, func(p1__17_SHARP_ interface{}) interface{} {
+					return Rename_keys.X_invoke_Arity2(p1__17_SHARP_, kmap)
 				})
 			}(&cljs_core.AFn{}), xrel).(*cljs_core.CljsCoreLazySeq))
 		})
@@ -169,8 +173,8 @@ func init() {
 
 	Index = func(index *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(index, 2, func(xrel interface{}, ks interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(func(G__17 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__17, 2, func(m interface{}, x interface{}) interface{} {
+			return cljs_core.Reduce.X_invoke_Arity3(func(G__19 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__19, 2, func(m interface{}, x interface{}) interface{} {
 					{
 						var ik = cljs_core.Select_keys.X_invoke_Arity2(x, ks).(cljs_core.CljsCoreIMap)
 						_ = ik
@@ -183,13 +187,13 @@ func init() {
 
 	Map_invert = func(map_invert *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(map_invert, 1, func(m interface{}) interface{} {
-			return cljs_core.Reduce.X_invoke_Arity3(func(G__22 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__22, 2, func(m___1 interface{}, p__20 interface{}) interface{} {
+			return cljs_core.Reduce.X_invoke_Arity3(func(G__24 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__24, 2, func(m___1 interface{}, p__22 interface{}) interface{} {
 					{
-						var vec__21 = p__20
-						var k = cljs_core.Nth.X_invoke_Arity3(vec__21, float64(0), nil)
-						var v = cljs_core.Nth.X_invoke_Arity3(vec__21, float64(1), nil)
-						_, _, _ = vec__21, k, v
+						var vec__23 = p__22
+						var k = cljs_core.Nth.X_invoke_Arity3(vec__23, float64(0), nil)
+						var v = cljs_core.Nth.X_invoke_Arity3(vec__23, float64(1), nil)
+						_, _, _ = vec__23, k, v
 						return cljs_core.Assoc.X_invoke_Arity3(m___1, v, k)
 					}
 				})
@@ -210,78 +214,86 @@ func init() {
 			}()) {
 				{
 					var ks = Intersection.X_invoke_Arity2(cljs_core.Set.X_invoke_Arity1(cljs_core.Keys.X_invoke_Arity1(cljs_core.First.X_invoke_Arity1(xrel))), cljs_core.Set.X_invoke_Arity1(cljs_core.Keys.X_invoke_Arity1(cljs_core.First.X_invoke_Arity1(yrel))))
-					var vec__29 = func() cljs_core.CljsCoreIVector {
+					var vec__33 = func() cljs_core.CljsCoreIVector {
 						if cljs_core.Count.X_invoke_Arity1(xrel).(float64) <= cljs_core.Count.X_invoke_Arity1(yrel).(float64) {
 							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel}, nil})
 						} else {
 							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel}, nil})
 						}
 					}()
-					var r = cljs_core.Nth.X_invoke_Arity3(vec__29, float64(0), nil)
-					var s = cljs_core.Nth.X_invoke_Arity3(vec__29, float64(1), nil)
+					var r = cljs_core.Nth.X_invoke_Arity3(vec__33, float64(0), nil)
+					var s = cljs_core.Nth.X_invoke_Arity3(vec__33, float64(1), nil)
 					var idx = Index.X_invoke_Arity2(r, ks)
-					_, _, _, _, _ = ks, vec__29, r, s, idx
-					return cljs_core.Reduce.X_invoke_Arity3(func(G__31 *cljs_core.AFn, ks interface{}, vec__29 cljs_core.CljsCoreIVector, r interface{}, s interface{}, idx interface{}) *cljs_core.AFn {
-						return cljs_core.Fn(G__31, 2, func(ret interface{}, x interface{}) interface{} {
+					_, _, _, _, _ = ks, vec__33, r, s, idx
+					return cljs_core.Reduce.X_invoke_Arity3(func(G__37 *cljs_core.AFn, ks interface{}, vec__33 cljs_core.CljsCoreIVector, r interface{}, s interface{}, idx interface{}) *cljs_core.AFn {
+						return cljs_core.Fn(G__37, 2, func(ret interface{}, x interface{}) interface{} {
 							{
-								var found = idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(cljs_core.Select_keys.X_invoke_Arity2(x, ks).(cljs_core.CljsCoreIMap))
+								var found = func() interface{} {
+									var G__34 = cljs_core.Select_keys.X_invoke_Arity2(x, ks).(cljs_core.CljsCoreIMap)
+									_ = G__34
+									return idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__34)
+								}()
 								_ = found
 								if cljs_core.Truth_(found) {
-									return cljs_core.Reduce.X_invoke_Arity3(func(G__32 *cljs_core.AFn, found interface{}, ks interface{}, vec__29 cljs_core.CljsCoreIVector, r interface{}, s interface{}, idx interface{}) *cljs_core.AFn {
-										return cljs_core.Fn(G__32, 2, func(p1__23_SHARP_ interface{}, p2__24_SHARP_ interface{}) interface{} {
-											return cljs_core.Conj.X_invoke_Arity2(p1__23_SHARP_, cljs_core.Merge.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{p2__24_SHARP_, x})))
+									return cljs_core.Reduce.X_invoke_Arity3(func(G__38 *cljs_core.AFn, found interface{}, ks interface{}, vec__33 cljs_core.CljsCoreIVector, r interface{}, s interface{}, idx interface{}) *cljs_core.AFn {
+										return cljs_core.Fn(G__38, 2, func(p1__25_SHARP_ interface{}, p2__26_SHARP_ interface{}) interface{} {
+											return cljs_core.Conj.X_invoke_Arity2(p1__25_SHARP_, cljs_core.Merge.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{p2__26_SHARP_, x})))
 										})
-									}(&cljs_core.AFn{}, found, ks, vec__29, r, s, idx), ret, found)
+									}(&cljs_core.AFn{}, found, ks, vec__33, r, s, idx), ret, found)
 								} else {
 									return ret
 								}
 							}
 						})
-					}(&cljs_core.AFn{}, ks, vec__29, r, s, idx), cljs_core.CljsCorePersistentHashSet_EMPTY, s)
+					}(&cljs_core.AFn{}, ks, vec__33, r, s, idx), cljs_core.CljsCorePersistentHashSet_EMPTY, s)
 				}
 			} else {
 				return cljs_core.CljsCorePersistentHashSet_EMPTY
 			}
 		}, func(xrel interface{}, yrel interface{}, km interface{}) interface{} {
 			{
-				var vec__30 = func() cljs_core.CljsCoreIVector {
+				var vec__35 = func() cljs_core.CljsCoreIVector {
 					if cljs_core.Count.X_invoke_Arity1(xrel).(float64) <= cljs_core.Count.X_invoke_Arity1(yrel).(float64) {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{xrel, yrel, Map_invert.X_invoke_Arity1(km)}, nil})
 					} else {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{yrel, xrel, km}, nil})
 					}
 				}()
-				var r = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(0), nil)
-				var s = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(1), nil)
-				var k = cljs_core.Nth.X_invoke_Arity3(vec__30, float64(2), nil)
+				var r = cljs_core.Nth.X_invoke_Arity3(vec__35, float64(0), nil)
+				var s = cljs_core.Nth.X_invoke_Arity3(vec__35, float64(1), nil)
+				var k = cljs_core.Nth.X_invoke_Arity3(vec__35, float64(2), nil)
 				var idx = Index.X_invoke_Arity2(r, cljs_core.Vals.X_invoke_Arity1(k))
-				_, _, _, _, _ = vec__30, r, s, k, idx
-				return cljs_core.Reduce.X_invoke_Arity3(func(G__33 *cljs_core.AFn, vec__30 cljs_core.CljsCoreIVector, r interface{}, s interface{}, k interface{}, idx interface{}) *cljs_core.AFn {
-					return cljs_core.Fn(G__33, 2, func(ret interface{}, x interface{}) interface{} {
+				_, _, _, _, _ = vec__35, r, s, k, idx
+				return cljs_core.Reduce.X_invoke_Arity3(func(G__39 *cljs_core.AFn, vec__35 cljs_core.CljsCoreIVector, r interface{}, s interface{}, k interface{}, idx interface{}) *cljs_core.AFn {
+					return cljs_core.Fn(G__39, 2, func(ret interface{}, x interface{}) interface{} {
 						{
-							var found = idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(Rename_keys.X_invoke_Arity2(cljs_core.Select_keys.X_invoke_Arity2(x, cljs_core.Keys.X_invoke_Arity1(k)).(cljs_core.CljsCoreIMap), k))
+							var found = func() interface{} {
+								var G__36 = Rename_keys.X_invoke_Arity2(cljs_core.Select_keys.X_invoke_Arity2(x, cljs_core.Keys.X_invoke_Arity1(k)).(cljs_core.CljsCoreIMap), k)
+								_ = G__36
+								return idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__36)
+							}()
 							_ = found
 							if cljs_core.Truth_(found) {
-								return cljs_core.Reduce.X_invoke_Arity3(func(G__34 *cljs_core.AFn, found interface{}, vec__30 cljs_core.CljsCoreIVector, r interface{}, s interface{}, k interface{}, idx interface{}) *cljs_core.AFn {
-									return cljs_core.Fn(G__34, 2, func(p1__25_SHARP_ interface{}, p2__26_SHARP_ interface{}) interface{} {
-										return cljs_core.Conj.X_invoke_Arity2(p1__25_SHARP_, cljs_core.Merge.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{p2__26_SHARP_, x})))
+								return cljs_core.Reduce.X_invoke_Arity3(func(G__40 *cljs_core.AFn, found interface{}, vec__35 cljs_core.CljsCoreIVector, r interface{}, s interface{}, k interface{}, idx interface{}) *cljs_core.AFn {
+									return cljs_core.Fn(G__40, 2, func(p1__27_SHARP_ interface{}, p2__28_SHARP_ interface{}) interface{} {
+										return cljs_core.Conj.X_invoke_Arity2(p1__27_SHARP_, cljs_core.Merge.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{p2__28_SHARP_, x})))
 									})
-								}(&cljs_core.AFn{}, found, vec__30, r, s, k, idx), ret, found)
+								}(&cljs_core.AFn{}, found, vec__35, r, s, k, idx), ret, found)
 							} else {
 								return ret
 							}
 						}
 					})
-				}(&cljs_core.AFn{}, vec__30, r, s, k, idx), cljs_core.CljsCorePersistentHashSet_EMPTY, s)
+				}(&cljs_core.AFn{}, vec__35, r, s, k, idx), cljs_core.CljsCorePersistentHashSet_EMPTY, s)
 			}
 		})
 	}(&cljs_core.AFn{})
 
 	Subset_QMARK_ = func(subset_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(subset_QMARK_, 2, func(set1 interface{}, set2 interface{}) interface{} {
-			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) <= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__36 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__36, 1, func(p1__35_SHARP_ interface{}) interface{} {
-					return cljs_core.Contains_QMARK_.Arity2IIB(set2, p1__35_SHARP_)
+			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) <= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__42 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__42, 1, func(p1__41_SHARP_ interface{}) interface{} {
+					return cljs_core.Contains_QMARK_.Arity2IIB(set2, p1__41_SHARP_)
 				})
 			}(&cljs_core.AFn{}), set1))
 		})
@@ -289,9 +301,9 @@ func init() {
 
 	Superset_QMARK_ = func(superset_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(superset_QMARK_, 2, func(set1 interface{}, set2 interface{}) interface{} {
-			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) >= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__38 *cljs_core.AFn) *cljs_core.AFn {
-				return cljs_core.Fn(G__38, 1, func(p1__37_SHARP_ interface{}) interface{} {
-					return cljs_core.Contains_QMARK_.Arity2IIB(set1, p1__37_SHARP_)
+			return (cljs_core.Count.X_invoke_Arity1(set1).(float64) >= cljs_core.Count.X_invoke_Arity1(set2).(float64)) && (cljs_core.Every_QMARK_.Arity2IIB(func(G__44 *cljs_core.AFn) *cljs_core.AFn {
+				return cljs_core.Fn(G__44, 1, func(p1__43_SHARP_ interface{}) interface{} {
+					return cljs_core.Contains_QMARK_.Arity2IIB(set1, p1__43_SHARP_)
 				})
 			}(&cljs_core.AFn{}), set2))
 		})

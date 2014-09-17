@@ -7,9 +7,8 @@ import (
 	"reflect"
 
 	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	"github.com/hraberg/cljs.go/js"
-
 	goog_string "github.com/hraberg/cljs.go/goog/string"
+	"github.com/hraberg/cljs.go/js"
 )
 
 func init() {
@@ -28,7 +27,11 @@ func init() {
 	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(replace, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
 			if reflect.ValueOf(match).Kind() == reflect.String {
-				return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.RegExpEscape, []interface{}{match}), "g"}), replacement})
+				return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{func() interface{} {
+					var G__2 = match
+					_ = G__2
+					return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.RegExpEscape, []interface{}{G__2})
+				}(), "g"}), replacement})
 			} else {
 				if cljs_core.Truth_(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(match, "HasOwnProperty", []interface{}{"source"})) {
 					return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Source"), "g"}), replacement})
@@ -109,13 +112,23 @@ func init() {
 				return cljs_core.Conj.X_invoke_Arity2(cljs_core.Vec.X_invoke_Arity1(cljs_core.Cons.X_invoke_Arity2("", cljs_core.Map_.X_invoke_Arity2(cljs_core.Str, cljs_core.Seq.Arity1IQ(s)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)), "")
 			} else {
 				{
-					var pred__4 = cljs_core.X_EQ_
-					var expr__5 = limit
-					_, _ = pred__4, expr__5
-					if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(1), expr__5)) {
+					var pred__10 = cljs_core.X_EQ_
+					var expr__11 = limit
+					_, _ = pred__10, expr__11
+					if cljs_core.Truth_(func() interface{} {
+						var G__13 = float64(1)
+						var G__14 = expr__11
+						_, _ = G__13, G__14
+						return pred__10.X_invoke_Arity2(G__13, G__14)
+					}()) {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{s}, nil})
 					} else {
-						if cljs_core.Truth_(pred__4.X_invoke_Arity2(float64(2), expr__5)) {
+						if cljs_core.Truth_(func() interface{} {
+							var G__15 = float64(2)
+							var G__16 = expr__11
+							_, _ = G__15, G__16
+							return pred__10.X_invoke_Arity2(G__15, G__16)
+						}()) {
 							return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"", s}, nil})
 						} else {
 							{
@@ -187,19 +200,31 @@ func init() {
 
 	Trim = func(trim *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(trim, 1, func(s interface{}) interface{} {
-			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.Trim, []interface{}{s})
+			{
+				var G__21 = s
+				_ = G__21
+				return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.Trim, []interface{}{G__21})
+			}
 		})
 	}(&cljs_core.AFn{})
 
 	Triml = func(triml *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(triml, 1, func(s interface{}) interface{} {
-			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimLeft, []interface{}{s})
+			{
+				var G__23 = s
+				_ = G__23
+				return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimLeft, []interface{}{G__23})
+			}
 		})
 	}(&cljs_core.AFn{})
 
 	Trimr = func(trimr *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(trimr, 1, func(s interface{}) interface{} {
-			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimRight, []interface{}{s})
+			{
+				var G__25 = s
+				_ = G__25
+				return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.TrimRight, []interface{}{G__25})
+			}
 		})
 	}(&cljs_core.AFn{})
 
@@ -230,7 +255,11 @@ func init() {
 
 	Blank_QMARK_ = func(blank_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(blank_QMARK_, 1, func(s interface{}) interface{} {
-			return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.IsEmptySafe, []interface{}{s})
+			{
+				var G__27 = s
+				_ = G__27
+				return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.IsEmptySafe, []interface{}{G__27})
+			}
 		})
 	}(&cljs_core.AFn{})
 
@@ -251,13 +280,13 @@ func init() {
 								var ch = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "CharAt", []interface{}{index})
 								_ = ch
 								{
-									var temp__4220__auto___7 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
-									_ = temp__4220__auto___7
-									if cljs_core.Truth_(temp__4220__auto___7) {
+									var temp__4220__auto___28 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
+									_ = temp__4220__auto___28
+									if cljs_core.Truth_(temp__4220__auto___28) {
 										{
-											var replacement_8 = temp__4220__auto___7
-											_ = replacement_8
-											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_8).(string)))
+											var replacement_29 = temp__4220__auto___28
+											_ = replacement_29
+											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_29).(string)))
 										}
 									} else {
 										buffer.Append(ch)

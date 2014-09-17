@@ -950,6 +950,13 @@
                          `(~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
                                             "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))
                          assoc :tag (real-tag (-> fname meta :tag) object?))))
+        psym   (vary-meta psym assoc-in [:protocol-info :methods]
+                 (into {}
+                   (map
+                     (fn [[fname & sigs]]
+                       (let [sigs (take-while vector? sigs)]
+                         [fname (vec sigs)]))
+                     methods)))
         method-sigs (fn [arity-limit sigs] (take arity-limit (sort-by count (take-while vector? sigs))))
         method (fn [[fname & sigs]]
                  (let [fname (vary-meta fname assoc :protocol p :tag (real-tag (-> fname meta :tag) object?))]
