@@ -88,6 +88,9 @@ func Test_Int32BitOperations(t *testing.T) {
 		Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
 
 	assert.Equal(t, -2023406815.0, Int32_(float64(int(float64(2271560481))|int(float64(0)))))
+
+	assert.Equal(t, Hash.X_invoke_Arity1((&CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)})),
+		Hash.X_invoke_Arity1(Keyword.X_invoke_Arity1("a")))
 }
 
 func Test_PrimitiveFn(t *testing.T) {

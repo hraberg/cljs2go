@@ -3285,7 +3285,7 @@ func init() {
 
 	Hash_keyword = func(hash_keyword *AFn) *AFn {
 		return Fn(hash_keyword, 1, func(k interface{}) interface{} {
-			return math.Trunc((Hash_symbol.X_invoke_Arity1(k).(float64) + float64(2654435769)))
+			return float64(Int32_((Hash_symbol.X_invoke_Arity1(k).(float64) + float64(2654435769))))
 		})
 	}(&AFn{})
 

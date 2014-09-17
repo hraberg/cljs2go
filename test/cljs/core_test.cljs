@@ -1561,9 +1561,8 @@
              (hash (hash-map :b 2 :a 1))))
   (assert (= (hash {:start 133 :end 134})
              (hash (apply hash-map [:start 133 :end 134]))))
-  ;; FAILURE - compile time and runtime hashes are different.
-  ;; (assert (= (hash :a)
-  ;;            (hash (keyword "a"))))
+  (assert (= (hash :a)
+             (hash (keyword "a"))))
 
   (defprotocol IHasFirst
     (-get-first [this]))
@@ -1941,9 +1940,8 @@
 
   ;; ;; compile time run symbol hash codes
 
-  ;; FAILURE - as the comment says.
-  ;; (assert (= (hash 'foo) (hash (symbol "foo"))))
-  ;; (assert (= (hash 'foo/bar) (hash (symbol "foo" "bar"))))
+  (assert (= (hash 'foo) (hash (symbol "foo"))))
+  (assert (= (hash 'foo/bar) (hash (symbol "foo" "bar"))))
 
   (assert (= (lazy-cat [1] [2] [3]) '(1 2 3)))
 

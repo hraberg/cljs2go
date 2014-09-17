@@ -505,7 +505,7 @@
   ([x y & more] `(bit-or (bit-or ~x ~y) ~@more)))
 
 (defmacro ^::ana/numeric int [x]
-  `(~'js* "math.Trunc(~{})" ~x))
+  `(~'js* ~(with-32bit-ints "int(~{})") ~x))
 
 (defmacro ^::ana/numeric bit-xor
   ([x y] (core/list 'js* (with-32bit-ints "(int(~{}) ^ int(~{}))") x y))
