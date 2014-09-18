@@ -505,7 +505,7 @@
   (assert (= (partition-all 4 2 [1 2 3 4 5 6 7 8 9])
              [[1 2 3 4] [3 4 5 6] [5 6 7 8] [7 8 9] [9]]))
   (assert (= [true true] (take-while true? [true true 2 3 4])))
-  ;; FAILURE - unknown
+  ;; FAILURE - goes into an infinite loop.
   ;; (assert (= [[true true] [false false false] [true true]]
   ;;            (partition-by true? [true true false false false true true])))
   (assert (= [0 2 4 6 8 10] (take-nth 2 [0 1 2 3 4 5 6 7 8 9 10])))
@@ -618,7 +618,7 @@
   (assert (= (distinct [#{1 2} #{1 2}]) [#{1 2}]))
   (assert (= (distinct [#{} #{}]) [#{}]))
 
-  ;; FAILURE - need just enough support for "js" regexps
+  ;; FAILURE - need just enough support for "js" regexps.
   ;; ;;regexps
   ;; (assert (= (str (re-pattern "f(.)o")) (str (js* "/f(.)o/"))))
   ;; (assert (= (re-find (re-pattern "foo") "foo bar foo baz foo zot") "foo"))
@@ -679,7 +679,7 @@
     (assert (= (seq a) (seq (to-array [1 2 3]))))
     (assert (= 42 (aset a 0 42)))
     (assert (not= (seq a) (seq (to-array [1 2 3]))))
-    ;; FAILURE - array equals, no fix.
+    ;; FAILURE - array equals, no fix?
     ;; (assert (not= a (aclone a)))
 )
 
@@ -1319,7 +1319,7 @@
             expected (repeat n {:foo :bar})]
         (assert (= result expected)))))
 
-  ;; FAILURE - needs fewer type assertions
+  ;; FAILURE - needs fewer type assertions.
   ;; ;; TransientHashSet
   ;; (loop [s (transient #{})
   ;;        i 0]
@@ -1875,7 +1875,7 @@
              (try (throw (ex-info "asdf" {:foo 1}))
                   (catch ExceptionInfo e
                     (ex-data e)))))
-  ;; FAILURE - ex-info is a Go error, but doesn't inherit js/Error. More generally, instance? is only working for protocols.
+  ;; FAILURE - ex-info is a Go error, but doesn't inherit js/Error.
   ;; (assert (instance? js/Error (ex-info "asdf" {:foo 1})))
   ;; (assert (not (instance? cljs.core.ExceptionInfo (js/Error.))))
 
