@@ -40,7 +40,10 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 40, date.GetUTCMinutes())
 	assert.Equal(t, 32, date.GetUTCSeconds())
 	assert.Equal(t, 671, date.GetUTCMilliseconds())
-	assert.Equal(t, "2014-08-13 21:40:32.000671 +0100 BST", date.String())
+	assert.Equal(t, 1407962432671, date.GetTime())
+	assert.Equal(t, "2014-08-13 21:40:32.671 +0100 BST", date.String())
+	assert.Equal(t, 1289585655666, (&Date{"2010-11-12T13:14:15.666-05:00"}).GetTime())
+	assert.Equal(t, 666, (&Date{"2010-11-12T13:14:15.666-05:00"}).GetUTCMilliseconds())
 
 	assert.Equal(t, 3.14, ParseFloat("3.14"))
 	assert.Equal(t, math.NaN(), ParseFloat(""))

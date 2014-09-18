@@ -36,11 +36,26 @@ type JSNumber float64
 var Undefined interface{}
 
 type Date struct {
-	Millis float64
+	Millis interface{}
 }
 
 func (this *Date) time() time.Time {
-	return time.Unix(int64(this.Millis)/1000, 1000*(int64(this.Millis)%1000))
+	switch d := this.Millis.(type) {
+	case string:
+		if t, ok := time.Parse("2006-01-02T15:04:05.000-07:00", d); ok == nil {
+			return t
+		}
+	case float64:
+		return time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
+	case int:
+		return time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
+	}
+	panic(&Error{fmt.Sprint("Unknown date type: %v", this.Millis)})
+
+}
+
+func (this *Date) GetTime() float64 {
+	return float64(this.time().UTC().UnixNano() / (1000 * 1000))
 }
 
 func (this *Date) GetUTCFullYear() float64 {
@@ -68,7 +83,7 @@ func (this *Date) GetUTCSeconds() float64 {
 }
 
 func (this *Date) GetUTCMilliseconds() float64 {
-	return float64(this.time().UTC().Nanosecond() / 1000)
+	return float64(this.time().UTC().Nanosecond() / (1000 * 1000))
 }
 
 func (this *Date) String() string {

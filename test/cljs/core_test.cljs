@@ -1800,18 +1800,16 @@
 
   ;; ;;; pr-str inst
 
-  (assert (= (pr-str (js/Date. 1289585655666 ;"2010-11-12T13:14:15.666-05:00"
-                               ))
+  (assert (= (pr-str (js/Date. "2010-11-12T13:14:15.666-05:00"))
              "#inst \"2010-11-12T18:14:15.666-00:00\""))
 
-  ;; FAILURE - would need Date to handle string initial value, use of JS compability question.
-  ;; (doseq [month (range 1 13) day (range 1 29) hour (range 1 23)]
-  ;;   (let [pad (fn [n]
-  ;;               (if (< n 10)
-  ;;                 (str "0" n)
-  ;;                 n))
-  ;;         inst (str "2010-" (pad month) "-" (pad day) "T" (pad hour) ":14:15.666-00:00")]
-  ;;     (assert (= (pr-str (js/Date. inst)) (str "#inst \"" inst "\"")))))
+  (doseq [month (range 1 13) day (range 1 29) hour (range 1 23)]
+    (let [pad (fn [n]
+                (if (< n 10)
+                  (str "0" n)
+                  n))
+          inst (str "2010-" (pad month) "-" (pad day) "T" (pad hour) ":14:15.666-00:00")]
+      (assert (= (pr-str (js/Date. inst)) (str "#inst \"" inst "\"")))))
 
   ;; ;;; pr-str uuid
 
