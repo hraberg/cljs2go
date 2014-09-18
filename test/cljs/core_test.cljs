@@ -919,14 +919,13 @@
   (assert (true? (isa? 42 42)))
   (assert (true? (isa? ::square ::shape)))
 
-  ;; FAILURE - ObjMap isn't supported, buy PHS should work, needs type literals.
   ;; (derive cljs.core.ObjMap ::collection)
-  ;; (derive cljs.core.PersistentHashSet ::collection)
+  (derive cljs.core/PersistentHashSet ::collection)
   ;; (assert (true? (isa? cljs.core.ObjMap ::collection)))
-  ;; (assert (true? (isa? cljs.core.PersistentHashSet ::collection)))
-  ;; (assert (false? (isa? cljs.core.IndexedSeq ::collection)))
+  (assert (true? (isa? cljs.core/PersistentHashSet ::collection)))
+  (assert (false? (isa? cljs.core/IndexedSeq ::collection)))
   ;; ;; ?? (isa? String Object)
-  ;; (assert (true? (isa? [::square ::rect] [::shape ::shape])))
+  (assert (true? (isa? [::square ::rect] [::shape ::shape])))
   ;; ;; ?? (ancestors java.util.ArrayList)
 
   ;; ;; ?? isa? based dispatch tests
