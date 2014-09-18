@@ -2436,10 +2436,9 @@
           (throw (ex-info "CLJS-849 regression!"
                    {:m (persistent! m) :xs xs}))))))
 
-  ;; :ok
-  )
+  :ok)
 
 ^:top-level (js*
 "func Test_runner(t *testing.T) {
-    ~{}
-}" (test-stuff))
+    assert.Equal(t, ~{}, ~{})
+}" :ok (test-stuff))
