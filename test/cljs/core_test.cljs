@@ -2275,7 +2275,7 @@
 
   ;; ;; basic iteration
 
-  ;; FAILURE - doesn't work for some reason.
+  ;; FAILURE - doesn't work as it uses a js-obj with the .-value and .-done keys internally.
   ;; (def iter (iterator [1 2 3]))
 
   ;; (assert (= (.-value (.next iter)) 1))
