@@ -106,6 +106,7 @@
      cljs.core/js->clj
      cljs.core/key->js
      cljs.core/clj->js})
+(def ^:dynamic *go-skip-protocol* '{cljs.core/TransientArrayMap #{cljs.core/ITransientMap}})
 
 (defmacro ^:private debug-prn
   [& args]
@@ -706,8 +707,8 @@
               *go-protocol* protocol
               *go-protocol-fn* (:name name)
               *go-protocol-this* (first params)]
-      (emit-fn-body type expr recurs)))
-  (emitln "}"))
+      (emit-fn-body type expr recurs))
+    (emitln "}")))
 
 (defn emit-variadic-fn-method
   [{:keys [type name variadic params expr env recurs max-fixed-arity] :as f}]

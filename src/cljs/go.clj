@@ -161,6 +161,7 @@
           (with-fresh-ids
             (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]
               (binding [ana/*cljs-ns* compiled-ns
+                        cljs.compiler/*go-skip-protocol* {}
                         cljs.compiler/*go-skip-def* #{}]
                 (maybe-add-overrides dir))
               (goimports-file target)

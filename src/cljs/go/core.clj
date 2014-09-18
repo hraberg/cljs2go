@@ -754,17 +754,18 @@
 (defn proto-assign-impls [env resolve type-sym type [p sigs]]
   (warn-and-update-protocol p type env)
   (let [psym      (resolve p)]
-    (cons
-     `(do ^:top-level (~'js* "func (_ *~{})~{}__() {}" ~type-sym ~(symbol (cljs.compiler/go-type-fqn psym))))
-     (if (= p 'Object)
-       (add-obj-methods type type-sym sigs)
-       (concat
-        (mapcat
-         (fn [sig]
-           (if (= psym 'cljs.core/IFn)
-             (add-ifn-methods type type-sym sig)
-             (add-proto-methods* psym type type-sym sig)))
-         sigs))))))
+    (when-not (get-in cljs.compiler/*go-skip-protocol* [type psym])
+      (cons
+       `(do ^:top-level (~'js* "func (_ *~{})~{}__() {}" ~type-sym ~(symbol (cljs.compiler/go-type-fqn psym))))
+       (if (= p 'Object)
+         (add-obj-methods type type-sym sigs)
+         (concat
+          (mapcat
+           (fn [sig]
+             (if (= psym 'cljs.core/IFn)
+               (add-ifn-methods type type-sym sig)
+               (add-proto-methods* psym type type-sym sig)))
+           sigs)))))))
 
 (core/declare dt->et collect-protocols)
 

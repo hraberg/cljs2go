@@ -317,5 +317,19 @@
   [p x]
   ^boolean (js* "value(decorate(~{})).Type().Implements(protocols[~{}])" x (str p)))
 
+(extend-type TransientArrayMap
+  ITransientMap
+  (-dissoc! [tcoll key]
+    (if editable?
+      (let [idx (array-map-index-of tcoll key)]
+        (when (>= idx 0)
+          (aset arr idx (aget arr (- len 2)))
+          (aset arr (inc idx) (aget arr (dec len)))
+          (.pop arr)
+          (.pop arr)
+          (set! len (- len 2)))
+        tcoll)
+      (throw (js/Error. "dissoc! after persistent!")))))
+
 ;; There are two protocols in clojure.data, EqualityPartition and Diff which extend the base types and default which gets skipped.
 ;; There are also the extent-type calls at start of core.cljs we aren't dealing with.

@@ -2109,8 +2109,7 @@
   (assert (= (-> (transient []) (conj! 1 2) persistent!) [1 2]))
   (assert (= (-> (transient #{1 2 3}) (disj! 1 2) persistent!) #{3}))
   (assert (= (-> (transient {}) (assoc! :a 1 :b 2) persistent!) {:a 1 :b 2}))
-  ;; FAILURE - haven't looked to why.
-  ;; (assert (= (-> (transient {:a 1 :b 2 :c 3}) (dissoc! :a :b) persistent!) {:c 3}))
+  (assert (= (-> (transient {:a 1 :b 2 :c 3}) (dissoc! :a :b) persistent!) {:c 3}))
 
   ;; ;; CLJS-767
 
