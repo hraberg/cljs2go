@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2322
+// Compiled by ClojureScript to Go 0.0-2341
 // cljs.core
 
 package core
@@ -101,13 +101,13 @@ func init() {
 				var new_arr = make([]interface{}, int(len))
 				_, _ = len, new_arr
 				{
-					var n__1045__auto___4030 = len
-					_ = n__1045__auto___4030
+					var n__1054__auto___4030 = len
+					_ = n__1054__auto___4030
 					{
 						var i_4031 = float64(0)
 						_ = i_4031
 						for {
-							if i_4031 < n__1045__auto___4030 {
+							if i_4031 < n__1054__auto___4030 {
 								new_arr[int(i_4031)] = Aget_(arr, i_4031)
 								i_4031 = (i_4031 + float64(1))
 								continue
@@ -206,12 +206,12 @@ func init() {
 			return this.(CljsCoreIFn).X_invoke_Arity16(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p)
 		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}) interface{} {
 			return this.(CljsCoreIFn).X_invoke_Arity17(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q)
-		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
-			return this.(CljsCoreIFn).X_invoke_Arity18(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s)
-		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
-			return this.(CljsCoreIFn).X_invoke_Arity19(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t)
-		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
-			return this.(CljsCoreIFn).X_invoke_Arity20(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, s, t, rest)
+		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
+			return this.(CljsCoreIFn).X_invoke_Arity18(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r)
+		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
+			return this.(CljsCoreIFn).X_invoke_Arity19(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s)
+		}, func(this interface{}, a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
+			return this.(CljsCoreIFn).X_invoke_Arity20(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t)
 		})
 	}(&AFn{})
 
@@ -3125,9 +3125,9 @@ func init() {
 									_ = seq__4625_4640___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__4625_4640___1) {
 										{
-											var c__945__auto___4641 = Chunk_first.X_invoke_Arity1(seq__4625_4640___1)
-											_ = c__945__auto___4641
-											seq__4625_4631, chunk__4626_4632, count__4627_4633, i__4628_4634 = Chunk_rest.X_invoke_Arity1(seq__4625_4640___1), c__945__auto___4641, Count.X_invoke_Arity1(c__945__auto___4641).(float64), float64(0)
+											var c__954__auto___4641 = Chunk_first.X_invoke_Arity1(seq__4625_4640___1)
+											_ = c__954__auto___4641
+											seq__4625_4631, chunk__4626_4632, count__4627_4633, i__4628_4634 = Chunk_rest.X_invoke_Arity1(seq__4625_4640___1), c__954__auto___4641, Count.X_invoke_Arity1(c__954__auto___4641).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -3505,13 +3505,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1045__auto___4650 = size
-						_ = n__1045__auto___4650
+						var n__1054__auto___4650 = size
+						_ = n__1054__auto___4650
 						{
 							var i_4651 = float64(0)
 							_ = i_4651
 							for {
-								if i_4651 < n__1045__auto___4650.(float64) {
+								if i_4651 < n__1054__auto___4650.(float64) {
 									a[int(i_4651)] = init_val_or_seq
 									i_4651 = (i_4651 + float64(1))
 									continue
@@ -3567,13 +3567,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1045__auto___4654 = size
-						_ = n__1045__auto___4654
+						var n__1054__auto___4654 = size
+						_ = n__1054__auto___4654
 						{
 							var i_4655 = float64(0)
 							_ = i_4655
 							for {
-								if i_4655 < n__1045__auto___4654.(float64) {
+								if i_4655 < n__1054__auto___4654.(float64) {
 									a[int(i_4655)] = init_val_or_seq
 									i_4655 = (i_4655 + float64(1))
 									continue
@@ -3629,13 +3629,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1045__auto___4658 = size
-						_ = n__1045__auto___4658
+						var n__1054__auto___4658 = size
+						_ = n__1054__auto___4658
 						{
 							var i_4659 = float64(0)
 							_ = i_4659
 							for {
-								if i_4659 < n__1045__auto___4658.(float64) {
+								if i_4659 < n__1054__auto___4658.(float64) {
 									a[int(i_4659)] = init_val_or_seq
 									i_4659 = (i_4659 + float64(1))
 									continue
@@ -3691,13 +3691,13 @@ func init() {
 					}
 				} else {
 					{
-						var n__1045__auto___4662 = size
-						_ = n__1045__auto___4662
+						var n__1054__auto___4662 = size
+						_ = n__1054__auto___4662
 						{
 							var i_4663 = float64(0)
 							_ = i_4663
 							for {
-								if i_4663 < n__1045__auto___4662.(float64) {
+								if i_4663 < n__1054__auto___4662.(float64) {
 									a[int(i_4663)] = init_val_or_seq
 									i_4663 = (i_4663 + float64(1))
 									continue
@@ -4759,13 +4759,13 @@ func init() {
 													var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 													_, _, _ = c, size, b
 													{
-														var n__1045__auto___4941 = size
-														_ = n__1045__auto___4941
+														var n__1054__auto___4941 = size
+														_ = n__1054__auto___4941
 														{
 															var i_4942 = float64(0)
 															_ = i_4942
 															for {
-																if i_4942 < n__1045__auto___4941 {
+																if i_4942 < n__1054__auto___4941 {
 																	Chunk_append.X_invoke_Arity2(b, func() interface{} {
 																		var G__4936 = (idx.(float64) + i_4942)
 																		var G__4937 = c.(CljsCoreIIndexed).X_nth_Arity2(i_4942)
@@ -4860,13 +4860,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1045__auto___4964 = size
-											_ = n__1045__auto___4964
+											var n__1054__auto___4964 = size
+											_ = n__1054__auto___4964
 											{
 												var i_4965 = float64(0)
 												_ = i_4965
 												for {
-													if i_4965 < n__1045__auto___4964 {
+													if i_4965 < n__1054__auto___4964 {
 														{
 															var x_4966 = func() interface{} {
 																var G__4959 = c.(CljsCoreIIndexed).X_nth_Arity2(i_4965)
@@ -5119,13 +5119,13 @@ func init() {
 													var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 													_, _, _ = c, size, b
 													{
-														var n__1045__auto___5084 = size
-														_ = n__1045__auto___5084
+														var n__1054__auto___5084 = size
+														_ = n__1054__auto___5084
 														{
 															var i_5085 = float64(0)
 															_ = i_5085
 															for {
-																if i_5085 < n__1045__auto___5084 {
+																if i_5085 < n__1054__auto___5084 {
 																	{
 																		var x_5086 = func() interface{} {
 																			var G__5077 = (idx.(float64) + i_5085)
@@ -6400,13 +6400,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1045__auto___5920 = size
-											_ = n__1045__auto___5920
+											var n__1054__auto___5920 = size
+											_ = n__1054__auto___5920
 											{
 												var i_5921 = float64(0)
 												_ = i_5921
 												for {
-													if i_5921 < n__1045__auto___5920 {
+													if i_5921 < n__1054__auto___5920 {
 														Chunk_append.X_invoke_Arity2(b, func() interface{} {
 															var G__5909 = c.(CljsCoreIIndexed).X_nth_Arity2(i_5921)
 															_ = G__5909
@@ -7025,13 +7025,13 @@ func init() {
 										var b = Chunk_buffer.X_invoke_Arity1(size).(*CljsCoreChunkBuffer)
 										_, _, _ = c, size, b
 										{
-											var n__1045__auto___6011 = size
-											_ = n__1045__auto___6011
+											var n__1054__auto___6011 = size
+											_ = n__1054__auto___6011
 											{
 												var i_6012 = float64(0)
 												_ = i_6012
 												for {
-													if i_6012 < n__1045__auto___6011 {
+													if i_6012 < n__1054__auto___6011 {
 														if Truth_(func() interface{} {
 															var G__6006 = c.(CljsCoreIIndexed).X_nth_Arity2(i_6012)
 															_ = G__6006
@@ -9171,14 +9171,14 @@ func init() {
 			{
 				var arr = Native_get_instance_field.X_invoke_Arity2(iseq, "Arr")
 				var ret = func() interface{} {
-					var a__1039__auto__ = arr
-					_ = a__1039__auto__
+					var a__1048__auto__ = arr
+					_ = a__1048__auto__
 					{
 						var i = float64(0)
 						var res interface{} = CljsCorePersistentHashSet_EMPTY.X_as_transient_Arity1()
 						_, _ = i, res
 						for {
-							if i < Alength_(a__1039__auto__) {
+							if i < Alength_(a__1048__auto__) {
 								i, res = (i + float64(1)), res.(CljsCoreITransientCollection).X_conj_BANG__Arity2(Aget_(arr, i))
 								continue
 							} else {
@@ -10433,9 +10433,9 @@ func init() {
 									_ = seq__6732___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__6732___1) {
 										{
-											var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6732___1)
-											_ = c__945__auto__
-											seq__6732, chunk__6733, count__6734, i__6735 = Chunk_rest.X_invoke_Arity1(seq__6732___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+											var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6732___1)
+											_ = c__954__auto__
+											seq__6732, chunk__6733, count__6734, i__6735 = Chunk_rest.X_invoke_Arity1(seq__6732___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -10500,9 +10500,9 @@ func init() {
 									_ = seq__6751___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__6751___1) {
 										{
-											var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6751___1)
-											_ = c__945__auto__
-											seq__6751, chunk__6752, count__6753, i__6754 = Chunk_rest.X_invoke_Arity1(seq__6751___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+											var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6751___1)
+											_ = c__954__auto__
+											seq__6751, chunk__6752, count__6753, i__6754 = Chunk_rest.X_invoke_Arity1(seq__6751___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -11690,9 +11690,9 @@ type CljsCoreIFn interface {
 	X_invoke_Arity15(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}) interface{}
 	X_invoke_Arity16(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}) interface{}
 	X_invoke_Arity17(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}) interface{}
-	X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{}
-	X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{}
-	X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{}
+	X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{}
+	X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{}
+	X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{}
 }
 
 var X_invoke *AFn
@@ -12239,15 +12239,15 @@ func (this *CljsCoreSymbol) X_invoke_Arity17(a interface{}, b interface{}, c int
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreSymbol) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreSymbol) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreSymbol) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreSymbol) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreSymbol) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreSymbol) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -13950,15 +13950,15 @@ func (this *CljsCoreKeyword) X_invoke_Arity17(a interface{}, b interface{}, c in
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreKeyword) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreKeyword) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreKeyword) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreKeyword) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreKeyword) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreKeyword) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -14693,13 +14693,13 @@ func (___ *CljsCoreMultiStepper) HasNext() interface{} {
 
 func (___ *CljsCoreMultiStepper) Next() interface{} {
 	{
-		var n__1045__auto___7892 = Alength_(___.Iters)
-		_ = n__1045__auto___7892
+		var n__1054__auto___7892 = Alength_(___.Iters)
+		_ = n__1054__auto___7892
 		{
 			var i_7893 = float64(0)
 			_ = i_7893
 			for {
-				if i_7893 < n__1045__auto___7892 {
+				if i_7893 < n__1054__auto___7892 {
 					___.Nexts.([]interface{})[int(i_7893)] = Native_invoke_instance_method.X_invoke_Arity3(Aget_(___.Iters, i_7893), "Next", []interface{}{})
 					i_7893 = (i_7893 + float64(1))
 					continue
@@ -14891,9 +14891,9 @@ var CljsCoreLazyTransformer_CreateMulti = func(G__7895 *AFn) *AFn {
 									_ = seq__4769_7902___1
 									if Chunked_seq_QMARK_.Arity1IB(seq__4769_7902___1) {
 										{
-											var c__945__auto___7903 = Chunk_first.X_invoke_Arity1(seq__4769_7902___1)
-											_ = c__945__auto___7903
-											seq__4769_7896, chunk__4770_7897, count__4771_7898, i__4772_7899 = Chunk_rest.X_invoke_Arity1(seq__4769_7902___1), c__945__auto___7903, Count.X_invoke_Arity1(c__945__auto___7903).(float64), float64(0)
+											var c__954__auto___7903 = Chunk_first.X_invoke_Arity1(seq__4769_7902___1)
+											_ = c__954__auto___7903
+											seq__4769_7896, chunk__4770_7897, count__4771_7898, i__4772_7899 = Chunk_rest.X_invoke_Arity1(seq__4769_7902___1), c__954__auto___7903, Count.X_invoke_Arity1(c__954__auto___7903).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -15030,9 +15030,9 @@ func (this *CljsCoreAtom) X_notify_watches_Arity3(oldval interface{}, newval int
 							_ = seq__4983___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__4983___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__4983___1)
-									_ = c__945__auto__
-									seq__4983, chunk__4984, count__4985, i__4986 = Chunk_rest.X_invoke_Arity1(seq__4983___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__4983___1)
+									_ = c__954__auto__
+									seq__4983, chunk__4984, count__4985, i__4986 = Chunk_rest.X_invoke_Arity1(seq__4983___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -15636,13 +15636,13 @@ func (coll *CljsCorePersistentVector) X_conj_Arity2(o interface{}) interface{} {
 			var new_tail = make([]interface{}, int((len + float64(1))))
 			_, _ = len, new_tail
 			{
-				var n__1045__auto___7914 = len
-				_ = n__1045__auto___7914
+				var n__1054__auto___7914 = len
+				_ = n__1054__auto___7914
 				{
 					var i_7915 = float64(0)
 					_ = i_7915
 					for {
-						if i_7915 < n__1045__auto___7914 {
+						if i_7915 < n__1054__auto___7914 {
 							new_tail[int(i_7915)] = Aget_(coll.Tail, i_7915)
 							i_7915 = (i_7915 + float64(1))
 							continue
@@ -15758,15 +15758,15 @@ func (this *CljsCorePersistentVector) X_invoke_Arity17(a interface{}, b interfac
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentVector) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentVector) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentVector) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentVector) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentVector) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentVector) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -15840,6 +15840,12 @@ func (this *CljsCoreChunkedSeq) String() string {
 
 func (this *CljsCoreChunkedSeq) Equiv(other interface{}) bool {
 	return this.X_equiv_Arity2(other)
+}
+
+func (_ *CljsCoreChunkedSeq) CljsCoreIMeta__() {}
+
+func (coll *CljsCoreChunkedSeq) X_meta_Arity1() interface{} {
+	return coll.Meta
 }
 
 func (_ *CljsCoreChunkedSeq) CljsCoreINext__() {}
@@ -15954,10 +15960,6 @@ func (_ *CljsCoreChunkedSeq) CljsCoreIWithMeta__() {}
 
 func (coll *CljsCoreChunkedSeq) X_with_meta_Arity2(m interface{}) interface{} {
 	return Chunked_seq.X_invoke_Arity5(coll.Vec, coll.Node, coll.I, coll.Off, m).(*CljsCoreChunkedSeq)
-}
-
-func (coll *CljsCoreChunkedSeq) X_meta_Arity1() interface{} {
-	return coll.Meta
 }
 
 func (_ *CljsCoreChunkedSeq) CljsCoreICollection__() {}
@@ -16260,15 +16262,15 @@ func (this *CljsCoreSubvec) X_invoke_Arity17(a interface{}, b interface{}, c int
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreSubvec) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreSubvec) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreSubvec) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreSubvec) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreSubvec) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreSubvec) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -16376,15 +16378,15 @@ func (this *CljsCoreTransientVector) X_invoke_Arity17(a interface{}, b interface
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreTransientVector) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreTransientVector) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreTransientVector) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreTransientVector) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreTransientVector) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreTransientVector) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -17174,9 +17176,9 @@ func (coll *CljsCorePersistentArrayMap) ForEach(f interface{}) interface{} {
 							_ = seq__6188___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__6188___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6188___1)
-									_ = c__945__auto__
-									seq__6188, chunk__6189, count__6190, i__6191 = Chunk_rest.X_invoke_Arity1(seq__6188___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6188___1)
+									_ = c__954__auto__
+									seq__6188, chunk__6189, count__6190, i__6191 = Chunk_rest.X_invoke_Arity1(seq__6188___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -17528,15 +17530,15 @@ func (this *CljsCorePersistentArrayMap) X_invoke_Arity17(a interface{}, b interf
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentArrayMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentArrayMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentArrayMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentArrayMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentArrayMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentArrayMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -18806,9 +18808,9 @@ func (coll *CljsCorePersistentHashMap) ForEach(f interface{}) interface{} {
 							_ = seq__6248___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__6248___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6248___1)
-									_ = c__945__auto__
-									seq__6248, chunk__6249, count__6250, i__6251 = Chunk_rest.X_invoke_Arity1(seq__6248___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6248___1)
+									_ = c__954__auto__
+									seq__6248, chunk__6249, count__6250, i__6251 = Chunk_rest.X_invoke_Arity1(seq__6248___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -19162,15 +19164,15 @@ func (this *CljsCorePersistentHashMap) X_invoke_Arity17(a interface{}, b interfa
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentHashMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentHashMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentHashMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentHashMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentHashMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentHashMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -19815,15 +19817,15 @@ func (this *CljsCoreBlackNode) X_invoke_Arity17(a interface{}, b interface{}, c 
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreBlackNode) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreBlackNode) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreBlackNode) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreBlackNode) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreBlackNode) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreBlackNode) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -20115,15 +20117,15 @@ func (this *CljsCoreRedNode) X_invoke_Arity17(a interface{}, b interface{}, c in
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreRedNode) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreRedNode) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreRedNode) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreRedNode) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreRedNode) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreRedNode) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -20180,9 +20182,9 @@ func (coll *CljsCorePersistentTreeMap) ForEach(f interface{}) interface{} {
 							_ = seq__6346___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__6346___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6346___1)
-									_ = c__945__auto__
-									seq__6346, chunk__6347, count__6348, i__6349 = Chunk_rest.X_invoke_Arity1(seq__6346___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6346___1)
+									_ = c__954__auto__
+									seq__6346, chunk__6347, count__6348, i__6349 = Chunk_rest.X_invoke_Arity1(seq__6346___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -20531,15 +20533,15 @@ func (this *CljsCorePersistentTreeMap) X_invoke_Arity17(a interface{}, b interfa
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentTreeMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentTreeMap) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentTreeMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentTreeMap) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentTreeMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentTreeMap) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -20981,9 +20983,9 @@ func (coll *CljsCorePersistentHashSet) ForEach(f interface{}) interface{} {
 							_ = seq__6396___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__6396___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6396___1)
-									_ = c__945__auto__
-									seq__6396, chunk__6397, count__6398, i__6399 = Chunk_rest.X_invoke_Arity1(seq__6396___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6396___1)
+									_ = c__954__auto__
+									seq__6396, chunk__6397, count__6398, i__6399 = Chunk_rest.X_invoke_Arity1(seq__6396___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -21184,15 +21186,15 @@ func (this *CljsCorePersistentHashSet) X_invoke_Arity17(a interface{}, b interfa
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentHashSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentHashSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentHashSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentHashSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentHashSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentHashSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -21332,15 +21334,15 @@ func (this *CljsCoreTransientHashSet) X_invoke_Arity17(a interface{}, b interfac
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCoreTransientHashSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCoreTransientHashSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCoreTransientHashSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCoreTransientHashSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCoreTransientHashSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCoreTransientHashSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 
@@ -21455,9 +21457,9 @@ func (coll *CljsCorePersistentTreeSet) ForEach(f interface{}) interface{} {
 							_ = seq__6429___1
 							if Chunked_seq_QMARK_.Arity1IB(seq__6429___1) {
 								{
-									var c__945__auto__ = Chunk_first.X_invoke_Arity1(seq__6429___1)
-									_ = c__945__auto__
-									seq__6429, chunk__6430, count__6431, i__6432 = Chunk_rest.X_invoke_Arity1(seq__6429___1), c__945__auto__, Count.X_invoke_Arity1(c__945__auto__).(float64), float64(0)
+									var c__954__auto__ = Chunk_first.X_invoke_Arity1(seq__6429___1)
+									_ = c__954__auto__
+									seq__6429, chunk__6430, count__6431, i__6432 = Chunk_rest.X_invoke_Arity1(seq__6429___1), c__954__auto__, Count.X_invoke_Arity1(c__954__auto__).(float64), float64(0)
 									continue
 								}
 							} else {
@@ -21666,15 +21668,15 @@ func (this *CljsCorePersistentTreeSet) X_invoke_Arity17(a interface{}, b interfa
 	panic((&js.Error{"Invalid arity: 17"}))
 }
 
-func (this *CljsCorePersistentTreeSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}) interface{} {
+func (this *CljsCorePersistentTreeSet) X_invoke_Arity18(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 18"}))
 }
 
-func (this *CljsCorePersistentTreeSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}) interface{} {
+func (this *CljsCorePersistentTreeSet) X_invoke_Arity19(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 19"}))
 }
 
-func (this *CljsCorePersistentTreeSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, s interface{}, t interface{}, rest interface{}) interface{} {
+func (this *CljsCorePersistentTreeSet) X_invoke_Arity20(a interface{}, b interface{}, c interface{}, d interface{}, e interface{}, f interface{}, g interface{}, h interface{}, i interface{}, j interface{}, k interface{}, l interface{}, m interface{}, n interface{}, o interface{}, p interface{}, q interface{}, r interface{}, s interface{}, t interface{}) interface{} {
 	panic((&js.Error{"Invalid arity: 20"}))
 }
 

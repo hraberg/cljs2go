@@ -769,8 +769,39 @@
 
 (def go-skip-type '#{cljs.core/ObjMap})
 
+(defn validate-impl-sigs [env p method]
+  (when-not (= p 'Object)
+    (let [var (ana/resolve-var (dissoc env :locals) p)
+          minfo (-> var :protocol-info :methods)
+          [fname sigs] (if (core/vector? (second method))
+                         [(first method) [(second method)]]
+                         [(first method) (map first (rest method))])
+          decmeths (core/get minfo fname)]
+      (loop [sigs sigs seen #{}]
+        (when (seq sigs)
+          (let [sig (first sigs)
+                c   (count sig)]
+            (when (contains? seen c)
+              (ana/warning :protocol-duped-method env {:protocol p :fname fname}))
+            (when-not (some #{c} (map count decmeths))
+              (ana/warning :protocol-invalid-method env {:protocol p :fname fname}))
+            (recur (next sigs) (conj seen c))))))))
+
+(defn validate-impls [env impls]
+  (loop [protos #{} impls impls]
+    (when (seq impls)
+      (let [proto   (first impls)
+            methods (take-while seq? (next impls))
+            impls   (drop-while seq? (next impls))]
+        (when (contains? protos proto)
+          (ana/warning :protocol-multiple-impls env {:protocol proto}))
+        (core/doseq [method methods]
+          (validate-impl-sigs env proto method))
+        (recur (conj protos proto) impls)))))
+
 (defmacro extend-type [type-sym & impls]
   (let [env &env
+        _ (validate-impls env impls)
         resolve (partial resolve-var env)
         [type assign-impls] (if-let [type (base-type type-sym)]
                               [type base-assign-impls]
@@ -807,11 +838,11 @@
           protocols (group-by (comp symbol name) (:protocols (meta type)))]
       (loop [ret [] specs specs]
         (if (seq specs)
-          (let [protocol (first specs)
-                ret (-> (conj ret protocol)
+          (let [p (first specs)
+                ret (-> (conj ret p)
                         (into (reduce (partial annotate-specs
                                                (assoc annots :protocol-impl
-                                                      (first (protocols protocol)))) []
+                                                      (first (protocols p)))) []
                               (group-by first (take-while seq? (next specs))))))
                 specs (drop-while seq? (next specs))]
             (recur ret specs))
@@ -831,8 +862,9 @@
        (new ~rname ~@fields))))
 
 (defmacro deftype [t fields & impls]
-  (let [r (:name (cljs.analyzer/resolve-var (dissoc &env :locals) t))
-        protocols (collect-protocols impls &env)
+  (let [env &env
+        r (:name (cljs.analyzer/resolve-var (dissoc env :locals) t))
+        protocols (collect-protocols impls env)
         t (vary-meta t assoc
             :protocols protocols) ]
     (when-not (go-skip-type r)

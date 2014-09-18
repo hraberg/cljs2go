@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2322
+// Compiled by ClojureScript to Go 0.0-2341
 // cljs.core
 
 // Go overrides.
@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	X_STAR_clojurescript_version_STAR_ = "0.0-2322"
+	X_STAR_clojurescript_version_STAR_ = "0.0-2341"
 
 	X_STAR_print_length_STAR_ = js.NaN
 
