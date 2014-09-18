@@ -679,7 +679,7 @@
     (assert (= (seq a) (seq (to-array [1 2 3]))))
     (assert (= 42 (aset a 0 42)))
     (assert (not= (seq a) (seq (to-array [1 2 3]))))
-    ;; FAILURE - array equals, no fix?
+    ;; WON'T FIX - array equals.
     ;; (assert (not= a (aclone a)))
 )
 
@@ -1471,7 +1471,7 @@
   ;;   (assert (= 500 (count m)))
   ;;   (assert (= 123 (m "foo123"))))
 
-  ;; FAILURE - needs .sort on JSArray and a way to convert comparators to funcs, unsure if it's worth fixing.
+  ;; WON'T FIX - needs .sort on JSArray and a way to convert comparators to funcs, unsure if it's worth fixing.
   ;; ;; comparator
   ;; (assert (= [1 1 2 2 3 5] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator <)))))
   ;; (assert (= [5 3 2 2 1 1] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator >)))))
@@ -1739,7 +1739,7 @@
   (assert (= (UUID. "550e8400-e29b-41d4-a716-446655440000")
              (UUID. "550e8400-e29b-41d4-a716-446655440000")))
 
-  ;; FAILURE - identical? is using DeepEqual, needs general fix.
+  ;; WON'T FIX - identical? is using DeepEqual, needs general fix.
   ;; (assert (not (identical? (UUID. "550e8400-e29b-41d4-a716-446655440000")
   ;;                          (UUID. "550e8400-e29b-41d4-a716-446655440000"))))
 
@@ -1875,7 +1875,7 @@
              (try (throw (ex-info "asdf" {:foo 1}))
                   (catch ExceptionInfo e
                     (ex-data e)))))
-  ;; FAILURE - ex-info is a Go error, but doesn't inherit js/Error.
+  ;; WON'T FIX - ex-info is a Go error, but doesn't inherit js/Error.
   ;; (assert (instance? js/Error (ex-info "asdf" {:foo 1})))
   ;; (assert (not (instance? cljs.core.ExceptionInfo (js/Error.))))
 
@@ -2275,7 +2275,7 @@
 
   ;; ;; basic iteration
 
-  ;; FAILURE - doesn't work as it uses a js-obj with the .-value and .-done keys internally.
+  ;; WON'T FIX - doesn't work as it uses a js-obj with the .-value and .-done keys internally.
   ;; (def iter (iterator [1 2 3]))
 
   ;; (assert (= (.-value (.next iter)) 1))
