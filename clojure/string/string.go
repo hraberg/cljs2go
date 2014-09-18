@@ -27,7 +27,7 @@ func init() {
 
 	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(replace, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
-			if reflect.ValueOf(match).Kind() == reflect.String {
+			if cljs_core.Value_(match).Kind() == reflect.String {
 				return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{func() interface{} {
 					var G__2 = match
 					_ = G__2

@@ -34,7 +34,7 @@ func init() {
 
 	Symbol_QMARK_ = func(symbol_QMARK_ *AFn) *AFn {
 		return Fn(symbol_QMARK_, 1, func(x interface{}) bool {
-			return func() bool { _, instanceof := x.(*CljsCoreSymbol); return instanceof }()
+			return Value_(x).Type().AssignableTo(reflect.TypeOf((**CljsCoreSymbol)(nil)).Elem())
 		})
 	}(&AFn{})
 
@@ -111,7 +111,7 @@ func init() {
 					if Truth_(or__171__auto__) {
 						return or__171__auto__
 					} else {
-						if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IEquiv", Str: "cljs.core/IEquiv", X_hash: float64(-1245752602), X_meta: nil}), x)) {
+						if Value_(x).Type().Implements(reflect.TypeOf((*CljsCoreIEquiv)(nil)).Elem()) {
 							return x.(CljsCoreIEquiv).X_equiv_Arity2(y)
 						} else {
 							return false
@@ -167,24 +167,24 @@ func init() {
 			if Nil_(o) {
 				return nil
 			} else {
-				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+				if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
 					return o.(CljsCoreILookup).X_lookup_Arity2(k)
 				} else {
-					if reflect.ValueOf(o).Kind() == reflect.Slice {
-						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+					if Value_(o).Kind() == reflect.Slice {
+						if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
 							return (o.([]interface{})[int(k.(float64))])
 						} else {
 							return nil
 						}
 					} else {
-						if reflect.ValueOf(o).Kind() == reflect.String {
-							if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+						if Value_(o).Kind() == reflect.String {
+							if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
 								return string((o.(string)[int(k.(float64))]))
 							} else {
 								return nil
 							}
 						} else {
-							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+							if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
 								return o.(CljsCoreILookup).X_lookup_Arity2(k)
 							} else {
 								return nil
@@ -196,24 +196,24 @@ func init() {
 			}
 		}, func(o interface{}, k interface{}, not_found interface{}) interface{} {
 			if !(Nil_(o)) {
-				if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+				if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
 					return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
 				} else {
-					if reflect.ValueOf(o).Kind() == reflect.Slice {
-						if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+					if Value_(o).Kind() == reflect.Slice {
+						if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
 							return (o.([]interface{})[int(k.(float64))])
 						} else {
 							return not_found
 						}
 					} else {
-						if reflect.ValueOf(o).Kind() == reflect.String {
-							if (reflect.ValueOf(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
+						if Value_(o).Kind() == reflect.String {
+							if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
 								return string((o.(string)[int(k.(float64))]))
 							} else {
 								return not_found
 							}
 						} else {
-							if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "ILookup", Str: "cljs.core/ILookup", X_hash: float64(-150575073), X_meta: nil}), o)) {
+							if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
 								return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
 							} else {
 								return not_found
@@ -244,7 +244,7 @@ func init() {
 					_ = and__159__auto__
 					if Truth_(and__159__auto__) {
 						{
-							var and__159__auto_____1 = Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IMeta", Str: "cljs.core/IMeta", X_hash: float64(-1459057517), X_meta: nil}), obj)
+							var and__159__auto_____1 = Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIMeta)(nil)).Elem())
 							_ = and__159__auto_____1
 							if Truth_(and__159__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
@@ -264,13 +264,13 @@ func init() {
 				if Nil_(obj) {
 					return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 				} else {
-					if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IPrintWithWriter", Str: "cljs.core/IPrintWithWriter", X_hash: float64(1349251417), X_meta: nil}), obj)) {
+					if Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
 						return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 					} else {
-						if (reflect.ValueOf(obj).Kind() == reflect.Bool) || (reflect.ValueOf(obj).Kind() == reflect.Float64) {
+						if (reflect.ValueOf(obj).Kind() == reflect.Bool) || (Value_(obj).Kind() == reflect.Float64) {
 							return writer.(CljsCoreIWriter).X_write_Arity2((`` + Str.X_invoke_Arity1(obj).(string)))
 						} else {
-							if reflect.ValueOf(obj).Kind() == reflect.Slice {
+							if Value_(obj).Kind() == reflect.Slice {
 								return Pr_sequential_writer.X_invoke_Arity7(writer, pr_writer, "#js [", " ", "]", opts, obj)
 							} else {
 								if Truth_(func() interface{} {
@@ -287,7 +287,7 @@ func init() {
 									if Fn_QMARK_.Arity1IB(obj) {
 										return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">"}))
 									} else {
-										if func() bool { _, instanceof := obj.(*js.Date); return instanceof }() {
+										if Value_(obj).Type().AssignableTo(reflect.TypeOf((**js.Date)(nil)).Elem()) {
 											{
 												var normalize = func(G__7984 *AFn) *AFn {
 													return Fn(G__7984, 2, func(n interface{}, len interface{}) interface{} {
@@ -312,7 +312,7 @@ func init() {
 											if Truth_(Regexp_QMARK_.X_invoke_Arity1(obj)) {
 												return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Pattern"), "\""}))
 											} else {
-												if Truth_(Native_satisfies_QMARK_.X_invoke_Arity2((&CljsCoreSymbol{Ns: "cljs.core", Name: "IPrintWithWriter", Str: "cljs.core/IPrintWithWriter", X_hash: float64(1349251417), X_meta: nil}), obj)) {
+												if Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
 													return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 												} else {
 													return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">"}))
@@ -432,7 +432,7 @@ func init() {
 
 	Integer_QMARK_ = func(integer_QMARK_ *AFn) *AFn {
 		return Fn(integer_QMARK_, 1, func(n interface{}) bool {
-			return (reflect.ValueOf(n).Kind() == reflect.Float64) && (Not.Arity1IB(func() interface{} {
+			return (Value_(n).Kind() == reflect.Float64) && (Not.Arity1IB(func() interface{} {
 				var G__8010 = n
 				_ = G__8010
 				return Native_invoke_func.X_invoke_Arity2(js.IsNaN, []interface{}{G__8010})
@@ -458,10 +458,10 @@ func init() {
 
 	Char = func(char *AFn) *AFn {
 		return Fn(char, 1, func(x interface{}) interface{} {
-			if reflect.ValueOf(x).Kind() == reflect.Float64 {
+			if Value_(x).Kind() == reflect.Float64 {
 				return js.String.FromCharCode(x.(float64))
 			} else {
-				if (reflect.ValueOf(x).Kind() == reflect.String) && (Native_get_instance_field.X_invoke_Arity2(x, "Length").(float64) == float64(1)) {
+				if (Value_(x).Kind() == reflect.String) && (Native_get_instance_field.X_invoke_Arity2(x, "Length").(float64) == float64(1)) {
 					return x
 				} else {
 					panic((&js.Error{"Argument to char must be a character or number"}))
@@ -498,7 +498,7 @@ func init() {
 			{
 				var h = String_hash_cache[k]
 				_ = h
-				if reflect.ValueOf(h).Kind() == reflect.Float64 {
+				if Value_(h).Kind() == reflect.Float64 {
 					return h
 				} else {
 					return Add_to_string_hash_cache.X_invoke_Arity1(k).(float64)
@@ -595,7 +595,7 @@ func init() {
 
 	Native_satisfies_QMARK_ = func(native_satisfies_QMARK_ *AFn) *AFn {
 		return Fn(native_satisfies_QMARK_, 2, func(p interface{}, x interface{}) bool {
-			return value(decorate(x)).Type().Implements(protocols[(`` + Str.X_invoke_Arity1(p).(string))])
+			return Value_(decorate(x)).Type().Implements(p.(reflect.Type))
 		})
 	}(&AFn{})
 

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"reflect"
 
 	"testing"
 )
@@ -32,7 +33,7 @@ var Baz = Fn(1, func(args ...interface{}) interface{} {
 })
 
 func Test_Invoke(t *testing.T) {
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "IFn"), Baz).(bool))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(reflect.TypeOf((*CljsCoreIFn)(nil)).Elem(), Baz).(bool))
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.Call() })
 	PanicsWith(t, "Invalid arity: 0", func() { Baz.X_invoke_Arity0() })
 	assert.Equal(t, 1, Baz.MaxFixedArity)
@@ -123,10 +124,10 @@ func Test_PrimitiveFn(t *testing.T) {
 func Test_Protocols(t *testing.T) {
 	symbol := Symbol.X_invoke_Arity2("foo", "bar")
 
-	assert.True(t, symbol.(Object).Equiv(Symbol.X_invoke_Arity2("foo", "bar")))
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "Object"), symbol).(bool))
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "INamed"), symbol).(bool))
-	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "IFn"), symbol).(bool))
+	assert.True(t, symbol.(CljsCoreObject).Equiv(Symbol.X_invoke_Arity2("foo", "bar")))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(reflect.TypeOf((*CljsCoreObject)(nil)).Elem(), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(reflect.TypeOf((*CljsCoreINamed)(nil)).Elem(), symbol).(bool))
+	assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(reflect.TypeOf((*CljsCoreIFn)(nil)).Elem(), symbol).(bool))
 	assert.Equal(t, "foo", symbol.(CljsCoreINamed).X_namespace_Arity1())
 	assert.Equal(t, "foo", X_namespace.X_invoke_Arity1(symbol))
 	PanicsWith(t, "Invalid arity: 0", func() { symbol.(*CljsCoreSymbol).X_invoke_Arity0() })
@@ -142,19 +143,6 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "foo", X_invoke.X_invoke_Arity2(X_namespace, symbol))
 	assert.Equal(t, "bar", symbol.(CljsCoreINamed).X_name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
-
-	// foo, bar := Symbol.X_invoke_Arity1("foo"), Symbol.X_invoke_Arity1("bar")
-	// m := ObjMap(map[interface{}]interface{}{foo: "bar"})
-
-	// assert.True(t, Native_satisfies_QMARK_.X_invoke_Arity2(Symbol.X_invoke_Arity2("cljs.core", "ILookup"), m).(bool))
-	// assert.Equal(t, "bar", m.X_lookup_Arity2(foo))
-	// assert.Nil(t, X_Lookup.Call(m, bar))
-	// assert.Equal(t, "baz", m.X_lookup_Arity3(bar, "baz"))
-
-	// assert.Equal(t, "bar", foo.(IFn).X_invoke_Arity1(m))
-	// assert.Equal(t, "bar", X_invoke.X_invoke_Arity2(foo, m))
-	// assert.Nil(t, bar.(IFn).X_invoke_Arity1(m))
-	// assert.Equal(t, "baz", bar.(IFn).X_invoke_Arity2(m, "baz"))
 }
 
 func Test_InteropViaReflection(t *testing.T) {

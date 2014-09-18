@@ -315,7 +315,7 @@
 (defn ^boolean native-satisfies?
   "Internal - do not use!"
   [p x]
-  ^boolean (js* "value(decorate(~{})).Type().Implements(protocols[~{}])" x (str p)))
+  ^boolean (js* "Value_(decorate(~{})).Type().Implements(~{}.(reflect.Type))" x p))
 
 (extend-type TransientArrayMap
   ITransientMap

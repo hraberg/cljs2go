@@ -295,15 +295,15 @@
   (bool-expr (core/list 'js* "~{} == false" x)))
 
 (defmacro array? [x]
-  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.Slice" x)))
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() == reflect.Slice") x)))
 
 (defmacro string? [x]
-  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.String" x)))
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() == reflect.String") x)))
 
 ;; TODO: x must be a symbol, not an arbitrary expression
 (defmacro exists? [x]
   (bool-expr
-    (core/list 'js* "reflect.ValueOf(~{}).Kind() != reflect.Invalid"
+   (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() != reflect.Invalid")
       (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
@@ -316,13 +316,10 @@
   ;; Google Closure warns about some references to RegExp, so
   ;; (instance? RegExp ...) needs to be inlined, but the expansion
   ;; should preserve the order of argument evaluation.
-  (bool-expr (if (clojure.core/symbol? t)
-               (core/list 'js* "func() bool { _, instanceof := ~{}.(*~{}); return instanceof }()" o t)
-               `(let [t# ~t o# ~o]
-                  (~'js* "func() bool { _, instanceof := ~{}.(*~{}); return instanceof }()" o# t#)))))
+  (bool-expr `(~'js* ~(core/str (cljs.compiler/go-core "Value_") "(~{}).Type().AssignableTo(~{})") ~o ~t)))
 
 (defmacro number? [x]
-  (bool-expr (core/list 'js* "reflect.ValueOf(~{}).Kind() == reflect.Float64" x)))
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() == reflect.Float64") x)))
 
 (defmacro symbol? [x]
   (bool-expr `(instance? Symbol ~x)))
@@ -756,7 +753,8 @@
   (let [psym      (resolve p)]
     (when-not (get-in cljs.compiler/*go-skip-protocol* [type psym])
       (cons
-       `(do ^:top-level (~'js* "func (_ *~{})~{}__() {}" ~type-sym ~(symbol (cljs.compiler/go-type-fqn psym))))
+       `(do ^:top-level (~'js* ~(core/str "func (_ " (cljs.compiler/go-type type) ")~{}__() {}")
+                               ~(symbol (cljs.compiler/go-type-fqn psym))))
        (if (= p 'Object)
          (add-obj-methods type type-sym sigs)
          (concat
@@ -993,17 +991,15 @@
        ^:top-level (~'js* ~(core/str "type ~{} interface{\n" (core/str go-psym "__()\n")
                                      (apply core/str (map method-decl methods)) "}\n")
                           ~go-psym)
-       ^:top-level (~'js* ~(core/str "func init() {\n\t" (cljs.compiler/go-core "RegisterProtocol_") "(~{}, (*~{})(nil))\n}")
-                          ~(core/str fq-psym) ~go-psym)
        ~@(map method methods))))
 
 (defmacro native-satisfies?
   "EXPERIMENTAL"
   [psym x]
-  (let [p          (:name
-                    (cljs.analyzer/resolve-var
-                     (dissoc &env :locals) psym))]
-    `(~'js* ~(core/str (cljs.compiler/go-core "Native_satisfies_QMARK_") ".X_invoke_Arity2(~{}, ~{})") '~p ~x)))
+  (let [p (:name
+           (cljs.analyzer/resolve-var
+            (dissoc &env :locals) psym))]
+    (bool-expr `(~'js* ~(core/str (cljs.compiler/go-core "Value_") "(~{}).Type().Implements(~{})") ~x ~p))))
 
 (defmacro implements?
   "EXPERIMENTAL"

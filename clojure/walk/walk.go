@@ -74,7 +74,7 @@ func init() {
 							var k = cljs_core.Nth.X_invoke_Arity3(vec__12, float64(0), nil)
 							var v = cljs_core.Nth.X_invoke_Arity3(vec__12, float64(1), nil)
 							_, _, _ = vec__12, k, v
-							if reflect.ValueOf(k).Kind() == reflect.String {
+							if cljs_core.Value_(k).Kind() == reflect.String {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Keyword.X_invoke_Arity1(k), v}, nil})
 							} else {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{k, v}, nil})
@@ -106,7 +106,7 @@ func init() {
 							var k = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(0), nil)
 							var v = cljs_core.Nth.X_invoke_Arity3(vec__18, float64(1), nil)
 							_, _, _ = vec__18, k, v
-							if func() bool { _, instanceof := k.(*cljs_core.CljsCoreKeyword); return instanceof }() {
+							if cljs_core.Value_(k).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{cljs_core.Name.X_invoke_Arity1(k), v}, nil})
 							} else {
 								return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{k, v}, nil})

@@ -552,8 +552,7 @@
   (assert (set []))
   (assert (= #{} (set [])))
   (assert (= #{} (hash-set)))
-  ;; FAILURE - need support for type literals
-  ;; (assert (identical? cljs.core.PersistentHashSet (type (hash-set))))
+  (assert (identical? cljs.core/PersistentHashSet (type (hash-set))))
 
   (assert (= #{"foo"} (set ["foo"])))
   (assert (= #{"foo"} (hash-set "foo")))
@@ -1343,9 +1342,8 @@
   (let [m1 (sorted-map)
         c2 (comp - compare)
         m2 (sorted-map-by c2)]
-    ;; FAILURE - needs type literals
-    ;; (assert (identical? cljs.core.PersistentTreeMap (type m1)))
-    ;; (assert (identical? cljs.core.PersistentTreeMap (type m2)))
+    (assert (identical? cljs.core/PersistentTreeMap (type m1)))
+    (assert (identical? cljs.core/PersistentTreeMap (type m2)))
     (assert (identical? compare (.-comp m1)))
     (assert (zero? (count m1)))
     (assert (zero? (count m2)))
@@ -1391,9 +1389,8 @@
         c3 #(compare (quot %1 2) (quot %2 2))
         s3 (sorted-set-by c3)
         s4 (sorted-set-by <)]
-    ;; FAILURE - needs type literals
-    ;; (assert (identical? cljs.core.PersistentTreeSet (type s1)))
-    ;; (assert (identical? cljs.core.PersistentTreeSet (type s2)))
+    (assert (identical? cljs.core/PersistentTreeSet (type s1)))
+    (assert (identical? cljs.core/PersistentTreeSet (type s2)))
     (assert (identical? compare (-comparator s1)))
     (assert (zero? (count s1)))
     (assert (zero? (count s2)))

@@ -17,7 +17,7 @@ func element(x interface{}) reflect.Value {
 	}
 }
 
-func value(x interface{}) reflect.Value {
+func Value_(x interface{}) reflect.Value {
 	if v, ok := x.(reflect.Value); ok {
 		return v
 	}
@@ -51,12 +51,12 @@ var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface
 })
 
 var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
-	element(decorate(target)).FieldByName(fieldName.(string)).Set(value(val))
+	element(decorate(target)).FieldByName(fieldName.(string)).Set(Value_(val))
 	return val
 })
 
 var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
-	fv := value(f)
+	fv := Value_(f)
 	argsArray := args.([]interface{}) // this should really take a seq
 	argc := fv.Type().NumIn()
 	if len(argsArray) > argc {
@@ -64,10 +64,10 @@ var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 	}
 	in := make([]reflect.Value, argc)
 	for i, v := range argsArray {
-		in[i] = value(v)
+		in[i] = Value_(v)
 	}
 	for i := len(argsArray); i < len(in); i++ {
-		in[i] = value(nil)
+		in[i] = Value_(nil)
 	}
 	return fv.Call(in)[0].Interface()
 })
@@ -75,12 +75,6 @@ var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}) interface{} {
 	return Native_invoke_func.X_invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
 })
-
-var protocols = map[string]reflect.Type{}
-
-func RegisterProtocol_(name string, p interface{}) {
-	protocols[name] = reflect.TypeOf(p).Elem()
-}
 
 type ArityVariadic func(...interface{}) interface{}
 type Arity0 func() interface{}
@@ -547,7 +541,7 @@ func typedSignature(t reflect.Type) string {
 func makeTypedBridge(f reflect.Value, from reflect.Type) reflect.Value {
 	return reflect.MakeFunc(from, func(in []reflect.Value) []reflect.Value {
 		for i, v := range in {
-			in[i] = value(v.Interface())
+			in[i] = Value_(v.Interface())
 		}
 		out := f.Call(in)
 		for i, v := range out {
@@ -669,7 +663,7 @@ func Nil_(x interface{}) bool {
 	if x == nil {
 		return true
 	}
-	v := value(x)
+	v := Value_(x)
 	switch v.Kind() {
 	case reflect.Ptr, reflect.Interface:
 		return v.IsNil()
@@ -700,7 +694,7 @@ func Alength_(x interface{}) float64 {
 	case string:
 		return float64(len(x))
 	default:
-		return float64(value(x).Len())
+		return float64(Value_(x).Len())
 	}
 }
 
@@ -711,11 +705,11 @@ func Aget_(x interface{}, idx float64) interface{} {
 	case string:
 		return string(x[int(idx)])
 	default:
-		return value(x).Index(int(idx)).Interface()
+		return Value_(x).Index(int(idx)).Interface()
 	}
 }
 
-type Object interface {
+type CljsCoreObject interface {
 	ToString() string
 	Equiv(other interface{}) bool
 }
@@ -741,8 +735,6 @@ func (e *CljsCoreExceptionInfo) Error() string {
 var X___ *AFn
 
 func init() {
-	RegisterProtocol_("cljs.core/Object", (*Object)(nil))
-
 	X_invoke.ArityVariadic = func(f_args ...interface{}) interface{} {
 		f, args := f_args[0], f_args[1:]
 		if f, ok := f.(*AFn); ok {

@@ -64,6 +64,7 @@
 (def ^:dynamic *go-defs* nil)
 (def ^:dynamic *go-def-vars* false)
 (def ^:dynamic *go-assign-vars* true)
+(def ^:dynamic *go-dot* false)
 (def ^:dynamic *go-line-numbers* false) ;; https://golang.org/cmd/gc/#hdr-Compiler_Directives
 (def ^:dynamic *go-skip-def*
   '#{cljs.core/*clojurescript-version*
@@ -213,27 +214,27 @@
 (defn go-type
   ([tag] (go-type tag true))
   ([tag native-string?]
-      (if-let [ns (and (symbol? tag) (namespace tag))]
-        (let [ns (symbol ns)
-              goog? (= 'goog ns)
-              js? (= 'js ns)
-              type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
-          (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
-            "interface{}"
-            (str
-             (when (or type? goog? js?) "*")
-             (munge (cond
-                     (= ana/*cljs-ns* ns) (go-type-fqn tag)
-                     goog? (go-normalize-goog-type tag)
-                     js? tag
-                     :else (str ns "." (go-type-fqn tag)))))))
-        (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
-          tag
-          ((merge go-primitive
-                  (when native-string?
-                    {'string "string"})
-                  {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
-           tag "interface{}")))))
+     (if-let [ns (and (symbol? tag) (namespace tag))]
+       (let [ns (symbol ns)
+             goog? (= 'goog ns)
+             js? (= 'js ns)
+             type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
+         (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
+           "interface{}"
+           (str
+            (when (or type? goog? js?) "*")
+            (munge (cond
+                    (= ana/*cljs-ns* ns) (go-type-fqn tag)
+                    goog? (go-normalize-goog-type tag)
+                    js? tag
+                    :else (str ns "." (go-type-fqn tag)))))))
+       (if (or (string? tag) (and (symbol? tag) (go-types (name tag))))
+         tag
+         ((merge go-primitive
+                 (when native-string?
+                   {'string "string"})
+                 {'seq (go-core "CljsCoreISeq") 'function (go-core "CljsCoreIFn")})
+          tag "interface{}")))))
 
 (defn go-short-type [tag]
   ('{number "F" boolean "B" array "A" seq "Q"} tag "I"))
@@ -434,7 +435,8 @@
 
 (defmethod emit* :var
   [{:keys [info env tag] :as arg}]
-  (let [info (cond-> info (:type info) (update-in [:name] go-type-fqn))]
+  (let [info (cond-> info (and *go-dot* (:type info)) (update-in [:name] go-type-fqn))
+        statement? (= :statement (:context env))]
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
     ; e.g. (function greet(return x, return y) {}).
@@ -445,12 +447,18 @@
             (-> info :name munge go-public))
 
      (:binding-form? arg)
-      ; Emit the arg map so shadowing is properly handled when munging
-      ; (prevents duplicate fn-param-names)
+                                        ; Emit the arg map so shadowing is properly handled when munging
+                                        ; (prevents duplicate fn-param-names)
      (emits (munge arg))
 
+     (and (or ('#{js/Date js/RegExp js/Error js/TypeError} (-> info :name))
+              (:type info)
+              (:protocol-symbol info))
+          (not (or *go-dot* statement?)))
+     (emits "reflect.TypeOf((*" (go-type (:name info)) ")(nil)).Elem()")
+
      :else
-     (when-not (= :statement (:context env))
+     (when-not statement?
        (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
                                    *go-return-tag*)]
          (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
@@ -999,7 +1007,8 @@
   [{:keys [ctor args env tag]}]
   (let [record? ('cljs.core/IRecord (:protocols (ana/resolve-existing-var (dissoc env :locals) tag)))
         fields (go-fields-of-type (-> ctor :info :name))]
-    (binding [*go-return-tag* nil]
+    (binding [*go-return-tag* nil
+              *go-dot* true]
       (emit-wrap env
         (emits "(&" (case (-> ctor :info :ns)
                       js ctor
@@ -1110,7 +1119,8 @@
                         (and (= "interface{}" (go-type tag)) (not static?) (not decorator)))]
     (binding [*go-return-tag* (when (and (not static?)
                                          (go-needs-coercion? tag *go-return-tag*))
-                                *go-return-tag*)]
+                                *go-return-tag*)
+              *go-dot* true]
       (emit-wrap env
         (if reflection?
           (do
