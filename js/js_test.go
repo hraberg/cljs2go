@@ -5,6 +5,7 @@ import (
 	"math"
 	"strings"
 	"testing"
+	"time"
 )
 import (
 	"github.com/hraberg/cljs.go/js/Math"
@@ -32,7 +33,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 6, JSString_("Hello World").Search(&RegExp{"world", "i"}))
 	assert.Equal(t, "(?i)Hello", (&RegExp{"Hello", "i"}).String())
 
-	date := Date{1407962432671}
+	date := &Date{1407962432671}
 	assert.Equal(t, 2014, date.GetUTCFullYear())
 	assert.Equal(t, 7, date.GetUTCMonth())
 	assert.Equal(t, 13, date.GetUTCDate())
@@ -42,8 +43,18 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 671, date.GetUTCMilliseconds())
 	assert.Equal(t, 1407962432671, date.GetTime())
 	assert.Equal(t, "2014-08-13 21:40:32.671 +0100 BST", date.String())
-	assert.Equal(t, 1289585655666, (&Date{"2010-11-12T13:14:15.666-05:00"}).GetTime())
-	assert.Equal(t, 666, (&Date{"2010-11-12T13:14:15.666-05:00"}).GetUTCMilliseconds())
+
+	date = &Date{"2010-11-12T13:14:15.666-05:00"}
+	assert.Equal(t, 2010, date.GetUTCFullYear())
+	assert.Equal(t, 10, date.GetUTCMonth())
+	assert.Equal(t, 12, date.GetUTCDate())
+	assert.Equal(t, 18, date.GetUTCHours())
+	assert.Equal(t, 14, date.GetUTCMinutes())
+	assert.Equal(t, 15, date.GetUTCSeconds())
+	assert.Equal(t, 666, date.GetUTCMilliseconds())
+	assert.Equal(t, 1289585655666, date.GetTime())
+
+	assert.True(t, (&Date{}).time().Before(time.Now()))
 
 	assert.Equal(t, 3.14, ParseFloat("3.14"))
 	assert.Equal(t, math.NaN(), ParseFloat(""))

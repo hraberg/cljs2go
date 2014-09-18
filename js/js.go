@@ -41,17 +41,23 @@ type Date struct {
 
 func (this *Date) time() time.Time {
 	switch d := this.Millis.(type) {
+	case time.Time:
+		return d
 	case string:
 		if t, ok := time.Parse("2006-01-02T15:04:05.000-07:00", d); ok == nil {
-			return t
+			this.Millis = t
 		}
 	case float64:
-		return time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
+		this.Millis = time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
 	case int:
-		return time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
+		this.Millis = time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
+	case nil:
+		this.Millis = time.Now()
+	}
+	if d, ok := this.Millis.(time.Time); ok {
+		return d
 	}
 	panic(&Error{fmt.Sprint("Unknown date type: %v", this.Millis)})
-
 }
 
 func (this *Date) GetTime() float64 {
