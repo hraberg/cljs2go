@@ -14,15 +14,12 @@ import (
 )
 
 func Test_Main(t *testing.T) {
-	mainWasCalled := false
 	var mainArgs CljsCoreISeq
 	X_STAR_main_cli_fn_STAR_ = Fn(func(args__ ...interface{}) interface{} {
-		mainWasCalled = true
 		mainArgs = args__[0].(CljsCoreISeq)
 		return nil
 	})
 	Main_()
-	assert.True(t, mainWasCalled)
 	assert.NotNil(t, mainArgs)
 }
 
