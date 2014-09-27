@@ -755,5 +755,5 @@ func Main_() {
 	for i, a := range os.Args[1:] {
 		args[i] = a
 	}
-	X_STAR_main_cli_fn_STAR_.(*AFn).X_invoke_ArityVariadic(args...)
+	X_STAR_main_cli_fn_STAR_.(*AFn).X_invoke_ArityVariadic(Array_seq.X_invoke_Arity1(args))
 }
