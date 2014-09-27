@@ -150,7 +150,7 @@
   ([target src]
      (let [src (io/file src)
            target (if (.isDirectory (io/file target))
-                    (cljs.compiler/to-target-file target src)
+                    (cljs.compiler/to-go-target-file target src)
                     (io/file target))
            dir (.getParentFile target)]
        (env/ensure

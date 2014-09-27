@@ -20,20 +20,21 @@
 
 (defn cache-core! []
   (def core-env (env/ensure
-                 (cljs.compiler/with-core-cljs
-                   env/*compiler*))))
+                 (cljs.compiler/with-core-cljs {}
+                   (fn [] env/*compiler*)))))
 
 (defmacro tdd [& body]
   `(binding [env/*compiler* core-env]
      (env/ensure
-      (cljs.compiler/with-core-cljs
-        (with-fresh-ids
-          (def *ast (cljs->ast '[~@body]))
-          (def *go (s/trim (goimports (ast->go *ast))))
-          (def *ns (ana/get-namespace ana/*cljs-ns*))
-          (pp *ast)
-          (println)
-          (println *go))))))
+      (cljs.compiler/with-core-cljs {}
+        (fn []
+          (with-fresh-ids
+            (def *ast (cljs->ast '[~@body]))
+            (def *go (s/trim (goimports (ast->go *ast))))
+            (def *ns (ana/get-namespace ana/*cljs-ns*))
+            (pp *ast)
+            (println)
+            (println *go)))))))
 
 (defn combined-output [out err]
   (s/replace (s/replace (str err out) "\r" "\n") "\n\t\t" ""))
@@ -360,8 +361,7 @@
     (doseq [gen [constants special-forms benchmarks clojurescript-core-tests]]
       (with-fresh-ids
         (env/ensure
-         (cljs.compiler/with-core-cljs
-           (gen)))))
+         (cljs.compiler/with-core-cljs {} gen))))
     (go-test "./...")))
 
 (defn run-benchmarks []

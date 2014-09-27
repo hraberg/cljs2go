@@ -1604,4 +1604,4 @@
   (core/list 'js* "fmt.Sprint(~{})" s))
 
 (defmacro clojurescript-version []
-  (cljs.compiler/clojurescript-version))
+  (cljs.compiler/clojurescript-to-go-version))
