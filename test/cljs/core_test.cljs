@@ -681,18 +681,17 @@
     (assert (not= (seq a) (seq (to-array [1 2 3]))))
     ;; WON'T FIX - array equals.
     ;; (assert (not= a (aclone a)))
-)
+    )
 
-  ;; FAILURE - nested array indexing, needs nested unboxing.
-  ;; (let [a (array (array 1 2 3) (array 4 5 6))]
-  ;;   (assert (= (aget a 0 1) 2))
-  ;;   (assert (= (apply aget a [0 1]) 2))
-  ;;   (assert (= (aget a 1 1) 5))
-  ;;   (assert (= (apply aget a [1 1]) 5))
-  ;;   (aset a 0 0 "foo")
-  ;;   (assert (= (aget a 0 0) "foo"))
-  ;;   (apply aset a [0 0 "bar"])
-  ;;   (assert (= (aget a 0 0) "bar")))
+  (let [a (array (array 1 2 3) (array 4 5 6))]
+    (assert (= (aget a 0 1) 2))
+    (assert (= (apply aget a [0 1]) 2))
+    (assert (= (aget a 1 1) 5))
+    (assert (= (apply aget a [1 1]) 5))
+    (aset a 0 0 "foo")
+    (assert (= (aget a 0 0) "foo"))
+    (apply aset a [0 0 "bar"])
+    (assert (= (aget a 0 0) "bar")))
 
   ;; ;; sort
   (assert (= [1 2 3 4 5] (sort [5 3 1 4 2])))

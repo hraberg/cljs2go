@@ -331,7 +331,7 @@
   ([a i]
      (core/list 'js* "(~{}[int(~{})])" a i))
   ([a i & idxs]
-     (let [astr (apply core/str (repeat (count idxs) "[int(~{})]"))]
+     (let [astr (apply core/str (repeat (count idxs) ".([]interface{})[int(~{})]"))]
       `(~'js* ~(core/str "(~{}[int(~{})]" astr ")") ~a ~i ~@idxs))))
 
 (defmacro aset
@@ -339,8 +339,8 @@
     (core/list 'js* "~{}[int(~{})] = ~{}" a i v))
   ([a idx idx2 & idxv]
     (let [n    (core/dec (count idxv))
-          astr (apply core/str (repeat n "[int(~{})]"))]
-      `(~'js* ~(core/str "~{}[int(~{})][int(~{})]" astr " = ~{}") ~a ~idx ~idx2 ~@idxv))))
+          astr (apply core/str (repeat n ".([]interface{})[int(~{})]"))]
+      `(~'js* ~(core/str "~{}[int(~{})].([]interface{})[int(~{})]" astr " = ~{}") ~a ~idx ~idx2 ~@idxv))))
 
 (defmacro ^::ana/numeric +
   ([] 0)
