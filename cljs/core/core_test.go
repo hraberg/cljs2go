@@ -14,13 +14,13 @@ import (
 )
 
 func Test_Main(t *testing.T) {
-	var mainArgs CljsCoreISeq
+	var mainArgs []interface{}
 	X_STAR_main_cli_fn_STAR_ = Fn(func(args__ ...interface{}) interface{} {
-		mainArgs = args__[0].(CljsCoreISeq)
+		mainArgs = args__
 		return nil
 	})
 	Main_()
-	assert.NotNil(t, mainArgs)
+	assert.Equal(t, 1, len(mainArgs))
 }
 
 var Baz = Fn(1, func(args ...interface{}) interface{} {
