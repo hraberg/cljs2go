@@ -2234,9 +2234,8 @@
   (assert (= (binding [*print-length* 10] (str {:foo "bar" :baz "woz"}))
              "{:foo \"bar\", :baz \"woz\"}"))
 
-  ;; ;; case keyword
-  ;; FAILURE - doesn't compile.
-  ;; (assert (= (let [x "a"] (case x :a 1 "a")) "a"))
+  ;; case keyword
+  (assert (= (let [x "a"] (case x :a 1 "a")) "a"))
 
   ;; CLJS-801
   (assert (= "0atrue:key/wordsymb/olfalse[1 2 3 4]1234.56789"

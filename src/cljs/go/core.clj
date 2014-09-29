@@ -1179,7 +1179,7 @@
                        vec
                        (mapv #(if (seq? %) (vec %) [%])))
             thens (vec (vals pairs))]
-        `(let [~esym (if (keyword? ~e) (.-fqn ~e) nil)]
+        `(let [~esym (if (keyword? ~e) (.-fqn (keyword ~e)) nil)]
            (case* ~esym ~tests ~thens ~default)))
 
       ;; equality
