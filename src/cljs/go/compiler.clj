@@ -798,9 +798,11 @@
 
 (defn emit-let
   [{:keys [bindings expr env tag]} is-loop]
-  (let [context (:context env)]
+  (let [context (:context env)
+        loop-needs-interface? #(and is-loop (not (go-primitive %)))]
     (if (= :expr context)
-      (emits "func() " (go-type tag) " {")
+      (emits "func() " (go-type (when-not (loop-needs-interface? tag)
+                                  tag)) " {")
       (emits "{"))
     (binding [*lexical-renames* (into *lexical-renames*
                                       (when (= :statement context)
@@ -812,7 +814,7 @@
       (doseq [{:keys [init] :as binding} bindings]
         (emitln "var " binding
                 (when (or (untyped-nil-needs-type? init)
-                          (and is-loop (not (go-primitive (:tag init)))))
+                          (loop-needs-interface? (:tag init)))
                   " interface{}")
                 " = " init))  ; Binding will be treated as a var
       (assign-to-blank bindings)

@@ -1317,23 +1317,22 @@
             expected (repeat n {:foo :bar})]
         (assert (= result expected)))))
 
-  ;; FAILURE - needs fewer type assertions.
-  ;; ;; TransientHashSet
-  ;; (loop [s (transient #{})
-  ;;        i 0]
-  ;;   (if (< i 100)
-  ;;     (recur (conj! s i) (inc i))
-  ;;     (loop [s s i 0]
-  ;;       (if (< i 100)
-  ;;         (if (zero? (mod i 3))
-  ;;           (recur (disj! s i) (inc i))
-  ;;           (recur s (inc i)))
-  ;;         (let [s (persistent! s)]
-  ;;           (assert (= s (loop [s #{} xs (remove #(zero? (mod % 3)) (range 100))]
-  ;;                          (if-let [x (first xs)]
-  ;;                            (recur (conj s x) (next xs))
-  ;;                            s))))
-  ;;           (assert (= s (set (remove #(zero? (mod % 3)) (range 100))))))))))
+  ;; TransientHashSet
+  (loop [s (transient #{})
+         i 0]
+    (if (< i 100)
+      (recur (conj! s i) (inc i))
+      (loop [s s i 0]
+        (if (< i 100)
+          (if (zero? (mod i 3))
+            (recur (disj! s i) (inc i))
+            (recur s (inc i)))
+          (let [s (persistent! s)]
+            (assert (= s (loop [s #{} xs (remove #(zero? (mod % 3)) (range 100))]
+                           (if-let [x (first xs)]
+                             (recur (conj s x) (next xs))
+                             s))))
+            (assert (= s (set (remove #(zero? (mod % 3)) (range 100))))))))))
 
   ;; PersistentTreeMap
   (let [m1 (sorted-map)
