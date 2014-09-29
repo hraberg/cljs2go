@@ -900,8 +900,9 @@
   [{:keys [f args env] :as expr}]
   (let [info (:info f)
         fn? (and ana/*cljs-static-fns*
-                 (not (:dynamic info))
+                 ; (not (:dynamic info))
                  (or (:fn-var info)
+                     (some->> info :name (ana/resolve-existing-var (dissoc env :locals)) :declared-var)
                      (-> info :init :info :fn-var)))
         protocol (or (:protocol info)
                      (and (= *go-protocol-fn* (:name info)) ;; this is a hack to deal with self-calls, to be revisited.
@@ -943,7 +944,7 @@
         tags-match? true ; (= (map :tag params) (map :tag args))
         ifn? (when (symbol? (:tag info))
                ('cljs.core/IFn (some->> (:tag info) (ana/resolve-existing-var (dissoc env :locals)) :protocols)))
-        coerce? (and (or (:field info) (:binding-form? info) (= :invoke (:op f)))
+        coerce? (and (or (:field info) (:binding-form? info) (#{:invoke :var} (:op f)))
                      (not (or fn? (= 'function (:tag info)) ifn?)))
         static-field-receiver? (-> expr :args first :target :info :type)
         ret-tag (:tag expr)

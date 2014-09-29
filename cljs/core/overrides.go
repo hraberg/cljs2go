@@ -106,10 +106,10 @@ func init() {
 				return Nil_(y)
 			} else {
 				{
-					var or__171__auto__ = reflect.DeepEqual(x, y)
-					_ = or__171__auto__
-					if Truth_(or__171__auto__) {
-						return or__171__auto__
+					var or__177__auto__ = reflect.DeepEqual(x, y)
+					_ = or__177__auto__
+					if Truth_(or__177__auto__) {
+						return or__177__auto__
 					} else {
 						if Value_(x).Type().Implements(reflect.TypeOf((*CljsCoreIEquiv)(nil)).Elem()) {
 							return x.(CljsCoreIEquiv).X_equiv_Arity2(y)
@@ -240,20 +240,20 @@ func init() {
 				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
 				if Truth_(func() interface{} {
-					var and__159__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
-					_ = and__159__auto__
-					if Truth_(and__159__auto__) {
+					var and__165__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
+					_ = and__165__auto__
+					if Truth_(and__165__auto__) {
 						{
-							var and__159__auto_____1 = Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIMeta)(nil)).Elem())
-							_ = and__159__auto_____1
-							if Truth_(and__159__auto_____1) {
+							var and__165__auto_____1 = Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIMeta)(nil)).Elem())
+							_ = and__165__auto_____1
+							if Truth_(and__165__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
 							} else {
-								return and__159__auto_____1
+								return and__165__auto_____1
 							}
 						}
 					} else {
-						return and__159__auto__
+						return and__165__auto__
 					}
 				}()) {
 					writer.(CljsCoreIWriter).X_write_Arity2("^")
@@ -370,12 +370,12 @@ func init() {
 								_, _ = coll_7998___1, n_7999
 								for {
 									if Truth_(func() interface{} {
-										var and__159__auto__ = coll_7998___1
-										_ = and__159__auto__
-										if Truth_(and__159__auto__) {
+										var and__165__auto__ = coll_7998___1
+										_ = and__165__auto__
+										if Truth_(and__165__auto__) {
 											return (Nil_(n_7999)) || (!(n_7999 == float64(0)))
 										} else {
-											return and__159__auto__
+											return and__165__auto__
 										}
 									}()) {
 										writer.(CljsCoreIWriter).X_write_Arity2(sep)
@@ -390,12 +390,12 @@ func init() {
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__159__auto__ = Seq.Arity1IQ(coll_7998___1)
-											_ = and__159__auto__
-											if Truth_(and__159__auto__) {
+											var and__165__auto__ = Seq.Arity1IQ(coll_7998___1)
+											_ = and__165__auto__
+											if Truth_(and__165__auto__) {
 												return (n_7999 == float64(0))
 											} else {
-												return and__159__auto__
+												return and__165__auto__
 											}
 										}()) {
 											writer.(CljsCoreIWriter).X_write_Arity2(sep)

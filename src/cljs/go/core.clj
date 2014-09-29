@@ -69,7 +69,9 @@
   cond-> cond->> as-> some-> some->>
   if-some when-some])
 
-(defmacro declare [& names])
+(defmacro declare [& names]
+  (core/doseq [n names]
+    (swap! env/*compiler* assoc-in [:cljs.analyzer/namespaces ana/*cljs-ns* :defs n :declared-var] true)))
 
 (defmacro defonce [x init]
   `(when-not (exists? ~x)
