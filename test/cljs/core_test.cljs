@@ -2397,7 +2397,7 @@
   (assert (= (keep-indexed identity [:foo nil :bar nil :baz])
              (sequence (keep-indexed identity) [:foo nil :bar nil :baz])))
 
-  (def xform ^"*cljs_core.AFn"
+  (def xform
     (comp (map inc)
       (filter even?)
       (dedupe)
@@ -2420,7 +2420,7 @@
   (assert (= (sequence xform data)
              '(36 200 10)))
 
-  (def xf ^"*cljs_core.AFn" (map #(+ %1 %2)))
+  (def xf (map #(+ %1 %2)))
 
   (assert (= (sequence xf [0 0] [1 2])
              [1 2]))

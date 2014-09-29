@@ -647,8 +647,10 @@
         declared? (-> form second meta :declared)]
     (when-not (or (*go-skip-def* name) protocol-symbol? declared?)
       (let [mname (-> name munge go-short-name go-public)
+            fn? (= :fn (:op init))
+            afn-type (str "*" (go-core "AFn"))
             def-type (if (= 'function tag)
-                       (str "*" (go-core "AFn"))
+                       afn-type
                        (go-type tag))]
         (some-> *go-defs* (swap! conj ast))
         (when *go-def-vars*
@@ -656,7 +658,9 @@
           (emits "var " mname " " def-type))
         (if-let [init (and *go-assign-vars*
                            (if init (emit-str init) ('{number "-1.0" boolean "false" clj-nil "nil"} tag)))]
-          (emitln (when (not *go-def-vars*) mname) " = " init)
+          (emitln (when (not *go-def-vars*) mname) " = " init
+                  (when (and (= 'function tag) (not fn?))
+                    (go-unbox-no-emit afn-type nil)))
           (emitln))
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
