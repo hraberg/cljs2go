@@ -648,17 +648,6 @@ func Fn(fns ...interface{}) *AFn {
 	return f
 }
 
-func Truth_(x interface{}) bool {
-	return x != nil && x != false
-}
-
-func Seq_(x interface{}) CljsCoreISeq {
-	if x == nil {
-		return nil
-	}
-	return x.(CljsCoreISeq)
-}
-
 func Nil_(x interface{}) bool {
 	if x == nil {
 		return true
@@ -669,6 +658,17 @@ func Nil_(x interface{}) bool {
 	} else {
 		return false
 	}
+}
+
+func Truth_(x interface{}) bool {
+	return !(x == false || Nil_(x))
+}
+
+func Seq_(x interface{}) CljsCoreISeq {
+	if Nil_(x) {
+		return nil
+	}
+	return x.(CljsCoreISeq)
 }
 
 func Int32_(x float64) int32 {

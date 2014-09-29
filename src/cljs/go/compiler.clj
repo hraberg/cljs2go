@@ -105,7 +105,8 @@
      cljs.core/js->clj
      cljs.core/key->js
      cljs.core/clj->js})
-(def ^:dynamic *go-skip-protocol* '{cljs.core/TransientArrayMap #{cljs.core/ITransientMap}})
+(def ^:dynamic *go-skip-protocol* '{cljs.core/TransientArrayMap #{cljs.core/ITransientMap}
+                                    cljs.core/PersistentTreeSet #{cljs.core/ISorted}})
 
 (defmacro ^:private debug-prn
   [& args]

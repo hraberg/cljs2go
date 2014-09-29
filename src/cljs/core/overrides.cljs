@@ -331,5 +331,17 @@
         tcoll)
       (throw (js/Error. "dissoc! after persistent!")))))
 
+(extend-type PersistentTreeSet
+  ISorted
+  (-sorted-seq [coll ascending?]
+    (seq (map key (-sorted-seq tree-map ascending?))))
+
+  (-sorted-seq-from [coll k ascending?]
+    (seq (map key (-sorted-seq-from tree-map k ascending?))))
+
+  (-entry-key [coll entry] entry)
+
+  (-comparator [coll] (-comparator tree-map)))
+
 ;; There are two protocols in clojure.data, EqualityPartition and Diff which extend the base types and default which gets skipped.
 ;; There are also the extent-type calls at start of core.cljs we aren't dealing with.

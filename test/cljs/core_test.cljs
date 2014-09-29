@@ -1409,8 +1409,7 @@
       (assert (= (subseq s3 > 5) (list 7 8)))
       (assert (= (subseq s3 > 6) (list 8)))
       (assert (= (subseq s3 >= 6) (list 7 8)))
-      ;; FAILURE - tries to >= with nil, unsure if this is a bug or a JS vs Go thing.
-;;      (assert (= (subseq s3 >= 12) nil))
+      (assert (= (subseq s3 >= 12) nil))
       (assert (= (subseq s3 < 0) (list)))
       (assert (= (subseq s3 < 5) (list 1 2)))
       (assert (= (subseq s3 < 6) (list 1 2)))
