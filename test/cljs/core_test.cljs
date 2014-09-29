@@ -618,21 +618,20 @@
   (assert (= (distinct [#{1 2} #{1 2}]) [#{1 2}]))
   (assert (= (distinct [#{} #{}]) [#{}]))
 
-  ;; FAILURE - need just enough support for "js" regexps.
-  ;; ;;regexps
+  ;;regexps
   ;; (assert (= (str (re-pattern "f(.)o")) (str (js* "/f(.)o/"))))
-  ;; (assert (= (re-find (re-pattern "foo") "foo bar foo baz foo zot") "foo"))
-  ;; (assert (= (re-find (re-pattern "f(.)o") "foo bar foo baz foo zot") ["foo" "o"]))
-  ;; (assert (= (re-matches (re-pattern "foo") "foo") "foo"))
-  ;; (assert (= (re-matches (re-pattern "foo") "foo bar foo baz foo zot") nil))
-  ;; (assert (= (re-matches (re-pattern "foo.*") "foo bar foo baz foo zot") "foo bar foo baz foo zot"))
-  ;; (assert (= (re-seq (re-pattern "foo") "foo bar foo baz foo zot") (list "foo" "foo" "foo")))
-  ;; (assert (= (re-seq (re-pattern "f(.)o") "foo bar foo baz foo zot") (list ["foo" "o"] ["foo" "o"] ["foo" "o"])))
-  ;; (assert (= (re-matches (re-pattern "(?i)foo") "Foo") "Foo"))
-  ;; ; new RegExp("").source => "(?:)" on webkit-family envs, "" elsewhere
-  ;; (assert (#{"#\"\"" "#\"(?:)\""} (pr-str #"")))
+  (assert (= (re-find (re-pattern "foo") "foo bar foo baz foo zot") "foo"))
+  (assert (= (re-find (re-pattern "f(.)o") "foo bar foo baz foo zot") ["foo" "o"]))
+  (assert (= (re-matches (re-pattern "foo") "foo") "foo"))
+  (assert (= (re-matches (re-pattern "foo") "foo bar foo baz foo zot") nil))
+  (assert (= (re-matches (re-pattern "foo.*") "foo bar foo baz foo zot") "foo bar foo baz foo zot"))
+  (assert (= (re-seq (re-pattern "foo") "foo bar foo baz foo zot") (list "foo" "foo" "foo")))
+  (assert (= (re-seq (re-pattern "f(.)o") "foo bar foo baz foo zot") (list ["foo" "o"] ["foo" "o"] ["foo" "o"])))
+  (assert (= (re-matches (re-pattern "(?i)foo") "Foo") "Foo"))
+  ; new RegExp("").source => "(?:)" on webkit-family envs, "" elsewhere
+  (assert (#{"#\"\"" "#\"(?:)\""} (pr-str #"")))
 
-  ;; ;; destructuring
+  ;; destructuring
   (assert (= [2 1] (let [[a b] [1 2]] [b a])))
   (assert (= #{1 2} (let [[a b] [1 2]] #{a b})))
   (assert (= [1 2] (let [{a :a b :b} {:a 1 :b 2}] [a b])))
@@ -644,7 +643,7 @@
   (assert (= {1 2} (let [[a b] [1 2]] {a b})))
   (assert (= [2 1] (let [[a b] (seq [1 2])] [b a])))
 
-  ;; ;; update-in
+  ;; update-in
   (assert (= {:foo {:bar {:baz 1}}}
              (update-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] inc)))
   (assert (= {:foo 1 :bar 2 :baz 10}
@@ -654,7 +653,7 @@
   (assert (= [{:foo {:bar 2}} {:foo {:bar 3}}]
                (update-in [{:foo {:bar 2}}, {:foo {:bar 2}}] [1 :foo :bar] inc)))
 
-  ;; ;; assoc-in
+  ;; assoc-in
   (assert (= {:foo {:bar {:baz 100}}}
              (assoc-in {:foo {:bar {:baz 0}}} [:foo :bar :baz] 100)))
   (assert (= {:foo 1 :bar 2 :baz 100}
@@ -665,14 +664,14 @@
   (assert (= [{:foo 1, :bar 2} {:foo 1, :bar 100}]
              (assoc-in [{:foo 1 :bar 2}, {:foo 1 :bar 2}] [1 :bar] 100)))
 
-  ;; ;; get-in
+  ;; get-in
   (assert (= 1 (get-in {:foo 1 :bar 2} [:foo])))
   (assert (= 2 (get-in {:foo {:bar 2}} [:foo :bar])))
   (assert (= 1 (get-in [{:foo 1}, {:foo 2}] [0 :foo])))
   (assert (= 4 (get-in [{:foo 1 :bar [{:baz 1}, {:buzz 2}]}, {:foo 3 :bar [{:baz 3}, {:buzz 4}]}]
                        [1 :bar 1 :buzz])))
 
-  ;; ;; arrays
+  ;; arrays
   (let [a (to-array [1 2 3])]
     (assert (= [10 20 30] (seq (amap a i ret (* 10 (aget a i))))))
     (assert (= 6 (areduce a i ret 0 (+ ret (aget a i)))))
@@ -693,23 +692,23 @@
     (apply aset a [0 0 "bar"])
     (assert (= (aget a 0 0) "bar")))
 
-  ;; ;; sort
+  ;; sort
   (assert (= [1 2 3 4 5] (sort [5 3 1 4 2])))
   (assert (= [1 2 3 4 5] (sort < [5 3 1 4 2])))
   (assert (= [5 4 3 2 1] (sort > [5 3 1 4 2])))
 
-  ;; ;; sort-by
+  ;; sort-by
   (assert (= ["a" [ 1 2] "foo"] (sort-by count ["foo" "a" [1 2]])))
   (assert (= ["foo" [1 2] "a"] (sort-by count > ["foo" "a" [1 2]])))
 
-  ;; ;; shuffle
+  ;; shuffle
   (let [coll [1 2 3 4 5 6 7 8 9 10]
         ; while it is technically possible for this test to fail with a false negative,
         ; it's _extraordinarily_ unlikely.
         shuffles (filter #(not= coll %) (take 100 (iterate shuffle coll)))]
     (assert (not (empty? shuffles))))
 
-  ;; ;; js->clj
+  ;; js->clj
   ;; (assert (= {"a" 1, "b" 2} (js->clj (js* "{\"a\":1,\"b\":2}"))))
   ;; (assert (= {"a" nil} (js->clj (js* "{\"a\":null}"))))
   ;; (assert (= {} (js->clj (js* "{}"))))
@@ -721,7 +720,7 @@
   ;;              (js->clj [[{:a 1, :b 2} {:a 1, :b 2}]])))
   ;; (assert (= (js->clj nil) nil))
 
-  ;; ;; clj->js
+  ;; clj->js
   ;; (assert (= (clj->js 'a) "a"))
   ;; (assert (= (clj->js :a) "a"))
   ;; (assert (= (clj->js "a") "a"))
@@ -739,23 +738,23 @@
   ;;                (aget "{:k :ey}"))
   ;;            "d"))
 
-  ;; ;; last
+  ;; last
   (assert (= nil (last nil)))
   (assert (= 3 (last [1 2 3])))
 
-  ;; ;; dotimes
+  ;; dotimes
   (let [s (atom [])]
     (dotimes [n 5]
       (swap! s conj n))
     (assert (= [0 1 2 3 4] @s)))
 
-  ;; ;; doseq
+  ;; doseq
   (let [v [1 2 3 4 5]
         s (atom ())]
     (doseq [n v] (swap! s conj n))
     (assert (= @s (reverse v))))
 
-  ;; ;; delay
+  ;; delay
   (let [a (atom 0)
         d (delay (swap! a inc))]
     (assert (false? (realized? d)))
@@ -768,28 +767,28 @@
     (assert (= (force d) @d))
     (assert (= 1 (force 1)))) ;; you can safely force non-delays
 
-  ;; ;; assoc
+  ;; assoc
   (assert (= {1 2 3 4} (assoc {} 1 2 3 4)))
   (assert (= {1 2} (assoc {} 1 2)))
   (assert (= [42 2] (assoc [1 2] 0 42)))
 
-  ;; ;; dissoc
+  ;; dissoc
   (assert (= {} (dissoc {1 2 3 4} 1 3)))
   (assert (= {1 2} (dissoc {1 2 3 4} 3)))
   (assert (nil? (dissoc nil :foo)))
 
-  ;; ;; disj
+  ;; disj
   (assert (= #{1 2 3} (disj #{1 2 3})))
   (assert (= #{1 2} (disj #{1 2 3} 3)))
   (assert (= #{1} (disj #{1 2 3} 2 3)))
   (assert (nil? (disj nil :foo)))
 
-  ;; ;; memoize
+  ;; memoize
   (let [f (memoize (fn [] (rand)))]
     (f)
     (assert (= (f) (f))))
 
-  ;; ;; find
+  ;; find
   (assert (= (find {} :a) nil))
   (assert (= (find {:a 1} :a) [:a 1]))
   (assert (= (find {:a 1} :b) nil))
@@ -801,7 +800,7 @@
   (assert (= (find {:a 1 :b 2} nil) nil))
   (assert (= (find [1 2 3] 0) [0 1]))
 
-  ;; ;; mod,quot,rem
+  ;; mod,quot,rem
   (assert (= (quot 4 2) 2))
   (assert (= (quot 3 2) 1))
   (assert (= (quot 6 4) 1))
@@ -838,13 +837,13 @@
   (assert (= (rem 2 -5) 2))
   (assert (= (rem 0 3) 0))
 
-  ;; ;; range
+  ;; range
   (assert (= (range 10) (list 0 1 2 3 4 5 6 7 8 9)))
   (assert (= (range 10 20) (list 10 11 12 13 14 15 16 17 18 19)))
   (assert (= (range 10 20 2) (list 10 12 14 16 18)))
   (assert (= (take 20 (range)) (list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)))
 
-  ;; ;; group-by
+  ;; group-by
   (let [d (group-by second {:a 1 :b 2 :c 1 :d 4 :e 1 :f 2})]
     (assert (= 3 (count (get d 1))))
     (assert (= 2 (count (get d 2))))
@@ -853,24 +852,24 @@
   (assert (= {1 2 3 4 5 6} (merge {1 2} {3 4} {5 6})))
   (assert (= {1 2 3 4} (merge {1 2} {3 4} nil)))
 
-  ;; ;; frequencies
+  ;; frequencies
   (assert (= {:a 3 :b 2} (frequencies [:a :b :a :b :a])))
 
-  ;; ;; reductions
+  ;; reductions
   (assert (= [1 3 6 10 15] (reductions + [1 2 3 4 5])))
 
-  ;; ;; keep
+  ;; keep
   (assert (= [1 3 5 7 9] (keep #(if (odd? %) %) [1 2 3 4 5 6 7 8 9 10])))
   (assert (= [2 4 6 8 10] (keep #(if (even? %) %) [1 2 3 4 5 6 7 8 9 10])))
 
-  ;; ;; keep-indexed
+  ;; keep-indexed
   (assert (= [1 3 5 7 9] (keep-indexed #(if (odd? %1) %2) [0 1 2 3 4 5 6 7 8 9 10])))
   (assert (= [2 4 5] (keep-indexed #(if (pos? %2) %1) [-9 0 29 -7 45 3 -8])))
 
-  ;; ;; map-indexed
+  ;; map-indexed
   (assert (= [[0 :a] [1 :b] [2 :c]] (map-indexed #(vector % %2) [:a :b :c])))
 
-  ;; ;; merge-with
+  ;; merge-with
   (assert (= '{"Foo" ("foo" "FOO" "fOo"), "Bar" ("bar" "BAR" "BAr"), "Baz" ["baz"], "Qux" ["qux" "quux"]}
              (merge-with concat
                   {"Foo" ["foo" "FOO"]
@@ -895,20 +894,20 @@
   (assert (= [:one :zero :two :zero]
              (replace {0 :zero 1 :one 2 :two} '(1 0 2 0))))
 
-  ;; ;; split-at
+  ;; split-at
   (assert (= [[1 2] [3 4 5]] (split-at 2 [1 2 3 4 5])))
 
-  ;; ;; split-with
+  ;; split-with
   (assert (= [[1 2 3] [4 5]] (split-with (partial >= 3) [1 2 3 4 5])))
 
-  ;; ;; trampoline
+  ;; trampoline
   (assert (= 10000 (trampoline (fn f [n] (if (>= n 10000) n #(f (inc n)))) 0)))
 
-  ;; ;; vary-meta
+  ;; vary-meta
   (assert (= {:a 1} (meta (vary-meta [] assoc :a 1))))
   (assert (= {:a 1 :b 2} (meta (vary-meta (with-meta [] {:b 2}) assoc :a 1))))
 
-  ;; ;; hierarchy tests
+  ;; hierarchy tests
   (derive ::rect ::shape)
   (derive ::square ::rect)
 
@@ -923,23 +922,23 @@
   ;; (assert (true? (isa? cljs.core.ObjMap ::collection)))
   (assert (true? (isa? cljs.core/PersistentHashSet ::collection)))
   (assert (false? (isa? cljs.core/IndexedSeq ::collection)))
-  ;; ;; ?? (isa? String Object)
+  ;; ?? (isa? String Object)
   (assert (true? (isa? [::square ::rect] [::shape ::shape])))
-  ;; ;; ?? (ancestors java.util.ArrayList)
+  ;; ?? (ancestors java.util.ArrayList)
 
-  ;; ;; ?? isa? based dispatch tests
+  ;; ?? isa? based dispatch tests
 
-  ;; ;; prefer-method test
+  ;; prefer-method test
   (defmulti bar (fn [x y] [x y]))
   (defmethod bar [::rect ::shape] [x y] :rect-shape)
   (defmethod bar [::shape ::rect] [x y] :shape-rect)
 
-  ;; ;;(bar ::rect ::rect)
-  ;; ;; -> java.lang.IllegalArgumentException:
-  ;; ;;  Multiple methods match dispatch value:
-  ;; ;;  [:cljs.core-test/rect :cljs.core-test/rect] -> [:cljs.core-test/rect :cljs.core-test/shape]
-  ;; ;;  and [:cljs.core-test/shape :cljs.core-test/rect],
-  ;; ;;  and neither is preferred
+  ;;(bar ::rect ::rect)
+  ;; -> java.lang.IllegalArgumentException:
+  ;;  Multiple methods match dispatch value:
+  ;;  [:cljs.core-test/rect :cljs.core-test/rect] -> [:cljs.core-test/rect :cljs.core-test/shape]
+  ;;  and [:cljs.core-test/shape :cljs.core-test/rect],
+  ;;  and neither is preferred
 
   (assert (zero? (count (prefers bar))))
   (prefer-method bar [::rect ::shape] [::shape ::rect])
@@ -947,7 +946,7 @@
   (assert (= :rect-shape (bar ::rect ::rect)))
   (assert (= :rect-shape (apply (-get-method bar [::rect ::shape]) [::rect ::shape])))
 
-  ;; ;; nested data structures tests
+  ;; nested data structures tests
   (defmulti nested-dispatch (fn [m] (-> m :a :b)))
   (defmethod nested-dispatch :c [m] :nested-a)
   (defmethod nested-dispatch :default [m] :nested-default)
@@ -958,7 +957,7 @@
   (defmethod nested-dispatch2 :default [m] :nested-default)
   (assert (= :nested-a (nested-dispatch2 [[:a :b]])))
 
-  ;; ;; general tests
+  ;; general tests
   (defmulti foo1 (fn [& args] (first args)))
   (defmethod foo1 :a [& args] :a-return)
   (defmethod foo1 :default [& args] :default-return)
@@ -978,14 +977,14 @@
   (assert (= 52 (area r)))
   (assert (= :oops (area {})))
 
-  ;; ;; remove method tests
+  ;; remove method tests
   (assert (= 2 (count (methods bar))))
   (remove-method bar [::rect ::shape])
   (assert (= 1 (count (methods bar))))
   (remove-all-methods bar)
   (assert (zero? (count (methods bar))))
 
-  ;; ;; test apply
+  ;; test apply
   (defmulti apply-multi-test (fn ([_] 0) ([_ _] 0) ([_ _ _] 0)))
   (defmethod apply-multi-test 0
     ([x] :one)
@@ -993,7 +992,7 @@
     ([x y & r] [:three r]))
   (assert (= [:three '(2)] (apply apply-multi-test [0 1 2])))
 
-  ;; ;; custom hierarchy tests
+  ;; custom hierarchy tests
   (def my-map-hierarchy (atom (-> (make-hierarchy)
                                   ;; (derive (type (obj-map)) ::map)
                                   (derive (type (array-map)) ::map)
@@ -1008,7 +1007,7 @@
   (doseq [not-m [[] 1 "asdf" :foo]]
     (assert (not (my-map? not-m))))
 
-  ;; ;; Range
+  ;; Range
   (assert (= (range 0 10 3) (list 0 3 6 9)))
   (assert (= (count (range 0 10 3)) 4))
   (assert (= (range 0 -10 -3) (list 0 -3 -6 -9)))
@@ -1029,7 +1028,7 @@
   (assert (= (take 3 (range 1 0 0)) (list 1 1 1)))
   (assert (= (take 3 (range 3 1 0)) (list 3 3 3)))
 
-  ;; ;; PersistentVector
+  ;; PersistentVector
   (let [pv (vec (range 97))]
     (assert (= (nth pv 96) 96))
     (assert (= (nth pv 97 nil) nil))
@@ -1051,12 +1050,12 @@
     (assert (= 95 (peek stack1)))
     (assert (= 94 (peek stack2))))
 
-  ;; ;; CLJS-513
+  ;; CLJS-513
   (let [sentinel (rand)               ; (js-obj)
         ]
     (assert (identical? sentinel (try ([] 0) (catch js/Error _ sentinel)))))
 
-  ;; ;; subvec
+  ;; subvec
   (let [v1 (vec (range 10))
         v2 (vec (range 5))
         s (subvec v1 2 8)]
@@ -1094,7 +1093,7 @@
       (assert (= (rseq sv1) '(1)))
       (assert (nil? (rseq sv2)))))
 
-  ;; ;; TransientVector
+  ;; TransientVector
   (let [v1 (vec (range 15 48))
         v2 (vec (range 40 57))
         v1 (persistent! (assoc! (conj! (pop! (transient v1)) :foo) 0 :quux))
@@ -1112,7 +1111,7 @@
        (next xs))
       (assert (= (vec (range 100)) (persistent! v)))))
 
-  ;; ;; PersistentHashMap & TransientHashMap
+  ;; PersistentHashMap & TransientHashMap
   (loop [m1 (.-EMPTY cljs.core/PersistentHashMap)
          m2 (transient (.-EMPTY cljs.core/PersistentHashMap))
          i 0]
@@ -1214,7 +1213,7 @@
       (assert (not (contains? m fixed-hash-foo)))
       (assert (= (count m) 98))))
 
-  ;; ;; PersistentArrayMap & TransientArrayMap
+  ;; PersistentArrayMap & TransientArrayMap
   (def ^number array-map-conversion-threshold
     (.-HASHMAP_THRESHOLD cljs.core/PersistentArrayMap))
   (loop [m1 (.-EMPTY cljs.core/PersistentArrayMap)
@@ -1291,7 +1290,7 @@
                        (map #(vector % %)
                             (range (* 2 array-map-conversion-threshold)))))))
 
-  ;; ;; literal maps
+  ;; literal maps
   (loop [m1 {} m2 {} i 0]
     (if (< i 100)
       (recur (assoc m1 i i) (assoc m2 (str "foo" i) i) (inc i))
@@ -1304,7 +1303,7 @@
           (assert (= (count m1) 100))
           (assert (= (count m2) 100)))))
 
-  ;; ;; CLJS-461: automatic map conversions
+  ;; CLJS-461: automatic map conversions
   ;; (loop [i 0 m (with-meta {} {:foo :bar}) result []]
   ;;   (if (<= i (+ cljs.core.ObjMap.HASHMAP_THRESHOLD 2))
   ;;     (recur (inc i) (assoc m (str i) i) (conj result (meta m)))
@@ -1336,7 +1335,7 @@
   ;;                            s))))
   ;;           (assert (= s (set (remove #(zero? (mod % 3)) (range 100))))))))))
 
-  ;; ;; PersistentTreeMap
+  ;; PersistentTreeMap
   (let [m1 (sorted-map)
         c2 (comp - compare)
         m2 (sorted-map-by c2)]
@@ -1380,7 +1379,7 @@
     (assert (= (map #(reduce (fn [_ x] x) %) m) (list 2 1 3)))
     (assert (= (map #(reduce (fn [x _] x) 7 %) m) (list 7 7 7))))
 
-  ;; ;; PersistentTreeSet
+  ;; PersistentTreeSet
   (let [s1 (sorted-set)
         c2 (comp - compare)
         s2 (sorted-set-by c2)
@@ -1427,7 +1426,7 @@
         (assert (= (count s1) 2))
         (assert (= (count s2) 2)))))
 
-  ;; ;; defrecord
+  ;; defrecord
   (defrecord Person [firstname lastname])
   (def fred (Person. "Fred" "Mertz"))
   (assert (= (:firstname fred) "Fred"))
@@ -1436,7 +1435,7 @@
   (assert (false? (= fred nil)))
   (assert (false? (= nil fred)))
 
-  ;; ;; invalid tests, cannot set meta and extmap directly - David
+  ;; invalid tests, cannot set meta and extmap directly - David
   ;; (def ethel (with-meta (assoc (Person. "Ethel" "Mertz") :husband :fred)
   ;;              {:married true}))
   ;; (assert (= (meta ethel) {:married true}))
@@ -1475,7 +1474,7 @@
   ;; (assert (= [1 1 2 2 3 5] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator <)))))
   ;; (assert (= [5 3 2 2 1 1] (seq (.sort (to-array [2 3 1 5 2 1]) (comparator >)))))
 
-  ;; ;; dot
+  ;; dot
   (let [s "abc"]
     (assert (= 3 (.-length s)))
     (assert (= 3 (. s -length)))
@@ -1527,7 +1526,7 @@
 
   nil
 
-  ;; ;; IFn
+  ;; IFn
   (deftype FnLike []
     IFn
     (-invoke [_] :a)
@@ -1546,7 +1545,7 @@
 
   (assert (= 1 ((FnLikeB. 1))))
 
-  ;; ;; hashing bug in many JS runtimes CLJ-118
+  ;; hashing bug in many JS runtimes CLJ-118
   (let [g #{(conj #{:2} :alt)}
         h #{#{:2 :alt}}]
     (assert (= g h)))
@@ -1644,7 +1643,7 @@
                  :none)
                :none)))
 
-  ;; ;; IComparable
+  ;; IComparable
   (assert (=  0 (compare false false)))
   (assert (= -1 (compare false true)))
   (assert (=  1 (compare true  false)))
@@ -1661,7 +1660,7 @@
   (assert (= -1 (compare "a" "b")))
   (assert (= -1 (compare :a :b)))
   (assert (= -1 (compare 'a 'b)))
-  ;; ;; cases involving ns
+  ;; cases involving ns
   (assert (= -1 (compare :b/a :c/a)))
   (assert (= -1 (compare :c :a/b)))
   (assert (=  1 (compare :a/b :c)))
@@ -1669,7 +1668,7 @@
   (assert (= -1 (compare 'c 'a/b)))
   (assert (=  1 (compare 'a/b 'c)))
 
-  ;; ;; This is different from clj. clj gives -2 next 3 tests
+  ;; This is different from clj. clj gives -2 next 3 tests
   (assert (= -1 (compare "a" "c")))
   (assert (= -1 (compare :a :c)))
   (assert (= -1 (compare 'a 'c)))
@@ -1686,7 +1685,7 @@
   (assert (=  0 (compare (subvec [1 2 3] 1) (subvec [1 2 3] 1))))
   (assert (=  1 (compare (subvec [1 2 4] 1) (subvec [1 2 3] 1))))
 
-  ;; ;; RSeq
+  ;; RSeq
 
   (assert (= '(3 2 1) (reverse (seq (array 1 2 3)))))
   (assert (= '(3 2 1) (reverse [1 2 3])))
@@ -1695,7 +1694,7 @@
   (assert (= '(4 3 2) (map inc (reverse [1 2 3]))))
   (assert (= '(4 2) (filter even? (reverse [1 2 3 4]))))
 
-  ;; ;; Chunked Sequences
+  ;; Chunked Sequences
 
   (let [r (range 64)
         v (into [] r)]
@@ -1711,7 +1710,7 @@
     (assert (== 2010 (reduce + (nnext (nnext (seq v))))))
     (assert (== 2020 (reduce + 10 (nnext (nnext (seq v)))))))
 
-  ;; ;; INext
+  ;; INext
 
   (assert (= nil (next nil)))
   (assert (= nil (next (seq (array 1)))))
@@ -1733,7 +1732,7 @@
   (assert (= nil (next (range 1 2))))
   (assert (= '(2 3) (next (range 1 4))))
 
-  ;; ;; UUID
+  ;; UUID
 
   (assert (= (UUID. "550e8400-e29b-41d4-a716-446655440000")
              (UUID. "550e8400-e29b-41d4-a716-446655440000")))
@@ -1751,7 +1750,7 @@
                   (UUID. "666e8400-e29b-41d4-a716-446655440000")
                   :not-at-all-found)))
 
-  ;; ;; Reader literals
+  ;; Reader literals
   (assert (= #queue [1]      (into (.-EMPTY cljs.core/PersistentQueue) [1])))
   (assert (not= #queue [1 2] (into (.-EMPTY cljs.core/PersistentQueue) [1])))
 
@@ -1765,7 +1764,7 @@
              (get {#uuid "550e8400-e29b-41d4-a716-446655440000" 42}
                   #uuid "550e8400-e29b-41d4-a716-446655440000")))
 
-  ;; ;; pr-str
+  ;; pr-str
 
   (assert (= (pr-str 1) "1"))
   (assert (= (pr-str -1) "-1"))
@@ -1788,12 +1787,12 @@
   (assert (= (pr-str ["üñîçó∂£" :ทดสอบ/你好 'こんにちは]) "[\"üñîçó∂£\" :ทดสอบ/你好 こんにちは]"))
   (assert (= (pr-str "escape chars \t \r \n \\ \" \b \f") "\"escape chars \\t \\r \\n \\\\ \\\" \\b \\f\""))
 
-  ;; ;;; pr-str records
+  ;;; pr-str records
 
   (defrecord PrintMe [a b])
   (assert (= (pr-str (PrintMe. 1 2)) "#cljs.core-test.PrintMe{:a 1, :b 2}"))
 
-  ;; ;;; pr-str inst
+  ;;; pr-str inst
 
   (assert (= (pr-str (js/Date. "2010-11-12T13:14:15.666-05:00"))
              "#inst \"2010-11-12T18:14:15.666-00:00\""))
@@ -1806,16 +1805,16 @@
           inst (str "2010-" (pad month) "-" (pad day) "T" (pad hour) ":14:15.666-00:00")]
       (assert (= (pr-str (js/Date. inst)) (str "#inst \"" inst "\"")))))
 
-  ;; ;;; pr-str uuid
+  ;;; pr-str uuid
 
   (let [uuid-str "550e8400-e29b-41d4-a716-446655440000"
         uuid (UUID. uuid-str)]
     (assert (= (pr-str uuid) (str "#uuid \"" uuid-str "\""))))
 
-  ;; ;;; pr-str PersistentQueueSeq - CLJS-800
+  ;;; pr-str PersistentQueueSeq - CLJS-800
   (assert (= (pr-str (rest (conj (.-EMPTY cljs.core/PersistentQueue) 1 2 3))) "(2 3)"))
 
-  ;; ;; CLJS-405
+  ;; CLJS-405
 
   (defprotocol IBar (-bar [this x]))
 
@@ -1827,7 +1826,7 @@
 
   (assert (= 2 (-bar (baz inc) 1)))
 
-  ;; ;; CLJS-401 / CLJS-411
+  ;; CLJS-401 / CLJS-411
 
   (let [x "original"]
     (defn original-closure-stmt [] x))
@@ -1846,11 +1845,11 @@
     (let [x (fn [] "overwritten")]
       (assert (= "original" (y)))))
 
-  ;; ;; CLJS-459: reduce-kv visit order
+  ;; CLJS-459: reduce-kv visit order
   (assert (= (reduce-kv conj [] (sorted-map :foo 1 :bar 2))
              [:bar 2 :foo 1]))
 
-  ;; ;; Test builtin implementations of IKVReduce
+  ;; Test builtin implementations of IKVReduce
   (letfn [(kvr-test [data expect]
             (assert
               (= :reduced
@@ -1863,13 +1862,13 @@
                    (reduce-kv
                      (fn [r k v] (-> r (conj [k v])))
                      [] data)))))]
-;;    (kvr-test (obj-map :k0 :v0 :k1 :v1) [[:k0 :v0] [:k1 :v1]])
+    ;; (kvr-test (obj-map :k0 :v0 :k1 :v1) [[:k0 :v0] [:k1 :v1]])
     (kvr-test (hash-map :k0 :v0 :k1 :v1) [[:k0 :v0] [:k1 :v1]])
     (kvr-test (array-map :k0 :v0 :k1 :v1) [[:k0 :v0] [:k1 :v1]])
     (kvr-test [:v0 :v1] [[0 :v0] [1 :v1]]))
   (assert (= {:init :val} (reduce-kv assoc {:init :val} nil)))
 
-  ;; ;; data conveying exception
+  ;; data conveying exception
   (assert (= {:foo 1}
              (try (throw (ex-info "asdf" {:foo 1}))
                   (catch ExceptionInfo e
@@ -1878,42 +1877,42 @@
   ;; (assert (instance? js/Error (ex-info "asdf" {:foo 1})))
   ;; (assert (not (instance? cljs.core.ExceptionInfo (js/Error.))))
 
-  ;; ;; CLJS-435
+  ;; CLJS-435
 
   (assert (= (assoc {} 154618822656 1 261993005056 1)
              {154618822656 1 261993005056 1}))
 
-  ;; ;; CLJS-458
+  ;; CLJS-458
 
   (assert (= (get-in {:a {:b 1}} [:a :b :c] :nothing-there)
              :nothing-there))
 
-  ;; ;; CLJS-464
+  ;; CLJS-464
 
   (assert (nil? (get-in {:foo {:bar 2}} [:foo :bar :baz])))
 
-  ;; ;; symbol metadata
+  ;; symbol metadata
 
   (assert (= (meta (with-meta 'foo {:tag 'int})) {:tag 'int}))
 
-  ;; ;; CLJS-467
+  ;; CLJS-467
 
   (assert (= (reduce-kv + 0 (apply hash-map (range 1000)))
              (reduce + (range 1000))))
 
-  ;; ;; CLJS-477
+  ;; CLJS-477
 
   (assert (= [js/undefined 1 2] ((fn [& more] more) js/undefined 1 2)))
   (assert (= [js/undefined 4 5] ((fn [a b & more] more) 1 2 js/undefined 4 5)))
 
-  ;; ;; CLJS-493
+  ;; CLJS-493
 
   (assert (nil? (get 42 :anything)))
   (assert (= (get 42 :anything :not-found) :not-found))
   (assert (nil? (first (map get [42] [:anything]))))
   (assert (= (first (map get [42] [:anything] [:not-found])) :not-found))
 
-  ;; ;; CLJS-481
+  ;; CLJS-481
 
   (let [fs (atom [])]
     (doseq [x (range 4)
@@ -1927,11 +1926,11 @@
   ;; (def exists?-test-val 'foo)
   ;; (assert (exists? exists?-test-val))
 
-  ;; ;; CLJS-496
+  ;; CLJS-496
   (assert (= (char 65) \A))
   (assert (= (char \A) \A))
 
-  ;; ;; compile time run symbol hash codes
+  ;; compile time run symbol hash codes
 
   (assert (= (hash 'foo) (hash (symbol "foo"))))
   (assert (= (hash 'foo/bar) (hash (symbol "foo" "bar"))))
@@ -1958,15 +1957,15 @@
   ;; (assert (= (get (js-obj "foo" 1) "bar" ::not-found) ::not-found))
   ;; (assert (= (reduce (fn [s [k v]] (+ s v)) 0 (js-obj "foo" 1 "bar" 2)) 3))
 
-  ;; ;; CLJS-515
+  ;; CLJS-515
   (deftype PositionalFactoryTest [x])
 
   (assert (== 1 (.-x (->PositionalFactoryTest 1))))
 
-  ;; ;; CLJS-518
+  ;; CLJS-518
   (assert (nil? (:test "test")))
 
-  ;; ;; CLJS-541
+  ;; CLJS-541
   (letfn [(f! [x] (print \f) x)
           (g! [x] (print \g) x)]
     (assert (= "ffgfg"
@@ -1975,12 +1974,12 @@
                  (max (f! 5) (g! 10))
                  (min (f! 5) (g! 10))))))
 
-  ;; ;; CLJS-582
+  ;; CLJS-582
   (assert (= #{1 2} (set [1 2 2])))
   (assert (= #{1 2} (hash-set 1 2 2)))
   (assert (= #{1 2} (apply hash-set [1 2 2])))
 
-  ;; ;; CLJS-585
+  ;; CLJS-585
   (assert (= (last (map identity (into [] (range 32)))) 31))
   (assert (= (into #{} (range 32))
              (set (map identity (into [] (range 32))))))
@@ -1991,22 +1990,22 @@
   ;; (def foo580 {:a (fn []) :b (fn [] (foo580 :a))})
   ;; (assert (nil? (((:b foo580)))))
 
-  ;; ;; CLJS-587
+  ;; CLJS-587
   (assert (== (first (filter #(== % 9999) (range))) 9999))
 
-  ;; ;; LazySeq regressions
+  ;; LazySeq regressions
 
-  ;; ;; CLJS-604
+  ;; CLJS-604
   (assert (= () (concat nil [])))
   (assert (= () (concat [] [])))
 
-  ;; ;; CLJS-600
+  ;; CLJS-600
   (assert (= "foobar" (apply str (concat "foo" "bar"))))
 
-  ;; ;; CLJS-608
+  ;; CLJS-608
   (assert (= '("") (re-seq #"\s*" "")))
 
-  ;; ;; CLJS-638
+  ;; CLJS-638
 
   (deftype KeywordTest []
     ILookup
@@ -2015,21 +2014,21 @@
 
   (assert (= (:a (KeywordTest.)) :nothing))
 
-  ;; ;; CLJS-648 (CLJ-1285)
+  ;; CLJS-648 (CLJ-1285)
   (let [a (reify IHash (-hash [_] 42))
         b (reify IHash (-hash [_] 42))
         s (set (range 128))]
     (assert (= (-> (conj s a b) transient (disj! a) persistent! (conj a))
                (-> (conj s a b) transient (disj! a) persistent! (conj a)))))
 
-  ;; ;; CLJS-660
+  ;; CLJS-660
 
   (assert (= (-> 'a.b keyword ((juxt namespace name))) [nil "a.b"]))
   (assert (= (-> 'a.b/c keyword ((juxt namespace name))) ["a.b" "c"]))
   (assert (= (-> "a.b" keyword ((juxt namespace name))) [nil "a.b"]))
   (assert (= (-> "a.b/c" keyword ((juxt namespace name))) ["a.b" "c"]))
 
-  ;; ;; CLJS-663
+  ;; CLJS-663
 
   (assert (= (keyword 123) nil))
   (assert (= (keyword (js/Date.)) nil))
@@ -2042,18 +2041,18 @@
   ;;              (keys (js-obj (identity "x") "y"))
   ;;              (keys (js-obj z "y")))))
 
-  ;; ;; CLJS-583
+  ;; CLJS-583
 
   (def some-x 1)
   (def some-y 1)
 
   (assert (= (count #{some-x some-y}) 1))
 
-  ;; ;; CLJS-584
+  ;; CLJS-584
 
   (assert (= (count {some-x :foo some-y :bar}) 1))
 
-  ;; ;; CLJS-717
+  ;; CLJS-717
 
   (assert (array? #js [1 2 3]))
   (assert (= (alength #js [1 2 3]) 3))
@@ -2064,13 +2063,13 @@
   ;; (assert (array? (aget #js {"foo" #js [1 2 3]} "foo")))
   ;; (assert (= (seq (aget #js {"foo" #js [1 2 3]} "foo")) '(1 2 3)))
 
-  ;; ;; CLJS-725
+  ;; CLJS-725
 
   (assert (= (apply vector (drop-while (partial = 1) [1 2 3])) [2 3]))
   (assert (= (apply list (drop-while (partial = 1) [1 2 3])) '(2 3)))
   (assert (= (set (drop 1 #js [1 2 3])) #{2 3}))
 
-  ;; ;; CLJS-724
+  ;; CLJS-724
 
   (assert (nil? (first (rest (rest (rest (range 3)))))))
 
@@ -2099,14 +2098,14 @@
   ;; (assert (= (-woz (specify noz IWoz (-woz [this] this))) noz))
   ;; (assert (= (-woz (specify noz IWoz (-woz [_] :boz))) :boz))
 
-  ;; ;; CLJS-734
+  ;; CLJS-734
 
   (assert (= (-> (transient []) (conj! 1 2) persistent!) [1 2]))
   (assert (= (-> (transient #{1 2 3}) (disj! 1 2) persistent!) #{3}))
   (assert (= (-> (transient {}) (assoc! :a 1 :b 2) persistent!) {:a 1 :b 2}))
   (assert (= (-> (transient {:a 1 :b 2 :c 3}) (dissoc! :a :b) persistent!) {:c 3}))
 
-  ;; ;; CLJS-767
+  ;; CLJS-767
 
   (doseq [n [nil "-1" "" "0" "1" false true (js-obj)]]
     (assert (= :fail (try (assoc [1 2] n 4)
@@ -2117,13 +2116,13 @@
     ;;                    (catch js/Error e :fail))))
     )
 
-  ;; ;; CLJS-768
+  ;; CLJS-768
 
   (doseq [n [nil "-1" "" "0" "1" false true (js-obj)]]
     (assert (= :fail (try (assoc! (transient [1 2]) n 4)
                        (catch js/Error e :fail)))))
 
-  ;; ;; Namespaced destructuring
+  ;; Namespaced destructuring
 
   (let [{:keys [:a :b]} {:a 1 :b 2}]
     (assert (= 1 a))
@@ -2145,7 +2144,7 @@
     (assert (= x 1))
     (assert (= y 2)))
 
-  ;; ;; CLJS-739
+  ;; CLJS-739
 
   (defn cljs-739 [arr names]
     (let [name (first names)]
@@ -2157,7 +2156,7 @@
   (assert (= (with-out-str (doseq [fn (cljs-739 [] [:a :b :c :d])] (fn)))
              ":a\n:b\n:c\n:d\n"))
 
-  ;; ;; CLJS-728
+  ;; CLJS-728
 
   (doseq [n [nil "-1" "" "0" "1" false true (js-obj)]]
     (assert (nil? (get [1 2] n)))
@@ -2180,23 +2179,23 @@
     (assert (= 4 (get (range 1 3) n 4)))
     (assert (= :fail (try (nth (range 1 3) n 4) (catch js/Error e :fail)))))
 
-  ;; ;; CLJS-778
+  ;; CLJS-778
   (assert (= (-rest (rseq [0])) ()))
   (assert (nil? (-next (rseq [0]))))
   (assert (= (set (rseq [0])) #{0}))
 
-  ;; ;; CLJS-780
+  ;; CLJS-780
   (def cljs-780 (atom {:foo (with-meta [] {:bar '(1 2 3)})}))
   (swap! cljs-780 update-in [:foo] vary-meta update-in [:bar] vec)
   (let [x (-> @cljs-780 :foo meta :bar)]
     (assert (vector? x))
     (assert (= x [1 2 3])))
 
-  ;; ;; CLJS-782
+  ;; CLJS-782
   (assert (= (.toString #uuid "550e8400-e29b-41d4-a716-446655440000")
              "550e8400-e29b-41d4-a716-446655440000"))
 
-  ;; ;; CLJS-784
+  ;; CLJS-784
   (doseq [m [(array-map) (hash-map) (sorted-map)]]
     (assert (= :ok
                (try
@@ -2221,14 +2220,14 @@
                             (-rest [this] (make-seq (rest from-seq))))))
                       [[:bar 2] [:baz 3]])))))
 
-  ;; ;; printing customization
+  ;; printing customization
   (assert (= (binding [*print-length* 1] (str [1 2 3 4 5 6 7 8 9 0]))
              "[1 ...]"))
   (assert (= (binding [*print-length* 2] (str [1 2 3 4 5 6 7 8 9 0]))
              "[1 2 ...]"))
   (assert (= (binding [*print-length* 10] (str [1 2 3 4 5 6 7 8 9 0]))
              "[1 2 3 4 5 6 7 8 9 0]"))
-  ;; ;; CLJS-804
+  ;; CLJS-804
   (assert (= (binding [*print-length* 10] (str {:foo "bar"}))
              "{:foo \"bar\"}"))
   (assert (= (binding [*print-length* 1] (str {:foo "bar" :baz "woz"}))
@@ -2240,25 +2239,25 @@
   ;; FAILURE - doesn't compile.
   ;; (assert (= (let [x "a"] (case x :a 1 "a")) "a"))
 
-  ;; ;; CLJS-801
+  ;; CLJS-801
   (assert (= "0atrue:key/wordsymb/olfalse[1 2 3 4]1234.56789"
              (str 0 "a" true nil :key/word 'symb/ol false [1 2 3 4] 1234.5678 0x09)))
 
-  ;; ;; int-rotate-left
+  ;; int-rotate-left
   (assert (== (int-rotate-left (bit-or 0x87654321 0) 4) (bit-or 0x76543218 0)))
   (assert (== (int-rotate-left (bit-or 0x87654321 0) 8) (bit-or 0x65432187 0)))
   (assert (== (int-rotate-left (bit-or 0x80000000 0) 1) 0x1))
   (assert (== (int-rotate-left (bit-or 0x78123456 0) 4) (bit-or 0x81234567 0)))
   (assert (== (int-rotate-left (bit-or 0xffffffff 0) 4) (bit-or 0xffffffff 0)))
 
-  ;; ;; imul
+  ;; imul
   (assert (== (imul 3 3) 9))
   (assert (== (imul -1 8) -8))
   (assert (== (imul -2 -2) 4))
   (assert (== (imul 0xffffffff 5) -5))
   (assert (== (imul 0xfffffffe 5) -10))
 
-  ;; ;; CLJS-812
+  ;; CLJS-812
   (defn case-recur [value]
     (case value
       :a (recur :b)
@@ -2266,7 +2265,7 @@
 
   (assert (= (case-recur :a) 0))
 
-  ;; ;; CLJS-816
+  ;; CLJS-816
   (assert (= (set/rename-keys {:a "one" :b "two"} {:a :z}) {:z "one" :b "two"}))
   (assert (= (set/rename-keys {:a "one" :b "two"} {:a :z :c :y}) {:z "one" :b "two"}))
   (assert (= (set/rename-keys {:a "one" :b "two" :c "three"} {:a :b :b :a})
@@ -2334,7 +2333,7 @@
   ;; (assert (#{:cat :bird :dog} (.-value (.next iter))))
   ;; (assert (.-done (.next iter)))
 
-  ;; ;; CLJS-810
+  ;; CLJS-810
   (let [not-strings [true false nil 1 (fn [])]]
     (assert (every? #(= :failed (try (re-find #"." %)
                                      (catch js/TypeError _ :failed))) not-strings))
@@ -2345,7 +2344,7 @@
     (assert (every? #(= :failed (try (re-matches #"nomatch" %)
                                      (catch js/TypeError _ :failed))) not-strings)))
 
-  ;; ;; Object equiv
+  ;; Object equiv
   (assert (.equiv :foo :foo))
   (assert (.equiv 'foo 'foo))
   (assert (.equiv {:foo 1 :bar 2} {:foo 1 :bar 2}))
@@ -2354,7 +2353,7 @@
   (assert (.equiv (map inc [1 2 3]) (map inc [1 2 3])))
   (assert (.equiv #{:cat :dog :bird} #{:cat :dog :bird}))
 
-  ;; ;; transducers
+  ;; transducers
   (assert (= (sequence (map inc) (array 1 2 3)) '(2 3 4)))
   (assert (= (apply str (sequence (map #(.toUpperCase %)) "foo")) "FOO"))
   (assert (== (hash [1 2 3]) (hash (sequence (map inc) (range 3)))))
@@ -2425,7 +2424,7 @@
   (assert (= (sequence xf [0 0] [1 2])
              [1 2]))
 
-  ;; ;; CLJS-849
+  ;; CLJS-849
   (let [xs [44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24]]
     (loop [m  (transient (zipmap xs (repeat 1)))
            xs xs]

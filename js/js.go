@@ -114,7 +114,7 @@ func (this *RegExp) compile() *regexp.Regexp {
 }
 
 func (this *RegExp) Exec(str string) []interface{} {
-	if match := this.compile().FindAllString(string(str), -1); match != nil {
+	if match := this.compile().FindStringSubmatch(string(str)); match != nil {
 		strs := make([]interface{}, len(match))
 		for i, v := range match {
 			strs[i] = v
@@ -209,6 +209,12 @@ func (this *JSString) Substring(indexA_indexB ...float64) string {
 	}
 	if indexA > indexB {
 		indexA, indexB = indexB, indexA
+	}
+	if indexA < 0 {
+		indexA = 0
+	}
+	if indexB < 0 {
+		indexB = 0
 	}
 	return string(this.String()[int(indexA):int(indexB)])
 }

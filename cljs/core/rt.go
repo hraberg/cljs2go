@@ -664,10 +664,9 @@ func Nil_(x interface{}) bool {
 		return true
 	}
 	v := Value_(x)
-	switch v.Kind() {
-	case reflect.Ptr, reflect.Interface:
+	if kind := v.Kind(); kind >= reflect.Chan && kind <= reflect.Slice {
 		return v.IsNil()
-	default:
+	} else {
 		return false
 	}
 }

@@ -24,7 +24,7 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, "ABC", String.FromCharCode(65, 66, 67))
 	assert.Nil(t, (&RegExp{"Hello", ""}).Exec("World"))
-	assert.Equal(t, []interface{}{"Hello", "Hello"}, (&RegExp{"hello", "i"}).Exec("World Hello Hello"))
+	assert.Equal(t, []interface{}{"Hello"}, (&RegExp{"hello", "i"}).Exec("World Hello Hello"))
 	assert.Equal(t, "HELLO World", JSString_("Hello World").Replace(&RegExp{"hello", "i"},
 		func(match interface{}) interface{} {
 			return strings.ToUpper(fmt.Sprint(match))
@@ -85,6 +85,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "llo", JSString_("Hello").Substring(2.0))
 	assert.Equal(t, "ell", JSString_("Hello").Substring(1.0, 4.0))
 	assert.Equal(t, "l", JSString_("Hello").Substring(3.0, 2.0))
+	assert.Equal(t, "", JSString_("Hello").Substring(2.0, 2.0))
 
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))
