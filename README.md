@@ -25,7 +25,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 ### Road Map
 
-*We're currently somewhere between phase 0 and 1.*
+*We're currently in phase 1. `cljs.core-tests` now pass.*
 
 #### Phase 0
 
