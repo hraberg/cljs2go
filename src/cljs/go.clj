@@ -197,6 +197,7 @@
      (env/ensure
       (doseq [ns '[cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
                    cljs.env ;; will mostly be replaced, drags in js-deps.
+                   cljs.util ;; partly overridden in our compiler
                    cljs.tagged-literals ;; drags in clojure.instant, so we'll probably skip these for a bit.
                    cljs.go.compiler ;; same deps as analyzer.
                    cljs.go.core  ;; drags in lots of macros from clojure.core
