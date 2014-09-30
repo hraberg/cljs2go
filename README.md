@@ -60,6 +60,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 ### See Also
 
 * http://martintrojer.github.io/clojure/2014/04/05/the-clojure-repl-a-blessing-and-a-curse/
+* https://al3x.net/2014/09/16/thoughts-on-five-years-of-emerging-languages.html
 
 #### Lisp's in Go:
 
