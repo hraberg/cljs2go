@@ -991,7 +991,8 @@
                        ;; this should really just be a protocol call emitted by :invoke,
                        ;; (~fname ~(vary-meta (first sig) assoc :tag fq-psym) ~@(rest sig))
                        ~(vary-meta
-                         `(~'js* ~(core/str (cljs.compiler/munge (first sig)) ".(" go-psym ")." (proto-slot-name fname sig)
+                         `(~'js* ~(core/str (cljs.compiler/go-core "Decorate_")
+                                            "(" (cljs.compiler/munge (first sig)) ").(" go-psym ")." (proto-slot-name fname sig)
                                             "(" (apply core/str (interpose ", " (map cljs.compiler/munge (rest sig)))) ")"))
                          assoc :tag (real-tag (-> fname meta :tag) object?))))
         psym   (vary-meta psym assoc-in [:protocol-info :methods]
@@ -1033,7 +1034,7 @@
   (let [p (:name
            (cljs.analyzer/resolve-var
             (dissoc &env :locals) psym))]
-    (bool-expr `(~'js* ~(core/str (cljs.compiler/go-core "Value_") "(~{}).Type().Implements(~{})") ~x ~p))))
+    (bool-expr `(~'js* ~(core/str (cljs.compiler/go-core "DecoratedValue_") "(~{}).Type().Implements(~{})") ~x ~p))))
 
 (defmacro implements?
   "EXPERIMENTAL"

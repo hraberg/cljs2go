@@ -27,7 +27,11 @@ func Value_(x interface{}) reflect.Value {
 	return reflect.ValueOf(x)
 }
 
-func decorate(target interface{}) interface{} {
+func DecoratedValue_(x interface{}) reflect.Value {
+	return Value_(Decorate_(x))
+}
+
+func Decorate_(target interface{}) interface{} {
 	switch object := target.(type) {
 	case string:
 		return js.JSString_(object)
@@ -47,11 +51,11 @@ func decorate(target interface{}) interface{} {
 }
 
 var Native_get_instance_field = Fn(func(target, fieldName interface{}) interface{} {
-	return element(decorate(target)).FieldByName(fieldName.(string)).Interface()
+	return element(Decorate_(target)).FieldByName(fieldName.(string)).Interface()
 })
 
 var Native_set_instance_field = Fn(func(target, fieldName, val interface{}) interface{} {
-	element(decorate(target)).FieldByName(fieldName.(string)).Set(Value_(val))
+	element(Decorate_(target)).FieldByName(fieldName.(string)).Set(Value_(val))
 	return val
 })
 
@@ -73,7 +77,7 @@ var Native_invoke_func = Fn(func(f, args interface{}) interface{} {
 })
 
 var Native_invoke_instance_method = Fn(func(target, methodName, args interface{}) interface{} {
-	return Native_invoke_func.X_invoke_Arity2(reflect.ValueOf(decorate(target)).MethodByName(methodName.(string)), args)
+	return Native_invoke_func.X_invoke_Arity2(reflect.ValueOf(Decorate_(target)).MethodByName(methodName.(string)), args)
 })
 
 type ArityVariadic func(...interface{}) interface{}

@@ -969,11 +969,12 @@
                      (ana/resolve-existing-var (dissoc env :locals) v)))]
            (emits (if (or (*go-loop-vars* (-> receiver :info :name))
                           (and (or (= (go-type tag) "interface{}")
+                                   (go-primitive tag)
                                    (and (:protocol-symbol v)
                                         (not= (:name v) protocol)))
                                (not (get (:protocols v) protocol))
                                (not static-field-receiver?)))
-                    (str (emit-str receiver) ".(" (go-type protocol) ")")
+                    (str (go-core "Decorate_") "(" (emit-str receiver) ").(" (go-type protocol) ")")
                     (first args) )
                   "." pimpl "(" (comma-sep (rest args)) ")"))
 

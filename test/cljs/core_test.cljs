@@ -505,9 +505,8 @@
   (assert (= (partition-all 4 2 [1 2 3 4 5 6 7 8 9])
              [[1 2 3 4] [3 4 5 6] [5 6 7 8] [7 8 9] [9]]))
   (assert (= [true true] (take-while true? [true true 2 3 4])))
-  ;; FAILURE - goes into an infinite loop.
-  ;; (assert (= [[true true] [false false false] [true true]]
-  ;;            (partition-by true? [true true false false false true true])))
+  (assert (= [[true true] [false false false] [true true]]
+             (partition-by true? [true true false false false true true])))
   (assert (= [0 2 4 6 8 10] (take-nth 2 [0 1 2 3 4 5 6 7 8 9 10])))
   (let [a10 (partial + 10)
         a20 (partial + 10 10)

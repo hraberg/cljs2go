@@ -143,6 +143,8 @@ func Test_Protocols(t *testing.T) {
 	assert.Equal(t, "foo", X_invoke.X_invoke_Arity2(X_namespace, symbol))
 	assert.Equal(t, "bar", symbol.(CljsCoreINamed).X_name_Arity1())
 	assert.Equal(t, "foo/bar", symbol.(fmt.Stringer).String())
+
+	assert.Equal(t, 0, Decorate_(nil).(CljsCoreICounted).X_count_Arity1())
 }
 
 func Test_InteropViaReflection(t *testing.T) {

@@ -315,7 +315,7 @@
 (defn ^boolean native-satisfies?
   "Internal - do not use!"
   [p x]
-  ^boolean (js* "Value_(decorate(~{})).Type().Implements(~{}.(reflect.Type))" x p))
+  ^boolean (js* "DecoratedValue_(~{}).Type().Implements(~{}.(reflect.Type))" x p))
 
 (extend-type TransientArrayMap
   ITransientMap
@@ -342,6 +342,3 @@
   (-entry-key [coll entry] entry)
 
   (-comparator [coll] (-comparator tree-map)))
-
-;; There are two protocols in clojure.data, EqualityPartition and Diff which extend the base types and default which gets skipped.
-;; There are also the extent-type calls at start of core.cljs we aren't dealing with.

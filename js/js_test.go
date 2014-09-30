@@ -107,4 +107,6 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "World", JSArray_(&xs).Pop())
 	assert.Equal(t, 1, JSArray_(&xs).Length)
 	assert.Equal(t, []interface{}{"Hello"}, xs)
+
+	assert.Equal(t, 0, JSNil{}.X_count_Arity1())
 }

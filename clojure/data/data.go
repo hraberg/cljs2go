@@ -127,13 +127,13 @@ func init() {
 
 	Equality_partition = func(equality_partition *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(equality_partition, 1, func(x interface{}) interface{} {
-			return x.(ClojureDataEqualityPartition).Equality_partition_Arity1()
+			return cljs_core.Decorate_(x).(ClojureDataEqualityPartition).Equality_partition_Arity1()
 		})
 	}(&cljs_core.AFn{})
 
 	Diff_similar = func(diff_similar *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(diff_similar, 2, func(a interface{}, b interface{}) interface{} {
-			return a.(ClojureDataDiff).Diff_similar_Arity2(b)
+			return cljs_core.Decorate_(a).(ClojureDataDiff).Diff_similar_Arity2(b)
 		})
 	}(&cljs_core.AFn{})
 
@@ -142,8 +142,8 @@ func init() {
 			if cljs_core.X_EQ_.Arity2IIB(a, b) {
 				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
 			} else {
-				if cljs_core.X_EQ_.Arity2IIB(a.(ClojureDataEqualityPartition).Equality_partition_Arity1(), b.(ClojureDataEqualityPartition).Equality_partition_Arity1()) {
-					return a.(ClojureDataDiff).Diff_similar_Arity2(b)
+				if cljs_core.X_EQ_.Arity2IIB(cljs_core.Decorate_(a).(ClojureDataEqualityPartition).Equality_partition_Arity1(), cljs_core.Decorate_(b).(ClojureDataEqualityPartition).Equality_partition_Arity1()) {
+					return cljs_core.Decorate_(a).(ClojureDataDiff).Diff_similar_Arity2(b)
 				} else {
 					return Atom_diff.X_invoke_Arity2(a, b).(cljs_core.CljsCoreIVector)
 				}

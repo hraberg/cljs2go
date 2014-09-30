@@ -111,8 +111,8 @@ func init() {
 					if Truth_(or__177__auto__) {
 						return or__177__auto__
 					} else {
-						if Value_(x).Type().Implements(reflect.TypeOf((*CljsCoreIEquiv)(nil)).Elem()) {
-							return x.(CljsCoreIEquiv).X_equiv_Arity2(y)
+						if DecoratedValue_(x).Type().Implements(reflect.TypeOf((*CljsCoreIEquiv)(nil)).Elem()) {
+							return Decorate_(x).(CljsCoreIEquiv).X_equiv_Arity2(y)
 						} else {
 							return false
 						}
@@ -167,8 +167,8 @@ func init() {
 			if Nil_(o) {
 				return nil
 			} else {
-				if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
-					return o.(CljsCoreILookup).X_lookup_Arity2(k)
+				if DecoratedValue_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
+					return Decorate_(o).(CljsCoreILookup).X_lookup_Arity2(k)
 				} else {
 					if Value_(o).Kind() == reflect.Slice {
 						if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
@@ -184,8 +184,8 @@ func init() {
 								return nil
 							}
 						} else {
-							if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
-								return o.(CljsCoreILookup).X_lookup_Arity2(k)
+							if DecoratedValue_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
+								return Decorate_(o).(CljsCoreILookup).X_lookup_Arity2(k)
 							} else {
 								return nil
 
@@ -196,8 +196,8 @@ func init() {
 			}
 		}, func(o interface{}, k interface{}, not_found interface{}) interface{} {
 			if !(Nil_(o)) {
-				if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
-					return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
+				if DecoratedValue_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
+					return Decorate_(o).(CljsCoreILookup).X_lookup_Arity3(k, not_found)
 				} else {
 					if Value_(o).Kind() == reflect.Slice {
 						if (Value_(k).Kind() == reflect.Float64) && (k.(float64) < Native_get_instance_field.X_invoke_Arity2(o, "Length").(float64)) {
@@ -213,8 +213,8 @@ func init() {
 								return not_found
 							}
 						} else {
-							if Value_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
-								return o.(CljsCoreILookup).X_lookup_Arity3(k, not_found)
+							if DecoratedValue_(o).Type().Implements(reflect.TypeOf((*CljsCoreILookup)(nil)).Elem()) {
+								return Decorate_(o).(CljsCoreILookup).X_lookup_Arity3(k, not_found)
 							} else {
 								return not_found
 
@@ -237,14 +237,14 @@ func init() {
 	Pr_writer = func(pr_writer *AFn) *AFn {
 		return Fn(pr_writer, 3, func(obj interface{}, writer interface{}, opts interface{}) interface{} {
 			if Nil_(obj) {
-				return writer.(CljsCoreIWriter).X_write_Arity2("nil")
+				return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2("nil")
 			} else {
 				if Truth_(func() interface{} {
 					var and__165__auto__ = Get.X_invoke_Arity2(opts, (&CljsCoreKeyword{Ns: nil, Name: "meta", Fqn: "meta", X_hash: float64(1499536964)}))
 					_ = and__165__auto__
 					if Truth_(and__165__auto__) {
 						{
-							var and__165__auto_____1 = Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIMeta)(nil)).Elem())
+							var and__165__auto_____1 = DecoratedValue_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIMeta)(nil)).Elem())
 							_ = and__165__auto_____1
 							if Truth_(and__165__auto_____1) {
 								return Meta.X_invoke_Arity1(obj)
@@ -256,19 +256,19 @@ func init() {
 						return and__165__auto__
 					}
 				}()) {
-					writer.(CljsCoreIWriter).X_write_Arity2("^")
+					Decorate_(writer).(CljsCoreIWriter).X_write_Arity2("^")
 					pr_writer.X_invoke_Arity3(Meta.X_invoke_Arity1(obj), writer, opts)
-					writer.(CljsCoreIWriter).X_write_Arity2(" ")
+					Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(" ")
 				} else {
 				}
 				if Nil_(obj) {
-					return writer.(CljsCoreIWriter).X_write_Arity2("nil")
+					return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2("nil")
 				} else {
-					if Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
-						return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
+					if DecoratedValue_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
+						return Decorate_(obj).(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 					} else {
 						if (reflect.ValueOf(obj).Kind() == reflect.Bool) || (Value_(obj).Kind() == reflect.Float64) {
-							return writer.(CljsCoreIWriter).X_write_Arity2((`` + Str.X_invoke_Arity1(obj).(string)))
+							return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2((`` + Str.X_invoke_Arity1(obj).(string)))
 						} else {
 							if Value_(obj).Kind() == reflect.Slice {
 								return Pr_sequential_writer.X_invoke_Arity7(writer, pr_writer, "#js [", " ", "]", opts, obj)
@@ -279,9 +279,9 @@ func init() {
 									return Native_invoke_func.X_invoke_Arity2(goog.IsString, []interface{}{G__7979})
 								}()) {
 									if Truth_((&CljsCoreKeyword{Ns: nil, Name: "readably", Fqn: "readably", X_hash: float64(1129599760)}).X_invoke_Arity1(opts)) {
-										return writer.(CljsCoreIWriter).X_write_Arity2(Quote_string.X_invoke_Arity1(obj).(string))
+										return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(Quote_string.X_invoke_Arity1(obj).(string))
 									} else {
-										return writer.(CljsCoreIWriter).X_write_Arity2(obj)
+										return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(obj)
 									}
 								} else {
 									if Fn_QMARK_.Arity1IB(obj) {
@@ -312,8 +312,8 @@ func init() {
 											if Truth_(Regexp_QMARK_.X_invoke_Arity1(obj)) {
 												return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#\"", Native_get_instance_field.X_invoke_Arity2(obj, "Pattern"), "\""}))
 											} else {
-												if Value_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
-													return obj.(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
+												if DecoratedValue_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
+													return Decorate_(obj).(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 												} else {
 													return Write_all.X_invoke_ArityVariadic(writer, Array_seq.X_invoke_Arity1([]interface{}{"#<", (`` + Str.X_invoke_Arity1(obj).(string)), ">"}))
 
@@ -351,9 +351,9 @@ func init() {
 						}()
 
 						if X_STAR_print_level_STAR_ < float64(0) {
-							return writer.(CljsCoreIWriter).X_write_Arity2("#")
+							return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2("#")
 						} else {
-							writer.(CljsCoreIWriter).X_write_Arity2(begin)
+							Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(begin)
 							if Truth_(Seq.Arity1IQ(coll)) {
 								{
 									var G__7989_7995 = First.X_invoke_Arity1(coll)
@@ -378,7 +378,7 @@ func init() {
 											return and__165__auto__
 										}
 									}()) {
-										writer.(CljsCoreIWriter).X_write_Arity2(sep)
+										Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(sep)
 										{
 											var G__7992_8000 = First.X_invoke_Arity1(coll_7998___1)
 											var G__7993_8001 = writer
@@ -398,15 +398,15 @@ func init() {
 												return and__165__auto__
 											}
 										}()) {
-											writer.(CljsCoreIWriter).X_write_Arity2(sep)
-											writer.(CljsCoreIWriter).X_write_Arity2("...")
+											Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(sep)
+											Decorate_(writer).(CljsCoreIWriter).X_write_Arity2("...")
 										} else {
 										}
 									}
 									break
 								}
 							}
-							return writer.(CljsCoreIWriter).X_write_Arity2(end)
+							return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(end)
 						}
 					}
 				}()
@@ -595,7 +595,7 @@ func init() {
 
 	Native_satisfies_QMARK_ = func(native_satisfies_QMARK_ *AFn) *AFn {
 		return Fn(native_satisfies_QMARK_, 2, func(p interface{}, x interface{}) bool {
-			return Value_(decorate(x)).Type().Implements(p.(reflect.Type))
+			return DecoratedValue_(x).Type().Implements(p.(reflect.Type))
 		})
 	}(&AFn{})
 
@@ -712,11 +712,11 @@ func (tcoll *CljsCoreTransientArrayMap) X_dissoc_BANG__Arity2(key interface{}) i
 func (_ *CljsCorePersistentTreeSet) CljsCoreISorted__() {}
 
 func (coll *CljsCorePersistentTreeSet) X_sorted_seq_Arity2(ascending_QMARK_ interface{}) interface{} {
-	return Seq.Arity1IQ(Map_.X_invoke_Arity2(Key, coll.Tree_map.(CljsCoreISorted).X_sorted_seq_Arity2(ascending_QMARK_)).(*CljsCoreLazySeq))
+	return Seq.Arity1IQ(Map_.X_invoke_Arity2(Key, Decorate_(coll.Tree_map).(CljsCoreISorted).X_sorted_seq_Arity2(ascending_QMARK_)).(*CljsCoreLazySeq))
 }
 
 func (coll *CljsCorePersistentTreeSet) X_sorted_seq_from_Arity3(k interface{}, ascending_QMARK_ interface{}) interface{} {
-	return Seq.Arity1IQ(Map_.X_invoke_Arity2(Key, coll.Tree_map.(CljsCoreISorted).X_sorted_seq_from_Arity3(k, ascending_QMARK_)).(*CljsCoreLazySeq))
+	return Seq.Arity1IQ(Map_.X_invoke_Arity2(Key, Decorate_(coll.Tree_map).(CljsCoreISorted).X_sorted_seq_from_Arity3(k, ascending_QMARK_)).(*CljsCoreLazySeq))
 }
 
 func (coll *CljsCorePersistentTreeSet) X_entry_key_Arity2(entry interface{}) interface{} {
@@ -724,5 +724,5 @@ func (coll *CljsCorePersistentTreeSet) X_entry_key_Arity2(entry interface{}) int
 }
 
 func (coll *CljsCorePersistentTreeSet) X_comparator_Arity1() interface{} {
-	return coll.Tree_map.(CljsCoreISorted).X_comparator_Arity1()
+	return Decorate_(coll.Tree_map).(CljsCoreISorted).X_comparator_Arity1()
 }
