@@ -121,6 +121,13 @@
 (defn go-install [dir]
   (->> (sh/sh "go" "install" "--gcflags" "-e" :dir dir) (error-summary dir)))
 
+(defn go-path-prefix [dir]
+  (s/replace (str (.getCanonicalPath (io/file dir)) "/")
+             (re-pattern (str "^" (io/file (System/getenv "GOPATH")) "/src/")) ""))
+
+(defn ns-to-resource [ns ext]
+  (io/resource (str (-> ns str (s/replace "." "/") (s/replace "-" "_")) "." ext)))
+
 (defmacro with-fresh-ids [& body]
   `(let [^java.util.concurrent.atomic.AtomicInteger id# (.get (doto (.getDeclaredField clojure.lang.RT "id")
                                                                 (.setAccessible true))
@@ -180,7 +187,7 @@
                    ; cljs.reader ;; doesn't work yet, some ns / import issue.
                    ; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.
                    clojure.set clojure.data clojure.string clojure.walk clojure.zip]
-              :let [resource (io/resource (str (s/replace (str ns) "." "/") ".cljs"))]]
+              :let [resource (ns-to-resource ns "cljs")]]
         (time
          (do
            (println "compiling" (str resource))
@@ -202,7 +209,7 @@
                    cljs.go.compiler ;; same deps as analyzer.
                    cljs.go.core  ;; drags in lots of macros from clojure.core
                    ]
-              :let [resource (io/resource (str (-> ns str (s/replace "." "/") (s/replace "-" "_")) ".clj"))
+              :let [resource (ns-to-resource ns "clj")
                     src (io/file "target/generated"
                                  (str (s/join "/" (cljs.compiler/relative-path-parts resource))
                                       ".cljs"))]]

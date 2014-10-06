@@ -349,8 +349,16 @@
                     (recur (dec n) (* f n))))) 20))]
    (emit-test "go_test" "benchmarks_test")))
 
-(defn clojurescript-core-tests []
-  (compile-file "." (io/file (io/resource "cljs/core_test.cljs"))))
+(defn clojurescript-tests []
+  (doseq [:let [target "."
+                go-project-path (go-path-prefix target)
+                namespaces '[cljs.core-test
+                             cljs.binding-test-other-ns
+                             cljs.binding-test]]
+          ns namespaces]
+    (binding [cljs.compiler/*go-import-prefix* (merge cljs.compiler/*go-import-prefix*
+                                                      (zipmap namespaces (repeat go-project-path)))]
+      (compile-file target (io/file (ns-to-resource ns "cljs"))))))
 
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))
@@ -358,7 +366,7 @@
             *ast-debug* false
             cljs.compiler/*go-def-vars* true
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
-    (doseq [gen [constants special-forms benchmarks clojurescript-core-tests]]
+    (doseq [gen [constants special-forms benchmarks clojurescript-tests]]
       (with-fresh-ids
         (env/ensure
          (cljs.compiler/with-core-cljs {} gen))))
