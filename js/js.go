@@ -362,13 +362,17 @@ func (this *JSArray) Push(x interface{}) float64 {
 	return this.setArr(append(this.arr(), x)).Length
 }
 
-func (this *JSArray) Join(separator interface{}) string {
+func (this *JSArray) Join(separator ...interface{}) string {
+	sep := ","
+	if len(separator) > 0 {
+		sep = fmt.Sprint(separator[0])
+	}
 	arr := this.arr()
 	ss := make([]string, len(arr))
 	for i, v := range arr {
 		ss[i] = fmt.Sprint(v)
 	}
-	return strings.Join(ss, fmt.Sprint(separator))
+	return strings.Join(ss, sep)
 }
 
 func (this *JSArray) ToString() string {
