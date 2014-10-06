@@ -354,7 +354,10 @@
                 go-project-path (go-path-prefix target)
                 namespaces '[cljs.core-test
                              cljs.binding-test-other-ns
-                             cljs.binding-test]]
+                             cljs.binding-test
+                             cljs.ns-test
+                             cljs.ns-test.bar
+                             cljs.ns-test.foo]]
           ns namespaces]
     (binding [cljs.compiler/*go-import-prefix* (merge cljs.compiler/*go-import-prefix*
                                                       (zipmap namespaces (repeat go-project-path)))]
