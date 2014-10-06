@@ -52,7 +52,21 @@
 
 (def cljs-reserved-file-names #{"deps.cljs"})
 
-(def ^:dynamic *go-import-prefix* "github.com/hraberg/cljs.go/")
+(def go-cljs-import-prefix "github.com/hraberg/cljs.go/")
+(def ^:dynamic *go-import-prefix* (zipmap '[goog
+                                            goog.string
+                                            goog.array
+                                            goog.object
+                                            js
+                                            js.Math
+                                            cljs.core
+                                            cljs.reader
+                                            clojure.data
+                                            clojure.set
+                                            clojure.string
+                                            clojure.walk
+                                            clojure.zip]
+                                          (repeat go-cljs-import-prefix)))
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
 (def ^:dynamic *go-protocol-fn* nil)
@@ -1066,10 +1080,7 @@
             (emitln " return " return)
             (emits "}()")))))))
 
-(def provided-lib? '#{goog goog.string goog.array goog.object
-                      js js/Math
-                      cljs.core cljs.reader
-                      clojure.data clojure.set clojure.string clojure.walk clojure.zip})
+(def js-base-libs '#{js js.Math goog})
 
 (defmethod emit* :ns
   [{:keys [name requires uses imports require-macros env]}]
@@ -1080,18 +1091,18 @@
   (emitln "package " (last (string/split (str (munge name)) #"\.")))
   (emitln)
   (emitln "import (")
-  (when-not (= name 'cljs.core)
-    (emitln "\t" "cljs_core" " " (wrap-in-double-quotes (str *go-import-prefix* "cljs/core"))))
-  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js")))
-  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "js/Math")))
-  (emitln "\t" (wrap-in-double-quotes (str *go-import-prefix* "goog"))) ;; gets imported indirectly in JS I think?
-  (doseq [lib (distinct (concat (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
+  (doseq [lib (distinct (concat (when-not (= name 'cljs.core)
+                                  '[cljs.core])
+                                js-base-libs
+                                (map #(symbol (string/replace % #"(.+)(\..+)$" "$1")) (vals imports))
                                 (vals (apply dissoc requires (keys imports))) (vals uses)))]
-    (emitln "\t" (string/replace (munge lib) "." "_") " "
+    (emitln "\t" (when-not (js-base-libs lib)
+                   (str (string/replace (munge lib) "." "_") " "))
             (wrap-in-double-quotes
-             (str (when (provided-lib? lib)
-                    *go-import-prefix*)
-                  (string/replace lib #"[._]" "/")))))
+             (str (*go-import-prefix* lib)
+                  (-> lib
+                      (string/replace #"[._]" "/")
+                      (string/replace #"[-]" "_"))))))
   (emitln ")")
   (emitln))
 
