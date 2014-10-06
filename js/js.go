@@ -201,15 +201,6 @@ func (this *JSString) ToLowerCase() string {
 	return strings.ToLower(this.String())
 }
 
-func (this *JSString) Reverse() string {
-	len := len(this.String())
-	reverse := make([]rune, len)
-	for i, v := range this.String() {
-		reverse[len-i-1] = v
-	}
-	return string(reverse)
-}
-
 func (this *JSString) Substring(indexA_indexB ...float64) string {
 	indexA := indexA_indexB[0]
 	indexB := float64(len(this.String()))
@@ -349,6 +340,18 @@ func (this *JSArray) Slice(index, end float64) []interface{} {
 		end = float64(len(arr)) + end
 	}
 	return arr[int(index):int(end)]
+}
+
+func (this *JSArray) Reverse() []interface{} {
+	arr := this.arr()
+	end := len(arr) - 1
+	for i, v := range arr {
+		if i > end/2 {
+			break
+		}
+		arr[end-i], arr[i] = v, arr[end-i]
+	}
+	return arr
 }
 
 func (this *JSArray) Pop() interface{} {

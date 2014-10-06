@@ -87,9 +87,6 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "l", JSString_("Hello").Substring(3.0, 2.0))
 	assert.Equal(t, "", JSString_("Hello").Substring(2.0, 2.0))
 
-	assert.Equal(t, "", JSString_("").Reverse())
-	assert.Equal(t, "olleH", JSString_("Hello").Reverse())
-
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))
 	assert.Equal(t, []interface{}{"Hello", "Hyper", "Space", "!"}, arr)
@@ -113,6 +110,13 @@ func Test_JS(t *testing.T) {
 	arr = []interface{}{"Hello", "World", "Space"}
 	assert.Equal(t, "Hello-World-Space", JSArray_(&arr).Join("-"))
 	assert.Equal(t, "HelloWorldSpace", JSArray_(&arr).Join(""))
+
+	arr = []interface{}{"Hello", "World", "Space", "!"}
+	assert.Equal(t, []interface{}{"!", "Space", "World", "Hello"}, JSArray_(&arr).Reverse())
+	assert.Equal(t, []interface{}{"!", "Space", "World", "Hello"}, arr)
+
+	arr = []interface{}{}
+	assert.Equal(t, []interface{}{}, JSArray_(&arr).Reverse())
 
 	arr = []interface{}{"Hello"}
 	assert.Equal(t, "Hello", JSArray_(&arr).Join("-"))
