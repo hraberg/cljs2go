@@ -17,3 +17,8 @@
   (assert (= (range 5) (lang/for [x (range 5)] x)))
   (assert (= #{1 2 3} (s/union #{1} #{2 3})))
   :ok)
+
+^:top-level (js*
+"func Test_runner(t *testing.T) {
+    assert.Equal(t, ~{}, ~{})
+}" :ok (test-ns))

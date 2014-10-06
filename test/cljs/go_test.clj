@@ -355,9 +355,18 @@
                 namespaces '[cljs.core-test
                              cljs.binding-test-other-ns
                              cljs.binding-test
-                             cljs.ns-test
+                             cljs.macro-test
+                             cljs.letfn-test
                              cljs.ns-test.bar
-                             cljs.ns-test.foo]]
+                             cljs.ns-test.foo
+                             ;; cljs.ns-test ;; FAILURE, use doesn't seem to work. (def - +) gets number as tag.
+                             ;; clojure.string-test ;; FAILURE, lacks native JS fns.
+                             ;; clojure.data-test ;; FAILURE, uses refer, which doesn't seem to work (see above)
+                             baz
+                             foo.ns-shadow-test
+                             cljs.top-level-test
+                             cljs.keyword-other
+                             cljs.keyword-test]]
           ns namespaces]
     (binding [cljs.compiler/*go-import-prefix* (merge cljs.compiler/*go-import-prefix*
                                                       (zipmap namespaces (repeat go-project-path)))]
