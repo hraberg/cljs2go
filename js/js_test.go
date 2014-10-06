@@ -108,6 +108,7 @@ func Test_JS(t *testing.T) {
 	arr = []interface{}{1.0, 2.0}
 	assert.Equal(t, "1,2", JSArray_(&arr).Join())
 	assert.Equal(t, "1 2", JSArray_(&arr).Join(" "))
+	assert.Equal(t, "102", JSArray_(&arr).Join(0.0))
 
 	arr = []interface{}{"Hello", "World", "Space"}
 	assert.Equal(t, "Hello-World-Space", JSArray_(&arr).Join("-"))
