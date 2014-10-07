@@ -359,7 +359,7 @@
                              cljs.letfn-test
                              cljs.ns-test.bar
                              cljs.ns-test.foo
-                             ;; cljs.ns-test ;; FAILURE, use doesn't seem to work. (def - +) gets number as tag.
+                             cljs.ns-test
                              clojure.string-test
                              clojure.data-test
                              baz

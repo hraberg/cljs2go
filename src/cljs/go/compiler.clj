@@ -671,7 +671,7 @@
             afn-type (str "*" (go-core "AFn"))
             def-type (if (= 'function tag)
                        afn-type
-                       (go-type tag))]
+                       (go-type (when-not (-> init :info :fn-var) tag)))]
         (some-> *go-defs* (swap! conj ast))
         (when *go-def-vars*
           (emit-comment doc (:jsdoc init))
