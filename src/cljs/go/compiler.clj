@@ -209,7 +209,9 @@
         (str (string/upper-case (subs s 0 1)) (when (next s) (subs s 1)))))))
 
 (defn go-type-fqn [s]
-  (apply str (map go-public (string/split (str s) #"[./]"))))
+  (if (and (symbol? s) (= "js" (namespace s)))
+    (name s)
+    (apply str (map go-public (string/split (str s) #"[./]")))))
 
 (defn go-short-name [s]
   (last (string/split (str s) #"\.")))
@@ -450,7 +452,8 @@
 
 (defmethod emit* :var
   [{:keys [info env tag] :as arg}]
-  (let [info (cond-> info (and *go-dot* (:type info)) (update-in [:name] go-type-fqn))
+  (let [ns (and (symbol? (:name info)) (some-> info :name namespace symbol))
+        info (cond-> info (and *go-dot* (:type info)) (update-in [:name] #(symbol (str ns) (go-type-fqn %))))
         statement? (= :statement (:context env))]
     ; We need a way to write bindings out to source maps and javascript
     ; without getting wrapped in an emit-wrap calls, otherwise we get
@@ -477,12 +480,11 @@
        (binding [*go-return-tag* (when (go-needs-coercion? tag *go-return-tag*)
                                    *go-return-tag*)]
          (emit-wrap env (emits (munge (cond ;; this runs munge in a different order from most other things.
-                                       (or (= ana/*cljs-ns*  (:ns info))
+                                       (or (= ana/*cljs-ns* ns)
                                            (:field info))
                                        (update-in info [:name] (comp go-public munge name))
-                                       (:ns info)
-                                       (update-in info [:name] #(str (:ns info) "."
-                                                                     (-> % name munge go-public)))
+                                       ns
+                                       (update-in info [:name] #(str ns "." (-> % name munge go-public)))
                                        :else info)))))))))
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
@@ -1033,10 +1035,9 @@
     (binding [*go-return-tag* nil
               *go-dot* true]
       (emit-wrap env
-        (emits "(&" (case (-> ctor :info :ns)
-                      js ctor
-                      goog (normalize-goog-ctor ctor)
-                      (update-in ctor [:info :name] (comp munge go-type-fqn))) "{"
+        (emits "(&" (if (= 'goog (-> ctor :info :ns))
+                      (normalize-goog-ctor ctor)
+                      ctor) "{"
                       (comma-sep
                        (concat
                         (if-let [types (seq (map (comp :tag meta) fields))]
