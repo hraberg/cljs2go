@@ -360,7 +360,7 @@
                              cljs.ns-test.bar
                              cljs.ns-test.foo
                              ;; cljs.ns-test ;; FAILURE, use doesn't seem to work. (def - +) gets number as tag.
-                             ;; clojure.string-test ;; FAILURE, lacks native JS fns.
+                             clojure.string-test
                              ;; clojure.data-test ;; FAILURE, uses refer, which doesn't seem to work (see above)
                              baz
                              foo.ns-shadow-test

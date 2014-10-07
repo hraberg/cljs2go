@@ -118,7 +118,9 @@
      cljs.core/js-keys
      cljs.core/js->clj
      cljs.core/key->js
-     cljs.core/clj->js})
+     cljs.core/clj->js
+     clojure.string/replace
+     clojure.string/replace-first})
 (def ^:dynamic *go-skip-protocol* '{cljs.core/TransientArrayMap #{cljs.core/ITransientMap}
                                     cljs.core/PersistentTreeSet #{cljs.core/ISorted}})
 

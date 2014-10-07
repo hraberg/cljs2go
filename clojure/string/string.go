@@ -4,12 +4,9 @@
 package string
 
 import (
-	"reflect"
-
 	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	"github.com/hraberg/cljs.go/js"
-
 	goog_string "github.com/hraberg/cljs.go/goog/string"
+	"github.com/hraberg/cljs.go/js"
 )
 
 func init() {
@@ -22,31 +19,6 @@ func init() {
 	Reverse = func(reverse *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(reverse, 1, func(s interface{}) interface{} {
 			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Split", []interface{}{""}), "Reverse", []interface{}{}), "Join", []interface{}{""})
-		})
-	}(&cljs_core.AFn{})
-
-	Replace = func(replace *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(replace, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
-			if cljs_core.Value_(match).Kind() == reflect.String {
-				return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{func() interface{} {
-					var G__2 = match
-					_ = G__2
-					return cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.RegExpEscape, []interface{}{G__2})
-				}(), "g"}), replacement})
-			} else {
-				if cljs_core.Truth_(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(match, "HasOwnProperty", []interface{}{"source"})) {
-					return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Source"), "g"}), replacement})
-				} else {
-					panic(("Invalid match arg: " + cljs_core.Str.X_invoke_Arity1(match).(string)))
-
-				}
-			}
-		})
-	}(&cljs_core.AFn{})
-
-	Replace_first = func(replace_first *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(replace_first, 3, func(s interface{}, match interface{}, replacement interface{}) interface{} {
-			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{match, replacement})
 		})
 	}(&cljs_core.AFn{})
 
@@ -309,20 +281,6 @@ var Seq_reverse *cljs_core.AFn
 
 // Returns s with its characters reversed.
 var Reverse *cljs_core.AFn
-
-// Replaces all instance of match with replacement in s.
-// match/replacement can be:
-//
-// string / string
-// pattern / (string or function of match).
-var Replace *cljs_core.AFn
-
-// Replaces the first instance of match with replacement in s.
-// match/replacement can be:
-//
-// string / string
-// pattern / (string or function of match).
-var Replace_first *cljs_core.AFn
 
 // Returns a string of all elements in coll, as returned by (seq coll),
 // separated by an optional separator.

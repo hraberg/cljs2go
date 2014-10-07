@@ -108,7 +108,7 @@ type RegExp struct {
 func (this *RegExp) compile() *regexp.Regexp {
 	pattern, flags := this.Pattern.(string), this.Flags.(string)
 	if len(flags) != 0 {
-		pattern = "(?" + flags + ")" + pattern
+		pattern = "(?" + strings.Replace(flags, "g", "", -1) + ")" + pattern
 	}
 	return regexp.MustCompile(pattern)
 }
@@ -125,7 +125,11 @@ func (this *RegExp) Exec(str string) []interface{} {
 }
 
 func (this *RegExp) String() string {
-	return this.compile().String()
+	pattern := this.Pattern.(string)
+	if pattern == "" {
+		pattern = "(?:)"
+	}
+	return "/" + pattern + "/" + this.Flags.(string)
 }
 
 var Number = struct{ MAX_VALUE float64 }{math.MaxFloat64}
@@ -170,11 +174,31 @@ func JSString_(str string) *JSString {
 	return &JSString{float64(len(str)), str}
 }
 
-func (this *JSString) Replace(re *RegExp, f func(interface{}) interface{}) string {
-	return re.compile().ReplaceAllStringFunc(this.String(),
-		func(x string) string {
-			return fmt.Sprint(f(x))
-		})
+func (this *JSString) Replace(match interface{}, replacement interface{}) string {
+	var re *RegExp
+	if exp, ok := match.(*RegExp); ok {
+		re = exp
+	} else {
+		re = &RegExp{regexp.QuoteMeta(fmt.Sprint(match)), ``}
+	}
+	global := strings.Contains(re.Flags.(string), "g")
+	var f func(string) string
+	if rf, ok := replacement.(func(interface{}) interface{}); ok {
+		f = func(x string) string {
+			return fmt.Sprint(rf(x))
+		}
+	} else {
+		f = func(_ string) string {
+			return fmt.Sprint(replacement)
+		}
+	}
+	if global {
+		return re.compile().ReplaceAllStringFunc(this.String(), f)
+	} else {
+		s := this.String()
+		loc := re.compile().FindStringIndex(s)
+		return s[:loc[0]] + f(s[loc[0]:loc[1]]) + s[loc[1]:]
+	}
 }
 
 func (this *JSString) Search(re *RegExp) float64 {
@@ -199,6 +223,10 @@ func (this *JSString) ToUpperCase() string {
 
 func (this *JSString) ToLowerCase() string {
 	return strings.ToLower(this.String())
+}
+
+func (this *JSString) IndexOf(x interface{}) float64 {
+	return float64(strings.Index(this.String(), fmt.Sprint(x)))
 }
 
 func (this *JSString) Substring(indexA_indexB ...float64) string {
@@ -229,7 +257,7 @@ func (this *JSString) Split(separator_limit ...interface{}) []interface{} {
 		switch separator := separator_limit[0].(type) {
 		case string:
 			parts = strings.Split(this.String(), separator)
-		case RegExp:
+		case *RegExp:
 			parts = separator.compile().Split(this.String(), -1)
 		default:
 			parts = []string{this.String()}

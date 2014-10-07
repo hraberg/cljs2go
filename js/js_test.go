@@ -30,8 +30,15 @@ func Test_JS(t *testing.T) {
 			return strings.ToUpper(fmt.Sprint(match))
 		},
 	))
+	assert.Equal(t, "HELLO World", JSString_("Hello World").Replace(&RegExp{"hello", "i"}, "HELLO"))
+	assert.Equal(t, "HELLO World", JSString_("Hello World").Replace("Hello", "HELLO"))
+	assert.Equal(t, "bar bar foo", JSString_("foo bar foo").Replace("foo", "bar"))
+	assert.Equal(t, "bar bar bar", JSString_("foo bar foo").Replace(&RegExp{"foo", "g"}, "bar"))
+	assert.Equal(t, "bar bar foo", JSString_("foo bar foo").Replace(&RegExp{"foo", ""}, "bar"))
+
 	assert.Equal(t, 6, JSString_("Hello World").Search(&RegExp{"world", "i"}))
-	assert.Equal(t, "(?i)Hello", (&RegExp{"Hello", "i"}).String())
+	assert.Equal(t, "/Hello/i", (&RegExp{"Hello", "i"}).String())
+	assert.Equal(t, "/(?:)/", (&RegExp{"", ""}).String())
 
 	date := &Date{1407962432671}
 	assert.Equal(t, 2014, date.GetUTCFullYear())
@@ -75,7 +82,7 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, []interface{}{"Hello", "World"}, JSString_("Hello World").Split(" "))
 	assert.Equal(t, []interface{}{"Hello"}, JSString_("Hello World").Split(" ", 1.0))
-	assert.Equal(t, []interface{}{"Hello", "World"}, JSString_("Hello World").Split(RegExp{"\\s+", ""}))
+	assert.Equal(t, []interface{}{"Hello", "World"}, JSString_("Hello World").Split(&RegExp{"\\s+", ""}))
 	assert.Equal(t, []interface{}{"F", "o", "o"}, JSString_("Foo").Split())
 	assert.Equal(t, []interface{}{"Foo"}, JSString_("Foo").Split(1.0))
 
@@ -86,6 +93,9 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "ell", JSString_("Hello").Substring(1.0, 4.0))
 	assert.Equal(t, "l", JSString_("Hello").Substring(3.0, 2.0))
 	assert.Equal(t, "", JSString_("Hello").Substring(2.0, 2.0))
+
+	assert.Equal(t, 1.0, JSString_("Hello").IndexOf("e"))
+	assert.Equal(t, -1.0, JSString_("Hello").IndexOf("x"))
 
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))

@@ -16,11 +16,11 @@ func init() {
 	Test_binding = func(test_binding *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(test_binding, 0, func() interface{} {
 			{
-				var _STAR_foo_STAR_4022_4023 = cljs_binding_test_other_ns.X_STAR_foo_STAR_
-				_ = _STAR_foo_STAR_4022_4023
+				var _STAR_foo_STAR_2_3 = cljs_binding_test_other_ns.X_STAR_foo_STAR_
+				_ = _STAR_foo_STAR_2_3
 				func() {
 					defer func() {
-						cljs_binding_test_other_ns.X_STAR_foo_STAR_ = _STAR_foo_STAR_4022_4023
+						cljs_binding_test_other_ns.X_STAR_foo_STAR_ = _STAR_foo_STAR_2_3
 
 					}()
 					{
@@ -44,11 +44,11 @@ func init() {
 	Test_with_redefs = func(test_with_redefs *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(test_with_redefs, 0, func() interface{} {
 			{
-				var bar4025_4026 = cljs_binding_test_other_ns.Bar
-				_ = bar4025_4026
+				var bar5_6 = cljs_binding_test_other_ns.Bar
+				_ = bar5_6
 				func() {
 					defer func() {
-						cljs_binding_test_other_ns.Bar = bar4025_4026
+						cljs_binding_test_other_ns.Bar = bar5_6
 
 					}()
 					{
