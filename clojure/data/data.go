@@ -137,20 +137,6 @@ func init() {
 		})
 	}(&cljs_core.AFn{})
 
-	Diff = func(diff *cljs_core.AFn) *cljs_core.AFn {
-		return cljs_core.Fn(diff, 2, func(a interface{}, b interface{}) interface{} {
-			if cljs_core.X_EQ_.Arity2IIB(a, b) {
-				return (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, nil, a}, nil})
-			} else {
-				if cljs_core.X_EQ_.Arity2IIB(cljs_core.Decorate_(a).(ClojureDataEqualityPartition).Equality_partition_Arity1(), cljs_core.Decorate_(b).(ClojureDataEqualityPartition).Equality_partition_Arity1()) {
-					return cljs_core.Decorate_(a).(ClojureDataDiff).Diff_similar_Arity2(b)
-				} else {
-					return Atom_diff.X_invoke_Arity2(a, b).(cljs_core.CljsCoreIVector)
-				}
-			}
-		})
-	}(&cljs_core.AFn{})
-
 }
 
 // Internal helper for diff.
@@ -183,16 +169,3 @@ type ClojureDataDiff interface {
 }
 
 var Diff_similar *cljs_core.AFn
-
-// Recursively compares a and b, returning a tuple of
-// [things-only-in-a things-only-in-b things-in-both].
-// Comparison rules:
-//
-// * For equal a and b, return [nil nil a].
-// * Maps are subdiffed where keys match and values differ.
-// * Sets are never subdiffed.
-// * All sequential things are treated as associative collections
-// by their indexes, with results returned as vectors.
-// * Everything else (including strings!) is treated as
-// an atom and compared for equality.
-var Diff *cljs_core.AFn

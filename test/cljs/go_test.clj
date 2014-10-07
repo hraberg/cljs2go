@@ -361,7 +361,7 @@
                              cljs.ns-test.foo
                              ;; cljs.ns-test ;; FAILURE, use doesn't seem to work. (def - +) gets number as tag.
                              clojure.string-test
-                             ;; clojure.data-test ;; FAILURE, uses refer, which doesn't seem to work (see above)
+                             clojure.data-test
                              baz
                              foo.ns-shadow-test
                              cljs.top-level-test

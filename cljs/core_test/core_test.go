@@ -667,7 +667,7 @@ func init() {
 					}
 				})
 			}(&cljs_core.AFn{}), func() *cljs_core.CljsCoreLazySeq {
-				var iter__929__auto__ = func(iter__521 *cljs_core.AFn) *cljs_core.AFn {
+				var iter__934__auto__ = func(iter__521 *cljs_core.AFn) *cljs_core.AFn {
 					return cljs_core.Fn(iter__521, 1, func(s__522 interface{}) interface{} {
 						return (&cljs_core.CljsCoreLazySeq{nil, func(G__950 *cljs_core.AFn) *cljs_core.AFn {
 							return cljs_core.Fn(G__950, 0, func() interface{} {
@@ -686,7 +686,7 @@ func init() {
 														var i = cljs_core.First.X_invoke_Arity1(xs__4752__auto__)
 														_ = i
 														{
-															var iterys__925__auto__ = func(iter__523 *cljs_core.AFn, s__522___1 interface{}, i interface{}, xs__4752__auto__ cljs_core.CljsCoreISeq, temp__4222__auto__ cljs_core.CljsCoreISeq) *cljs_core.AFn {
+															var iterys__930__auto__ = func(iter__523 *cljs_core.AFn, s__522___1 interface{}, i interface{}, xs__4752__auto__ cljs_core.CljsCoreISeq, temp__4222__auto__ cljs_core.CljsCoreISeq) *cljs_core.AFn {
 																return cljs_core.Fn(iter__523, 1, func(s__524 interface{}) interface{} {
 																	return (&cljs_core.CljsCoreLazySeq{nil, func(G__951 *cljs_core.AFn, s__522___1 interface{}, i interface{}, xs__4752__auto__ cljs_core.CljsCoreISeq, temp__4222__auto__ cljs_core.CljsCoreISeq) *cljs_core.AFn {
 																		return cljs_core.Fn(G__951, 0, func() interface{} {
@@ -703,23 +703,23 @@ func init() {
 																								_ = s__524___2
 																								if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__524___2) {
 																									{
-																										var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__524___2)
-																										var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																										var b__526 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																										_, _, _ = c__927__auto__, size__928__auto__, b__526
+																										var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__524___2)
+																										var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																										var b__526 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																										_, _, _ = c__932__auto__, size__933__auto__, b__526
 																										if func() bool {
 																											var i__525 = float64(0)
 																											_ = i__525
 																											for {
-																												if i__525 < size__928__auto__ {
+																												if i__525 < size__933__auto__ {
 																													{
-																														var j = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__525)
+																														var j = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__525)
 																														_ = j
-																														cljs_core.Chunk_append.X_invoke_Arity2(b__526, func(G__952 *cljs_core.AFn, i__525 float64, s__522___1 interface{}, j interface{}, c__927__auto__ interface{}, size__928__auto__ float64, b__526 *cljs_core.CljsCoreChunkBuffer, s__524___2 interface{}, temp__4222__auto_____1 cljs_core.CljsCoreISeq, i interface{}, xs__4752__auto__ cljs_core.CljsCoreISeq, temp__4222__auto__ cljs_core.CljsCoreISeq) *cljs_core.AFn {
+																														cljs_core.Chunk_append.X_invoke_Arity2(b__526, func(G__952 *cljs_core.AFn, i__525 float64, s__522___1 interface{}, j interface{}, c__932__auto__ interface{}, size__933__auto__ float64, b__526 *cljs_core.CljsCoreChunkBuffer, s__524___2 interface{}, temp__4222__auto_____1 cljs_core.CljsCoreISeq, i interface{}, xs__4752__auto__ cljs_core.CljsCoreISeq, temp__4222__auto__ cljs_core.CljsCoreISeq) *cljs_core.AFn {
 																															return cljs_core.Fn(G__952, 0, func() interface{} {
 																																return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{i, j}, nil})
 																															})
-																														}(&cljs_core.AFn{}, i__525, s__522___1, j, c__927__auto__, size__928__auto__, b__526, s__524___2, temp__4222__auto_____1, i, xs__4752__auto__, temp__4222__auto__))
+																														}(&cljs_core.AFn{}, i__525, s__522___1, j, c__932__auto__, size__933__auto__, b__526, s__524___2, temp__4222__auto_____1, i, xs__4752__auto__, temp__4222__auto__))
 																														i__525 = (i__525 + float64(1))
 																														continue
 																													}
@@ -755,10 +755,10 @@ func init() {
 																	}(&cljs_core.AFn{}, s__522___1, i, xs__4752__auto__, temp__4222__auto__), nil, nil})
 																})
 															}(&cljs_core.AFn{}, s__522___1, i, xs__4752__auto__, temp__4222__auto__)
-															var fs__926__auto__ = cljs_core.Seq.Arity1IQ(iterys__925__auto__.X_invoke_Arity1((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2), float64(3)}, nil})).(*cljs_core.CljsCoreLazySeq))
-															_, _ = iterys__925__auto__, fs__926__auto__
-															if cljs_core.Truth_(fs__926__auto__) {
-																return cljs_core.Concat.X_invoke_Arity2(fs__926__auto__, iter__521.X_invoke_Arity1(cljs_core.Rest.Arity1IQ(s__522___1)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreLazySeq)
+															var fs__931__auto__ = cljs_core.Seq.Arity1IQ(iterys__930__auto__.X_invoke_Arity1((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2), float64(3)}, nil})).(*cljs_core.CljsCoreLazySeq))
+															_, _ = iterys__930__auto__, fs__931__auto__
+															if cljs_core.Truth_(fs__931__auto__) {
+																return cljs_core.Concat.X_invoke_Arity2(fs__931__auto__, iter__521.X_invoke_Arity1(cljs_core.Rest.Arity1IQ(s__522___1)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreLazySeq)
 															} else {
 																s__522___1 = cljs_core.Rest.Arity1IQ(s__522___1)
 																continue
@@ -776,8 +776,8 @@ func init() {
 						}(&cljs_core.AFn{}), nil, nil})
 					})
 				}(&cljs_core.AFn{})
-				_ = iter__929__auto__
-				return iter__929__auto__.X_invoke_Arity1((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2)}, nil})).(*cljs_core.CljsCoreLazySeq)
+				_ = iter__934__auto__
+				return iter__934__auto__.X_invoke_Arity1((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2)}, nil})).(*cljs_core.CljsCoreLazySeq)
 			}()).(*cljs_core.CljsCoreLazySeq)) {
 			} else {
 				panic((&js.Error{("Assert failed: (= [[1 1] [1 2] [1 3] [2 1] [2 2] [2 3]] (map (fn* [p1__57#] (p1__57#)) (for [i [1 2] j [1 2 3]] (fn [] [i j]))))")}))
@@ -1051,8 +1051,8 @@ func init() {
 				panic((&js.Error{("Assert failed: (= \"\\n\" (prn-str))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB("12", func() string {
-				var sb__1130__auto__ = (&goog_string.StringBuffer{})
-				_ = sb__1130__auto__
+				var sb__1135__auto__ = (&goog_string.StringBuffer{})
+				_ = sb__1135__auto__
 				{
 					var _STAR_print_fn_STAR_532_954 = cljs_core.X_STAR_print_fn_STAR_
 					_ = _STAR_print_fn_STAR_532_954
@@ -1062,25 +1062,25 @@ func init() {
 
 						}()
 						{
-							cljs_core.X_STAR_print_fn_STAR_ = func(G__955 *cljs_core.AFn, _STAR_print_fn_STAR_532_954 interface{}, sb__1130__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
-								return cljs_core.Fn(G__955, 1, func(x__1131__auto__ interface{}) interface{} {
-									return sb__1130__auto__.Append(x__1131__auto__)
+							cljs_core.X_STAR_print_fn_STAR_ = func(G__955 *cljs_core.AFn, _STAR_print_fn_STAR_532_954 interface{}, sb__1135__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
+								return cljs_core.Fn(G__955, 1, func(x__1136__auto__ interface{}) interface{} {
+									return sb__1135__auto__.Append(x__1136__auto__)
 								})
-							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_532_954, sb__1130__auto__)
+							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_532_954, sb__1135__auto__)
 
 							cljs_core.Print.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{float64(1)}))
 							cljs_core.Print.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{float64(2)}))
 						}
 					}()
 				}
-				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1130__auto__).(string))
+				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1135__auto__).(string))
 			}()) {
 			} else {
 				panic((&js.Error{("Assert failed: (= \"12\" (with-out-str (print 1) (print 2)))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB("12", func() string {
-				var sb__1130__auto__ = (&goog_string.StringBuffer{})
-				_ = sb__1130__auto__
+				var sb__1135__auto__ = (&goog_string.StringBuffer{})
+				_ = sb__1135__auto__
 				{
 					var _STAR_print_fn_STAR_533_956 = cljs_core.X_STAR_print_fn_STAR_
 					_ = _STAR_print_fn_STAR_533_956
@@ -1090,18 +1090,18 @@ func init() {
 
 						}()
 						{
-							cljs_core.X_STAR_print_fn_STAR_ = func(G__957 *cljs_core.AFn, _STAR_print_fn_STAR_533_956 interface{}, sb__1130__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
-								return cljs_core.Fn(G__957, 1, func(x__1131__auto__ interface{}) interface{} {
-									return sb__1130__auto__.Append(x__1131__auto__)
+							cljs_core.X_STAR_print_fn_STAR_ = func(G__957 *cljs_core.AFn, _STAR_print_fn_STAR_533_956 interface{}, sb__1135__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
+								return cljs_core.Fn(G__957, 1, func(x__1136__auto__ interface{}) interface{} {
+									return sb__1135__auto__.Append(x__1136__auto__)
 								})
-							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_533_956, sb__1130__auto__)
+							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_533_956, sb__1135__auto__)
 
 							cljs_core.X_STAR_print_fn_STAR_.X_invoke_Arity1(float64(1))
 							cljs_core.X_STAR_print_fn_STAR_.X_invoke_Arity1(float64(2))
 						}
 					}()
 				}
-				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1130__auto__).(string))
+				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1135__auto__).(string))
 			}()) {
 			} else {
 				panic((&js.Error{("Assert failed: (= \"12\" (with-out-str (*print-fn* 1) (*print-fn* 2)))")}))
@@ -1952,7 +1952,7 @@ func init() {
 				var v_1002 = (&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2), float64(3)}, nil})
 				_ = v_1002
 				if cljs_core.X_EQ_.Arity2IIB(v_1002, func() *cljs_core.CljsCoreLazySeq {
-					var iter__929__auto__ = func(iter__540 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
+					var iter__934__auto__ = func(iter__540 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 						return cljs_core.Fn(iter__540, 1, func(s__541 interface{}) interface{} {
 							return (&cljs_core.CljsCoreLazySeq{nil, func(G__1003 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 								return cljs_core.Fn(G__1003, 0, func() interface{} {
@@ -1969,17 +1969,17 @@ func init() {
 														_ = s__541___2
 														if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__541___2) {
 															{
-																var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__541___2)
-																var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																var b__543 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																_, _, _ = c__927__auto__, size__928__auto__, b__543
+																var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__541___2)
+																var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																var b__543 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																_, _, _ = c__932__auto__, size__933__auto__, b__543
 																if func() bool {
 																	var i__542 = float64(0)
 																	_ = i__542
 																	for {
-																		if i__542 < size__928__auto__ {
+																		if i__542 < size__933__auto__ {
 																			{
-																				var e = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__542)
+																				var e = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__542)
 																				_ = e
 																				cljs_core.Chunk_append.X_invoke_Arity2(b__543, e)
 																				i__542 = (i__542 + float64(1))
@@ -2013,14 +2013,14 @@ func init() {
 							}(&cljs_core.AFn{}, v_1002), nil, nil})
 						})
 					}(&cljs_core.AFn{}, v_1002)
-					_ = iter__929__auto__
-					return iter__929__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
+					_ = iter__934__auto__
+					return iter__934__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= v (for [e v] e))")}))
 				}
 				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(1)}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(2), float64(4)}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(3), float64(9)}, nil})}, nil}), func() *cljs_core.CljsCoreLazySeq {
-					var iter__929__auto__ = func(iter__546 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
+					var iter__934__auto__ = func(iter__546 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 						return cljs_core.Fn(iter__546, 1, func(s__547 interface{}) interface{} {
 							return (&cljs_core.CljsCoreLazySeq{nil, func(G__1004 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 								return cljs_core.Fn(G__1004, 0, func() interface{} {
@@ -2037,17 +2037,17 @@ func init() {
 														_ = s__547___2
 														if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__547___2) {
 															{
-																var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__547___2)
-																var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																var b__549 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																_, _, _ = c__927__auto__, size__928__auto__, b__549
+																var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__547___2)
+																var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																var b__549 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																_, _, _ = c__932__auto__, size__933__auto__, b__549
 																if func() bool {
 																	var i__548 = float64(0)
 																	_ = i__548
 																	for {
-																		if i__548 < size__928__auto__ {
+																		if i__548 < size__933__auto__ {
 																			{
-																				var e = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__548)
+																				var e = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__548)
 																				_ = e
 																				{
 																					var m = (e.(float64) * e.(float64))
@@ -2089,14 +2089,14 @@ func init() {
 							}(&cljs_core.AFn{}, v_1002), nil, nil})
 						})
 					}(&cljs_core.AFn{}, v_1002)
-					_ = iter__929__auto__
-					return iter__929__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
+					_ = iter__934__auto__
+					return iter__934__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [[1 1] [2 4] [3 9]] (for [e v :let [m (* e e)]] [e m]))")}))
 				}
 				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2)}, nil}), func() *cljs_core.CljsCoreLazySeq {
-					var iter__929__auto__ = func(iter__552 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
+					var iter__934__auto__ = func(iter__552 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 						return cljs_core.Fn(iter__552, 1, func(s__553 interface{}) interface{} {
 							return (&cljs_core.CljsCoreLazySeq{nil, func(G__1005 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 								return cljs_core.Fn(G__1005, 0, func() interface{} {
@@ -2113,17 +2113,17 @@ func init() {
 														_ = s__553___2
 														if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__553___2) {
 															{
-																var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__553___2)
-																var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																var b__555 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																_, _, _ = c__927__auto__, size__928__auto__, b__555
+																var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__553___2)
+																var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																var b__555 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																_, _, _ = c__932__auto__, size__933__auto__, b__555
 																if cljs_core.Truth_(func() interface{} {
 																	var i__554 = float64(0)
 																	_ = i__554
 																	for {
-																		if i__554 < size__928__auto__ {
+																		if i__554 < size__933__auto__ {
 																			{
-																				var e = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__554)
+																				var e = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__554)
 																				_ = e
 																				if e.(float64) < float64(3) {
 																					cljs_core.Chunk_append.X_invoke_Arity2(b__555, e)
@@ -2165,14 +2165,14 @@ func init() {
 							}(&cljs_core.AFn{}, v_1002), nil, nil})
 						})
 					}(&cljs_core.AFn{}, v_1002)
-					_ = iter__929__auto__
-					return iter__929__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
+					_ = iter__934__auto__
+					return iter__934__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [1 2] (for [e v :while (< e 3)] e))")}))
 				}
 				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(3)}, nil}), func() *cljs_core.CljsCoreLazySeq {
-					var iter__929__auto__ = func(iter__558 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
+					var iter__934__auto__ = func(iter__558 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 						return cljs_core.Fn(iter__558, 1, func(s__559 interface{}) interface{} {
 							return (&cljs_core.CljsCoreLazySeq{nil, func(G__1006 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 								return cljs_core.Fn(G__1006, 0, func() interface{} {
@@ -2189,17 +2189,17 @@ func init() {
 														_ = s__559___2
 														if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__559___2) {
 															{
-																var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__559___2)
-																var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																var b__561 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																_, _, _ = c__927__auto__, size__928__auto__, b__561
+																var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__559___2)
+																var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																var b__561 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																_, _, _ = c__932__auto__, size__933__auto__, b__561
 																if func() bool {
 																	var i__560 = float64(0)
 																	_ = i__560
 																	for {
-																		if i__560 < size__928__auto__ {
+																		if i__560 < size__933__auto__ {
 																			{
-																				var e = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__560)
+																				var e = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__560)
 																				_ = e
 																				if e.(float64) > float64(2) {
 																					cljs_core.Chunk_append.X_invoke_Arity2(b__561, e)
@@ -2243,14 +2243,14 @@ func init() {
 							}(&cljs_core.AFn{}, v_1002), nil, nil})
 						})
 					}(&cljs_core.AFn{}, v_1002)
-					_ = iter__929__auto__
-					return iter__929__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
+					_ = iter__934__auto__
+					return iter__934__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [3] (for [e v :when (> e 2)] e))")}))
 				}
 				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(1)}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(2), float64(4)}, nil})}, nil}), func() *cljs_core.CljsCoreLazySeq {
-					var iter__929__auto__ = func(iter__564 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
+					var iter__934__auto__ = func(iter__564 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 						return cljs_core.Fn(iter__564, 1, func(s__565 interface{}) interface{} {
 							return (&cljs_core.CljsCoreLazySeq{nil, func(G__1007 *cljs_core.AFn, v_1002 cljs_core.CljsCoreIVector) *cljs_core.AFn {
 								return cljs_core.Fn(G__1007, 0, func() interface{} {
@@ -2267,17 +2267,17 @@ func init() {
 														_ = s__565___2
 														if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__565___2) {
 															{
-																var c__927__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__565___2)
-																var size__928__auto__ = cljs_core.Count.X_invoke_Arity1(c__927__auto__).(float64)
-																var b__567 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__928__auto__).(*cljs_core.CljsCoreChunkBuffer)
-																_, _, _ = c__927__auto__, size__928__auto__, b__567
+																var c__932__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__565___2)
+																var size__933__auto__ = cljs_core.Count.X_invoke_Arity1(c__932__auto__).(float64)
+																var b__567 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__933__auto__).(*cljs_core.CljsCoreChunkBuffer)
+																_, _, _ = c__932__auto__, size__933__auto__, b__567
 																if cljs_core.Truth_(func() interface{} {
 																	var i__566 = float64(0)
 																	_ = i__566
 																	for {
-																		if i__566 < size__928__auto__ {
+																		if i__566 < size__933__auto__ {
 																			{
-																				var e = cljs_core.Decorate_(c__927__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__566)
+																				var e = cljs_core.Decorate_(c__932__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(i__566)
 																				_ = e
 																				if e.(float64) < float64(3) {
 																					{
@@ -2327,8 +2327,8 @@ func init() {
 							}(&cljs_core.AFn{}, v_1002), nil, nil})
 						})
 					}(&cljs_core.AFn{}, v_1002)
-					_ = iter__929__auto__
-					return iter__929__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
+					_ = iter__934__auto__
+					return iter__934__auto__.X_invoke_Arity1(v_1002).(*cljs_core.CljsCoreLazySeq)
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [[1 1] [2 4]] (for [e v :while (< e 3) :let [m (* e e)]] [e m]))")}))
@@ -3183,14 +3183,14 @@ func init() {
 				var a_1020 = cljs_core.To_array.X_invoke_Arity1((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(1), float64(2), float64(3)}, nil})).([]interface{})
 				_ = a_1020
 				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{float64(10), float64(20), float64(30)}, nil}), cljs_core.Seq.Arity1IQ(func() []interface{} {
-					var a__1048__auto__ = a_1020
-					var ret = cljs_core.Aclone.X_invoke_Arity1(a__1048__auto__).([]interface{})
-					_, _ = a__1048__auto__, ret
+					var a__1053__auto__ = a_1020
+					var ret = cljs_core.Aclone.X_invoke_Arity1(a__1053__auto__).([]interface{})
+					_, _ = a__1053__auto__, ret
 					{
 						var i = float64(0)
 						_ = i
 						for {
-							if i < float64(len(a__1048__auto__)) {
+							if i < float64(len(a__1053__auto__)) {
 								ret[int(i)] = (float64(10) * (a_1020[int(i)]).(float64))
 								i = (i + float64(1))
 								continue
@@ -3204,14 +3204,14 @@ func init() {
 					panic((&js.Error{("Assert failed: (= [10 20 30] (seq (amap a i ret (* 10 (aget a i)))))")}))
 				}
 				if cljs_core.X_EQ_.Arity2IIB(float64(6), func() float64 {
-					var a__1054__auto__ = a_1020
-					_ = a__1054__auto__
+					var a__1059__auto__ = a_1020
+					_ = a__1059__auto__
 					{
 						var i = float64(0)
 						var ret = float64(0)
 						_, _ = i, ret
 						for {
-							if i < float64(len(a__1054__auto__)) {
+							if i < float64(len(a__1059__auto__)) {
 								i, ret = (i + float64(1)), (ret + (a_1020[int(i)]).(float64))
 								continue
 							} else {
@@ -3311,13 +3311,13 @@ func init() {
 				var s_1025 = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentVector_EMPTY).(*cljs_core.CljsCoreAtom)
 				_ = s_1025
 				{
-					var n__1060__auto___1026 = float64(5)
-					_ = n__1060__auto___1026
+					var n__1065__auto___1026 = float64(5)
+					_ = n__1065__auto___1026
 					{
 						var n_1027 = float64(0)
 						_ = n_1027
 						for {
-							if n_1027 < n__1060__auto___1026 {
+							if n_1027 < n__1065__auto___1026 {
 								cljs_core.Swap_BANG_.X_invoke_Arity3(s_1025, cljs_core.Conj, n_1027)
 								n_1027 = (n_1027 + float64(1))
 								continue
@@ -3361,9 +3361,9 @@ func init() {
 										_ = seq__604_1036___1
 										if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__604_1036___1) {
 											{
-												var c__960__auto___1037 = cljs_core.Chunk_first.X_invoke_Arity1(seq__604_1036___1)
-												_ = c__960__auto___1037
-												seq__604_1030, chunk__605_1031, count__606_1032, i__607_1033 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__604_1036___1), c__960__auto___1037, cljs_core.Count.X_invoke_Arity1(c__960__auto___1037).(float64), float64(0)
+												var c__965__auto___1037 = cljs_core.Chunk_first.X_invoke_Arity1(seq__604_1036___1)
+												_ = c__965__auto___1037
+												seq__604_1030, chunk__605_1031, count__606_1032, i__607_1033 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__604_1036___1), c__965__auto___1037, cljs_core.Count.X_invoke_Arity1(c__965__auto___1037).(float64), float64(0)
 												continue
 											}
 										} else {
@@ -3856,17 +3856,17 @@ func init() {
 				panic((&js.Error{("Assert failed: (true? (isa? [:cljs.core-test/square :cljs.core-test/rect] [:cljs.core-test/shape :cljs.core-test/shape]))")}))
 			}
 			Bar = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"bar", func(G__1051 *cljs_core.AFn, method_table__1070__auto__ *cljs_core.CljsCoreAtom, prefer_table__1071__auto__ *cljs_core.CljsCoreAtom, method_cache__1072__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1073__auto__ *cljs_core.CljsCoreAtom, hierarchy__1074__auto__ interface{}) *cljs_core.AFn {
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"bar", func(G__1051 *cljs_core.AFn, method_table__1075__auto__ *cljs_core.CljsCoreAtom, prefer_table__1076__auto__ *cljs_core.CljsCoreAtom, method_cache__1077__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1078__auto__ *cljs_core.CljsCoreAtom, hierarchy__1079__auto__ interface{}) *cljs_core.AFn {
 					return cljs_core.Fn(G__1051, 2, func(x interface{}, y interface{}) interface{} {
 						return (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{x, y}, nil})
 					})
-				}(&cljs_core.AFn{}, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				}(&cljs_core.AFn{}, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Bar.X_add_method_Arity3((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "rect", Fqn: "cljs.core-test/rect", X_hash: float64(1940896440)}), (&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "shape", Fqn: "cljs.core-test/shape", X_hash: float64(-118750990)})}, nil}), func(G__1052 *cljs_core.AFn) *cljs_core.AFn {
@@ -3902,17 +3902,17 @@ func init() {
 				panic((&js.Error{("Assert failed: (= :rect-shape (apply (-get-method bar [:cljs.core-test/rect :cljs.core-test/shape]) [:cljs.core-test/rect :cljs.core-test/shape]))")}))
 			}
 			Nested_dispatch = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"nested-dispatch", func(G__1054 *cljs_core.AFn, method_table__1070__auto__ *cljs_core.CljsCoreAtom, prefer_table__1071__auto__ *cljs_core.CljsCoreAtom, method_cache__1072__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1073__auto__ *cljs_core.CljsCoreAtom, hierarchy__1074__auto__ interface{}) *cljs_core.AFn {
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"nested-dispatch", func(G__1054 *cljs_core.AFn, method_table__1075__auto__ *cljs_core.CljsCoreAtom, prefer_table__1076__auto__ *cljs_core.CljsCoreAtom, method_cache__1077__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1078__auto__ *cljs_core.CljsCoreAtom, hierarchy__1079__auto__ interface{}) *cljs_core.AFn {
 					return cljs_core.Fn(G__1054, 1, func(m interface{}) interface{} {
 						return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}).X_invoke_Arity1((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}).X_invoke_Arity1(m))
 					})
-				}(&cljs_core.AFn{}, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				}(&cljs_core.AFn{}, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Nested_dispatch.X_add_method_Arity3((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), func(G__1055 *cljs_core.AFn) *cljs_core.AFn {
@@ -3934,13 +3934,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (= :nested-a (nested-dispatch {:a {:b :c}}))")}))
 			}
 			Nested_dispatch2 = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"nested-dispatch2", cljs_core.Ffirst, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"nested-dispatch2", cljs_core.Ffirst, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Nested_dispatch2.X_add_method_Arity3((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), func(G__1057 *cljs_core.AFn) *cljs_core.AFn {
@@ -3962,19 +3962,19 @@ func init() {
 				panic((&js.Error{("Assert failed: (= :nested-a (nested-dispatch2 [[:a :b]]))")}))
 			}
 			Foo1 = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"foo1", func(G__1059 *cljs_core.AFn, method_table__1070__auto__ *cljs_core.CljsCoreAtom, prefer_table__1071__auto__ *cljs_core.CljsCoreAtom, method_cache__1072__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1073__auto__ *cljs_core.CljsCoreAtom, hierarchy__1074__auto__ interface{}) *cljs_core.AFn {
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"foo1", func(G__1059 *cljs_core.AFn, method_table__1075__auto__ *cljs_core.CljsCoreAtom, prefer_table__1076__auto__ *cljs_core.CljsCoreAtom, method_cache__1077__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1078__auto__ *cljs_core.CljsCoreAtom, hierarchy__1079__auto__ interface{}) *cljs_core.AFn {
 					return cljs_core.Fn(G__1059, 0, func(args__ ...interface{}) interface{} {
 						var args = cljs_core.Seq.Arity1IQ(args__[0])
 						_ = args
 						return cljs_core.First.X_invoke_Arity1(args)
 					})
-				}(&cljs_core.AFn{}, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				}(&cljs_core.AFn{}, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Foo1.X_add_method_Arity3((&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), func(G__1060 *cljs_core.AFn) *cljs_core.AFn {
@@ -4008,13 +4008,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (= :default-return (foo1 1))")}))
 			}
 			Area = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"area", (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "Shape", Fqn: "Shape", X_hash: float64(-248980586)}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"area", (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "Shape", Fqn: "Shape", X_hash: float64(-248980586)}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Rect = func(rect *cljs_core.AFn) *cljs_core.AFn {
@@ -4079,13 +4079,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (zero? (count (methods bar)))")}))
 			}
 			Apply_multi_test = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"apply-multi-test", func(G__1065 *cljs_core.AFn, method_table__1070__auto__ *cljs_core.CljsCoreAtom, prefer_table__1071__auto__ *cljs_core.CljsCoreAtom, method_cache__1072__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1073__auto__ *cljs_core.CljsCoreAtom, hierarchy__1074__auto__ interface{}) *cljs_core.AFn {
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"apply-multi-test", func(G__1065 *cljs_core.AFn, method_table__1075__auto__ *cljs_core.CljsCoreAtom, prefer_table__1076__auto__ *cljs_core.CljsCoreAtom, method_cache__1077__auto__ *cljs_core.CljsCoreAtom, cached_hierarchy__1078__auto__ *cljs_core.CljsCoreAtom, hierarchy__1079__auto__ interface{}) *cljs_core.AFn {
 					return cljs_core.Fn(G__1065, 3, func(___ interface{}) interface{} {
 						return float64(0)
 					}, func(___ interface{}, ______1 interface{}) interface{} {
@@ -4093,7 +4093,7 @@ func init() {
 					}, func(___ interface{}, ______1 interface{}, ______2 interface{}) interface{} {
 						return float64(0)
 					})
-				}(&cljs_core.AFn{}, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				}(&cljs_core.AFn{}, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Apply_multi_test.X_add_method_Arity3(float64(0), func(G__1066 *cljs_core.AFn) *cljs_core.AFn {
@@ -4116,13 +4116,13 @@ func init() {
 			My_map_hierarchy = cljs_core.Atom.X_invoke_Arity1(cljs_core.Derive.X_invoke_Arity3(cljs_core.Derive.X_invoke_Arity3(cljs_core.Derive.X_invoke_Arity3(cljs_core.Make_hierarchy.X_invoke_Arity0().(cljs_core.CljsCoreIMap), cljs_core.Type_.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY), (&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "map", Fqn: "cljs.core-test/map", X_hash: float64(-1007238055)})), cljs_core.Type_.X_invoke_Arity1(cljs_core.CljsCorePersistentHashMap_EMPTY), (&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "map", Fqn: "cljs.core-test/map", X_hash: float64(-1007238055)})), cljs_core.Type_.X_invoke_Arity1(cljs_core.Sorted_map.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{}))), (&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "map", Fqn: "cljs.core-test/map", X_hash: float64(-1007238055)}))).(*cljs_core.CljsCoreAtom)
 
 			My_map_QMARK_ = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3((&cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), My_map_hierarchy}, nil}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"my-map?", cljs_core.Type_, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3((&cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), My_map_hierarchy}, nil}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"my-map?", cljs_core.Type_, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			My_map_QMARK_.X_add_method_Arity3((&cljs_core.CljsCoreKeyword{Ns: "cljs.core-test", Name: "map", Fqn: "cljs.core-test/map", X_hash: float64(-1007238055)}), func(G__1067 *cljs_core.AFn) *cljs_core.AFn {
@@ -4167,9 +4167,9 @@ func init() {
 									_ = seq__617_1075___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__617_1075___1) {
 										{
-											var c__960__auto___1076 = cljs_core.Chunk_first.X_invoke_Arity1(seq__617_1075___1)
-											_ = c__960__auto___1076
-											seq__617_1069, chunk__618_1070, count__619_1071, i__620_1072 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__617_1075___1), c__960__auto___1076, cljs_core.Count.X_invoke_Arity1(c__960__auto___1076).(float64), float64(0)
+											var c__965__auto___1076 = cljs_core.Chunk_first.X_invoke_Arity1(seq__617_1075___1)
+											_ = c__965__auto___1076
+											seq__617_1069, chunk__618_1070, count__619_1071, i__620_1072 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__617_1075___1), c__965__auto___1076, cljs_core.Count.X_invoke_Arity1(c__965__auto___1076).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -4228,9 +4228,9 @@ func init() {
 									_ = seq__623_1084___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__623_1084___1) {
 										{
-											var c__960__auto___1085 = cljs_core.Chunk_first.X_invoke_Arity1(seq__623_1084___1)
-											_ = c__960__auto___1085
-											seq__623_1078, chunk__624_1079, count__625_1080, i__626_1081 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__623_1084___1), c__960__auto___1085, cljs_core.Count.X_invoke_Arity1(c__960__auto___1085).(float64), float64(0)
+											var c__965__auto___1085 = cljs_core.Chunk_first.X_invoke_Arity1(seq__623_1084___1)
+											_ = c__965__auto___1085
+											seq__623_1078, chunk__624_1079, count__625_1080, i__626_1081 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__623_1084___1), c__965__auto___1085, cljs_core.Count.X_invoke_Arity1(c__965__auto___1085).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -4860,9 +4860,9 @@ func init() {
 										_ = seq__645_1138___1
 										if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__645_1138___1) {
 											{
-												var c__960__auto___1139 = cljs_core.Chunk_first.X_invoke_Arity1(seq__645_1138___1)
-												_ = c__960__auto___1139
-												seq__645_1132, chunk__646_1133, count__647_1134, i__648_1135 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__645_1138___1), c__960__auto___1139, cljs_core.Count.X_invoke_Arity1(c__960__auto___1139).(float64), float64(0)
+												var c__965__auto___1139 = cljs_core.Chunk_first.X_invoke_Arity1(seq__645_1138___1)
+												_ = c__965__auto___1139
+												seq__645_1132, chunk__646_1133, count__647_1134, i__648_1135 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__645_1138___1), c__965__auto___1139, cljs_core.Count.X_invoke_Arity1(c__965__auto___1139).(float64), float64(0)
 												continue
 											}
 										} else {
@@ -5289,9 +5289,9 @@ func init() {
 										_ = seq__655_1178___1
 										if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__655_1178___1) {
 											{
-												var c__960__auto___1179 = cljs_core.Chunk_first.X_invoke_Arity1(seq__655_1178___1)
-												_ = c__960__auto___1179
-												seq__655_1172, chunk__656_1173, count__657_1174, i__658_1175 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__655_1178___1), c__960__auto___1179, cljs_core.Count.X_invoke_Arity1(c__960__auto___1179).(float64), float64(0)
+												var c__965__auto___1179 = cljs_core.Chunk_first.X_invoke_Arity1(seq__655_1178___1)
+												_ = c__965__auto___1179
+												seq__655_1172, chunk__656_1173, count__657_1174, i__658_1175 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__655_1178___1), c__965__auto___1179, cljs_core.Count.X_invoke_Arity1(c__965__auto___1179).(float64), float64(0)
 												continue
 											}
 										} else {
@@ -6134,13 +6134,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (= (meta (with-meta (reify IFoo (foo [this] :foo)) {:foo :bar})) {:foo :bar})")}))
 			}
 			Foo2 = func() *cljs_core.CljsCoreMultiFn {
-				var method_table__1070__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var prefer_table__1071__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var method_cache__1072__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var cached_hierarchy__1073__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
-				var hierarchy__1074__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
-				_, _, _, _, _ = method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__, hierarchy__1074__auto__
-				return (&cljs_core.CljsCoreMultiFn{"foo2", cljs_core.Identity, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1074__auto__, method_table__1070__auto__, prefer_table__1071__auto__, method_cache__1072__auto__, cached_hierarchy__1073__auto__})
+				var method_table__1075__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var prefer_table__1076__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var method_cache__1077__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var cached_hierarchy__1078__auto__ = cljs_core.Atom.X_invoke_Arity1(cljs_core.CljsCorePersistentArrayMap_EMPTY).(*cljs_core.CljsCoreAtom)
+				var hierarchy__1079__auto__ = cljs_core.Get.X_invoke_Arity3(cljs_core.CljsCorePersistentArrayMap_EMPTY, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "hierarchy", Fqn: "hierarchy", X_hash: float64(-1053470341)}), cljs_core.Get_global_hierarchy.X_invoke_Arity0())
+				_, _, _, _, _ = method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__, hierarchy__1079__auto__
+				return (&cljs_core.CljsCoreMultiFn{"foo2", cljs_core.Identity, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "default", Fqn: "default", X_hash: float64(-1987822328)}), hierarchy__1079__auto__, method_table__1075__auto__, prefer_table__1076__auto__, method_cache__1077__auto__, cached_hierarchy__1078__auto__})
 			}()
 
 			Foo2.X_add_method_Arity3(float64(0), func(G__1235 *cljs_core.AFn) *cljs_core.AFn {
@@ -6967,9 +6967,9 @@ func init() {
 																	_ = seq__821_1279___1
 																	if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__821_1279___1) {
 																		{
-																			var c__960__auto___1280 = cljs_core.Chunk_first.X_invoke_Arity1(seq__821_1279___1)
-																			_ = c__960__auto___1280
-																			seq__821_1270, chunk__822_1271, count__823_1272, i__824_1273 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__821_1279___1), c__960__auto___1280, cljs_core.Count.X_invoke_Arity1(c__960__auto___1280).(float64), float64(0)
+																			var c__965__auto___1280 = cljs_core.Chunk_first.X_invoke_Arity1(seq__821_1279___1)
+																			_ = c__965__auto___1280
+																			seq__821_1270, chunk__822_1271, count__823_1272, i__824_1273 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__821_1279___1), c__965__auto___1280, cljs_core.Count.X_invoke_Arity1(c__965__auto___1280).(float64), float64(0)
 																			continue
 																		}
 																	} else {
@@ -7018,9 +7018,9 @@ func init() {
 													_ = seq__813_1286___1
 													if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__813_1286___1) {
 														{
-															var c__960__auto___1287 = cljs_core.Chunk_first.X_invoke_Arity1(seq__813_1286___1)
-															_ = c__960__auto___1287
-															seq__813_1265, chunk__818_1266, count__819_1267, i__820_1268 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__813_1286___1), c__960__auto___1287, cljs_core.Count.X_invoke_Arity1(c__960__auto___1287).(float64), float64(0)
+															var c__965__auto___1287 = cljs_core.Chunk_first.X_invoke_Arity1(seq__813_1286___1)
+															_ = c__965__auto___1287
+															seq__813_1265, chunk__818_1266, count__819_1267, i__820_1268 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__813_1286___1), c__965__auto___1287, cljs_core.Count.X_invoke_Arity1(c__965__auto___1287).(float64), float64(0)
 															continue
 														}
 													} else {
@@ -7068,9 +7068,9 @@ func init() {
 																					_ = seq__814_1298___1
 																					if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__814_1298___1) {
 																						{
-																							var c__960__auto___1299 = cljs_core.Chunk_first.X_invoke_Arity1(seq__814_1298___1)
-																							_ = c__960__auto___1299
-																							seq__814_1289, chunk__815_1290, count__816_1291, i__817_1292 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__814_1298___1), c__960__auto___1299, cljs_core.Count.X_invoke_Arity1(c__960__auto___1299).(float64), float64(0)
+																							var c__965__auto___1299 = cljs_core.Chunk_first.X_invoke_Arity1(seq__814_1298___1)
+																							_ = c__965__auto___1299
+																							seq__814_1289, chunk__815_1290, count__816_1291, i__817_1292 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__814_1298___1), c__965__auto___1299, cljs_core.Count.X_invoke_Arity1(c__965__auto___1299).(float64), float64(0)
 																							continue
 																						}
 																					} else {
@@ -7131,9 +7131,9 @@ func init() {
 									_ = seq__797_1305___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__797_1305___1) {
 										{
-											var c__960__auto___1306 = cljs_core.Chunk_first.X_invoke_Arity1(seq__797_1305___1)
-											_ = c__960__auto___1306
-											seq__797_1260, chunk__810_1261, count__811_1262, i__812_1263 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__797_1305___1), c__960__auto___1306, cljs_core.Count.X_invoke_Arity1(c__960__auto___1306).(float64), float64(0)
+											var c__965__auto___1306 = cljs_core.Chunk_first.X_invoke_Arity1(seq__797_1305___1)
+											_ = c__965__auto___1306
+											seq__797_1260, chunk__810_1261, count__811_1262, i__812_1263 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__797_1305___1), c__965__auto___1306, cljs_core.Count.X_invoke_Arity1(c__965__auto___1306).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -7192,9 +7192,9 @@ func init() {
 																					_ = seq__806_1322___1
 																					if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__806_1322___1) {
 																						{
-																							var c__960__auto___1323 = cljs_core.Chunk_first.X_invoke_Arity1(seq__806_1322___1)
-																							_ = c__960__auto___1323
-																							seq__806_1313, chunk__807_1314, count__808_1315, i__809_1316 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__806_1322___1), c__960__auto___1323, cljs_core.Count.X_invoke_Arity1(c__960__auto___1323).(float64), float64(0)
+																							var c__965__auto___1323 = cljs_core.Chunk_first.X_invoke_Arity1(seq__806_1322___1)
+																							_ = c__965__auto___1323
+																							seq__806_1313, chunk__807_1314, count__808_1315, i__809_1316 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__806_1322___1), c__965__auto___1323, cljs_core.Count.X_invoke_Arity1(c__965__auto___1323).(float64), float64(0)
 																							continue
 																						}
 																					} else {
@@ -7243,9 +7243,9 @@ func init() {
 																	_ = seq__798_1329___1
 																	if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__798_1329___1) {
 																		{
-																			var c__960__auto___1330 = cljs_core.Chunk_first.X_invoke_Arity1(seq__798_1329___1)
-																			_ = c__960__auto___1330
-																			seq__798_1308, chunk__803_1309, count__804_1310, i__805_1311 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__798_1329___1), c__960__auto___1330, cljs_core.Count.X_invoke_Arity1(c__960__auto___1330).(float64), float64(0)
+																			var c__965__auto___1330 = cljs_core.Chunk_first.X_invoke_Arity1(seq__798_1329___1)
+																			_ = c__965__auto___1330
+																			seq__798_1308, chunk__803_1309, count__804_1310, i__805_1311 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__798_1329___1), c__965__auto___1330, cljs_core.Count.X_invoke_Arity1(c__965__auto___1330).(float64), float64(0)
 																			continue
 																		}
 																	} else {
@@ -7293,9 +7293,9 @@ func init() {
 																									_ = seq__799_1341___1
 																									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__799_1341___1) {
 																										{
-																											var c__960__auto___1342 = cljs_core.Chunk_first.X_invoke_Arity1(seq__799_1341___1)
-																											_ = c__960__auto___1342
-																											seq__799_1332, chunk__800_1333, count__801_1334, i__802_1335 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__799_1341___1), c__960__auto___1342, cljs_core.Count.X_invoke_Arity1(c__960__auto___1342).(float64), float64(0)
+																											var c__965__auto___1342 = cljs_core.Chunk_first.X_invoke_Arity1(seq__799_1341___1)
+																											_ = c__965__auto___1342
+																											seq__799_1332, chunk__800_1333, count__801_1334, i__802_1335 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__799_1341___1), c__965__auto___1342, cljs_core.Count.X_invoke_Arity1(c__965__auto___1342).(float64), float64(0)
 																											continue
 																										}
 																									} else {
@@ -7601,9 +7601,9 @@ func init() {
 										_ = seq__836_1369___1
 										if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__836_1369___1) {
 											{
-												var c__960__auto___1370 = cljs_core.Chunk_first.X_invoke_Arity1(seq__836_1369___1)
-												_ = c__960__auto___1370
-												seq__836_1360, chunk__838_1361, count__839_1362, i__840_1363 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__836_1369___1), c__960__auto___1370, cljs_core.Count.X_invoke_Arity1(c__960__auto___1370).(float64), float64(0)
+												var c__965__auto___1370 = cljs_core.Chunk_first.X_invoke_Arity1(seq__836_1369___1)
+												_ = c__965__auto___1370
+												seq__836_1360, chunk__838_1361, count__839_1362, i__840_1363 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__836_1369___1), c__965__auto___1370, cljs_core.Count.X_invoke_Arity1(c__965__auto___1370).(float64), float64(0)
 												continue
 											}
 										} else {
@@ -7705,8 +7705,8 @@ func init() {
 				}(&cljs_core.AFn{})
 				_, _ = f_BANG_, g_BANG_
 				if cljs_core.X_EQ_.Arity2IIB("ffgfg", func() string {
-					var sb__1130__auto__ = (&goog_string.StringBuffer{})
-					_ = sb__1130__auto__
+					var sb__1135__auto__ = (&goog_string.StringBuffer{})
+					_ = sb__1135__auto__
 					{
 						var _STAR_print_fn_STAR_842_1379 = cljs_core.X_STAR_print_fn_STAR_
 						_ = _STAR_print_fn_STAR_842_1379
@@ -7716,11 +7716,11 @@ func init() {
 
 							}()
 							{
-								cljs_core.X_STAR_print_fn_STAR_ = func(G__1380 *cljs_core.AFn, _STAR_print_fn_STAR_842_1379 interface{}, sb__1130__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
-									return cljs_core.Fn(G__1380, 1, func(x__1131__auto__ interface{}) interface{} {
-										return sb__1130__auto__.Append(x__1131__auto__)
+								cljs_core.X_STAR_print_fn_STAR_ = func(G__1380 *cljs_core.AFn, _STAR_print_fn_STAR_842_1379 interface{}, sb__1135__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
+									return cljs_core.Fn(G__1380, 1, func(x__1136__auto__ interface{}) interface{} {
+										return sb__1135__auto__.Append(x__1136__auto__)
 									})
-								}(&cljs_core.AFn{}, _STAR_print_fn_STAR_842_1379, sb__1130__auto__)
+								}(&cljs_core.AFn{}, _STAR_print_fn_STAR_842_1379, sb__1135__auto__)
 
 								cljs_core.Value_(f_BANG_.X_invoke_Arity1((&cljs_core.CljsCoreSymbol{Ns: nil, Name: "foo", Str: "foo", X_hash: float64(-1385541733), X_meta: nil}))).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreSymbol)(nil)).Elem())
 								func(x, y float64) float64 {
@@ -7740,7 +7740,7 @@ func init() {
 							}
 						}()
 					}
-					return (`` + cljs_core.Str.X_invoke_Arity1(sb__1130__auto__).(string))
+					return (`` + cljs_core.Str.X_invoke_Arity1(sb__1135__auto__).(string))
 				}()) {
 				} else {
 					panic((&js.Error{("Assert failed: (= \"ffgfg\" (with-out-str (instance? Symbol (f! (quote foo))) (max (f! 5) (g! 10)) (min (f! 5) (g! 10))))")}))
@@ -8005,9 +8005,9 @@ func init() {
 									_ = seq__850_1395___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__850_1395___1) {
 										{
-											var c__960__auto___1396 = cljs_core.Chunk_first.X_invoke_Arity1(seq__850_1395___1)
-											_ = c__960__auto___1396
-											seq__850_1387, chunk__851_1388, count__852_1389, i__853_1390 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__850_1395___1), c__960__auto___1396, cljs_core.Count.X_invoke_Arity1(c__960__auto___1396).(float64), float64(0)
+											var c__965__auto___1396 = cljs_core.Chunk_first.X_invoke_Arity1(seq__850_1395___1)
+											_ = c__965__auto___1396
+											seq__850_1387, chunk__851_1388, count__852_1389, i__853_1390 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__850_1395___1), c__965__auto___1396, cljs_core.Count.X_invoke_Arity1(c__965__auto___1396).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -8116,9 +8116,9 @@ func init() {
 									_ = seq__860_1407___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__860_1407___1) {
 										{
-											var c__960__auto___1408 = cljs_core.Chunk_first.X_invoke_Arity1(seq__860_1407___1)
-											_ = c__960__auto___1408
-											seq__860_1400, chunk__861_1401, count__862_1402, i__863_1403 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__860_1407___1), c__960__auto___1408, cljs_core.Count.X_invoke_Arity1(c__960__auto___1408).(float64), float64(0)
+											var c__965__auto___1408 = cljs_core.Chunk_first.X_invoke_Arity1(seq__860_1407___1)
+											_ = c__965__auto___1408
+											seq__860_1400, chunk__861_1401, count__862_1402, i__863_1403 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__860_1407___1), c__965__auto___1408, cljs_core.Count.X_invoke_Arity1(c__965__auto___1408).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -8286,8 +8286,8 @@ func init() {
 			}(&cljs_core.AFn{})
 
 			if cljs_core.X_EQ_.Arity2IIB(func() string {
-				var sb__1130__auto__ = (&goog_string.StringBuffer{})
-				_ = sb__1130__auto__
+				var sb__1135__auto__ = (&goog_string.StringBuffer{})
+				_ = sb__1135__auto__
 				{
 					var _STAR_print_fn_STAR_873_1432 = cljs_core.X_STAR_print_fn_STAR_
 					_ = _STAR_print_fn_STAR_873_1432
@@ -8297,11 +8297,11 @@ func init() {
 
 						}()
 						{
-							cljs_core.X_STAR_print_fn_STAR_ = func(G__1433 *cljs_core.AFn, _STAR_print_fn_STAR_873_1432 interface{}, sb__1130__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
-								return cljs_core.Fn(G__1433, 1, func(x__1131__auto__ interface{}) interface{} {
-									return sb__1130__auto__.Append(x__1131__auto__)
+							cljs_core.X_STAR_print_fn_STAR_ = func(G__1433 *cljs_core.AFn, _STAR_print_fn_STAR_873_1432 interface{}, sb__1135__auto__ *goog_string.StringBuffer) *cljs_core.AFn {
+								return cljs_core.Fn(G__1433, 1, func(x__1136__auto__ interface{}) interface{} {
+									return sb__1135__auto__.Append(x__1136__auto__)
 								})
-							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_873_1432, sb__1130__auto__)
+							}(&cljs_core.AFn{}, _STAR_print_fn_STAR_873_1432, sb__1135__auto__)
 
 							{
 								var seq__874_1434 interface{} = cljs_core.Seq.Arity1IQ(Cljs_739.X_invoke_Arity2(cljs_core.CljsCorePersistentVector_EMPTY, (&cljs_core.CljsCorePersistentVector{nil, float64(4), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "d", Fqn: "d", X_hash: float64(1972142424)})}, nil})))
@@ -8330,9 +8330,9 @@ func init() {
 													_ = seq__874_1440___1
 													if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__874_1440___1) {
 														{
-															var c__960__auto___1441 = cljs_core.Chunk_first.X_invoke_Arity1(seq__874_1440___1)
-															_ = c__960__auto___1441
-															seq__874_1434, chunk__875_1435, count__876_1436, i__877_1437 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__874_1440___1), c__960__auto___1441, cljs_core.Count.X_invoke_Arity1(c__960__auto___1441).(float64), float64(0)
+															var c__965__auto___1441 = cljs_core.Chunk_first.X_invoke_Arity1(seq__874_1440___1)
+															_ = c__965__auto___1441
+															seq__874_1434, chunk__875_1435, count__876_1436, i__877_1437 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__874_1440___1), c__965__auto___1441, cljs_core.Count.X_invoke_Arity1(c__965__auto___1441).(float64), float64(0)
 															continue
 														}
 													} else {
@@ -8357,7 +8357,7 @@ func init() {
 						}
 					}()
 				}
-				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1130__auto__).(string))
+				return (`` + cljs_core.Str.X_invoke_Arity1(sb__1135__auto__).(string))
 			}(), ":a\n:b\n:c\n:d\n") {
 			} else {
 				panic((&js.Error{("Assert failed: (= (with-out-str (doseq [fn (cljs-739 [] [:a :b :c :d])] (fn))) \":a\\n:b\\n:c\\n:d\\n\")")}))
@@ -8594,9 +8594,9 @@ func init() {
 									_ = seq__878_1457___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__878_1457___1) {
 										{
-											var c__960__auto___1458 = cljs_core.Chunk_first.X_invoke_Arity1(seq__878_1457___1)
-											_ = c__960__auto___1458
-											seq__878_1443, chunk__879_1444, count__880_1445, i__881_1446 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__878_1457___1), c__960__auto___1458, cljs_core.Count.X_invoke_Arity1(c__960__auto___1458).(float64), float64(0)
+											var c__965__auto___1458 = cljs_core.Chunk_first.X_invoke_Arity1(seq__878_1457___1)
+											_ = c__965__auto___1458
+											seq__878_1443, chunk__879_1444, count__880_1445, i__881_1446 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__878_1457___1), c__965__auto___1458, cljs_core.Count.X_invoke_Arity1(c__965__auto___1458).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -8912,9 +8912,9 @@ func init() {
 									_ = seq__900_1476___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__900_1476___1) {
 										{
-											var c__960__auto___1477 = cljs_core.Chunk_first.X_invoke_Arity1(seq__900_1476___1)
-											_ = c__960__auto___1477
-											seq__900_1469, chunk__901_1470, count__902_1471, i__903_1472 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__900_1476___1), c__960__auto___1477, cljs_core.Count.X_invoke_Arity1(c__960__auto___1477).(float64), float64(0)
+											var c__965__auto___1477 = cljs_core.Chunk_first.X_invoke_Arity1(seq__900_1476___1)
+											_ = c__965__auto___1477
+											seq__900_1469, chunk__901_1470, count__902_1471, i__903_1472 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__900_1476___1), c__965__auto___1477, cljs_core.Count.X_invoke_Arity1(c__965__auto___1477).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -9014,9 +9014,9 @@ func init() {
 									_ = seq__906_1486___1
 									if cljs_core.Chunked_seq_QMARK_.Arity1IB(seq__906_1486___1) {
 										{
-											var c__960__auto___1487 = cljs_core.Chunk_first.X_invoke_Arity1(seq__906_1486___1)
-											_ = c__960__auto___1487
-											seq__906_1480, chunk__907_1481, count__908_1482, i__909_1483 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__906_1486___1), c__960__auto___1487, cljs_core.Count.X_invoke_Arity1(c__960__auto___1487).(float64), float64(0)
+											var c__965__auto___1487 = cljs_core.Chunk_first.X_invoke_Arity1(seq__906_1486___1)
+											_ = c__965__auto___1487
+											seq__906_1480, chunk__907_1481, count__908_1482, i__909_1483 = cljs_core.Chunk_rest.X_invoke_Arity1(seq__906_1486___1), c__965__auto___1487, cljs_core.Count.X_invoke_Arity1(c__965__auto___1487).(float64), float64(0)
 											continue
 										}
 									} else {
@@ -9670,11 +9670,11 @@ type CljsCore_testPerson struct {
 
 func (_ *CljsCore_testPerson) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testPerson) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testPerson) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testPerson) X_lookup_Arity3(k665 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testPerson) X_lookup_Arity3(k665 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__668 = func() interface{} {
 			if cljs_core.Value_(k665).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
@@ -9686,13 +9686,13 @@ func (this__766__auto__ *CljsCore_testPerson) X_lookup_Arity3(k665 interface{}, 
 		_ = G__668
 		switch G__668 {
 		case "lastname":
-			return this__766__auto__.Lastname
+			return this__771__auto__.Lastname
 
 		case "firstname":
-			return this__766__auto__.Firstname
+			return this__771__auto__.Firstname
 
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k665, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k665, else__772__auto__)
 
 		}
 	}
@@ -9700,51 +9700,51 @@ func (this__766__auto__ *CljsCore_testPerson) X_lookup_Arity3(k665 interface{}, 
 
 func (_ *CljsCore_testPerson) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testPerson) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testPerson) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1517 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1517, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1517 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1517, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.Person{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), this__780__auto__.Firstname}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), this__780__auto__.Lastname}, nil})}, nil}), this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.Person{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), this__785__auto__.Firstname}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), this__785__auto__.Lastname}, nil})}, nil}), this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testPerson) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testPerson) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testPerson) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testPerson) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testPerson) X_clone_Arity1() interface{} {
-	return (&CljsCore_testPerson{this__758__auto__.Firstname, this__758__auto__.Lastname, this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testPerson) X_clone_Arity1() interface{} {
+	return (&CljsCore_testPerson{this__763__auto__.Firstname, this__763__auto__.Lastname, this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testPerson) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testPerson) X_count_Arity1() float64 {
-	return (float64(2) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testPerson) X_count_Arity1() float64 {
+	return (float64(2) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testPerson) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testPerson) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testPerson) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -9752,12 +9752,12 @@ func (this__759__auto__ *CljsCore_testPerson) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testPerson) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testPerson) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testPerson) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -9772,20 +9772,20 @@ func (_ *CljsCore_testPerson) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testPerson) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testPerson) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), nil}, nil}, nil}), k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testPerson) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), nil}, nil}, nil}), k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testPerson{this__775__auto__.Firstname, this__775__auto__.Lastname, this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testPerson{this__780__auto__.Firstname, this__780__auto__.Lastname, this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testPerson) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testPerson) X_assoc_Arity3(k__772__auto__ interface{}, G__664 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testPerson) X_assoc_Arity3(k__777__auto__ interface{}, G__664 interface{}) interface{} {
 	{
 		var pred__676 = cljs_core.Keyword_identical_QMARK_
-		var expr__677 = k__772__auto__
+		var expr__677 = k__777__auto__
 		_, _ = pred__676, expr__677
 		if cljs_core.Truth_(func() interface{} {
 			var G__679 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)})
@@ -9793,7 +9793,7 @@ func (this__771__auto__ *CljsCore_testPerson) X_assoc_Arity3(k__772__auto__ inte
 			_, _ = G__679, G__680
 			return pred__676.X_invoke_Arity2(G__679, G__680)
 		}()) {
-			return (&CljsCore_testPerson{G__664, this__771__auto__.Lastname, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+			return (&CljsCore_testPerson{G__664, this__776__auto__.Lastname, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 		} else {
 			if cljs_core.Truth_(func() interface{} {
 				var G__681 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)})
@@ -9801,37 +9801,37 @@ func (this__771__auto__ *CljsCore_testPerson) X_assoc_Arity3(k__772__auto__ inte
 				_, _ = G__681, G__682
 				return pred__676.X_invoke_Arity2(G__681, G__682)
 			}()) {
-				return (&CljsCore_testPerson{this__771__auto__.Firstname, G__664, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+				return (&CljsCore_testPerson{this__776__auto__.Firstname, G__664, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 			} else {
-				return (&CljsCore_testPerson{this__771__auto__.Firstname, this__771__auto__.Lastname, this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__664), nil})
+				return (&CljsCore_testPerson{this__776__auto__.Firstname, this__776__auto__.Lastname, this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__664), nil})
 			}
 		}
 	}
 }
 
-func (this__773__auto__ *CljsCore_testPerson) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testPerson) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testPerson) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testPerson) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), this__778__auto__.Firstname}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), this__778__auto__.Lastname}, nil})}, nil}), this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testPerson) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "firstname", Fqn: "firstname", X_hash: float64(1659984849)}), this__783__auto__.Firstname}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "lastname", Fqn: "lastname", X_hash: float64(-265181465)}), this__783__auto__.Lastname}, nil})}, nil}), this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testPerson) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testPerson) X_with_meta_Arity2(G__664 interface{}) interface{} {
-	return (&CljsCore_testPerson{this__763__auto__.Firstname, this__763__auto__.Lastname, G__664, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testPerson) X_with_meta_Arity2(G__664 interface{}) interface{} {
+	return (&CljsCore_testPerson{this__768__auto__.Firstname, this__768__auto__.Lastname, G__664, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testPerson) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testPerson) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testPerson) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 
@@ -9851,17 +9851,17 @@ type CljsCore_testA struct {
 
 func (_ *CljsCore_testA) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testA) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testA) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testA) X_lookup_Arity3(k684 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testA) X_lookup_Arity3(k684 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__687 = k684
 		_ = G__687
 		switch G__687 {
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k684, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k684, else__772__auto__)
 
 		}
 	}
@@ -9869,51 +9869,51 @@ func (this__766__auto__ *CljsCore_testA) X_lookup_Arity3(k684 interface{}, else_
 
 func (_ *CljsCore_testA) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testA) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testA) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1519 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1519, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1519 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1519, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.A{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2(cljs_core.CljsCorePersistentVector_EMPTY, this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.A{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2(cljs_core.CljsCorePersistentVector_EMPTY, this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testA) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testA) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testA) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testA) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testA) X_clone_Arity1() interface{} {
-	return (&CljsCore_testA{this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testA) X_clone_Arity1() interface{} {
+	return (&CljsCore_testA{this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testA) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testA) X_count_Arity1() float64 {
-	return (float64(0) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testA) X_count_Arity1() float64 {
+	return (float64(0) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testA) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testA) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testA) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -9921,12 +9921,12 @@ func (this__759__auto__ *CljsCore_testA) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testA) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testA) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testA) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -9941,48 +9941,48 @@ func (_ *CljsCore_testA) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testA) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testA) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB(cljs_core.CljsCorePersistentHashSet_EMPTY, k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testA) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB(cljs_core.CljsCorePersistentHashSet_EMPTY, k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testA{this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testA{this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testA) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testA) X_assoc_Arity3(k__772__auto__ interface{}, G__683 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testA) X_assoc_Arity3(k__777__auto__ interface{}, G__683 interface{}) interface{} {
 	{
 		var pred__691 = cljs_core.Keyword_identical_QMARK_
-		var expr__692 = k__772__auto__
+		var expr__692 = k__777__auto__
 		_, _ = pred__691, expr__692
-		return (&CljsCore_testA{this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__683), nil})
+		return (&CljsCore_testA{this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__683), nil})
 	}
 }
 
-func (this__773__auto__ *CljsCore_testA) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testA) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testA) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testA) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2(cljs_core.CljsCorePersistentVector_EMPTY, this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testA) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2(cljs_core.CljsCorePersistentVector_EMPTY, this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testA) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testA) X_with_meta_Arity2(G__683 interface{}) interface{} {
-	return (&CljsCore_testA{G__683, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testA) X_with_meta_Arity2(G__683 interface{}) interface{} {
+	return (&CljsCore_testA{G__683, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testA) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testA) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testA) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 
@@ -10001,11 +10001,11 @@ type CljsCore_testC struct {
 
 func (_ *CljsCore_testC) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testC) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testC) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testC) X_lookup_Arity3(k695 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testC) X_lookup_Arity3(k695 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__698 = func() interface{} {
 			if cljs_core.Value_(k695).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
@@ -10017,16 +10017,16 @@ func (this__766__auto__ *CljsCore_testC) X_lookup_Arity3(k695 interface{}, else_
 		_ = G__698
 		switch G__698 {
 		case "c":
-			return this__766__auto__.C
+			return this__771__auto__.C
 
 		case "b":
-			return this__766__auto__.B
+			return this__771__auto__.B
 
 		case "a":
-			return this__766__auto__.A
+			return this__771__auto__.A
 
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k695, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k695, else__772__auto__)
 
 		}
 	}
@@ -10034,51 +10034,51 @@ func (this__766__auto__ *CljsCore_testC) X_lookup_Arity3(k695 interface{}, else_
 
 func (_ *CljsCore_testC) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testC) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testC) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1521 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1521, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1521 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1521, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.C{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__780__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__780__auto__.B}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), this__780__auto__.C}, nil})}, nil}), this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.C{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__785__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__785__auto__.B}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), this__785__auto__.C}, nil})}, nil}), this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testC) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testC) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testC) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testC) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testC) X_clone_Arity1() interface{} {
-	return (&CljsCore_testC{this__758__auto__.A, this__758__auto__.B, this__758__auto__.C, this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testC) X_clone_Arity1() interface{} {
+	return (&CljsCore_testC{this__763__auto__.A, this__763__auto__.B, this__763__auto__.C, this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testC) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testC) X_count_Arity1() float64 {
-	return (float64(3) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testC) X_count_Arity1() float64 {
+	return (float64(3) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testC) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testC) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testC) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -10086,12 +10086,12 @@ func (this__759__auto__ *CljsCore_testC) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testC) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testC) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testC) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -10106,20 +10106,20 @@ func (_ *CljsCore_testC) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testC) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testC) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(3), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), nil}, nil}, nil}), k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testC) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(3), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), nil}, nil}, nil}), k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testC{this__775__auto__.A, this__775__auto__.B, this__775__auto__.C, this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testC{this__780__auto__.A, this__780__auto__.B, this__780__auto__.C, this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testC) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testC) X_assoc_Arity3(k__772__auto__ interface{}, G__694 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testC) X_assoc_Arity3(k__777__auto__ interface{}, G__694 interface{}) interface{} {
 	{
 		var pred__708 = cljs_core.Keyword_identical_QMARK_
-		var expr__709 = k__772__auto__
+		var expr__709 = k__777__auto__
 		_, _ = pred__708, expr__709
 		if cljs_core.Truth_(func() interface{} {
 			var G__711 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)})
@@ -10127,7 +10127,7 @@ func (this__771__auto__ *CljsCore_testC) X_assoc_Arity3(k__772__auto__ interface
 			_, _ = G__711, G__712
 			return pred__708.X_invoke_Arity2(G__711, G__712)
 		}()) {
-			return (&CljsCore_testC{G__694, this__771__auto__.B, this__771__auto__.C, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+			return (&CljsCore_testC{G__694, this__776__auto__.B, this__776__auto__.C, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 		} else {
 			if cljs_core.Truth_(func() interface{} {
 				var G__713 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)})
@@ -10135,7 +10135,7 @@ func (this__771__auto__ *CljsCore_testC) X_assoc_Arity3(k__772__auto__ interface
 				_, _ = G__713, G__714
 				return pred__708.X_invoke_Arity2(G__713, G__714)
 			}()) {
-				return (&CljsCore_testC{this__771__auto__.A, G__694, this__771__auto__.C, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+				return (&CljsCore_testC{this__776__auto__.A, G__694, this__776__auto__.C, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 			} else {
 				if cljs_core.Truth_(func() interface{} {
 					var G__715 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)})
@@ -10143,38 +10143,38 @@ func (this__771__auto__ *CljsCore_testC) X_assoc_Arity3(k__772__auto__ interface
 					_, _ = G__715, G__716
 					return pred__708.X_invoke_Arity2(G__715, G__716)
 				}()) {
-					return (&CljsCore_testC{this__771__auto__.A, this__771__auto__.B, G__694, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+					return (&CljsCore_testC{this__776__auto__.A, this__776__auto__.B, G__694, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 				} else {
-					return (&CljsCore_testC{this__771__auto__.A, this__771__auto__.B, this__771__auto__.C, this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__694), nil})
+					return (&CljsCore_testC{this__776__auto__.A, this__776__auto__.B, this__776__auto__.C, this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__694), nil})
 				}
 			}
 		}
 	}
 }
 
-func (this__773__auto__ *CljsCore_testC) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testC) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testC) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testC) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__778__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__778__auto__.B}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), this__778__auto__.C}, nil})}, nil}), this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testC) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__783__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__783__auto__.B}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "c", Fqn: "c", X_hash: float64(-1763192079)}), this__783__auto__.C}, nil})}, nil}), this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testC) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testC) X_with_meta_Arity2(G__694 interface{}) interface{} {
-	return (&CljsCore_testC{this__763__auto__.A, this__763__auto__.B, this__763__auto__.C, G__694, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testC) X_with_meta_Arity2(G__694 interface{}) interface{} {
+	return (&CljsCore_testC{this__768__auto__.A, this__768__auto__.B, this__768__auto__.C, G__694, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testC) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testC) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testC) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 
@@ -10195,11 +10195,11 @@ type CljsCore_testA2 struct {
 
 func (_ *CljsCore_testA2) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testA2) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testA2) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testA2) X_lookup_Arity3(k720 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testA2) X_lookup_Arity3(k720 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__723 = func() interface{} {
 			if cljs_core.Value_(k720).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
@@ -10211,10 +10211,10 @@ func (this__766__auto__ *CljsCore_testA2) X_lookup_Arity3(k720 interface{}, else
 		_ = G__723
 		switch G__723 {
 		case "x":
-			return this__766__auto__.X
+			return this__771__auto__.X
 
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k720, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k720, else__772__auto__)
 
 		}
 	}
@@ -10222,51 +10222,51 @@ func (this__766__auto__ *CljsCore_testA2) X_lookup_Arity3(k720 interface{}, else
 
 func (_ *CljsCore_testA2) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testA2) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testA2) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1523 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1523, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1523 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1523, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.A2{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__780__auto__.X}, nil})}, nil}), this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.A2{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__785__auto__.X}, nil})}, nil}), this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testA2) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testA2) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testA2) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testA2) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testA2) X_clone_Arity1() interface{} {
-	return (&CljsCore_testA2{this__758__auto__.X, this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testA2) X_clone_Arity1() interface{} {
+	return (&CljsCore_testA2{this__763__auto__.X, this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testA2) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testA2) X_count_Arity1() float64 {
-	return (float64(1) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testA2) X_count_Arity1() float64 {
+	return (float64(1) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testA2) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testA2) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testA2) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -10274,12 +10274,12 @@ func (this__759__auto__ *CljsCore_testA2) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testA2) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testA2) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testA2) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -10294,20 +10294,20 @@ func (_ *CljsCore_testA2) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testA2) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testA2) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), nil}, nil}, nil}), k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testA2) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), nil}, nil}, nil}), k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testA2{this__775__auto__.X, this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testA2{this__780__auto__.X, this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testA2) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testA2) X_assoc_Arity3(k__772__auto__ interface{}, G__719 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testA2) X_assoc_Arity3(k__777__auto__ interface{}, G__719 interface{}) interface{} {
 	{
 		var pred__729 = cljs_core.Keyword_identical_QMARK_
-		var expr__730 = k__772__auto__
+		var expr__730 = k__777__auto__
 		_, _ = pred__729, expr__730
 		if cljs_core.Truth_(func() interface{} {
 			var G__732 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)})
@@ -10315,36 +10315,36 @@ func (this__771__auto__ *CljsCore_testA2) X_assoc_Arity3(k__772__auto__ interfac
 			_, _ = G__732, G__733
 			return pred__729.X_invoke_Arity2(G__732, G__733)
 		}()) {
-			return (&CljsCore_testA2{G__719, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+			return (&CljsCore_testA2{G__719, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 		} else {
-			return (&CljsCore_testA2{this__771__auto__.X, this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__719), nil})
+			return (&CljsCore_testA2{this__776__auto__.X, this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__719), nil})
 		}
 	}
 }
 
-func (this__773__auto__ *CljsCore_testA2) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testA2) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testA2) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testA2) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__778__auto__.X}, nil})}, nil}), this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testA2) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__783__auto__.X}, nil})}, nil}), this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testA2) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testA2) X_with_meta_Arity2(G__719 interface{}) interface{} {
-	return (&CljsCore_testA2{this__763__auto__.X, G__719, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testA2) X_with_meta_Arity2(G__719 interface{}) interface{} {
+	return (&CljsCore_testA2{this__768__auto__.X, G__719, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testA2) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testA2) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testA2) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 
@@ -10361,11 +10361,11 @@ type CljsCore_testB struct {
 
 func (_ *CljsCore_testB) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testB) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testB) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testB) X_lookup_Arity3(k735 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testB) X_lookup_Arity3(k735 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__738 = func() interface{} {
 			if cljs_core.Value_(k735).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
@@ -10377,10 +10377,10 @@ func (this__766__auto__ *CljsCore_testB) X_lookup_Arity3(k735 interface{}, else_
 		_ = G__738
 		switch G__738 {
 		case "x":
-			return this__766__auto__.X
+			return this__771__auto__.X
 
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k735, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k735, else__772__auto__)
 
 		}
 	}
@@ -10388,51 +10388,51 @@ func (this__766__auto__ *CljsCore_testB) X_lookup_Arity3(k735 interface{}, else_
 
 func (_ *CljsCore_testB) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testB) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testB) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1525 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1525, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1525 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1525, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.B{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__780__auto__.X}, nil})}, nil}), this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.B{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__785__auto__.X}, nil})}, nil}), this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testB) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testB) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testB) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testB) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testB) X_clone_Arity1() interface{} {
-	return (&CljsCore_testB{this__758__auto__.X, this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testB) X_clone_Arity1() interface{} {
+	return (&CljsCore_testB{this__763__auto__.X, this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testB) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testB) X_count_Arity1() float64 {
-	return (float64(1) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testB) X_count_Arity1() float64 {
+	return (float64(1) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testB) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testB) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testB) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -10440,12 +10440,12 @@ func (this__759__auto__ *CljsCore_testB) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testB) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testB) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testB) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -10460,20 +10460,20 @@ func (_ *CljsCore_testB) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testB) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testB) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), nil}, nil}, nil}), k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testB) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), nil}, nil}, nil}), k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testB{this__775__auto__.X, this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testB{this__780__auto__.X, this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testB) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testB) X_assoc_Arity3(k__772__auto__ interface{}, G__734 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testB) X_assoc_Arity3(k__777__auto__ interface{}, G__734 interface{}) interface{} {
 	{
 		var pred__744 = cljs_core.Keyword_identical_QMARK_
-		var expr__745 = k__772__auto__
+		var expr__745 = k__777__auto__
 		_, _ = pred__744, expr__745
 		if cljs_core.Truth_(func() interface{} {
 			var G__747 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)})
@@ -10481,36 +10481,36 @@ func (this__771__auto__ *CljsCore_testB) X_assoc_Arity3(k__772__auto__ interface
 			_, _ = G__747, G__748
 			return pred__744.X_invoke_Arity2(G__747, G__748)
 		}()) {
-			return (&CljsCore_testB{G__734, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+			return (&CljsCore_testB{G__734, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 		} else {
-			return (&CljsCore_testB{this__771__auto__.X, this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__734), nil})
+			return (&CljsCore_testB{this__776__auto__.X, this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__734), nil})
 		}
 	}
 }
 
-func (this__773__auto__ *CljsCore_testB) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testB) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testB) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testB) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__778__auto__.X}, nil})}, nil}), this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testB) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(1), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "x", Fqn: "x", X_hash: float64(2099068185)}), this__783__auto__.X}, nil})}, nil}), this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testB) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testB) X_with_meta_Arity2(G__734 interface{}) interface{} {
-	return (&CljsCore_testB{this__763__auto__.X, G__734, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testB) X_with_meta_Arity2(G__734 interface{}) interface{} {
+	return (&CljsCore_testB{this__768__auto__.X, G__734, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testB) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testB) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testB) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 
@@ -10941,11 +10941,11 @@ type CljsCore_testPrintMe struct {
 
 func (_ *CljsCore_testPrintMe) CljsCoreILookup__() {}
 
-func (this__764__auto__ *CljsCore_testPrintMe) X_lookup_Arity2(k__765__auto__ interface{}) interface{} {
-	return this__764__auto__.X_lookup_Arity3(k__765__auto__, nil)
+func (this__769__auto__ *CljsCore_testPrintMe) X_lookup_Arity2(k__770__auto__ interface{}) interface{} {
+	return this__769__auto__.X_lookup_Arity3(k__770__auto__, nil)
 }
 
-func (this__766__auto__ *CljsCore_testPrintMe) X_lookup_Arity3(k779 interface{}, else__767__auto__ interface{}) interface{} {
+func (this__771__auto__ *CljsCore_testPrintMe) X_lookup_Arity3(k779 interface{}, else__772__auto__ interface{}) interface{} {
 	{
 		var G__782 = func() interface{} {
 			if cljs_core.Value_(k779).Type().AssignableTo(reflect.TypeOf((**cljs_core.CljsCoreKeyword)(nil)).Elem()) {
@@ -10957,13 +10957,13 @@ func (this__766__auto__ *CljsCore_testPrintMe) X_lookup_Arity3(k779 interface{},
 		_ = G__782
 		switch G__782 {
 		case "b":
-			return this__766__auto__.B
+			return this__771__auto__.B
 
 		case "a":
-			return this__766__auto__.A
+			return this__771__auto__.A
 
 		default:
-			return cljs_core.Get.X_invoke_Arity3(this__766__auto__.X__extmap, k779, else__767__auto__)
+			return cljs_core.Get.X_invoke_Arity3(this__771__auto__.X__extmap, k779, else__772__auto__)
 
 		}
 	}
@@ -10971,51 +10971,51 @@ func (this__766__auto__ *CljsCore_testPrintMe) X_lookup_Arity3(k779 interface{},
 
 func (_ *CljsCore_testPrintMe) CljsCoreIPrintWithWriter__() {}
 
-func (this__780__auto__ *CljsCore_testPrintMe) X_pr_writer_Arity3(writer__781__auto__ interface{}, opts__782__auto__ interface{}) interface{} {
+func (this__785__auto__ *CljsCore_testPrintMe) X_pr_writer_Arity3(writer__786__auto__ interface{}, opts__787__auto__ interface{}) interface{} {
 	{
-		var pr_pair__783__auto__ = func(G__1528 *cljs_core.AFn) *cljs_core.AFn {
-			return cljs_core.Fn(G__1528, 3, func(keyval__784__auto__ interface{}, ___785__auto__ interface{}, ___785__auto_____1 interface{}) interface{} {
-				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, cljs_core.Pr_writer, "", " ", "", opts__782__auto__, keyval__784__auto__)
+		var pr_pair__788__auto__ = func(G__1528 *cljs_core.AFn) *cljs_core.AFn {
+			return cljs_core.Fn(G__1528, 3, func(keyval__789__auto__ interface{}, ___790__auto__ interface{}, ___790__auto_____1 interface{}) interface{} {
+				return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, cljs_core.Pr_writer, "", " ", "", opts__787__auto__, keyval__789__auto__)
 			})
 		}(&cljs_core.AFn{})
-		_ = pr_pair__783__auto__
-		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__781__auto__, pr_pair__783__auto__, "#cljs.core-test.PrintMe{", ", ", "}", opts__782__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__780__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__780__auto__.B}, nil})}, nil}), this__780__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+		_ = pr_pair__788__auto__
+		return cljs_core.Pr_sequential_writer.X_invoke_Arity7(writer__786__auto__, pr_pair__788__auto__, "#cljs.core-test.PrintMe{", ", ", "}", opts__787__auto__, cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__785__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__785__auto__.B}, nil})}, nil}), this__785__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 	}
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreIMeta__() {}
 
-func (this__762__auto__ *CljsCore_testPrintMe) X_meta_Arity1() interface{} {
-	return this__762__auto__.X__meta
+func (this__767__auto__ *CljsCore_testPrintMe) X_meta_Arity1() interface{} {
+	return this__767__auto__.X__meta
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreICloneable__() {}
 
-func (this__758__auto__ *CljsCore_testPrintMe) X_clone_Arity1() interface{} {
-	return (&CljsCore_testPrintMe{this__758__auto__.A, this__758__auto__.B, this__758__auto__.X__meta, this__758__auto__.X__extmap, this__758__auto__.X__hash})
+func (this__763__auto__ *CljsCore_testPrintMe) X_clone_Arity1() interface{} {
+	return (&CljsCore_testPrintMe{this__763__auto__.A, this__763__auto__.B, this__763__auto__.X__meta, this__763__auto__.X__extmap, this__763__auto__.X__hash})
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreICounted__() {}
 
-func (this__768__auto__ *CljsCore_testPrintMe) X_count_Arity1() float64 {
-	return (float64(2) + cljs_core.Count.X_invoke_Arity1(this__768__auto__.X__extmap).(float64))
+func (this__773__auto__ *CljsCore_testPrintMe) X_count_Arity1() float64 {
+	return (float64(2) + cljs_core.Count.X_invoke_Arity1(this__773__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreIHash__() {}
 
-func (this__759__auto__ *CljsCore_testPrintMe) X_hash_Arity1() interface{} {
+func (this__764__auto__ *CljsCore_testPrintMe) X_hash_Arity1() interface{} {
 	{
-		var h__583__auto__ = this__759__auto__.X__hash
-		_ = h__583__auto__
-		if !(cljs_core.Nil_(h__583__auto__)) {
-			return h__583__auto__
+		var h__588__auto__ = this__764__auto__.X__hash
+		_ = h__588__auto__
+		if !(cljs_core.Nil_(h__588__auto__)) {
+			return h__588__auto__
 		} else {
 			{
-				var h__583__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__759__auto__).(float64)
-				_ = h__583__auto_____1
-				this__759__auto__.X__hash = h__583__auto_____1
+				var h__588__auto_____1 = cljs_core.Hash_imap.X_invoke_Arity1(this__764__auto__).(float64)
+				_ = h__588__auto_____1
+				this__764__auto__.X__hash = h__588__auto_____1
 
-				return h__583__auto_____1
+				return h__588__auto_____1
 			}
 		}
 	}
@@ -11023,12 +11023,12 @@ func (this__759__auto__ *CljsCore_testPrintMe) X_hash_Arity1() interface{} {
 
 func (_ *CljsCore_testPrintMe) CljsCoreIEquiv__() {}
 
-func (this__760__auto__ *CljsCore_testPrintMe) X_equiv_Arity2(other__761__auto__ interface{}) bool {
+func (this__765__auto__ *CljsCore_testPrintMe) X_equiv_Arity2(other__766__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
-		var and__165__auto__ = other__761__auto__
+		var and__165__auto__ = other__766__auto__
 		_ = and__165__auto__
 		if cljs_core.Truth_(and__165__auto__) {
-			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__760__auto__), cljs_core.Type_.X_invoke_Arity1(other__761__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__760__auto__, other__761__auto__)))
+			return (reflect.DeepEqual(cljs_core.Type_.X_invoke_Arity1(this__765__auto__), cljs_core.Type_.X_invoke_Arity1(other__766__auto__))) && (cljs_core.Truth_(cljs_core.Equiv_map.X_invoke_Arity2(this__765__auto__, other__766__auto__)))
 		} else {
 			return and__165__auto__
 		}
@@ -11043,20 +11043,20 @@ func (_ *CljsCore_testPrintMe) CljsCoreIRecord__() {}
 
 func (_ *CljsCore_testPrintMe) CljsCoreIMap__() {}
 
-func (this__775__auto__ *CljsCore_testPrintMe) X_dissoc_Arity2(k__776__auto__ interface{}) interface{} {
-	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), nil}, nil}, nil}), k__776__auto__) {
-		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__775__auto__), this__775__auto__.X__meta), k__776__auto__)
+func (this__780__auto__ *CljsCore_testPrintMe) X_dissoc_Arity2(k__781__auto__ interface{}) interface{} {
+	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), nil}, nil}, nil}), k__781__auto__) {
+		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__780__auto__), this__780__auto__.X__meta), k__781__auto__)
 	} else {
-		return (&CljsCore_testPrintMe{this__775__auto__.A, this__775__auto__.B, this__775__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__775__auto__.X__extmap, k__776__auto__)), nil})
+		return (&CljsCore_testPrintMe{this__780__auto__.A, this__780__auto__.B, this__780__auto__.X__meta, cljs_core.Not_empty.X_invoke_Arity1(cljs_core.Dissoc.X_invoke_Arity2(this__780__auto__.X__extmap, k__781__auto__)), nil})
 	}
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreIAssociative__() {}
 
-func (this__771__auto__ *CljsCore_testPrintMe) X_assoc_Arity3(k__772__auto__ interface{}, G__778 interface{}) interface{} {
+func (this__776__auto__ *CljsCore_testPrintMe) X_assoc_Arity3(k__777__auto__ interface{}, G__778 interface{}) interface{} {
 	{
 		var pred__790 = cljs_core.Keyword_identical_QMARK_
-		var expr__791 = k__772__auto__
+		var expr__791 = k__777__auto__
 		_, _ = pred__790, expr__791
 		if cljs_core.Truth_(func() interface{} {
 			var G__793 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)})
@@ -11064,7 +11064,7 @@ func (this__771__auto__ *CljsCore_testPrintMe) X_assoc_Arity3(k__772__auto__ int
 			_, _ = G__793, G__794
 			return pred__790.X_invoke_Arity2(G__793, G__794)
 		}()) {
-			return (&CljsCore_testPrintMe{G__778, this__771__auto__.B, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+			return (&CljsCore_testPrintMe{G__778, this__776__auto__.B, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 		} else {
 			if cljs_core.Truth_(func() interface{} {
 				var G__795 = (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)})
@@ -11072,37 +11072,37 @@ func (this__771__auto__ *CljsCore_testPrintMe) X_assoc_Arity3(k__772__auto__ int
 				_, _ = G__795, G__796
 				return pred__790.X_invoke_Arity2(G__795, G__796)
 			}()) {
-				return (&CljsCore_testPrintMe{this__771__auto__.A, G__778, this__771__auto__.X__meta, this__771__auto__.X__extmap, nil})
+				return (&CljsCore_testPrintMe{this__776__auto__.A, G__778, this__776__auto__.X__meta, this__776__auto__.X__extmap, nil})
 			} else {
-				return (&CljsCore_testPrintMe{this__771__auto__.A, this__771__auto__.B, this__771__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__771__auto__.X__extmap, k__772__auto__, G__778), nil})
+				return (&CljsCore_testPrintMe{this__776__auto__.A, this__776__auto__.B, this__776__auto__.X__meta, cljs_core.Assoc.X_invoke_Arity3(this__776__auto__.X__extmap, k__777__auto__, G__778), nil})
 			}
 		}
 	}
 }
 
-func (this__773__auto__ *CljsCore_testPrintMe) X_contains_key_QMARK__Arity2(k__774__auto__ interface{}) bool {
+func (this__778__auto__ *CljsCore_testPrintMe) X_contains_key_QMARK__Arity2(k__779__auto__ interface{}) bool {
 	panic((&js.Error{"Not implemented."}))
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreISeqable__() {}
 
-func (this__778__auto__ *CljsCore_testPrintMe) X_seq_Arity1() interface{} {
-	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__778__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__778__auto__.B}, nil})}, nil}), this__778__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
+func (this__783__auto__ *CljsCore_testPrintMe) X_seq_Arity1() interface{} {
+	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__783__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__783__auto__.B}, nil})}, nil}), this__783__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreIWithMeta__() {}
 
-func (this__763__auto__ *CljsCore_testPrintMe) X_with_meta_Arity2(G__778 interface{}) interface{} {
-	return (&CljsCore_testPrintMe{this__763__auto__.A, this__763__auto__.B, G__778, this__763__auto__.X__extmap, this__763__auto__.X__hash})
+func (this__768__auto__ *CljsCore_testPrintMe) X_with_meta_Arity2(G__778 interface{}) interface{} {
+	return (&CljsCore_testPrintMe{this__768__auto__.A, this__768__auto__.B, G__778, this__768__auto__.X__extmap, this__768__auto__.X__hash})
 }
 
 func (_ *CljsCore_testPrintMe) CljsCoreICollection__() {}
 
-func (this__769__auto__ *CljsCore_testPrintMe) X_conj_Arity2(entry__770__auto__ interface{}) interface{} {
-	if cljs_core.Vector_QMARK_.Arity1IB(entry__770__auto__) {
-		return this__769__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__770__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
+func (this__774__auto__ *CljsCore_testPrintMe) X_conj_Arity2(entry__775__auto__ interface{}) interface{} {
+	if cljs_core.Vector_QMARK_.Arity1IB(entry__775__auto__) {
+		return this__774__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__775__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))
 	} else {
-		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__769__auto__, entry__770__auto__)
+		return cljs_core.Reduce.X_invoke_Arity3(cljs_core.X_conj, this__774__auto__, entry__775__auto__)
 	}
 }
 

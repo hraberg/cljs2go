@@ -415,8 +415,7 @@ func (this *JSArray) String() string {
 }
 
 // Base Type Protocols
-// There are two protocols in clojure.data, EqualityPartition and Diff which extend the base types and default which gets skipped.
-// There are also other extend-type calls at start of core.cljs we aren't dealing with.
+// There are other extend-type calls at start of core.cljs we aren't dealing with.
 
 func (_ JSNil) CljsCoreICounted__() {}
 

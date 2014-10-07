@@ -132,13 +132,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (= [] (s/split \"ab\" #\"ab\"))")}))
 			}
 			{
-				var result_1 = clojure_string.Split_lines.X_invoke_Arity1("one\ntwo\r\nthree")
-				_ = result_1
-				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"one", "two", "three"}, nil}), result_1) {
+				var result_4048 = clojure_string.Split_lines.X_invoke_Arity1("one\ntwo\r\nthree")
+				_ = result_4048
+				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"one", "two", "three"}, nil}), result_4048) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [\"one\" \"two\" \"three\"] result)")}))
 				}
-				if cljs_core.Vector_QMARK_.Arity1IB(result_1) {
+				if cljs_core.Vector_QMARK_.Arity1IB(result_4048) {
 				} else {
 					panic((&js.Error{("Assert failed: (vector? result)")}))
 				}

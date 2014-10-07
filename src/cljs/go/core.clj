@@ -323,6 +323,9 @@
 (defmacro number? [x]
   (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() == reflect.Float64") x)))
 
+(defmacro boolean? [x]
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Value_") "(~{}).Kind() == reflect.Bool") x)))
+
 (defmacro symbol? [x]
   (bool-expr `(instance? Symbol ~x)))
 

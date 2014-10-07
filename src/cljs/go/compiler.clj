@@ -120,7 +120,8 @@
      cljs.core/key->js
      cljs.core/clj->js
      clojure.string/replace
-     clojure.string/replace-first})
+     clojure.string/replace-first
+     clojure.data/diff})
 (def ^:dynamic *go-skip-protocol* '{cljs.core/TransientArrayMap #{cljs.core/ITransientMap}
                                     cljs.core/PersistentTreeSet #{cljs.core/ISorted}})
 
@@ -962,7 +963,7 @@
         tags-match? true ; (= (map :tag params) (map :tag args))
         ifn? (when (symbol? (:tag info))
                ('cljs.core/IFn (some->> (:tag info) (ana/resolve-existing-var (dissoc env :locals)) :protocols)))
-        coerce? (and (or (:field info) (:binding-form? info) (#{:invoke :var} (:op f)))
+        coerce? (and (or (:field info) (:binding-form? info) (#{:invoke :var :let} (:op f)))
                      (not (or fn? (= 'function (:tag info)) ifn?)))
         static-field-receiver? (-> expr :args first :target :info :type)
         ret-tag (:tag expr)

@@ -148,7 +148,7 @@
               (implements? IPrintWithWriter obj)
               (-pr-writer ^not-native obj writer opts)
 
-              (or ^boolean (js* "reflect.ValueOf(~{}).Kind() == reflect.Bool" obj) (number? obj))
+              (or (boolean? obj) (number? obj))
               (-write writer (str obj))
 
               (array? obj)

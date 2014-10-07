@@ -267,7 +267,7 @@ func init() {
 					if DecoratedValue_(obj).Type().Implements(reflect.TypeOf((*CljsCoreIPrintWithWriter)(nil)).Elem()) {
 						return Decorate_(obj).(CljsCoreIPrintWithWriter).X_pr_writer_Arity3(writer, opts)
 					} else {
-						if (reflect.ValueOf(obj).Kind() == reflect.Bool) || (Value_(obj).Kind() == reflect.Float64) {
+						if (Value_(obj).Kind() == reflect.Bool) || (Value_(obj).Kind() == reflect.Float64) {
 							return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2((`` + Str.X_invoke_Arity1(obj).(string)))
 						} else {
 							if Value_(obj).Kind() == reflect.Slice {
