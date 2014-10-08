@@ -349,28 +349,31 @@
                     (recur (dec n) (* f n))))) 20))]
    (emit-test "go_test" "benchmarks_test")))
 
-(defn clojurescript-tests []
-  (doseq [:let [target "."
-                go-project-path (go-path-prefix target)
-                namespaces '[cljs.core-test
-                             cljs.binding-test-other-ns
-                             cljs.binding-test
-                             cljs.macro-test
-                             cljs.letfn-test
-                             cljs.ns-test.bar
-                             cljs.ns-test.foo
-                             cljs.ns-test
-                             clojure.string-test
-                             clojure.data-test
-                             baz
-                             foo.ns-shadow-test
-                             cljs.top-level-test
-                             cljs.keyword-other
-                             cljs.keyword-test]]
-          ns namespaces]
-    (binding [cljs.compiler/*go-import-prefix* (merge cljs.compiler/*go-import-prefix*
-                                                      (zipmap namespaces (repeat go-project-path)))]
-      (compile-file target (io/file (ns-to-resource ns "cljs"))))))
+(defn clojurescript-tests
+  ([] (clojurescript-tests
+       "."
+       '[cljs.core-test
+         cljs.reader-test
+         cljs.binding-test-other-ns
+         cljs.binding-test
+         cljs.macro-test
+         cljs.letfn-test
+         cljs.ns-test.bar
+         cljs.ns-test.foo
+         cljs.ns-test
+         clojure.string-test
+         clojure.data-test
+         baz
+         foo.ns-shadow-test
+         cljs.top-level-test
+         cljs.keyword-other
+         cljs.keyword-test]))
+  ([target namespaces]
+      (doseq [:let [go-project-path (go-path-prefix target)]
+              ns namespaces]
+        (binding [cljs.compiler/*go-import-prefix* (merge cljs.compiler/*go-import-prefix*
+                                                          (zipmap namespaces (repeat go-project-path)))]
+          (compile-file target (io/file (ns-to-resource ns "cljs")))))))
 
 (deftest go-all-tests
   (binding [cljs.analyzer/*cljs-file* (:file (meta #'go-test))

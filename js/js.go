@@ -44,8 +44,19 @@ func (this *Date) time() time.Time {
 	case time.Time:
 		return d
 	case string:
-		if t, ok := time.Parse("2006-01-02T15:04:05.000-07:00", d); ok == nil {
-			this.Millis = t
+		for _, f := range []string{
+			"2006-01-02T15:04:05.000-07:00",
+			"2006-01-02T15:04:05.000",
+			"2006-01-02T15:04:05",
+			"2006-01-02T15:04",
+			"2006-01-02T15",
+			"2006-01-02",
+			"2006-01",
+			"2006"} {
+			if t, ok := time.Parse(f, d); ok == nil {
+				this.Millis = t
+				break
+			}
 		}
 	case float64:
 		this.Millis = time.Unix(int64(d)/1000, 1000*1000*(int64(d)%1000))
@@ -62,6 +73,10 @@ func (this *Date) time() time.Time {
 
 func (this *Date) GetTime() float64 {
 	return float64(this.time().UTC().UnixNano() / (1000 * 1000))
+}
+
+func (this *Date) ValueOf() float64 {
+	return this.GetTime()
 }
 
 func (this *Date) GetUTCFullYear() float64 {
@@ -225,8 +240,13 @@ func (this *JSString) ToLowerCase() string {
 	return strings.ToLower(this.String())
 }
 
-func (this *JSString) IndexOf(x interface{}) float64 {
-	return float64(strings.Index(this.String(), fmt.Sprint(x)))
+func (this *JSString) IndexOf(x_limit ...interface{}) float64 {
+	x := x_limit[0]
+	limit := len(this.String())
+	if len(x_limit) > 1 {
+		limit = int(x_limit[1].(float64))
+	}
+	return float64(strings.Index(this.String()[:limit-1], fmt.Sprint(x)))
 }
 
 func (this *JSString) Substring(indexA_indexB ...float64) string {

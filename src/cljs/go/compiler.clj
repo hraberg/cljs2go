@@ -119,6 +119,17 @@
      cljs.core/js->clj
      cljs.core/key->js
      cljs.core/clj->js
+     cljs.reader/read-2-chars
+     cljs.reader/read-4-chars
+     cljs.reader/read-token
+     cljs.reader/macros
+     cljs.reader/days-in-month
+     cljs.reader/parse-timestamp
+     cljs.reader/read-queue
+     cljs.reader/read-date
+     cljs.reader/read-uuid
+     cljs.reader/read-js
+     cljs.reader/*tag-table*
      clojure.string/replace
      clojure.string/replace-first
      clojure.data/diff})
@@ -229,12 +240,18 @@
 
 (def go-primitive '{number "float64" boolean "bool" array "[]interface{}"})
 
+(defn go-goog? [ns]
+  (when ns
+    (or (= ns 'goog)
+        (when-let [ns-str (str ns)]
+          (= (get (string/split ns-str #"\.") 0 nil) "goog")))))
+
 (defn go-type
   ([tag] (go-type tag true))
   ([tag native-string?]
      (if-let [ns (and (symbol? tag) (namespace tag))]
        (let [ns (symbol ns)
-             goog? (= 'goog ns)
+             goog? (go-goog? ns)
              js? (= 'js ns)
              type? (get-in (ana/get-namespace ns) [:defs (symbol (name tag)) :type])]
          (if (= 'cljs.core/not-native tag) ;; this is a hack, should be dealt with somewhere else, comes from core.clj macros.
@@ -818,7 +835,7 @@
 (defn emit-let
   [{:keys [bindings expr env tag]} is-loop]
   (let [context (:context env)
-        loop-needs-interface? #(and is-loop (not (go-primitive %)))]
+        loop-needs-interface? #(and is-loop (not (or (go-primitive %) ('#{goog.string/StringBuffer} %))))]
     (if (= :expr context)
       (emits "func() " (go-type (when-not (loop-needs-interface? tag)
                                   tag)) " {")
@@ -896,8 +913,7 @@
             " = "
             (comma-sep (for [[e p] (map vector exprs params)
                              :let [tag (go-primitive (:tag p))]]
-                         (str (emit-str e) (go-unbox-no-emit tag e))
-))))
+                         (str (emit-str e) (go-unbox-no-emit tag e))))))
   (emitln "continue"))
 
 (defmethod emit* :letfn
@@ -947,10 +963,7 @@
         go? (and ns (not (ana/get-namespace ns))
                  (some #(get (% (ana/get-namespace ana/*cljs-ns*)) ns) [:requires :uses]))
         js? ('#{js Math} ns)
-        goog? (when ns
-                (or (= ns 'goog)
-                    (when-let [ns-str (str ns)]
-                      (= (get (string/split ns-str #"\.") 0 nil) "goog"))))
+        goog? (go-goog? ns)
         native? (or js? goog? go? object?)
         keyword? (and (= (-> f :op) :constant)
                       (keyword? (-> f :form)))

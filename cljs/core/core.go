@@ -1854,7 +1854,7 @@ func init() {
 
 	Undefined_QMARK_ = func(undefined_QMARK_ *AFn) *AFn {
 		return Fn(undefined_QMARK_, 1, func(x interface{}) bool {
-			return (nil == x)
+			return Nil_(x)
 		})
 	}(&AFn{})
 

@@ -309,7 +309,7 @@
       (vary-meta x assoc :cljs.analyzer/no-resolve true))))
 
 (defmacro undefined? [x]
-  (bool-expr (core/list 'js* "(nil == ~{})" x)))
+  (bool-expr (core/list 'js* (core/str (cljs.compiler/go-core "Nil_") "(~{})") x)))
 
 (defmacro identical? [a b]
   (bool-expr (core/list 'js* "reflect.DeepEqual(~{}, ~{})" a b))) ;; this is wrong, but kind of works

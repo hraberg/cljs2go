@@ -49,6 +49,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 32, date.GetUTCSeconds())
 	assert.Equal(t, 671, date.GetUTCMilliseconds())
 	assert.Equal(t, 1407962432671, date.GetTime())
+	assert.Equal(t, 1407962432671, date.ValueOf())
 	assert.Equal(t, "2014-08-13 21:40:32.671 +0100 BST", date.String())
 
 	date = &Date{"2010-11-12T13:14:15.666-05:00"}
@@ -60,7 +61,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 15, date.GetUTCSeconds())
 	assert.Equal(t, 666, date.GetUTCMilliseconds())
 	assert.Equal(t, 1289585655666, date.GetTime())
-
+	assert.Equal(t, 1289585655666, date.ValueOf())
 	assert.True(t, (&Date{}).time().Before(time.Now()))
 
 	assert.Equal(t, 3.14, ParseFloat("3.14"))
@@ -96,6 +97,7 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, 1.0, JSString_("Hello").IndexOf("e"))
 	assert.Equal(t, -1.0, JSString_("Hello").IndexOf("x"))
+	assert.Equal(t, -1.0, JSString_("Hello").IndexOf("e", 2.0))
 
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))

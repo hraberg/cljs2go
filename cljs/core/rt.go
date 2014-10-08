@@ -702,6 +702,9 @@ func Alength_(x interface{}) float64 {
 }
 
 func Aget_(x interface{}, idx float64) interface{} {
+	if Alength_(x) <= idx {
+		return nil
+	}
 	switch x := x.(type) {
 	case []interface{}:
 		return x[int(idx)]

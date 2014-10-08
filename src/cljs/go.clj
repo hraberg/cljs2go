@@ -177,16 +177,18 @@
                 (go-install dir)))))))))
 
 (defn compile-clojurescript
-  ([] (compile-clojurescript "."))
-  ([target-dir]
+  ([] (compile-clojurescript
+       "."
+       '[cljs.core
+         cljs.reader ;; doesn't work yet, some ns / import issue.
+         ;; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.
+         clojure.set clojure.data clojure.string clojure.walk clojure.zip]))
+  ([target-dir namespaces]
      (env/ensure
       (with-fresh-ids
         (reset! ana/-cljs-macros-loaded false)
         (ana/load-core))
-      (doseq [ns '[cljs.core
-                   ; cljs.reader ;; doesn't work yet, some ns / import issue.
-                   ; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.
-                   clojure.set clojure.data clojure.string clojure.walk clojure.zip]
+      (doseq [ns namespaces
               :let [resource (ns-to-resource ns "cljs")]]
         (time
          (do
@@ -199,16 +201,18 @@
 ;; 2. a working reader, including syntax quoting once we want to support macros.
 ;; 3. compiling macro fns and ability for the analyzer to use them to macroexpand.
 (defn compile-clojurescript-compiler
-  ([] (compile-clojurescript-compiler "."))
-  ([target-dir]
+  ([] (compile-clojurescript-compiler
+       "."
+       '[cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
+         cljs.env ;; will mostly be replaced, drags in js-deps.
+         cljs.util ;; partly overridden in our compiler
+         cljs.tagged-literals ;; drags in clojure.instant, so we'll probably skip these for a bit.
+         cljs.go.compiler ;; same deps as analyzer.
+         cljs.go.core  ;; drags in lots of macros from clojure.core
+         ]))
+  ([target-dir namespaces]
      (env/ensure
-      (doseq [ns '[cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
-                   cljs.env ;; will mostly be replaced, drags in js-deps.
-                   cljs.util ;; partly overridden in our compiler
-                   cljs.tagged-literals ;; drags in clojure.instant, so we'll probably skip these for a bit.
-                   cljs.go.compiler ;; same deps as analyzer.
-                   cljs.go.core  ;; drags in lots of macros from clojure.core
-                   ]
+      (doseq [ns namespaces
               :let [resource (ns-to-resource ns "clj")
                     src (io/file "target/generated"
                                  (str (s/join "/" (cljs.compiler/relative-path-parts resource))
