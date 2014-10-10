@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // cljs.top-level-test
 
 package top_level_test
@@ -13,23 +13,23 @@ import (
 
 func init() {
 	{
-		var foo_4021 = float64(1)
-		_ = foo_4021
-		Bar = func(bar *cljs_core.AFn, foo_4021 float64) *cljs_core.AFn {
+		var foo_1___1 = float64(1)
+		_ = foo_1___1
+		Bar = func(bar *cljs_core.AFn, foo_1___1 float64) *cljs_core.AFn {
 			return cljs_core.Fn(bar, 0, func() interface{} {
-				return foo_4021
+				return foo_1___1
 			})
-		}(&cljs_core.AFn{}, foo_4021)
+		}(&cljs_core.AFn{}, foo_1___1)
 
 	}
 	{
-		var foo_4022 = float64(2)
-		_ = foo_4022
-		Baz = func(baz *cljs_core.AFn, foo_4022 float64) *cljs_core.AFn {
-			return cljs_core.Fn(baz, 0, func() interface{} {
-				return foo_4022
+		var foo_2___1 = float64(2)
+		_ = foo_2___1
+		Baz = func(baz___1 *cljs_core.AFn, foo_2___1 float64) *cljs_core.AFn {
+			return cljs_core.Fn(baz___1, 0, func() interface{} {
+				return foo_2___1
 			})
-		}(&cljs_core.AFn{}, foo_4022)
+		}(&cljs_core.AFn{}, foo_2___1)
 
 	}
 	Test = func(test *cljs_core.AFn) *cljs_core.AFn {

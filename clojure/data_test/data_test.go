@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // clojure.data-test
 
 package data_test

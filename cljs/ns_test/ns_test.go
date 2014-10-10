@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // cljs.ns-test
 
 package ns_test
@@ -24,21 +24,21 @@ func init() {
 				panic((&js.Error{("Assert failed: (= 4 (clojure.core/+ 2 1 1))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(0), func() interface{} {
-				var G__4061 = float64(2)
-				var G__4062 = float64(1)
-				var G__4063 = float64(1)
-				_, _, _ = G__4061, G__4062, G__4063
-				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__4061, G__4062, G__4063)
+				var G__13 = float64(2)
+				var G__14 = float64(1)
+				var G__15 = float64(1)
+				_, _, _ = G__13, G__14, G__15
+				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__13, G__14, G__15)
 			}()) {
 			} else {
 				panic((&js.Error{("Assert failed: (= 0 (cljs.ns-test/+ 2 1 1))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(0), func() interface{} {
-				var G__4064 = float64(2)
-				var G__4065 = float64(1)
-				var G__4066 = float64(1)
-				_, _, _ = G__4064, G__4065, G__4066
-				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__4064, G__4065, G__4066)
+				var G__16 = float64(2)
+				var G__17 = float64(1)
+				var G__18 = float64(1)
+				_, _, _ = G__16, G__17, G__18
+				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__16, G__17, G__18)
 			}()) {
 			} else {
 				panic((&js.Error{("Assert failed: (= 0 (+ 2 1 1))")}))
@@ -52,37 +52,37 @@ func init() {
 				panic((&js.Error{("Assert failed: (= 123 (quux))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange), func() *cljs_core.CljsCoreLazySeq {
-				var iter__4763__auto__ = func(iter__4067 *cljs_core.AFn) *cljs_core.AFn {
-					return cljs_core.Fn(iter__4067, 1, func(s__4068 interface{}) interface{} {
-						return (&cljs_core.CljsCoreLazySeq{nil, func(G__4073 *cljs_core.AFn) *cljs_core.AFn {
-							return cljs_core.Fn(G__4073, 0, func() interface{} {
+				var iter__4763__auto__ = func(iter__19 *cljs_core.AFn) *cljs_core.AFn {
+					return cljs_core.Fn(iter__19, 1, func(s__20 interface{}) interface{} {
+						return (&cljs_core.CljsCoreLazySeq{nil, func(G__25 *cljs_core.AFn) *cljs_core.AFn {
+							return cljs_core.Fn(G__25, 0, func() interface{} {
 								{
-									var s__4068___1 interface{} = s__4068
-									_ = s__4068___1
+									var s__20___1 interface{} = s__20
+									_ = s__20___1
 									for {
 										{
-											var temp__4222__auto__ = cljs_core.Seq.Arity1IQ(s__4068___1)
+											var temp__4222__auto__ = cljs_core.Seq.Arity1IQ(s__20___1)
 											_ = temp__4222__auto__
 											if cljs_core.Truth_(temp__4222__auto__) {
 												{
-													var s__4068___2 = temp__4222__auto__
-													_ = s__4068___2
-													if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__4068___2) {
+													var s__20___2 = temp__4222__auto__
+													_ = s__20___2
+													if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__20___2) {
 														{
-															var c__4761__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__4068___2)
+															var c__4761__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__20___2)
 															var size__4762__auto__ = float64(cljs_core.Int32_(cljs_core.Count.X_invoke_Arity1(c__4761__auto__).(float64)))
-															var b__4070 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__4762__auto__).(*cljs_core.CljsCoreChunkBuffer)
-															_, _, _ = c__4761__auto__, size__4762__auto__, b__4070
+															var b__22 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__4762__auto__).(*cljs_core.CljsCoreChunkBuffer)
+															_, _, _ = c__4761__auto__, size__4762__auto__, b__22
 															if func() bool {
-																var i__4069 = float64(cljs_core.Int32_(float64(0)))
-																_ = i__4069
+																var i__21 = float64(cljs_core.Int32_(float64(0)))
+																_ = i__21
 																for {
-																	if i__4069 < size__4762__auto__ {
+																	if i__21 < size__4762__auto__ {
 																		{
-																			var x = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(c__4761__auto__, "Nth", []interface{}{i__4069})
+																			var x = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(c__4761__auto__, "Nth", []interface{}{i__21})
 																			_ = x
-																			cljs_core.Chunk_append.X_invoke_Arity2(b__4070, x)
-																			i__4069 = (i__4069 + float64(1))
+																			cljs_core.Chunk_append.X_invoke_Arity2(b__22, x)
+																			i__21 = (i__21 + float64(1))
 																			continue
 																		}
 																	} else {
@@ -90,16 +90,16 @@ func init() {
 																	}
 																}
 															}() {
-																return cljs_core.Chunk_cons.X_invoke_Arity2(cljs_core.Chunk.X_invoke_Arity1(b__4070), iter__4067.X_invoke_Arity1(cljs_core.Chunk_rest.X_invoke_Arity1(s__4068___2)).(*cljs_core.CljsCoreLazySeq))
+																return cljs_core.Chunk_cons.X_invoke_Arity2(cljs_core.Chunk.X_invoke_Arity1(b__22), iter__19.X_invoke_Arity1(cljs_core.Chunk_rest.X_invoke_Arity1(s__20___2)).(*cljs_core.CljsCoreLazySeq))
 															} else {
-																return cljs_core.Chunk_cons.X_invoke_Arity2(cljs_core.Chunk.X_invoke_Arity1(b__4070), nil)
+																return cljs_core.Chunk_cons.X_invoke_Arity2(cljs_core.Chunk.X_invoke_Arity1(b__22), nil)
 															}
 														}
 													} else {
 														{
-															var x = cljs_core.First.X_invoke_Arity1(s__4068___2)
+															var x = cljs_core.First.X_invoke_Arity1(s__20___2)
 															_ = x
-															return cljs_core.Cons.X_invoke_Arity2(x, iter__4067.X_invoke_Arity1(cljs_core.Rest.Arity1IQ(s__4068___2)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)
+															return cljs_core.Cons.X_invoke_Arity2(x, iter__19.X_invoke_Arity1(cljs_core.Rest.Arity1IQ(s__20___2)).(*cljs_core.CljsCoreLazySeq)).(*cljs_core.CljsCoreCons)
 														}
 													}
 												}

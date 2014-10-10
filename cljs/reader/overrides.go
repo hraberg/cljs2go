@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // cljs.reader
 
 // Go overrides.
@@ -92,8 +92,8 @@ func init() {
 																	return Read_unmatched_delimiter
 																} else {
 																	if reflect.DeepEqual(c, "\\") {
-																		return func(G__4189 *cljs_core.AFn) *cljs_core.AFn {
-																			return cljs_core.Fn(G__4189, 2, func(rdr interface{}, ___ interface{}) interface{} {
+																		return func(G__169 *cljs_core.AFn) *cljs_core.AFn {
+																			return cljs_core.Fn(G__169, 2, func(rdr interface{}, ___ interface{}) interface{} {
 																				return cljs_core.Decorate_(rdr).(CljsReaderPushbackReader).Read_char_Arity1()
 																			})
 																		}(&cljs_core.AFn{})
@@ -126,8 +126,8 @@ func init() {
 		var dim_norm = (&cljs_core.CljsCorePersistentVector{nil, float64(13), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, float64(31), float64(28), float64(31), float64(30), float64(31), float64(30), float64(31), float64(31), float64(30), float64(31), float64(30), float64(31)}, nil})
 		var dim_leap = (&cljs_core.CljsCorePersistentVector{nil, float64(13), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{nil, float64(31), float64(29), float64(31), float64(30), float64(31), float64(30), float64(31), float64(31), float64(30), float64(31), float64(30), float64(31)}, nil})
 		_, _ = dim_norm, dim_leap
-		return cljs_core.Identity.X_invoke_Arity1(func(G__4190 *cljs_core.AFn, dim_norm cljs_core.CljsCoreIVector, dim_leap cljs_core.CljsCoreIVector) *cljs_core.AFn {
-			return cljs_core.Fn(G__4190, 2, func(month interface{}, leap_year_QMARK_ interface{}) interface{} {
+		return cljs_core.Identity.X_invoke_Arity1(func(G__170 *cljs_core.AFn, dim_norm cljs_core.CljsCoreIVector, dim_leap cljs_core.CljsCoreIVector) *cljs_core.AFn {
+			return cljs_core.Fn(G__170, 2, func(month interface{}, leap_year_QMARK_ interface{}) interface{} {
 				return cljs_core.Get.X_invoke_Arity2(func() cljs_core.CljsCoreIVector {
 					if cljs_core.Truth_(leap_year_QMARK_) {
 						return dim_leap
@@ -146,16 +146,16 @@ func init() {
 				_ = temp__4220__auto__
 				if cljs_core.Truth_(temp__4220__auto__) {
 					{
-						var vec__4192 = temp__4220__auto__
-						var years = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(0), nil)
-						var months = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(1), nil)
-						var days = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(2), nil)
-						var hours = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(3), nil)
-						var minutes = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(4), nil)
-						var seconds = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(5), nil)
-						var ms = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(6), nil)
-						var offset = cljs_core.Nth.X_invoke_Arity3(vec__4192, float64(7), nil)
-						_, _, _, _, _, _, _, _, _ = vec__4192, years, months, days, hours, minutes, seconds, ms, offset
+						var vec__172 = temp__4220__auto__
+						var years = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(0), nil)
+						var months = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(1), nil)
+						var days = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(2), nil)
+						var hours = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(3), nil)
+						var minutes = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(4), nil)
+						var seconds = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(5), nil)
+						var ms = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(6), nil)
+						var offset = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(7), nil)
+						_, _, _, _, _, _, _, _, _ = vec__172, years, months, days, hours, minutes, seconds, ms, offset
 						return (&js.Date{ts})
 					}
 				} else {

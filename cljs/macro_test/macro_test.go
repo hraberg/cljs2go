@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // cljs.macro-test
 
 package macro_test

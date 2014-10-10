@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2356
+// Compiled by ClojureScript to Go 0.0-2371
 // clojure.string-test
 
 package string_test
@@ -119,7 +119,7 @@ func init() {
 			} else {
 				panic((&js.Error{("Assert failed: (= [\"a-b-c\"] (s/split \"a-b-c\" #\"x\" 2))")}))
 			}
-			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(5), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"", "a", "b", "c", ""}, nil}), clojure_string.Split.X_invoke_Arity3("abc", cljs_core.Re_pattern.X_invoke_Arity1("").(*js.RegExp), float64(5))) {
+			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(5), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"", "a", "b", "c", ""}, nil}), clojure_string.Split.X_invoke_Arity3("abc", cljs_core.Re_pattern.X_invoke_Arity1(""), float64(5))) {
 			} else {
 				panic((&js.Error{("Assert failed: (= [\"\" \"a\" \"b\" \"c\" \"\"] (s/split \"abc\" (re-pattern \"\") 5))")}))
 			}
@@ -132,13 +132,13 @@ func init() {
 				panic((&js.Error{("Assert failed: (= [] (s/split \"ab\" #\"ab\"))")}))
 			}
 			{
-				var result_4048 = clojure_string.Split_lines.X_invoke_Arity1("one\ntwo\r\nthree")
-				_ = result_4048
-				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"one", "two", "three"}, nil}), result_4048) {
+				var result_1 = clojure_string.Split_lines.X_invoke_Arity1("one\ntwo\r\nthree")
+				_ = result_1
+				if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentVector{nil, float64(3), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{"one", "two", "three"}, nil}), result_1) {
 				} else {
 					panic((&js.Error{("Assert failed: (= [\"one\" \"two\" \"three\"] result)")}))
 				}
-				if cljs_core.Vector_QMARK_.Arity1IB(result_4048) {
+				if cljs_core.Vector_QMARK_.Arity1IB(result_1) {
 				} else {
 					panic((&js.Error{("Assert failed: (vector? result)")}))
 				}

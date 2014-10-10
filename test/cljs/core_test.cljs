@@ -618,6 +618,8 @@
   (assert (= (distinct [#{} #{}]) [#{}]))
 
   ;;regexps
+  (let [r1 #"foo", r2 (re-pattern r1)]
+    (assert (= r1 r2)))
   ;; (assert (= (str (re-pattern "f(.)o")) (str (js* "/f(.)o/"))))
   (assert (= (re-find (re-pattern "foo") "foo bar foo baz foo zot") "foo"))
   (assert (= (re-find (re-pattern "f(.)o") "foo bar foo baz foo zot") ["foo" "o"]))
@@ -2381,7 +2383,7 @@
              (range 10)))
   (assert (= (sequence (mapcat reverse) [[3 2 1 0] [6 5 4] [9 8 7]])
              (range 10)))
-  (assert (= (seq (iteration (map inc) [1 2 3])) '(2 3 4)))
+  (assert (= (seq (eduction (map inc) [1 2 3])) '(2 3 4)))
   (assert (= (sequence (partition-by #{:split}) [1 2 3 :split 4 5 6])
              '([1 2 3] [:split] [4 5 6])))
   (assert (= (sequence (partition-all 3) '(1 2 3 4 5))

@@ -1249,13 +1249,15 @@
 
 (defn with-core-cljs
   "Ensure that core.cljs has been loaded."
-  [opts body]
-  (do
-    (when-not (get-in @env/*compiler* [::ana/namespaces 'cljs.core :defs])
-      (setup-native-defs (ana/empty-env))
-      (ana/analyze-file "cljs/core.cljs" opts)
-      (ana/analyze-file "cljs/core/overrides.cljs"))
-    (body)))
+  ([] (with-core-cljs nil))
+  ([opts] (with-core-cljs opts (fn [])))
+  ([opts body]
+     (do
+       (when-not (get-in @env/*compiler* [::ana/namespaces 'cljs.core :defs])
+         (setup-native-defs (ana/empty-env))
+         (ana/analyze-file "cljs/core.cljs" opts)
+         (ana/analyze-file "cljs/core/overrides.cljs"))
+       (body))))
 
 (defn url-path [^File f]
   (.getPath (.toURL (.toURI f))))
