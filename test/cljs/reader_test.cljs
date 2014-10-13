@@ -182,6 +182,7 @@
   (assert (nil? (reader/read-string "")))
 
   ;; CLJS-819
+  ;; FAILURE
   ;; (let [re (reader/read-string  "#\"\\s\\u00a1\"")
   ;;       m  (re-find re " \u00a1   ")]
   ;;   (assert (= m " \u00a1")))
