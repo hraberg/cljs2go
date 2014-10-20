@@ -75,6 +75,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 * http://clojure-android.info/blog/2014/08/12/gsoc-2014-skummet-alpha1/
 * https://github.com/arrdem/oxcart
 * https://github.com/mikera/kiss/
+* https://github.com/pixie-lang/pixie
 
 ### Ports of ClojureScript
 
