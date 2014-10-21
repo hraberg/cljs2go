@@ -121,7 +121,11 @@ type RegExp struct {
 }
 
 func (this *RegExp) compile() *regexp.Regexp {
-	pattern, flags := this.Pattern.(string), this.Flags.(string)
+	pattern := this.Pattern.(string)
+	flags := ""
+	if f, ok := this.Flags.(string); ok {
+		flags = f
+	}
 	if len(flags) != 0 {
 		pattern = "(?" + strings.Replace(flags, "g", "", -1) + ")" + pattern
 	}
@@ -132,7 +136,9 @@ func (this *RegExp) Exec(str string) []interface{} {
 	if match := this.compile().FindStringSubmatch(string(str)); match != nil {
 		strs := make([]interface{}, len(match))
 		for i, v := range match {
-			strs[i] = v
+			if v != "" {
+				strs[i] = v
+			}
 		}
 		return strs
 	}
@@ -156,16 +162,20 @@ func IsNaN(x float64) bool {
 	return math.IsNaN(x)
 }
 
-func ParseFloat(str string) float64 {
-	if val, ok := strconv.ParseFloat(str, 64); ok == nil {
-		return val
+func ParseFloat(str interface{}) float64 {
+	if str, ok := str.(string); ok {
+		if val, err := strconv.ParseFloat(str, 64); err == nil {
+			return val
+		}
 	}
 	return math.NaN()
 }
 
-func ParseInt(str string, radix float64) float64 {
-	if val, ok := strconv.ParseInt(str, int(radix), 64); ok == nil {
-		return float64(val)
+func ParseInt(str interface{}, radix float64) float64 {
+	if str, ok := str.(string); ok {
+		if val, err := strconv.ParseInt(str, int(radix), 64); err == nil {
+			return float64(val)
+		}
 	}
 	return math.NaN()
 }

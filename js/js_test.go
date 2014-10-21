@@ -66,10 +66,17 @@ func Test_JS(t *testing.T) {
 
 	assert.Equal(t, 3.14, ParseFloat("3.14"))
 	assert.Equal(t, math.NaN(), ParseFloat(""))
+	assert.Equal(t, 0, ParseInt("0", 10))
+	assert.Equal(t, 42, ParseInt("52", 8))
+	assert.Equal(t, 42, ParseInt("2a", 16))
+	assert.Equal(t, 42, ParseInt("101010", 2))
+	assert.Equal(t, 42, ParseInt("16", 36))
 	assert.Equal(t, 3, ParseInt("3", 10))
 	assert.Equal(t, 10, ParseInt("a", 16))
 	assert.Equal(t, math.NaN(), ParseInt("3.14", 10))
 	assert.Equal(t, math.NaN(), ParseInt("x", 10))
+	assert.Equal(t, math.NaN(), ParseInt(nil, 10))
+	assert.Equal(t, math.NaN(), ParseInt([]interface{}{}, 10))
 
 	assert.Equal(t, "1", JSNumber(1).ToString())
 	assert.Equal(t, "3.14", JSNumber(3.14).ToString())

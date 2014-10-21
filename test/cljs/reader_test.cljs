@@ -36,10 +36,9 @@
   ;; number literals
   ;; (assert (apply = 0 (map reader/read-string "0" "+0" "-0" " 0 ")))
   (assert (apply = 0 (map reader/read-string ["0" "+0" "-0" " 0 "])))
-  ;; FAILURE
-  ;; (assert (apply = 42 (map reader/read-string ["052" "0x2a" "2r101010" "8R52" "16r2a" "36r16"])))
-  ;; (assert (apply = 42 (map reader/read-string ["+052" "+0x2a" "+2r101010" "+8r52" "+16R2a" "+36r16"])))
-  ;; (assert (apply = -42 (map reader/read-string ["-052" "-0X2a" "-2r101010" "-8r52" "-16r2a" "-36R16"])))
+  (assert (apply = 42 (map reader/read-string ["052" "0x2a" "2r101010" "8R52" "16r2a" "36r16"])))
+  (assert (apply = 42 (map reader/read-string ["+052" "+0x2a" "+2r101010" "+8r52" "+16R2a" "+36r16"])))
+  (assert (apply = -42 (map reader/read-string ["-052" "-0X2a" "-2r101010" "-8r52" "-16r2a" "-36R16"])))
 
   ;; queue literals
   (assert (= (.-EMPTY cljs.core/PersistentQueue)
