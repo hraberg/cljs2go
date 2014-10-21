@@ -105,6 +105,7 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 1.0, JSString_("Hello").IndexOf("e"))
 	assert.Equal(t, -1.0, JSString_("Hello").IndexOf("x"))
 	assert.Equal(t, -1.0, JSString_("Hello").IndexOf("e", 2.0))
+	assert.Equal(t, 3.0, JSString_("foo/").IndexOf("/"))
 
 	arr := []interface{}{"Hello", "Earth", "World", "!"}
 	assert.Equal(t, []interface{}{"Earth", "World"}, JSArray_(&arr).Splice(1.0, 2.0, "Hyper", "Space"))

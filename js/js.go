@@ -254,9 +254,9 @@ func (this *JSString) IndexOf(x_limit ...interface{}) float64 {
 	x := x_limit[0]
 	limit := len(this.String())
 	if len(x_limit) > 1 {
-		limit = int(x_limit[1].(float64))
+		limit = int(x_limit[1].(float64)) - 1
 	}
-	return float64(strings.Index(this.String()[:limit-1], fmt.Sprint(x)))
+	return float64(strings.Index(this.String()[:limit], fmt.Sprint(x)))
 }
 
 func (this *JSString) Substring(indexA_indexB ...float64) string {

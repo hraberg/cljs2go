@@ -25,8 +25,7 @@
   (assert (= {:tag 'String} (meta (reader/read-string "^String {:a 1}"))))
   (assert (= [:a 'b #{'c {:d [:e :f :g]}}]
                (reader/read-string "[:a b #{c {:d [:e :f :g]}}]")))
-  ;; FAILURE
-  ;; (assert (= :foo/bar (reader/read-string ":foo/bar")))
+  (assert (= :foo/bar (reader/read-string ":foo/bar")))
   (assert (= nil (reader/read-string "nil")))
   (assert (= true (reader/read-string "true")))
   (assert (= false (reader/read-string "false")))
@@ -181,7 +180,7 @@
   (assert (nil? (reader/read-string "")))
 
   ;; CLJS-819
-  ;; FAILURE
+  ;; FAILURE - error parsing regexp: invalid escape sequence: `\u`
   ;; (let [re (reader/read-string  "#\"\\s\\u00a1\"")
   ;;       m  (re-find re " \u00a1   ")]
   ;;   (assert (= m " \u00a1")))
