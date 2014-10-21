@@ -81,17 +81,17 @@ While the compiler more or less works, and passes most of ClojureScript's test s
 * http://clojure-android.info/blog/2014/08/12/gsoc-2014-skummet-alpha1/
 * https://github.com/arrdem/oxcart
 * https://github.com/mikera/kiss/
-* https://github.com/pixie-lang/pixie
 
 ### Ports of ClojureScript
 
 * https://github.com/schani/clojurec
 * https://github.com/takeoutweight/clojure-scheme
 * https://github.com/raph-amiard/clojurescript-lua
-* https://github.com/kanaka/clojurescript
+* https://github.com/kanaka/clojurescript (in ClojureScript)
 
 ### Lower-level Lisps
 
+* https://github.com/pixie-lang/pixie
 * https://github.com/artagnon/rhine
 * https://github.com/eudoxia0/corvus
 * http://piumarta.com/software/maru/
