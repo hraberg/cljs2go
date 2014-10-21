@@ -32,7 +32,7 @@ While the compiler more or less works, and passes most of ClojureScript's test s
 The Hello World sample can be built like this:
 
 ```clj
-;; Generate the Go source from Clojure
+;; Generate the Go source from a Clojure REPL
 cljs.go> (compile-file "samples" "samples/hello.cljs")
 ```
 
