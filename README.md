@@ -40,10 +40,13 @@ cljs.go> (compile-file "samples" "samples/hello.cljs")
 # go run
 $ cd samples/hello
 $ go run main.go
+Hello World
 
 # go build
 $ go build -o hello main.go
 $ ./hello
+Hello World
+
 ```
 
 ### Road Map
