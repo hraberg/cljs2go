@@ -695,7 +695,7 @@ func Alength_(x interface{}) float64 {
 	case []interface{}:
 		return float64(len(x))
 	case string:
-		return float64(len(x))
+		return float64(len([]rune(x)))
 	default:
 		return float64(Value_(x).Len())
 	}
@@ -709,7 +709,7 @@ func Aget_(x interface{}, idx float64) interface{} {
 	case []interface{}:
 		return x[int(idx)]
 	case string:
-		return string(x[int(idx)])
+		return string([]rune(x)[int(idx)])
 	default:
 		return Value_(x).Index(int(idx)).Interface()
 	}

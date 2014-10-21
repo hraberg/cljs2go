@@ -25,6 +25,9 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, "ABC", String.FromCharCode(65, 66, 67))
 	assert.Nil(t, (&RegExp{"Hello", ""}).Exec("World"))
 	assert.Equal(t, []interface{}{"Hello"}, (&RegExp{"hello", "i"}).Exec("World Hello Hello"))
+	assert.Equal(t, []interface{}{"Wo", "o", nil}, (&RegExp{"W(o)(x)?", ""}).Exec("World"))
+	assert.Equal(t, []interface{}{" \u00a1"}, (&RegExp{"\\s\\u00a1", ""}).Exec(" \u00a1   "))
+
 	assert.Equal(t, "HELLO World", JSString_("Hello World").Replace(&RegExp{"hello", "i"},
 		func(match interface{}) interface{} {
 			return strings.ToUpper(fmt.Sprint(match))

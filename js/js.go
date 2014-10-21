@@ -120,12 +120,28 @@ type RegExp struct {
 	Flags   interface{}
 }
 
-func (this *RegExp) compile() *regexp.Regexp {
-	pattern := this.Pattern.(string)
-	flags := ""
-	if f, ok := this.Flags.(string); ok {
-		flags = f
+var unicodeEscapeRegExp = regexp.MustCompile("\\\\u[[:xdigit:]]+")
+
+func (this *RegExp) pattern() string {
+	if p, ok := this.Pattern.(string); ok {
+		return unicodeEscapeRegExp.ReplaceAllStringFunc(p,
+			func(s string) string {
+				return String.FromCharCode(ParseInt(s[2:], 16))
+			})
 	}
+	return ""
+}
+
+func (this *RegExp) flags() string {
+	if f, ok := this.Flags.(string); ok {
+		return f
+	}
+	return ""
+}
+
+func (this *RegExp) compile() *regexp.Regexp {
+	pattern := this.pattern()
+	flags := this.flags()
 	if len(flags) != 0 {
 		pattern = "(?" + strings.Replace(flags, "g", "", -1) + ")" + pattern
 	}
@@ -133,11 +149,12 @@ func (this *RegExp) compile() *regexp.Regexp {
 }
 
 func (this *RegExp) Exec(str string) []interface{} {
-	if match := this.compile().FindStringSubmatch(string(str)); match != nil {
-		strs := make([]interface{}, len(match))
-		for i, v := range match {
-			if v != "" {
-				strs[i] = v
+	if match := this.compile().FindStringSubmatchIndex(str); match != nil {
+		strs := make([]interface{}, len(match)/2)
+		for i := range strs {
+			idx := i * 2
+			if match[idx] != -1 {
+				strs[i] = str[match[idx]:match[idx+1]]
 			}
 		}
 		return strs
@@ -146,11 +163,11 @@ func (this *RegExp) Exec(str string) []interface{} {
 }
 
 func (this *RegExp) String() string {
-	pattern := this.Pattern.(string)
+	pattern := this.pattern()
 	if pattern == "" {
 		pattern = "(?:)"
 	}
-	return "/" + pattern + "/" + this.Flags.(string)
+	return "/" + pattern + "/" + this.flags()
 }
 
 var Number = struct{ MAX_VALUE float64 }{math.MaxFloat64}

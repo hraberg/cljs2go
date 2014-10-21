@@ -119,38 +119,37 @@
   ;; Unicode Tests
 
   ; sample unicode strings, symbols, keywords
-  ;; FAILURE
-  ;; (doseq [unicode
-  ;;         ["اختبار"     ; arabic
-  ;;          "ทดสอบ"      ; thai
-  ;;              "こんにちは"     ; japanese hiragana
-  ;;          "你好"        ; chinese traditional
-  ;;          "אַ גוט יאָר"  ; yiddish
-  ;;          "cześć"      ; polish
-  ;;          "привет"     ; russian
+  (doseq [unicode
+          ["اختبار"     ; arabic
+           "ทดสอบ"      ; thai
+               "こんにちは"     ; japanese hiragana
+           "你好"        ; chinese traditional
+           "אַ גוט יאָר"  ; yiddish
+           "cześć"      ; polish
+           "привет"     ; russian
 
-  ;;          ;; RTL languages skipped below because tricky to insert
-  ;;          ;;  ' and : at the "start"
+           ;; RTL languages skipped below because tricky to insert
+           ;;  ' and : at the "start"
 
-  ;;          'ทดสอบ
-  ;;              'こんにちは
-  ;;          '你好
-  ;;          'cześć
-  ;;          'привет
+           'ทดสอบ
+               'こんにちは
+           '你好
+           'cześć
+           'привет
 
-  ;;          :ทดสอบ
-  ;;              :こんにちは
-  ;;          :你好
-  ;;          :cześć
-  ;;          :привет
+           :ทดสอบ
+               :こんにちは
+           :你好
+           :cześć
+           :привет
 
-  ;;        ;compound data
-  ;;        {:привет :ru "你好" :cn}
-  ;;        ]]
-  ;;   (let [input (pr-str unicode)
-  ;;         read  (reader/read-string input)]
-  ;;     (assert (= unicode read)
-  ;;             (str "Failed to read-string \"" unicode "\" from: " input))))
+         ;compound data
+         {:привет :ru "你好" :cn}
+         ]]
+    (let [input (pr-str unicode)
+          read  (reader/read-string input)]
+      (assert (= unicode read)
+              (str "Failed to read-string \"" unicode "\" from: " input))))
 
   ;; ; unicode error cases
   (doseq [unicode-error
@@ -180,10 +179,9 @@
   (assert (nil? (reader/read-string "")))
 
   ;; CLJS-819
-  ;; FAILURE - error parsing regexp: invalid escape sequence: `\u`
-  ;; (let [re (reader/read-string  "#\"\\s\\u00a1\"")
-  ;;       m  (re-find re " \u00a1   ")]
-  ;;   (assert (= m " \u00a1")))
+  (let [re (reader/read-string  "#\"\\s\\u00a1\"")
+        m  (re-find re " \u00a1   ")]
+    (assert (= m " \u00a1")))
 
   :ok)
 
