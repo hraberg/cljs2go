@@ -25,9 +25,9 @@ func init() {
 	Set_print_fn_BANG_ = func(set_print_fn_BANG_ *AFn) *AFn {
 		return Fn(set_print_fn_BANG_, 1, func(f interface{}) interface{} {
 			return func() interface{} {
-				var return__7957 = f.(*AFn)
-				X_STAR_print_fn_STAR_ = return__7957
-				return return__7957
+				var return__7959 = f.(*AFn)
+				X_STAR_print_fn_STAR_ = return__7959
+				return return__7959
 			}()
 		})
 	}(&AFn{})
@@ -47,16 +47,16 @@ func init() {
 					}())
 				}, func(x interface{}) interface{} {
 					return Not.Arity1IB(func() interface{} {
-						var G__7967 = x
-						_ = G__7967
-						return f.(CljsCoreIFn).X_invoke_Arity1(G__7967)
+						var G__7969 = x
+						_ = G__7969
+						return f.(CljsCoreIFn).X_invoke_Arity1(G__7969)
 					}())
 				}, func(x interface{}, y interface{}) interface{} {
 					return Not.Arity1IB(func() interface{} {
-						var G__7968 = x
-						var G__7969 = y
-						_, _ = G__7968, G__7969
-						return f.(CljsCoreIFn).X_invoke_Arity2(G__7968, G__7969)
+						var G__7970 = x
+						var G__7971 = y
+						_, _ = G__7970, G__7971
+						return f.(CljsCoreIFn).X_invoke_Arity2(G__7970, G__7971)
 					}())
 				}, func(x_y_zs__ ...interface{}) interface{} {
 					var x = x_y_zs__[0]
@@ -149,10 +149,10 @@ func init() {
 					var comp___1 = Fn__GT_comparator.X_invoke_Arity1(comp).(CljsCoreIFn)
 					_, _ = a, comp___1
 					{
-						var G__7979_7981 = a
-						var G__7980_7982 = func(x, y interface{}) interface{} { return comp___1.X_invoke_Arity2(x, y) }
-						_, _ = G__7979_7981, G__7980_7982
-						Native_invoke_func.X_invoke_Arity2(goog_array.StableSort, []interface{}{G__7979_7981, G__7980_7982})
+						var G__7981_7983 = a
+						var G__7982_7984 = func(x, y interface{}) interface{} { return comp___1.X_invoke_Arity2(x, y) }
+						_, _ = G__7981_7983, G__7982_7984
+						Native_invoke_func.X_invoke_Arity2(goog_array.StableSort, []interface{}{G__7981_7983, G__7982_7984})
 					}
 					return Seq.Arity1IQ(a)
 				}
@@ -274,9 +274,9 @@ func init() {
 								return Pr_sequential_writer.X_invoke_Arity7(writer, pr_writer, "#js [", " ", "]", opts, obj)
 							} else {
 								if Truth_(func() interface{} {
-									var G__7987 = obj
-									_ = G__7987
-									return Native_invoke_func.X_invoke_Arity2(goog.IsString, []interface{}{G__7987})
+									var G__7989 = obj
+									_ = G__7989
+									return Native_invoke_func.X_invoke_Arity2(goog.IsString, []interface{}{G__7989})
 								}()) {
 									if Truth_((&CljsCoreKeyword{Ns: nil, Name: "readably", Fqn: "readably", X_hash: float64(1129599760)}).X_invoke_Arity1(opts)) {
 										return Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(Quote_string.X_invoke_Arity1(obj).(string))
@@ -289,8 +289,8 @@ func init() {
 									} else {
 										if Value_(obj).Type().AssignableTo(reflect.TypeOf((**js.Date)(nil)).Elem()) {
 											{
-												var normalize = func(G__7988 *AFn) *AFn {
-													return Fn(G__7988, 2, func(n interface{}, len interface{}) interface{} {
+												var normalize = func(G__7990 *AFn) *AFn {
+													return Fn(G__7990, 2, func(n interface{}, len interface{}) interface{} {
 														{
 															var ns interface{} = (`` + Str.X_invoke_Arity1(n).(string))
 															_ = ns
@@ -334,11 +334,11 @@ func init() {
 	Pr_sequential_writer = func(pr_sequential_writer *AFn) *AFn {
 		return Fn(pr_sequential_writer, 7, func(writer interface{}, print_one interface{}, begin interface{}, sep interface{}, end interface{}, opts interface{}, coll interface{}) interface{} {
 			{
-				var _STAR_print_level_STAR_7996 = X_STAR_print_level_STAR_
-				_ = _STAR_print_level_STAR_7996
+				var _STAR_print_level_STAR_7998 = X_STAR_print_level_STAR_
+				_ = _STAR_print_level_STAR_7998
 				return func() interface{} {
 					defer func() {
-						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_7996
+						X_STAR_print_level_STAR_ = _STAR_print_level_STAR_7998
 
 					}()
 					{
@@ -356,44 +356,44 @@ func init() {
 							Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(begin)
 							if Truth_(Seq.Arity1IQ(coll)) {
 								{
-									var G__7997_8003 = First.X_invoke_Arity1(coll)
-									var G__7998_8004 = writer
-									var G__7999_8005 = opts
-									_, _, _ = G__7997_8003, G__7998_8004, G__7999_8005
-									print_one.(CljsCoreIFn).X_invoke_Arity3(G__7997_8003, G__7998_8004, G__7999_8005)
+									var G__7999_8005 = First.X_invoke_Arity1(coll)
+									var G__8000_8006 = writer
+									var G__8001_8007 = opts
+									_, _, _ = G__7999_8005, G__8000_8006, G__8001_8007
+									print_one.(CljsCoreIFn).X_invoke_Arity3(G__7999_8005, G__8000_8006, G__8001_8007)
 								}
 							} else {
 							}
 							{
-								var coll_8006___1 interface{} = Next.Arity1IQ(coll)
-								var n_8007 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
-								_, _ = coll_8006___1, n_8007
+								var coll_8008___1 interface{} = Next.Arity1IQ(coll)
+								var n_8009 = ((&CljsCoreKeyword{Ns: nil, Name: "print-length", Fqn: "print-length", X_hash: float64(1931866356)}).X_invoke_Arity1(opts).(float64) - float64(1))
+								_, _ = coll_8008___1, n_8009
 								for {
 									if Truth_(func() interface{} {
-										var and__165__auto__ = coll_8006___1
+										var and__165__auto__ = coll_8008___1
 										_ = and__165__auto__
 										if Truth_(and__165__auto__) {
-											return (Nil_(n_8007)) || (!(n_8007 == float64(0)))
+											return (Nil_(n_8009)) || (!(n_8009 == float64(0)))
 										} else {
 											return and__165__auto__
 										}
 									}()) {
 										Decorate_(writer).(CljsCoreIWriter).X_write_Arity2(sep)
 										{
-											var G__8000_8008 = First.X_invoke_Arity1(coll_8006___1)
-											var G__8001_8009 = writer
-											var G__8002_8010 = opts
-											_, _, _ = G__8000_8008, G__8001_8009, G__8002_8010
-											print_one.(CljsCoreIFn).X_invoke_Arity3(G__8000_8008, G__8001_8009, G__8002_8010)
+											var G__8002_8010 = First.X_invoke_Arity1(coll_8008___1)
+											var G__8003_8011 = writer
+											var G__8004_8012 = opts
+											_, _, _ = G__8002_8010, G__8003_8011, G__8004_8012
+											print_one.(CljsCoreIFn).X_invoke_Arity3(G__8002_8010, G__8003_8011, G__8004_8012)
 										}
-										coll_8006___1, n_8007 = Next.Arity1IQ(coll_8006___1), (n_8007 - float64(1))
+										coll_8008___1, n_8009 = Next.Arity1IQ(coll_8008___1), (n_8009 - float64(1))
 										continue
 									} else {
 										if Truth_(func() interface{} {
-											var and__165__auto__ = Seq.Arity1IQ(coll_8006___1)
+											var and__165__auto__ = Seq.Arity1IQ(coll_8008___1)
 											_ = and__165__auto__
 											if Truth_(and__165__auto__) {
-												return (n_8007 == float64(0))
+												return (n_8009 == float64(0))
 											} else {
 												return and__165__auto__
 											}
@@ -433,9 +433,9 @@ func init() {
 	Integer_QMARK_ = func(integer_QMARK_ *AFn) *AFn {
 		return Fn(integer_QMARK_, 1, func(n interface{}) bool {
 			return (Value_(n).Kind() == reflect.Float64) && (Not.Arity1IB(func() interface{} {
-				var G__8014 = n
-				_ = G__8014
-				return Native_invoke_func.X_invoke_Arity2(js.IsNaN, []interface{}{G__8014})
+				var G__8016 = n
+				_ = G__8016
+				return Native_invoke_func.X_invoke_Arity2(js.IsNaN, []interface{}{G__8016})
 			}())) && (!(reflect.DeepEqual(n, js.Infinity))) && (n.(float64) == float64(int(n.(float64))))
 		})
 	}(&AFn{})
@@ -512,14 +512,14 @@ func init() {
 			X_STAR_print_newline_STAR_ = false
 
 			return func() interface{} {
-				var return__8017 = func(fmt_println *AFn) *AFn {
+				var return__8019 = func(fmt_println *AFn) *AFn {
 					return Fn(fmt_println, 1, func(x interface{}) interface{} {
 						fmt.Println(x)
 						return nil
 					})
 				}(&AFn{})
-				X_STAR_print_fn_STAR_ = return__8017
-				return return__8017
+				X_STAR_print_fn_STAR_ = return__8019
+				return return__8019
 			}()
 		})
 	}(&AFn{})

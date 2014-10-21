@@ -761,7 +761,6 @@ type CljsReader_testR struct {
 }
 
 func (_ *CljsReader_testR) CljsCoreILookup__() {}
-
 func (this__770__auto__ *CljsReader_testR) X_lookup_Arity2(k__771__auto__ interface{}) interface{} {
 	return this__770__auto__.X_lookup_Arity3(k__771__auto__, nil)
 }
@@ -791,7 +790,6 @@ func (this__772__auto__ *CljsReader_testR) X_lookup_Arity3(k162 interface{}, els
 }
 
 func (_ *CljsReader_testR) CljsCoreIPrintWithWriter__() {}
-
 func (this__786__auto__ *CljsReader_testR) X_pr_writer_Arity3(writer__787__auto__ interface{}, opts__788__auto__ interface{}) interface{} {
 	{
 		var pr_pair__789__auto__ = func(G__348 *cljs_core.AFn) *cljs_core.AFn {
@@ -805,25 +803,21 @@ func (this__786__auto__ *CljsReader_testR) X_pr_writer_Arity3(writer__787__auto_
 }
 
 func (_ *CljsReader_testR) CljsCoreIMeta__() {}
-
 func (this__768__auto__ *CljsReader_testR) X_meta_Arity1() interface{} {
 	return this__768__auto__.X__meta
 }
 
 func (_ *CljsReader_testR) CljsCoreICloneable__() {}
-
 func (this__764__auto__ *CljsReader_testR) X_clone_Arity1() interface{} {
 	return (&CljsReader_testR{this__764__auto__.A, this__764__auto__.B, this__764__auto__.X__meta, this__764__auto__.X__extmap, this__764__auto__.X__hash})
 }
 
 func (_ *CljsReader_testR) CljsCoreICounted__() {}
-
 func (this__774__auto__ *CljsReader_testR) X_count_Arity1() float64 {
 	return (float64(2) + cljs_core.Count.X_invoke_Arity1(this__774__auto__.X__extmap).(float64))
 }
 
 func (_ *CljsReader_testR) CljsCoreIHash__() {}
-
 func (this__765__auto__ *CljsReader_testR) X_hash_Arity1() interface{} {
 	{
 		var h__588__auto__ = this__765__auto__.X__hash
@@ -843,7 +837,6 @@ func (this__765__auto__ *CljsReader_testR) X_hash_Arity1() interface{} {
 }
 
 func (_ *CljsReader_testR) CljsCoreIEquiv__() {}
-
 func (this__766__auto__ *CljsReader_testR) X_equiv_Arity2(other__767__auto__ interface{}) bool {
 	if cljs_core.Truth_(func() interface{} {
 		var and__165__auto__ = other__767__auto__
@@ -861,9 +854,7 @@ func (this__766__auto__ *CljsReader_testR) X_equiv_Arity2(other__767__auto__ int
 }
 
 func (_ *CljsReader_testR) CljsCoreIRecord__() {}
-
-func (_ *CljsReader_testR) CljsCoreIMap__() {}
-
+func (_ *CljsReader_testR) CljsCoreIMap__()    {}
 func (this__781__auto__ *CljsReader_testR) X_dissoc_Arity2(k__782__auto__ interface{}) interface{} {
 	if cljs_core.Contains_QMARK_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), nil, (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), nil}, nil}, nil}), k__782__auto__) {
 		return cljs_core.Dissoc.X_invoke_Arity2(cljs_core.With_meta.X_invoke_Arity2(cljs_core.Into.X_invoke_Arity2(cljs_core.CljsCorePersistentArrayMap_EMPTY, this__781__auto__), this__781__auto__.X__meta), k__782__auto__)
@@ -873,7 +864,6 @@ func (this__781__auto__ *CljsReader_testR) X_dissoc_Arity2(k__782__auto__ interf
 }
 
 func (_ *CljsReader_testR) CljsCoreIAssociative__() {}
-
 func (this__777__auto__ *CljsReader_testR) X_assoc_Arity3(k__778__auto__ interface{}, G__161 interface{}) interface{} {
 	{
 		var pred__173 = cljs_core.Keyword_identical_QMARK_
@@ -906,19 +896,16 @@ func (this__779__auto__ *CljsReader_testR) X_contains_key_QMARK__Arity2(k__780__
 }
 
 func (_ *CljsReader_testR) CljsCoreISeqable__() {}
-
 func (this__784__auto__ *CljsReader_testR) X_seq_Arity1() interface{} {
 	return cljs_core.Seq.Arity1IQ(cljs_core.Concat.X_invoke_Arity2((&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)}), this__784__auto__.A}, nil}), (&cljs_core.CljsCorePersistentVector{nil, float64(2), float64(5), cljs_core.CljsCorePersistentVector_EMPTY_NODE, []interface{}{(&cljs_core.CljsCoreKeyword{Ns: nil, Name: "b", Fqn: "b", X_hash: float64(1482224470)}), this__784__auto__.B}, nil})}, nil}), this__784__auto__.X__extmap).(*cljs_core.CljsCoreLazySeq))
 }
 
 func (_ *CljsReader_testR) CljsCoreIWithMeta__() {}
-
 func (this__769__auto__ *CljsReader_testR) X_with_meta_Arity2(G__161 interface{}) interface{} {
 	return (&CljsReader_testR{this__769__auto__.A, this__769__auto__.B, G__161, this__769__auto__.X__extmap, this__769__auto__.X__hash})
 }
 
 func (_ *CljsReader_testR) CljsCoreICollection__() {}
-
 func (this__775__auto__ *CljsReader_testR) X_conj_Arity2(entry__776__auto__ interface{}) interface{} {
 	if cljs_core.Vector_QMARK_.Arity1IB(entry__776__auto__) {
 		return this__775__auto__.X_assoc_Arity3(cljs_core.Decorate_(entry__776__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(0)), cljs_core.Decorate_(entry__776__auto__).(cljs_core.CljsCoreIIndexed).X_nth_Arity2(float64(1)))

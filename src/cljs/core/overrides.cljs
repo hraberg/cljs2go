@@ -320,25 +320,25 @@
 (extend-type TransientArrayMap
   ITransientMap
   (-dissoc! [tcoll key]
-    (if editable?
+    (if (.-editable? tcoll)
       (let [idx (array-map-index-of tcoll key)]
         (when (>= idx 0)
-          (aset arr idx (aget arr (- len 2)))
-          (aset arr (inc idx) (aget arr (dec len)))
-          (.pop arr)
-          (.pop arr)
-          (set! len (- len 2)))
+          (aset (.-arr tcoll) idx (aget (.-arr tcoll) (- (.-len tcoll) 2)))
+          (aset (.-arr tcoll) (inc idx) (aget (.-arr tcoll) (dec (.-len tcoll))))
+          (.pop (.-arr tcoll))
+          (.pop (.-arr tcoll))
+          (set! (.-len tcoll) (- (.-len tcoll) 2)))
         tcoll)
       (throw (js/Error. "dissoc! after persistent!")))))
 
 (extend-type PersistentTreeSet
   ISorted
   (-sorted-seq [coll ascending?]
-    (seq (map key (-sorted-seq tree-map ascending?))))
+    (seq (map key (-sorted-seq (.-tree-map coll) ascending?))))
 
   (-sorted-seq-from [coll k ascending?]
-    (seq (map key (-sorted-seq-from tree-map k ascending?))))
+    (seq (map key (-sorted-seq-from (.-tree-map coll) k ascending?))))
 
   (-entry-key [coll entry] entry)
 
-  (-comparator [coll] (-comparator tree-map)))
+  (-comparator [coll] (-comparator (.-tree-map coll))))

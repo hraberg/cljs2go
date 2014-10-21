@@ -1128,17 +1128,20 @@
     (str (go-public (munge field)) " " (-> field meta :tag go-type))))
 
 (defmethod emit* :deftype*
-  [{:keys [t fields pmasks] :as ast}]
+  [{:keys [t fields pmasks body] :as ast}]
   (if *go-def-vars*
-    (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields)) " }")
+    (do
+      (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields)) " }")
+      (emit body))
     (swap! *go-defs* conj ast)))
 
 (defmethod emit* :defrecord*
-  [{:keys [t fields pmasks] :as ast}]
+  [{:keys [t fields pmasks body] :as ast}]
   (if *go-def-vars*
     (let [fields (map (comp go-public munge) fields)]
       (emitln "type " (-> t go-type-fqn munge) " struct { " (interpose "\n" (typed-fields fields))
-              "\nX__meta interface{}\nX__extmap interface{}\nX__hash interface{} }"))
+              "\nX__meta interface{}\nX__extmap interface{}\nX__hash interface{} }")
+      (emit body))
     (swap! *go-defs* conj ast)))
 
 (defmethod emit* :dot

@@ -616,12 +616,12 @@
       'js/Function "function"})
 
 (defmacro reify [& impls]
-  (let [t      (gensym "t")
+  (let [t        (with-meta (gensym "t") {:anonymous true})
         meta-sym (gensym "meta")
         this-sym (gensym "_")
-        locals (keys (:locals &env))
-        ns     (-> &env :ns :name)
-        munge  cljs.compiler/munge]
+        locals   (keys (:locals &env))
+        ns       (-> &env :ns :name)
+        munge    cljs.compiler/munge]
     `(do
        (deftype ~t [~@locals ~meta-sym]
          ~'IWithMeta
@@ -839,7 +839,6 @@
     (dt->et type specs fields false))
   ([type specs fields inline]
     (let [annots {:cljs.analyzer/type type
-                  :cljs.analyzer/fields fields
                   :protocol-impl true
                   :protocol-inline inline}
           protocols (group-by (comp symbol name) (:protocols (meta type)))]
@@ -863,7 +862,8 @@
 
 (defn- build-positional-factory
   [rsym rname fields]
-  (let [fn-name (with-meta (symbol (core/str '-> rsym)) (meta rsym))]
+  (let [fn-name (with-meta (symbol (core/str '-> rsym))
+                  (assoc (meta rsym) :factory :positional))]
     `(defn ~fn-name
        [~@fields]
        (new ~rname ~@fields))))
@@ -875,16 +875,12 @@
         t (vary-meta t assoc
             :protocols protocols) ]
     (when-not (go-skip-type r)
-      (if (seq impls)
-        `(do
-           (deftype* ~t ~fields nil)
-           (extend-type ~t ~@(dt->et t impls fields true))
-           ~(build-positional-factory t r fields)
-           ~t)
-        `(do
-           (deftype* ~t ~fields nil)
-           ~(build-positional-factory t r fields)
-           ~t)))))
+      `(do
+         (deftype* ~t ~fields nil
+           ~(if (seq impls)
+              `(extend-type ~t ~@(dt->et t impls fields true))))
+         ~(build-positional-factory t r fields)
+         ~t))))
 
 (defn- emit-defrecord
   "Do not use this directly - use defrecord"
@@ -961,11 +957,12 @@
           tagname (vary-meta tagname assoc
                     :protocols protocols)]
       `(do
-         (~'defrecord* ~tagname ~hinted-fields nil)
-         (extend-type ~tagname ~@(dt->et tagname impls fields true))))))
+         (~'defrecord* ~tagname ~hinted-fields nil
+           (extend-type ~tagname ~@(dt->et tagname impls fields true)))))))
 
 (defn- build-map-factory [rsym rname fields]
-  (let [fn-name (symbol (core/str 'map-> rsym))
+  (let [fn-name (with-meta (symbol (core/str 'map-> rsym))
+                  (assoc (meta rsym) :factory :map))
         ms (gensym)
         ks (map keyword fields)
         getters (map (fn [k] `(~k ~ms)) ks)]

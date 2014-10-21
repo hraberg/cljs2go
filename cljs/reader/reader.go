@@ -1269,7 +1269,6 @@ type CljsReaderStringPushbackReader struct {
 }
 
 func (_ *CljsReaderStringPushbackReader) CljsReaderPushbackReader__() {}
-
 func (reader *CljsReaderStringPushbackReader) Read_char_Arity1() interface{} {
 	if cljs_core.Alength_(reader.Buffer) == float64(0) {
 		reader.Idx = (reader.Idx.(float64) + float64(1))

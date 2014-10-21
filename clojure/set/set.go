@@ -135,7 +135,7 @@ func init() {
 		return cljs_core.Fn(project, 2, func(xrel interface{}, ks interface{}) interface{} {
 			return cljs_core.Set.X_invoke_Arity1(cljs_core.Map_.X_invoke_Arity2(func(G__11 *cljs_core.AFn) *cljs_core.AFn {
 				return cljs_core.Fn(G__11, 1, func(p1__10_SHARP_ interface{}) interface{} {
-					return cljs_core.Select_keys.X_invoke_Arity2(p1__10_SHARP_, ks).(cljs_core.CljsCoreIMap)
+					return cljs_core.Select_keys.X_invoke_Arity2(p1__10_SHARP_, ks)
 				})
 			}(&cljs_core.AFn{}), xrel).(*cljs_core.CljsCoreLazySeq))
 		})
@@ -176,7 +176,7 @@ func init() {
 			return cljs_core.Reduce.X_invoke_Arity3(func(G__19 *cljs_core.AFn) *cljs_core.AFn {
 				return cljs_core.Fn(G__19, 2, func(m interface{}, x interface{}) interface{} {
 					{
-						var ik = cljs_core.Select_keys.X_invoke_Arity2(x, ks).(cljs_core.CljsCoreIMap)
+						var ik = cljs_core.Select_keys.X_invoke_Arity2(x, ks)
 						_ = ik
 						return cljs_core.Assoc.X_invoke_Arity3(m, ik, cljs_core.Conj.X_invoke_Arity2(cljs_core.Get.X_invoke_Arity3(m, ik, cljs_core.CljsCorePersistentHashSet_EMPTY), x))
 					}
@@ -229,7 +229,7 @@ func init() {
 						return cljs_core.Fn(G__37, 2, func(ret interface{}, x interface{}) interface{} {
 							{
 								var found = func() interface{} {
-									var G__34 = cljs_core.Select_keys.X_invoke_Arity2(x, ks).(cljs_core.CljsCoreIMap)
+									var G__34 = cljs_core.Select_keys.X_invoke_Arity2(x, ks)
 									_ = G__34
 									return idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__34)
 								}()
@@ -268,7 +268,7 @@ func init() {
 					return cljs_core.Fn(G__39, 2, func(ret interface{}, x interface{}) interface{} {
 						{
 							var found = func() interface{} {
-								var G__36 = Rename_keys.X_invoke_Arity2(cljs_core.Select_keys.X_invoke_Arity2(x, cljs_core.Keys.X_invoke_Arity1(k)).(cljs_core.CljsCoreIMap), k)
+								var G__36 = Rename_keys.X_invoke_Arity2(cljs_core.Select_keys.X_invoke_Arity2(x, cljs_core.Keys.X_invoke_Arity1(k)), k)
 								_ = G__36
 								return idx.(cljs_core.CljsCoreIFn).X_invoke_Arity1(G__36)
 							}()
