@@ -23,6 +23,12 @@ As can be seen on `ISeq` above, types and protocols are ns-prefixed to not clash
 
 When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to build the AST (see Nicola's [AST Quickref](http://clojure.github.io/tools.analyzer/spec/quickref.html)). The analyzer depends on the `cljs.core` macros (`core.clj`), which (like all ClojureScript macros) are written in Clojure. This file is replaced by `cljs.go.core`, and heavily uses the `js*` macro to emit literal Go code. Once the AST has been generated, it's fed into the `cljs.go.compiler`, which emits the Go source code. This is in turn (usually) fed into [`goimports`](http://godoc.org/code.google.com/p/go.tools/cmd/goimports) (a version of `gofmt` that also fixes the imports) and then finally `go build` (or `go install`).
 
+### Usage
+
+*Not ready yet.*
+
+While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace.
+
 ### Road Map
 
 *We're currently in phase 1. `cljs.core-tests` now pass.*
