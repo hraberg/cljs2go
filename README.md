@@ -27,7 +27,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 *Not ready yet.*
 
-While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace.
+While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. You can also run the tests using `go test -v ./...`. Note that you need to check this out into your `GOPATH` for that to work.
 
 ### Road Map
 
