@@ -3,7 +3,7 @@
 *Way to Go!* -- [Siobhan Sharpe](http://londonist.com/2012/07/did-boris-write-twenty-twelve-way-to-go-gag.php)
 
 
-**ClojureScript to Go**. Implemented as an overlay onto ClojureScript, instead of a fork. Go is emitted from `cljs.go.compiler`, which is a patched version of `cljs.compiler`. It also does some AST rewriting to deal with JS corner cases. At run time, a thin JS compatibility is provided to avoid having to touch `cljs.core`, these `js` and `goog` packages aren't intended for end-user usage.
+**ClojureScript to Go**. Implemented as an overlay onto ClojureScript, instead of a fork. Go is emitted from `cljs.go.compiler`, which is a patched version of `cljs.compiler`. At run time, a thin JS compatibility is provided to avoid having to touch `cljs.core`, these `js` and `goog` packages aren't intended for end-user usage.
 
 Once the compiler starts working, the plan is to provide a second monkey patch in spirit of the first, but this time for the Java dependencies, like `java.io.File` and their Clojure counterpart, `clojure.java.io`. This patch is to be able to compile the compiler itself to Go. This won't change the run-time characteristics of the compiled programs, nor will it introduce `eval`, it's simply done to leverage the Go build pipeline. ClojureScript has a reader in `cljs.reader` that potentially can replace `tools.reader`. Macros used via `:require-macros` needs to be compiled to Go first, and an ad-hoc wrapper for the compiler depending on them will be created to compile the actual source (the basic compiler has the `cljs.core` macros built in).
 
