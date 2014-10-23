@@ -30,7 +30,9 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 Ensure you have [Go 1.3+](https://golang.org/dl/) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
 
 ```bash
+# Clone and build the Go packages:
 $ go get github.com/hraberg/cljs2go
+# The repo lives under src by convention:
 $ cd $GOPATH/src/github.com/hraberg/cljs2go
 ```
 
