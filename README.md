@@ -32,11 +32,11 @@ Ensure you have [Go 1.3+](https://golang.org/dl/) installed and `GOPATH` setup p
 ```bash
 # Clone and build the Go packages:
 $ go get github.com/hraberg/cljs2go
-# The repo lives under src by convention:
+# The repo itself lives under src by convention:
 $ cd $GOPATH/src/github.com/hraberg/cljs2go
 ```
 
-While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use (as I first intend to compile it to Go), if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. To run the tests:
+While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, as I first intend to compile it to Go. If you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. To run the tests:
 
 ```bash
 # go test, for Go tests checked into git, both generated and handwritten ones:
