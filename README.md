@@ -59,7 +59,7 @@ Hello World
 
 # go build
 $ go build -o hello main.go
-# Native binary, < 50ms
+# Native binary, < 50ms, 7.5M
 $ ./hello
 Hello World
 
