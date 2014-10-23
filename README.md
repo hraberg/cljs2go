@@ -36,12 +36,12 @@ $ cd $GOPATH/src/github.com/hraberg/cljs2go
 
 While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use (as I first intend to compile it to Go), if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. To run the tests:
 
-```
+```bash
 # go test, for Go tests checked into git, both generated and handwritten ones:
 $ go test -v ./...
 # To re-generate the tests from ClojureScript (this might dirty the repo):
 $ lein test
-# (This also generates and runs some lower level tests under target/generated which aren't checked in.)
+# (This also generates and runs some tests under target/generated which aren't checked in.)
 ```
 
 The Hello World sample can be built like this:
