@@ -87,6 +87,7 @@ Hello World
 
 * http://martintrojer.github.io/clojure/2014/04/05/the-clojure-repl-a-blessing-and-a-curse/
 * https://al3x.net/2014/09/16/thoughts-on-five-years-of-emerging-languages.html
+* http://blog.cognitect.com/blog/2014/10/20/results-of-2014-state-of-clojure-and-clojurescript-survey
 
 #### Lisp's in Go:
 
