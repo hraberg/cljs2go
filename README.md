@@ -52,13 +52,14 @@ cljs.go> (compile-file "samples" "samples/hello.cljs")
 ```
 
 ```bash
-# go run
+# go run, < 1s
 $ cd samples/hello
 $ go run main.go
 Hello World
 
 # go build
 $ go build -o hello main.go
+# Native binary, < 50ms
 $ ./hello
 Hello World
 
