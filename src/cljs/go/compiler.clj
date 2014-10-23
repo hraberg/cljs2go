@@ -52,7 +52,7 @@
 
 (def cljs-reserved-file-names #{"deps.cljs"})
 
-(def go-cljs-import-prefix "github.com/hraberg/cljs.go/")
+(def go-cljs-import-prefix "github.com/hraberg/cljs2go/")
 (def ^:dynamic *go-import-prefix* (zipmap '[goog
                                             goog.string
                                             goog.array
@@ -1269,7 +1269,7 @@
 
 package main
 
-import cljs_core `github.com/hraberg/cljs.go/cljs/core`
+import cljs_core `github.com/hraberg/cljs2go/cljs/core`
 import main_ns `.`
 
 func main() {

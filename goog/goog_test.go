@@ -3,9 +3,9 @@ package goog
 import "testing"
 
 import (
-	goog_array "github.com/hraberg/cljs.go/goog/array"
-	goog_object "github.com/hraberg/cljs.go/goog/object"
-	goog_string "github.com/hraberg/cljs.go/goog/string"
+	goog_array "github.com/hraberg/cljs2go/goog/array"
+	goog_object "github.com/hraberg/cljs2go/goog/object"
+	goog_string "github.com/hraberg/cljs2go/goog/string"
 	"github.com/stretchr/testify/assert"
 )
 

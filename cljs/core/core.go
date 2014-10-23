@@ -8,11 +8,11 @@ import (
 	"math"
 	"reflect"
 
-	"github.com/hraberg/cljs.go/goog"
-	goog_array "github.com/hraberg/cljs.go/goog/array"
-	goog_string "github.com/hraberg/cljs.go/goog/string"
-	"github.com/hraberg/cljs.go/js"
-	"github.com/hraberg/cljs.go/js/Math"
+	"github.com/hraberg/cljs2go/goog"
+	goog_array "github.com/hraberg/cljs2go/goog/array"
+	goog_string "github.com/hraberg/cljs2go/goog/string"
+	"github.com/hraberg/cljs2go/js"
+	"github.com/hraberg/cljs2go/js/Math"
 )
 
 func init() {

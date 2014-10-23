@@ -3,7 +3,7 @@
 
 package bar
 
-import cljs_core "github.com/hraberg/cljs.go/cljs/core"
+import cljs_core "github.com/hraberg/cljs2go/cljs/core"
 
 func init() {
 	Quux = func(quux *cljs_core.AFn) *cljs_core.AFn {

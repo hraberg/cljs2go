@@ -6,9 +6,9 @@
 package data
 
 import (
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 
-	clojure_set "github.com/hraberg/cljs.go/clojure/set"
+	clojure_set "github.com/hraberg/cljs2go/clojure/set"
 )
 
 func init() {

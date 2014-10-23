@@ -3,7 +3,7 @@
 
 package keyword_other
 
-import cljs_core "github.com/hraberg/cljs.go/cljs/core"
+import cljs_core "github.com/hraberg/cljs2go/cljs/core"
 
 func init() {
 	Foo = func(foo___1 *cljs_core.AFn) *cljs_core.AFn {

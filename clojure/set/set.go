@@ -8,7 +8,7 @@ package set
 import (
 	"reflect"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 )
 
 func init() {

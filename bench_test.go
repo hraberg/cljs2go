@@ -4,7 +4,7 @@ import "testing"
 
 import "github.com/stretchr/testify/assert"
 
-import . "github.com/hraberg/cljs.go/cljs/core"
+import . "github.com/hraberg/cljs2go/cljs/core"
 
 func Benchmark_RecursiveDirectCall(t *testing.B) {
 	fib := func(this *AFn) *AFn {

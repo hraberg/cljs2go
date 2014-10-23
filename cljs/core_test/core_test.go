@@ -7,11 +7,11 @@ import (
 	"reflect"
 	"testing"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	clojure_set "github.com/hraberg/cljs.go/clojure/set"
-	goog_string "github.com/hraberg/cljs.go/goog/string"
-	"github.com/hraberg/cljs.go/js"
-	"github.com/hraberg/cljs.go/js/Math"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	clojure_set "github.com/hraberg/cljs2go/clojure/set"
+	goog_string "github.com/hraberg/cljs2go/goog/string"
+	"github.com/hraberg/cljs2go/js"
+	"github.com/hraberg/cljs2go/js/Math"
 	"github.com/stretchr/testify/assert"
 )
 

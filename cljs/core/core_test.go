@@ -7,9 +7,9 @@ import (
 	"testing"
 )
 import (
-	gstring "github.com/hraberg/cljs.go/goog/string"
-	"github.com/hraberg/cljs.go/js"
-	"github.com/hraberg/cljs.go/js/Math"
+	gstring "github.com/hraberg/cljs2go/goog/string"
+	"github.com/hraberg/cljs2go/js"
+	"github.com/hraberg/cljs2go/js/Math"
 	"github.com/stretchr/testify/assert"
 )
 

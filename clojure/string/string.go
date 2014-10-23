@@ -4,9 +4,9 @@
 package string
 
 import (
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	goog_string "github.com/hraberg/cljs.go/goog/string"
-	"github.com/hraberg/cljs.go/js"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	goog_string "github.com/hraberg/cljs2go/goog/string"
+	"github.com/hraberg/cljs2go/js"
 )
 
 func init() {

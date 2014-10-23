@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"github.com/hraberg/cljs.go/js"
+	"github.com/hraberg/cljs2go/js"
 )
 
 func element(x interface{}) reflect.Value {

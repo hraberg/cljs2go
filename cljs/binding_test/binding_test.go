@@ -6,9 +6,9 @@ package binding_test
 import (
 	"testing"
 
-	cljs_binding_test_other_ns "github.com/hraberg/cljs.go/cljs/binding_test_other_ns"
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	"github.com/hraberg/cljs.go/js"
+	cljs_binding_test_other_ns "github.com/hraberg/cljs2go/cljs/binding_test_other_ns"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
 )
 

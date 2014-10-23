@@ -6,9 +6,9 @@ package string_test
 import (
 	"testing"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	clojure_string "github.com/hraberg/cljs.go/clojure/string"
-	"github.com/hraberg/cljs.go/js"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	clojure_string "github.com/hraberg/cljs2go/clojure/string"
+	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
 )
 

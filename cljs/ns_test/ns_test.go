@@ -6,11 +6,11 @@ package ns_test
 import (
 	"testing"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	cljs_ns_test_bar "github.com/hraberg/cljs.go/cljs/ns_test/bar"
-	cljs_ns_test_foo "github.com/hraberg/cljs.go/cljs/ns_test/foo"
-	clojure_set "github.com/hraberg/cljs.go/clojure/set"
-	"github.com/hraberg/cljs.go/js"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	cljs_ns_test_bar "github.com/hraberg/cljs2go/cljs/ns_test/bar"
+	cljs_ns_test_foo "github.com/hraberg/cljs2go/cljs/ns_test/foo"
+	clojure_set "github.com/hraberg/cljs2go/clojure/set"
+	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
 )
 

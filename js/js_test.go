@@ -8,7 +8,7 @@ import (
 	"time"
 )
 import (
-	"github.com/hraberg/cljs.go/js/Math"
+	"github.com/hraberg/cljs2go/js/Math"
 	"github.com/stretchr/testify/assert"
 )
 

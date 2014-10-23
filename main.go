@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-import . "github.com/hraberg/cljs.go/cljs/core"
+import . "github.com/hraberg/cljs2go/cljs/core"
 
 var _main = Fn(func(args ...interface{}) interface{} {
 	Println.X_invoke_ArityVariadic("ClojureScript to Go [go]")

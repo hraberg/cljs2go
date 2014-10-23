@@ -46,7 +46,7 @@
 (defn test-header [package & imports]
   (with-out-str
     (println "package" package)
-    (println "import" "cljs_core" (pr-str "github.com/hraberg/cljs.go/cljs/core"))))
+    (println "import" "cljs_core" (pr-str "github.com/hraberg/cljs2go/cljs/core"))))
 
 (def ^:dynamic *ast-debug* false)
 

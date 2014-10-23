@@ -6,9 +6,9 @@ package data_test
 import (
 	"testing"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	clojure_data "github.com/hraberg/cljs.go/clojure/data"
-	"github.com/hraberg/cljs.go/js"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	clojure_data "github.com/hraberg/cljs2go/clojure/data"
+	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
 )
 

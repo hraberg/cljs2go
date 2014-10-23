@@ -2,7 +2,7 @@
 
 package main
 
-import cljs_core `github.com/hraberg/cljs.go/cljs/core`
+import cljs_core `github.com/hraberg/cljs2go/cljs/core`
 import main_ns `.`
 
 func main() {

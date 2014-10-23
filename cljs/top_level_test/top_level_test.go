@@ -6,8 +6,8 @@ package top_level_test
 import (
 	"testing"
 
-	cljs_core "github.com/hraberg/cljs.go/cljs/core"
-	"github.com/hraberg/cljs.go/js"
+	cljs_core "github.com/hraberg/cljs2go/cljs/core"
+	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,4 +1,4 @@
-(defproject cljs.go "0.1.0-SNAPSHOT"
+(defproject cljs2go "0.1.0-SNAPSHOT"
   :description "ClojureScript to Go"
   :url "http://github.com/hraberg/cljs.go"
   :license {:name "Eclipse Public License"
