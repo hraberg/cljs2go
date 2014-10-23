@@ -27,7 +27,9 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 *Not ready yet.*
 
-While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. You can also run the tests using `go test -v ./...`. Note that you need to check this out into `$GOPATH/src/github.com/hraberg/cljs2go` for that to work. `go get` will eventually be supported.
+Ensure you have [Go 1.3+](https://golang.org/dl/) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo using `go get github.com/hraberg/cljs2go`. It will end up in `$GOPATH/src/github.com/hraberg/cljs2go` locally.
+
+While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, if you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace. You can also run the tests using `go test -v ./...`
 
 The Hello World sample can be built like this:
 
