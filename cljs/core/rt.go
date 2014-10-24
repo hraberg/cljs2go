@@ -738,6 +738,11 @@ func (e *CljsCoreExceptionInfo) Error() string {
 	return fmt.Sprint(e.Message)
 }
 
+// var resolves to their symbols, hack for setMacro.
+// This will register them so cljs.analyzer/get-expander can find them for cljs.analyzer/macroexpand-1.
+func (e *CljsCoreSymbol) SetMacro() {
+}
+
 var X___ *AFn
 
 func init() {

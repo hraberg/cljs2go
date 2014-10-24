@@ -6,10 +6,10 @@
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
--;; Go emitter. Forked from f0dcc75573a42758f8c39b57d1747a2b4967327e.
--;; References to js in the public API are retained.
+;; Go emitter. Forked from f0dcc75573a42758f8c39b57d1747a2b4967327e.
+;; References to js in the public API are retained.
 
-(ns cljs.compiler
+(ns cljs.go.compiler
   (:refer-clojure :exclude [munge macroexpand-1])
   (:require [cljs.util :as util]
             [clojure.java.io :as io]
@@ -65,7 +65,21 @@
                                             clojure.set
                                             clojure.string
                                             clojure.walk
-                                            clojure.zip]
+                                            clojure.zip
+
+                                            ;; The compiler
+                                            cljs.js-deps
+                                            cljs.env
+                                            cljs.analyzer
+                                            cljs.util
+                                            cljs.tagged-literals
+                                            cljs.go.compiler
+                                            cljs.go.core
+                                            clojure.java.io
+                                            clojure.tools.reader
+                                            clojure.tools.reader.reader-types
+                                            java.io
+                                            java.lang]
                                           (repeat go-cljs-import-prefix)))
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)

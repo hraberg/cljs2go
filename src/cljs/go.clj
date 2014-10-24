@@ -1,7 +1,7 @@
 (ns cljs.go
   (:require [cljs.analyzer :as ana]
             [cljs.env :as env]
-            [cljs.go.compiler]
+            [cljs.go.compiler :as cljs.compiler]
             [clojure.string :as s]
             [clojure.pprint :as pp]
             [clojure.repl :as repl]
@@ -203,10 +203,10 @@
 (defn compile-clojurescript-compiler
   ([] (compile-clojurescript-compiler
        "."
-       '[cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
-         cljs.env ;; will mostly be replaced, drags in js-deps.
+       '[cljs.env ;; will mostly be replaced, drags in js-deps.
          cljs.util ;; partly overridden in our compiler
          cljs.tagged-literals ;; drags in clojure.instant, so we'll probably skip these for a bit.
+         cljs.analyzer ;; requires clojure.tools.reader, we need either to extend cljs.reader or compile this.
          cljs.go.compiler ;; same deps as analyzer.
          cljs.go.core  ;; drags in lots of macros from clojure.core
          ]))
@@ -222,7 +222,7 @@
            (println "compiling" (str resource))
            (io/make-parents src)
            (spit src (with-out-str
-                       (binding [*ns* (find-ns ('{cljs.go.core cljs.core cljs.go.compiler cljs.compiler} ns ns))
+                       (binding [*ns* (find-ns ('{cljs.go.core cljs.core} ns ns))
                                  *print-meta* true]
                         (doseq [f (read-string (str "[" (slurp resource) "]"))]
                           (pp/pprint ((fn expander [f]

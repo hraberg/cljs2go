@@ -6,7 +6,7 @@
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
--;; Go emitter macros. Forked from 562e6ccc9265979c586c2afc2f50a388e6c3c03e
+;; Go emitter macros. Forked from 562e6ccc9265979c586c2afc2f50a388e6c3c03e
 
 (ns cljs.core
   (:refer-clojure :exclude [-> ->> .. amap and areduce alength aclone assert binding bound-fn case comment cond condp
@@ -39,7 +39,7 @@
                             if-some when-some])
   (:require clojure.walk
             clojure.set
-            cljs.go.compiler
+            [cljs.go.compiler :as cljs.compiler]
             clojure.string
             [cljs.env :as env]))
 
@@ -72,6 +72,10 @@
 (defmacro declare [& names]
   (core/doseq [n names]
     (swap! env/*compiler* assoc-in [:cljs.analyzer/namespaces ana/*cljs-ns* :defs n :declared-var] true)))
+
+;; var resolves to their symbols, hack for setMacro
+(defmacro var [x]
+  `(do '~(symbol (core/str ana/*cljs-ns*) (core/str x))))
 
 (defmacro defonce [x init]
   `(when-not (exists? ~x)

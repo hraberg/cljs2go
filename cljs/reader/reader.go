@@ -39,14 +39,14 @@ func init() {
 	Whitespace_QMARK_ = func(whitespace_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(whitespace_QMARK_, 1, func(ch interface{}) bool {
 			{
-				var or__177__auto__ = func() interface{} {
+				var or__182__auto__ = func() interface{} {
 					var G__4 = ch
 					_ = G__4
 					return cljs_core.Truth_(cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.IsBreakingWhitespace, []interface{}{G__4}))
 				}()
-				_ = or__177__auto__
-				if cljs_core.Truth_(or__177__auto__) {
-					return or__177__auto__.(bool)
+				_ = or__182__auto__
+				if cljs_core.Truth_(or__182__auto__) {
+					return or__182__auto__.(bool)
 				} else {
 					return reflect.DeepEqual(",", ch)
 				}
@@ -93,32 +93,32 @@ func init() {
 	Macro_terminating_QMARK_ = func(macro_terminating_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(macro_terminating_QMARK_, 1, func(ch interface{}) bool {
 			{
-				var and__165__auto__ = !(reflect.DeepEqual(ch, "#"))
-				_ = and__165__auto__
-				if cljs_core.Truth_(and__165__auto__) {
+				var and__170__auto__ = !(reflect.DeepEqual(ch, "#"))
+				_ = and__170__auto__
+				if cljs_core.Truth_(and__170__auto__) {
 					{
-						var and__165__auto_____1 = !(reflect.DeepEqual(ch, "'"))
-						_ = and__165__auto_____1
-						if cljs_core.Truth_(and__165__auto_____1) {
+						var and__170__auto_____1 = !(reflect.DeepEqual(ch, "'"))
+						_ = and__170__auto_____1
+						if cljs_core.Truth_(and__170__auto_____1) {
 							{
-								var and__165__auto_____2 = !(reflect.DeepEqual(ch, ":"))
-								_ = and__165__auto_____2
-								if cljs_core.Truth_(and__165__auto_____2) {
+								var and__170__auto_____2 = !(reflect.DeepEqual(ch, ":"))
+								_ = and__170__auto_____2
+								if cljs_core.Truth_(and__170__auto_____2) {
 									{
 										var G__14 = ch
 										_ = G__14
 										return cljs_core.Truth_(Macros.X_invoke_Arity1(G__14))
 									}
 								} else {
-									return and__165__auto_____2
+									return and__170__auto_____2
 								}
 							}
 						} else {
-							return and__165__auto_____1
+							return and__170__auto_____1
 						}
 					}
 				} else {
-					return and__165__auto__
+					return and__170__auto__
 				}
 			}
 		})
@@ -569,16 +569,16 @@ func init() {
 				_, _ = buffer, ch
 				for {
 					if cljs_core.Truth_(func() interface{} {
-						var or__177__auto__ = cljs_core.Nil_(ch)
-						_ = or__177__auto__
-						if cljs_core.Truth_(or__177__auto__) {
-							return or__177__auto__
+						var or__182__auto__ = cljs_core.Nil_(ch)
+						_ = or__182__auto__
+						if cljs_core.Truth_(or__182__auto__) {
+							return or__182__auto__
 						} else {
 							{
-								var or__177__auto_____1 = Whitespace_QMARK_.Arity1IB(ch)
-								_ = or__177__auto_____1
-								if cljs_core.Truth_(or__177__auto_____1) {
-									return or__177__auto_____1
+								var or__182__auto_____1 = Whitespace_QMARK_.Arity1IB(ch)
+								_ = or__182__auto_____1
+								if cljs_core.Truth_(or__182__auto_____1) {
+									return or__182__auto_____1
 								} else {
 									{
 										var G__68 = ch
@@ -594,10 +594,10 @@ func init() {
 							var s = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(buffer, "ToString", []interface{}{})
 							_ = s
 							{
-								var or__177__auto__ = Match_number.X_invoke_Arity1(s)
-								_ = or__177__auto__
-								if cljs_core.Truth_(or__177__auto__) {
-									return or__177__auto__
+								var or__182__auto__ = Match_number.X_invoke_Arity1(s)
+								_ = or__182__auto__
+								if cljs_core.Truth_(or__182__auto__) {
+									return or__182__auto__
 								} else {
 									return Reader_error.X_invoke_ArityVariadic(reader, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{"Invalid number format [", s, "]"}))
 								}
@@ -1066,55 +1066,55 @@ func init() {
 					{
 						var years___1 = Parse_int.X_invoke_Arity1(years)
 						var months___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(months)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(months)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(1)
 							}
 						}()
 						var days___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(days)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(days)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(1)
 							}
 						}()
 						var hours___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(hours)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(hours)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var minutes___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(minutes)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(minutes)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var seconds___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(seconds)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(seconds)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var fraction___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(Zero_fill_right_and_truncate.X_invoke_Arity2(fraction, float64(3)))
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(Zero_fill_right_and_truncate.X_invoke_Arity2(fraction, float64(3)))
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
@@ -1127,19 +1127,19 @@ func init() {
 							}
 						}()
 						var offset_hours___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(offset_hours)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(offset_hours)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var offset_minutes___1 = func() interface{} {
-							var or__177__auto__ = Parse_int.X_invoke_Arity1(offset_minutes)
-							_ = or__177__auto__
-							if cljs_core.Truth_(or__177__auto__) {
-								return or__177__auto__
+							var or__182__auto__ = Parse_int.X_invoke_Arity1(offset_minutes)
+							_ = or__182__auto__
+							if cljs_core.Truth_(or__182__auto__) {
+								return or__182__auto__
 							} else {
 								return float64(0)
 							}
