@@ -2,6 +2,7 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.test :refer :all]
             [cljs.go :refer :all]
+            [cljs.go.compiler :as cljs.compiler]
             [cljs.analyzer :as ana]
             [cljs.env :as env]
             [cljs.tagged-literals]
