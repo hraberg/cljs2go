@@ -51,8 +51,8 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 40, date.GetUTCMinutes())
 	assert.Equal(t, 32, date.GetUTCSeconds())
 	assert.Equal(t, 671, date.GetUTCMilliseconds())
-	assert.Equal(t, 1407962432671, date.GetTime())
-	assert.Equal(t, 1407962432671, date.ValueOf())
+	assert.Equal(t, 1407962432671.0, date.GetTime())
+	assert.Equal(t, 1407962432671.0, date.ValueOf())
 	assert.Equal(t, "2014-08-13 21:40:32.671 +0100 BST", date.String())
 
 	date = &Date{"2010-11-12T13:14:15.666-05:00"}
@@ -63,8 +63,8 @@ func Test_JS(t *testing.T) {
 	assert.Equal(t, 14, date.GetUTCMinutes())
 	assert.Equal(t, 15, date.GetUTCSeconds())
 	assert.Equal(t, 666, date.GetUTCMilliseconds())
-	assert.Equal(t, 1289585655666, date.GetTime())
-	assert.Equal(t, 1289585655666, date.ValueOf())
+	assert.Equal(t, 1289585655666.0, date.GetTime())
+	assert.Equal(t, 1289585655666.0, date.ValueOf())
 	assert.True(t, (&Date{}).time().Before(time.Now()))
 
 	assert.Equal(t, 3.14, ParseFloat("3.14"))

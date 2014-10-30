@@ -81,14 +81,14 @@ func Test_Int32BitOperations(t *testing.T) {
 	assert.Equal(t, 8.0, Unsigned_bit_shift_right.X_invoke_Arity2(float64(0x87654321), -4.0))
 
 	assert.Equal(t, 8.0, Unsigned_bit_shift_right.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), -4.0))
-	assert.Equal(t, 141972530, Unsigned_bit_shift_right.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0))
+	assert.Equal(t, 141972530.0, Unsigned_bit_shift_right.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0))
 	assert.Equal(t, 1985229336.0, Int_rotate_left.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0))
 	assert.Equal(t, 1985229336.0, Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
 
 	assert.Equal(t, Int_rotate_left.X_invoke_Arity2(Bit_or.X_invoke_Arity2(float64(0x87654321), 0.0), 4.0),
 		Bit_or.X_invoke_Arity2(float64(0x76543218), 0.0))
 
-	assert.Equal(t, -2023406815.0, Int32_(float64(int(float64(2271560481))|int(float64(0)))))
+	assert.Equal(t, -2023406815, Int32_(float64(int(float64(2271560481))|int(float64(0)))), 0)
 
 	assert.Equal(t, Hash.X_invoke_Arity1((&CljsCoreKeyword{Ns: nil, Name: "a", Fqn: "a", X_hash: float64(-2123407586)})),
 		Hash.X_invoke_Arity1(Keyword.X_invoke_Arity1("a")))
