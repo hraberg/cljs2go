@@ -1,3 +1,4 @@
+//go:generate lein compile-clojurescript
 package main
 
 import (
