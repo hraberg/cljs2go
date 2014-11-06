@@ -422,15 +422,15 @@ func init() {
 							return cljs_core.Persistent_BANG_.X_invoke_Arity1(a)
 						} else {
 							{
-								var temp__4220__auto__ = func() interface{} {
+								var temp__4386__auto__ = func() interface{} {
 									var G__46 = ch
 									_ = G__46
 									return Macros.X_invoke_Arity1(G__46)
 								}()
-								_ = temp__4220__auto__
-								if cljs_core.Truth_(temp__4220__auto__) {
+								_ = temp__4386__auto__
+								if cljs_core.Truth_(temp__4386__auto__) {
 									{
-										var macrofn = temp__4220__auto__
+										var macrofn = temp__4386__auto__
 										_ = macrofn
 										{
 											var mret = func() interface{} {
@@ -505,16 +505,16 @@ func init() {
 					}
 				} else {
 					{
-						var temp__4220__auto__ = func() interface{} {
+						var temp__4386__auto__ = func() interface{} {
 							var G__61 = rdr
 							var G__62 = ch
 							_, _ = G__61, G__62
 							return Maybe_read_tagged_type.X_invoke_Arity2(G__61, G__62)
 						}()
-						_ = temp__4220__auto__
-						if cljs_core.Truth_(temp__4220__auto__) {
+						_ = temp__4386__auto__
+						if cljs_core.Truth_(temp__4386__auto__) {
 							{
-								var obj = temp__4220__auto__
+								var obj = temp__4386__auto__
 								_ = obj
 								return obj
 							}

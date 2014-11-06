@@ -138,11 +138,11 @@ func init() {
 										return cljs_core.Conj.X_invoke_Arity2(parts, s___1)
 									} else {
 										{
-											var temp__4220__auto__ = cljs_core.Re_find.X_invoke_Arity2(re, s___1)
-											_ = temp__4220__auto__
-											if cljs_core.Truth_(temp__4220__auto__) {
+											var temp__4386__auto__ = cljs_core.Re_find.X_invoke_Arity2(re, s___1)
+											_ = temp__4386__auto__
+											if cljs_core.Truth_(temp__4386__auto__) {
 												{
-													var m = temp__4220__auto__
+													var m = temp__4386__auto__
 													_ = m
 													{
 														var index = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s___1, "IndexOf", []interface{}{m})
@@ -253,11 +253,11 @@ func init() {
 								var ch = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "CharAt", []interface{}{index})
 								_ = ch
 								{
-									var temp__4220__auto___28 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
-									_ = temp__4220__auto___28
-									if cljs_core.Truth_(temp__4220__auto___28) {
+									var temp__4386__auto___28 = cljs_core.Get.X_invoke_Arity2(cmap, ch)
+									_ = temp__4386__auto___28
+									if cljs_core.Truth_(temp__4386__auto___28) {
 										{
-											var replacement_29 = temp__4220__auto___28
+											var replacement_29 = temp__4386__auto___28
 											_ = replacement_29
 											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_29).(string)))
 										}

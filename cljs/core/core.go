@@ -9060,7 +9060,7 @@ func init() {
 		return Fn(array_map, 0, func(keyvals__ ...interface{}) interface{} {
 			var keyvals = Seq.Arity1IQ(keyvals__[0])
 			_ = keyvals
-			return (&CljsCorePersistentArrayMap{nil, Quot.X_invoke_Arity2(Count.X_invoke_Arity1(keyvals).(float64), float64(2)).(float64), Apply.X_invoke_Arity2(Array, keyvals), nil})
+			return CljsCorePersistentArrayMap_FromArray.X_invoke_Arity3(Apply.X_invoke_Arity2(Array, keyvals), true, false)
 		})
 	}(&AFn{})
 

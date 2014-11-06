@@ -52,7 +52,7 @@ func init() {
 				panic((&js.Error{("Assert failed: (= 123 (quux))")}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange), func() *cljs_core.CljsCoreLazySeq {
-				var iter__4763__auto__ = func(iter__19 *cljs_core.AFn) *cljs_core.AFn {
+				var iter__4951__auto__ = func(iter__19 *cljs_core.AFn) *cljs_core.AFn {
 					return cljs_core.Fn(iter__19, 1, func(s__20 interface{}) interface{} {
 						return (&cljs_core.CljsCoreLazySeq{nil, func(G__25 *cljs_core.AFn) *cljs_core.AFn {
 							return cljs_core.Fn(G__25, 0, func() interface{} {
@@ -61,25 +61,25 @@ func init() {
 									_ = s__20___1
 									for {
 										{
-											var temp__4222__auto__ = cljs_core.Seq.Arity1IQ(s__20___1)
-											_ = temp__4222__auto__
-											if cljs_core.Truth_(temp__4222__auto__) {
+											var temp__4388__auto__ = cljs_core.Seq.Arity1IQ(s__20___1)
+											_ = temp__4388__auto__
+											if cljs_core.Truth_(temp__4388__auto__) {
 												{
-													var s__20___2 = temp__4222__auto__
+													var s__20___2 = temp__4388__auto__
 													_ = s__20___2
 													if cljs_core.Chunked_seq_QMARK_.Arity1IB(s__20___2) {
 														{
-															var c__4761__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__20___2)
-															var size__4762__auto__ = float64(cljs_core.Int32_(cljs_core.Count.X_invoke_Arity1(c__4761__auto__).(float64)))
-															var b__22 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__4762__auto__).(*cljs_core.CljsCoreChunkBuffer)
-															_, _, _ = c__4761__auto__, size__4762__auto__, b__22
+															var c__4949__auto__ = cljs_core.Chunk_first.X_invoke_Arity1(s__20___2)
+															var size__4950__auto__ = float64(cljs_core.Int32_(cljs_core.Count.X_invoke_Arity1(c__4949__auto__).(float64)))
+															var b__22 = cljs_core.Chunk_buffer.X_invoke_Arity1(size__4950__auto__).(*cljs_core.CljsCoreChunkBuffer)
+															_, _, _ = c__4949__auto__, size__4950__auto__, b__22
 															if func() bool {
 																var i__21 = float64(cljs_core.Int32_(float64(0)))
 																_ = i__21
 																for {
-																	if i__21 < size__4762__auto__ {
+																	if i__21 < size__4950__auto__ {
 																		{
-																			var x = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(c__4761__auto__, "Nth", []interface{}{i__21})
+																			var x = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(c__4949__auto__, "Nth", []interface{}{i__21})
 																			_ = x
 																			cljs_core.Chunk_append.X_invoke_Arity2(b__22, x)
 																			i__21 = (i__21 + float64(1))
@@ -113,8 +113,8 @@ func init() {
 						}(&cljs_core.AFn{}), nil, nil})
 					})
 				}(&cljs_core.AFn{})
-				_ = iter__4763__auto__
-				return iter__4763__auto__.X_invoke_Arity1(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange)).(*cljs_core.CljsCoreLazySeq)
+				_ = iter__4951__auto__
+				return iter__4951__auto__.X_invoke_Arity1(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange)).(*cljs_core.CljsCoreLazySeq)
 			}()) {
 			} else {
 				panic((&js.Error{("Assert failed: (= (range 5) (lang/for [x (range 5)] x))")}))

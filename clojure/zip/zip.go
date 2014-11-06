@@ -500,18 +500,18 @@ func init() {
 	Prev = func(prev *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(prev, 1, func(loc interface{}) interface{} {
 			{
-				var temp__4220__auto__ = Left.X_invoke_Arity1(loc)
-				_ = temp__4220__auto__
-				if cljs_core.Truth_(temp__4220__auto__) {
+				var temp__4386__auto__ = Left.X_invoke_Arity1(loc)
+				_ = temp__4386__auto__
+				if cljs_core.Truth_(temp__4386__auto__) {
 					{
-						var lloc = temp__4220__auto__
+						var lloc = temp__4386__auto__
 						_ = lloc
 						{
 							var loc___1 interface{} = lloc
 							_ = loc___1
 							for {
 								{
-									var temp__4220__auto_____1 = func() interface{} {
+									var temp__4386__auto_____1 = func() interface{} {
 										var and__170__auto__ = Branch_QMARK_.X_invoke_Arity1(loc___1)
 										_ = and__170__auto__
 										if cljs_core.Truth_(and__170__auto__) {
@@ -520,10 +520,10 @@ func init() {
 											return and__170__auto__
 										}
 									}()
-									_ = temp__4220__auto_____1
-									if cljs_core.Truth_(temp__4220__auto_____1) {
+									_ = temp__4386__auto_____1
+									if cljs_core.Truth_(temp__4386__auto_____1) {
 										{
-											var child = temp__4220__auto_____1
+											var child = temp__4386__auto_____1
 											_ = child
 											loc___1 = Rightmost.X_invoke_Arity1(child)
 											continue
@@ -580,7 +580,7 @@ func init() {
 							_ = loc___1
 							for {
 								{
-									var temp__4220__auto__ = func() interface{} {
+									var temp__4386__auto__ = func() interface{} {
 										var and__170__auto__ = Branch_QMARK_.X_invoke_Arity1(loc___1)
 										_ = and__170__auto__
 										if cljs_core.Truth_(and__170__auto__) {
@@ -589,10 +589,10 @@ func init() {
 											return and__170__auto__
 										}
 									}()
-									_ = temp__4220__auto__
-									if cljs_core.Truth_(temp__4220__auto__) {
+									_ = temp__4386__auto__
+									if cljs_core.Truth_(temp__4386__auto__) {
 										{
-											var child = temp__4220__auto__
+											var child = temp__4386__auto__
 											_ = child
 											loc___1 = Rightmost.X_invoke_Arity1(child)
 											continue

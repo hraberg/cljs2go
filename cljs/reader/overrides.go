@@ -142,11 +142,11 @@ func init() {
 	Parse_timestamp = func(parse_timestamp *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(parse_timestamp, 1, func(ts interface{}) interface{} {
 			{
-				var temp__4220__auto__ = Parse_and_validate_timestamp.X_invoke_Arity1(ts).(cljs_core.CljsCoreIVector)
-				_ = temp__4220__auto__
-				if cljs_core.Truth_(temp__4220__auto__) {
+				var temp__4386__auto__ = Parse_and_validate_timestamp.X_invoke_Arity1(ts).(cljs_core.CljsCoreIVector)
+				_ = temp__4386__auto__
+				if cljs_core.Truth_(temp__4386__auto__) {
 					{
-						var vec__172 = temp__4220__auto__
+						var vec__172 = temp__4386__auto__
 						var years = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(0), nil)
 						var months = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(1), nil)
 						var days = cljs_core.Nth.X_invoke_Arity3(vec__172, float64(2), nil)
