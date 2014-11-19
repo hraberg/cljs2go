@@ -3,7 +3,10 @@ package goog
 import "reflect"
 
 func TypeOf(x interface{}) string {
-	return reflect.TypeOf(x).String()
+	if x == nil {
+		return reflect.ValueOf(&x).Elem().Type().String()
+	}
+	return reflect.ValueOf(x).Type().String()
 }
 
 func IsArray(x interface{}) bool {

@@ -34,6 +34,7 @@ type JSBoolean bool
 type JSNumber float64
 
 var Undefined interface{}
+var Symbol interface{}
 
 type Date struct {
 	Millis interface{}

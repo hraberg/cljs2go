@@ -1612,5 +1612,7 @@
 (defmacro js-str [s]
   (core/list 'js* "fmt.Sprint(~{})" s))
 
+(defmacro es6-iterable [ty])
+
 (defmacro clojurescript-version []
   (cljs.compiler/clojurescript-to-go-version))

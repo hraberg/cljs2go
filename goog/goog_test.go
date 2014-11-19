@@ -45,6 +45,7 @@ func Test_Goog(t *testing.T) {
 	assert.False(t, IsObject(s))
 	assert.True(t, IsString(s))
 	assert.Equal(t, "string", TypeOf(s))
+	assert.Equal(t, "interface {}", TypeOf(nil))
 
 	assert.True(t, IsFunction(func() {}))
 
