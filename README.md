@@ -27,7 +27,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 *Not ready yet.*
 
-Ensure you have [Go 1.3.x](https://golang.org/dl/) or [1.4 beta1](http://golang.org/dl/#go1.4beta1) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
+Ensure you have [Go 1.3.x](https://golang.org/dl/) or [1.4rc1](https://golang.org/dl/#go1.4rc1) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
 
 ```bash
 # Clone and build the Go packages:
