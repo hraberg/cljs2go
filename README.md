@@ -27,7 +27,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 *Not ready yet.*
 
-Ensure you have [Go 1.3.x](https://golang.org/dl/) or [1.4rc1](https://golang.org/dl/#go1.4rc1) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
+Ensure you have [Go 1.3.x](https://golang.org/dl/) or [1.4rc2](https://golang.org/dl/#go1.4rc2) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
 
 ```bash
 # Clone and build the Go packages:
@@ -40,6 +40,11 @@ $ go test -v ./...
 # To re-generate the tests from ClojureScript (this might dirty the repo):
 $ lein test
 # (This also generates and runs some tests under target/generated which aren't checked in.)
+
+# To re-generate the Go for ClojureScript itself under 1.4:
+$ go generate
+# Which simply calls:
+$ lein compile-clojurescript
 ```
 
 While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, as I first intend to compile it to Go. If you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace.
