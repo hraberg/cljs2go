@@ -1,4 +1,4 @@
-//go:generate lein compile-clojurescript
+//go:generate lein do compile-clojurescript, compile-clojurescript-tests
 package main
 
 import (

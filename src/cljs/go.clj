@@ -159,22 +159,28 @@
            target (if (.isDirectory (io/file target))
                     (cljs.compiler/to-go-target-file target src)
                     (io/file target))
-           dir (.getParentFile target)]
-       (env/ensure
-        (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
-                  ana/*cljs-static-fns* true
-                  cljs.compiler/*go-def-vars* false
-                  cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom []))]
-          (with-fresh-ids
-            (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]
-              (binding [ana/*cljs-ns* compiled-ns
-                        cljs.compiler/*go-skip-protocol* {}
-                        cljs.compiler/*go-skip-def* #{}]
-                (maybe-add-overrides dir))
-              (goimports-file target)
-              (if (re-find #"-test$" (str compiled-ns))
-                (go-test-compile dir)
-                (go-install dir)))))))))
+           dir (.getParentFile target)
+           compile #(env/ensure
+                     (binding [ana/*passes* [elide-children simplify-env ana/infer-type]
+                               ana/*cljs-static-fns* true
+                               cljs.compiler/*go-def-vars* false
+                               cljs.compiler/*go-defs* (or cljs.compiler/*go-defs* (atom []))]
+                       (with-fresh-ids
+                         (when-let [compiled-ns (:ns (cljs.compiler/compile-file src target))]
+                           (binding [ana/*cljs-ns* compiled-ns
+                                     cljs.compiler/*go-skip-protocol* {}
+                                     cljs.compiler/*go-skip-def* #{}]
+                             (maybe-add-overrides dir))
+                           (goimports-file target)
+                           (if (re-find #"-test$" (str compiled-ns))
+                             (go-test-compile dir)
+                             (go-install dir))))))]
+       (if cljs.compiler/*go-verbose*
+         (time
+          (do
+            (println "compiling" (str src))
+            (compile)))
+         (compile)))))
 
 (defn compile-clojurescript
   ([] (compile-clojurescript
@@ -191,10 +197,7 @@
         (ana/load-core))
       (doseq [ns namespaces
               :let [resource (ns-to-resource ns "cljs")]]
-        (time
-         (do
-           (println "compiling" (str resource))
-           (compile-file target-dir resource)))))))
+        (compile-file target-dir resource)))))
 
 
 ;; Doesn't work yet by far, will require at least three things:

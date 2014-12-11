@@ -4,7 +4,9 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main cljs.go
-  :aliases {"compile-clojurescript" ["run" "-m" "cljs.go/compile-clojurescript"]}
+  :jvm-opts ["-Xms2048m" "-Xmx2048m"]
+  :aliases {"compile-clojurescript" ["run" "-m" "cljs.go/compile-clojurescript"]
+            "compile-clojurescript-tests" ["run" "-m" "cljs.go-test/clojurescript-tests"]}
   :dependencies [[org.clojure/clojure "1.7.0-alpha4"]
                  [org.clojure/clojurescript "0.0-2411"]
                  [org.clojure/tools.analyzer.js "0.1.0-beta5"]

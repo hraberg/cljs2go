@@ -381,6 +381,7 @@
             cljs.compiler/*go-line-numbers* true
             *ast-debug* false
             cljs.compiler/*go-def-vars* true
+            cljs.compiler/*go-verbose* false
             *data-readers* cljs.tagged-literals/*cljs-data-readers*]
     (doseq [gen [constants special-forms benchmarks clojurescript-tests]]
       (with-fresh-ids

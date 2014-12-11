@@ -81,6 +81,7 @@
                                             java.io
                                             java.lang]
                                           (repeat go-cljs-import-prefix)))
+(def ^:dynamic *go-verbose* true)
 (def ^:dynamic *go-return-name* nil)
 (def ^:dynamic *go-return-tag* nil)
 (def ^:dynamic *go-protocol-fn* nil)

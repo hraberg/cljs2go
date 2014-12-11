@@ -9,9 +9,10 @@ import (
 	"testing"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
-	cljs_reader "github.com/hraberg/cljs2go/cljs/reader"
 	"github.com/hraberg/cljs2go/js"
 	"github.com/stretchr/testify/assert"
+
+	cljs_reader "github.com/hraberg/cljs2go/cljs/reader"
 )
 
 func init() {
