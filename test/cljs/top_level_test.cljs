@@ -1,4 +1,5 @@
-(ns cljs.top-level-test)
+(ns cljs.top-level-test
+  (:refer-clojure :exclude [test]))
 
 (let [foo 1]
   (defn bar []

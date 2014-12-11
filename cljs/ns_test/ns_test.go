@@ -1,9 +1,10 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.ns-test
 
 package ns_test
 
 import (
+	"strings"
 	"testing"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
@@ -21,7 +22,7 @@ func init() {
 		return cljs_core.Fn(test_ns, 0, func() interface{} {
 			if cljs_core.X_EQ_.Arity2IIB(float64(4), ((float64(2) + float64(1)) + float64(1))) {
 			} else {
-				panic((&js.Error{("Assert failed: (= 4 (clojure.core/+ 2 1 1))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= 4 (clojure.core/+ 2 1 1))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(0), func() interface{} {
 				var G__13 = float64(2)
@@ -31,7 +32,7 @@ func init() {
 				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__13, G__14, G__15)
 			}()) {
 			} else {
-				panic((&js.Error{("Assert failed: (= 0 (cljs.ns-test/+ 2 1 1))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= 0 (cljs.ns-test/+ 2 1 1))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(0), func() interface{} {
 				var G__16 = float64(2)
@@ -41,15 +42,15 @@ func init() {
 				return X_PLUS_.(cljs_core.CljsCoreIFn).X_invoke_Arity3(G__16, G__17, G__18)
 			}()) {
 			} else {
-				panic((&js.Error{("Assert failed: (= 0 (+ 2 1 1))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= 0 (+ 2 1 1))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(123), cljs_ns_test_foo.Baz.X_invoke_Arity0().(float64)) {
 			} else {
-				panic((&js.Error{("Assert failed: (= 123 (baz))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= 123 (baz))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(float64(123), cljs_ns_test_bar.Quux.X_invoke_Arity0().(float64)) {
 			} else {
-				panic((&js.Error{("Assert failed: (= 123 (quux))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= 123 (quux))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange), func() *cljs_core.CljsCoreLazySeq {
 				var iter__4951__auto__ = func(iter__19 *cljs_core.AFn) *cljs_core.AFn {
@@ -117,11 +118,11 @@ func init() {
 				return iter__4951__auto__.X_invoke_Arity1(cljs_core.Range_.X_invoke_Arity1(float64(5)).(*cljs_core.CljsCoreRange)).(*cljs_core.CljsCoreLazySeq)
 			}()) {
 			} else {
-				panic((&js.Error{("Assert failed: (= (range 5) (lang/for [x (range 5)] x))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= (range 5) (lang/for [x (range 5)] x))").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(3), []interface{}{float64(1), nil, float64(3), nil, float64(2), nil}, nil}, nil}), clojure_set.Union.X_invoke_Arity2((&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(1), []interface{}{float64(1), nil}, nil}, nil}), (&cljs_core.CljsCorePersistentHashSet{nil, &cljs_core.CljsCorePersistentArrayMap{nil, float64(2), []interface{}{float64(3), nil, float64(2), nil}, nil}, nil}))) {
 			} else {
-				panic((&js.Error{("Assert failed: (= #{1 3 2} (s/union #{1} #{3 2}))")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= #{1 3 2} (s/union #{1} #{3 2}))").(string)}, ``)}))
 			}
 			return (&cljs_core.CljsCoreKeyword{Ns: nil, Name: "ok", Fqn: "ok", X_hash: float64(967785236)})
 		})

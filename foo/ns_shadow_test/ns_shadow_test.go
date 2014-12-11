@@ -1,9 +1,10 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // foo.ns-shadow-test
 
 package ns_shadow_test
 
 import (
+	"strings"
 	"testing"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
@@ -48,16 +49,16 @@ func init() {
 		return cljs_core.Fn(test_shadow, 0, func() interface{} {
 			if cljs_core.X_EQ_.Arity2IIB(Quux.X_invoke_Arity1(float64(2)).(float64), float64(3)) {
 			} else {
-				panic((&js.Error{("Assert failed: (= (quux 2) 3)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= (quux 2) 3)").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(Foo.X_invoke_Arity0(), float64(42)) {
 			} else {
-				panic((&js.Error{("Assert failed: (= (foo) 42)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= (foo) 42)").(string)}, ``)}))
 			}
 			if cljs_core.X_EQ_.Arity2IIB(Baz.X_invoke_Arity0().(float64), float64(3)) {
 				return nil
 			} else {
-				panic((&js.Error{("Assert failed: (= (baz) 3)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= (baz) 3)").(string)}, ``)}))
 			}
 		})
 	}(&cljs_core.AFn{})

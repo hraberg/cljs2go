@@ -1,10 +1,11 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.reader
 
 package reader
 
 import (
 	"reflect"
+	"strings"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 	goog_string "github.com/hraberg/cljs2go/goog/string"
@@ -39,14 +40,14 @@ func init() {
 	Whitespace_QMARK_ = func(whitespace_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(whitespace_QMARK_, 1, func(ch interface{}) bool {
 			{
-				var or__182__auto__ = func() interface{} {
+				var or__171__auto__ = func() interface{} {
 					var G__4 = ch
 					_ = G__4
 					return cljs_core.Truth_(cljs_core.Native_invoke_func.X_invoke_Arity2(goog_string.IsBreakingWhitespace, []interface{}{G__4}))
 				}()
-				_ = or__182__auto__
-				if cljs_core.Truth_(or__182__auto__) {
-					return or__182__auto__.(bool)
+				_ = or__171__auto__
+				if cljs_core.Truth_(or__171__auto__) {
+					return or__171__auto__.(bool)
 				} else {
 					return reflect.DeepEqual(",", ch)
 				}
@@ -93,32 +94,32 @@ func init() {
 	Macro_terminating_QMARK_ = func(macro_terminating_QMARK_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(macro_terminating_QMARK_, 1, func(ch interface{}) bool {
 			{
-				var and__170__auto__ = !(reflect.DeepEqual(ch, "#"))
-				_ = and__170__auto__
-				if cljs_core.Truth_(and__170__auto__) {
+				var and__159__auto__ = !(reflect.DeepEqual(ch, "#"))
+				_ = and__159__auto__
+				if cljs_core.Truth_(and__159__auto__) {
 					{
-						var and__170__auto_____1 = !(reflect.DeepEqual(ch, "'"))
-						_ = and__170__auto_____1
-						if cljs_core.Truth_(and__170__auto_____1) {
+						var and__159__auto_____1 = !(reflect.DeepEqual(ch, "'"))
+						_ = and__159__auto_____1
+						if cljs_core.Truth_(and__159__auto_____1) {
 							{
-								var and__170__auto_____2 = !(reflect.DeepEqual(ch, ":"))
-								_ = and__170__auto_____2
-								if cljs_core.Truth_(and__170__auto_____2) {
+								var and__159__auto_____2 = !(reflect.DeepEqual(ch, ":"))
+								_ = and__159__auto_____2
+								if cljs_core.Truth_(and__159__auto_____2) {
 									{
 										var G__14 = ch
 										_ = G__14
 										return cljs_core.Truth_(Macros.X_invoke_Arity1(G__14))
 									}
 								} else {
-									return and__170__auto_____2
+									return and__159__auto_____2
 								}
 							}
 						} else {
-							return and__170__auto_____1
+							return and__159__auto_____1
 						}
 					}
 				} else {
-					return and__170__auto__
+					return and__159__auto__
 				}
 			}
 		})
@@ -569,16 +570,16 @@ func init() {
 				_, _ = buffer, ch
 				for {
 					if cljs_core.Truth_(func() interface{} {
-						var or__182__auto__ = cljs_core.Nil_(ch)
-						_ = or__182__auto__
-						if cljs_core.Truth_(or__182__auto__) {
-							return or__182__auto__
+						var or__171__auto__ = cljs_core.Nil_(ch)
+						_ = or__171__auto__
+						if cljs_core.Truth_(or__171__auto__) {
+							return or__171__auto__
 						} else {
 							{
-								var or__182__auto_____1 = Whitespace_QMARK_.Arity1IB(ch)
-								_ = or__182__auto_____1
-								if cljs_core.Truth_(or__182__auto_____1) {
-									return or__182__auto_____1
+								var or__171__auto_____1 = Whitespace_QMARK_.Arity1IB(ch)
+								_ = or__171__auto_____1
+								if cljs_core.Truth_(or__171__auto_____1) {
+									return or__171__auto_____1
 								} else {
 									{
 										var G__68 = ch
@@ -594,10 +595,10 @@ func init() {
 							var s = cljs_core.Native_invoke_instance_method.X_invoke_Arity3(buffer, "ToString", []interface{}{})
 							_ = s
 							{
-								var or__182__auto__ = Match_number.X_invoke_Arity1(s)
-								_ = or__182__auto__
-								if cljs_core.Truth_(or__182__auto__) {
-									return or__182__auto__
+								var or__171__auto__ = Match_number.X_invoke_Arity1(s)
+								_ = or__171__auto__
+								if cljs_core.Truth_(or__171__auto__) {
+									return or__171__auto__
 								} else {
 									return Reader_error.X_invoke_ArityVariadic(reader, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{"Invalid number format [", s, "]"}))
 								}
@@ -1037,7 +1038,7 @@ func init() {
 		return cljs_core.Fn(check, 4, func(low interface{}, n interface{}, high interface{}, msg interface{}) interface{} {
 			if (low.(float64) <= n.(float64)) && (n.(float64) <= high.(float64)) {
 			} else {
-				Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{(`` + cljs_core.Str.X_invoke_Arity1(msg).(string) + " Failed:  " + cljs_core.Str.X_invoke_Arity1(low).(string) + "<=" + cljs_core.Str.X_invoke_Arity1(n).(string) + "<=" + cljs_core.Str.X_invoke_Arity1(high).(string))}))
+				Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{strings.Join([]string{cljs_core.Str.X_invoke_Arity1(msg).(string), cljs_core.Str.X_invoke_Arity1(" Failed:  ").(string), cljs_core.Str.X_invoke_Arity1(low).(string), cljs_core.Str.X_invoke_Arity1("<=").(string), cljs_core.Str.X_invoke_Arity1(n).(string), cljs_core.Str.X_invoke_Arity1("<=").(string), cljs_core.Str.X_invoke_Arity1(high).(string)}, ``)}))
 			}
 			return n
 		})
@@ -1061,60 +1062,60 @@ func init() {
 				var v = vec__132
 				_, _, _, _, _, _, _, _, _, _, _, _, _ = vec__132, ___, years, months, days, hours, minutes, seconds, fraction, offset_sign, offset_hours, offset_minutes, v
 				if cljs_core.Not.Arity1IB(v) {
-					return Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{("Unrecognized date/time syntax: " + cljs_core.Str.X_invoke_Arity1(s).(string))}))
+					return Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Unrecognized date/time syntax: ").(string), cljs_core.Str.X_invoke_Arity1(s).(string)}, ``)}))
 				} else {
 					{
 						var years___1 = Parse_int.X_invoke_Arity1(years)
 						var months___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(months)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(months)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(1)
 							}
 						}()
 						var days___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(days)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(days)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(1)
 							}
 						}()
 						var hours___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(hours)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(hours)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var minutes___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(minutes)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(minutes)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var seconds___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(seconds)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(seconds)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var fraction___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(Zero_fill_right_and_truncate.X_invoke_Arity2(fraction, float64(3)))
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(Zero_fill_right_and_truncate.X_invoke_Arity2(fraction, float64(3)))
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
@@ -1127,19 +1128,19 @@ func init() {
 							}
 						}()
 						var offset_hours___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(offset_hours)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(offset_hours)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
 						}()
 						var offset_minutes___1 = func() interface{} {
-							var or__182__auto__ = Parse_int.X_invoke_Arity1(offset_minutes)
-							_ = or__182__auto__
-							if cljs_core.Truth_(or__182__auto__) {
-								return or__182__auto__
+							var or__171__auto__ = Parse_int.X_invoke_Arity1(offset_minutes)
+							_ = or__171__auto__
+							if cljs_core.Truth_(or__171__auto__) {
+								return or__171__auto__
 							} else {
 								return float64(0)
 							}
@@ -1170,7 +1171,7 @@ func init() {
 		return cljs_core.Fn(maybe_read_tagged_type, 2, func(rdr interface{}, initch interface{}) interface{} {
 			{
 				var tag = Read_symbol.X_invoke_Arity2(rdr, initch)
-				var pfn = cljs_core.Get.X_invoke_Arity2(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_), (`` + cljs_core.Str.X_invoke_Arity1(tag).(string)))
+				var pfn = cljs_core.Get.X_invoke_Arity2(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_), strings.Join([]string{cljs_core.Str.X_invoke_Arity1(tag).(string)}, ``))
 				var dfn = cljs_core.Deref.X_invoke_Arity1(X_STAR_default_data_reader_fn_STAR_)
 				_, _, _ = tag, pfn, dfn
 				if cljs_core.Truth_(pfn) {
@@ -1188,7 +1189,7 @@ func init() {
 							return dfn.(cljs_core.CljsCoreIFn).X_invoke_Arity2(G__165, G__166)
 						}
 					} else {
-						return Reader_error.X_invoke_ArityVariadic(rdr, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{"Could not find tag parser for ", (`` + cljs_core.Str.X_invoke_Arity1(tag).(string)), " in ", cljs_core.Pr_str.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{cljs_core.Keys.X_invoke_Arity1(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_))})).(string)}))
+						return Reader_error.X_invoke_ArityVariadic(rdr, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{"Could not find tag parser for ", strings.Join([]string{cljs_core.Str.X_invoke_Arity1(tag).(string)}, ``), " in ", cljs_core.Pr_str.X_invoke_ArityVariadic(cljs_core.Array_seq.X_invoke_Arity1([]interface{}{cljs_core.Keys.X_invoke_Arity1(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_))})).(string)}))
 
 					}
 				}
@@ -1199,7 +1200,7 @@ func init() {
 	Register_tag_parser_BANG_ = func(register_tag_parser_BANG_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(register_tag_parser_BANG_, 2, func(tag interface{}, f interface{}) interface{} {
 			{
-				var tag___1 = (`` + cljs_core.Str.X_invoke_Arity1(tag).(string))
+				var tag___1 = strings.Join([]string{cljs_core.Str.X_invoke_Arity1(tag).(string)}, ``)
 				var old_parser = cljs_core.Get.X_invoke_Arity2(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_), tag___1)
 				_, _ = tag___1, old_parser
 				cljs_core.Swap_BANG_.X_invoke_Arity4(X_STAR_tag_table_STAR_, cljs_core.Assoc, tag___1, f)
@@ -1211,7 +1212,7 @@ func init() {
 	Deregister_tag_parser_BANG_ = func(deregister_tag_parser_BANG_ *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(deregister_tag_parser_BANG_, 1, func(tag interface{}) interface{} {
 			{
-				var tag___1 = (`` + cljs_core.Str.X_invoke_Arity1(tag).(string))
+				var tag___1 = strings.Join([]string{cljs_core.Str.X_invoke_Arity1(tag).(string)}, ``)
 				var old_parser = cljs_core.Get.X_invoke_Arity2(cljs_core.Deref.X_invoke_Arity1(X_STAR_tag_table_STAR_), tag___1)
 				_, _ = tag___1, old_parser
 				cljs_core.Swap_BANG_.X_invoke_Arity3(X_STAR_tag_table_STAR_, cljs_core.Dissoc, tag___1)

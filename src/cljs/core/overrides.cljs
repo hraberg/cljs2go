@@ -317,6 +317,15 @@
   [p x]
   ^boolean (js* "DecoratedValue_(~{}).Type().Implements(~{}.(reflect.Type))" x p))
 
+(defn test
+  "test [v] finds fn at key :test in var metadata and calls it,
+  presuming failure will throw exception"
+  [v]
+  (let [f (:test (meta v))]
+    (if f
+      (do (f) :ok)
+      :no-test)))
+
 (extend-type TransientArrayMap
   ITransientMap
   (-dissoc! [tcoll key]

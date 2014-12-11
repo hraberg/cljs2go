@@ -1,9 +1,10 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.letfn-test
 
 package letfn_test
 
 import (
+	"strings"
 	"testing"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
@@ -37,36 +38,36 @@ func init() {
 				_, _ = ev_QMARK_, od_QMARK_
 				if cljs_core.Truth_(ev_QMARK_.X_invoke_Arity1(float64(0))) {
 				} else {
-					panic((&js.Error{("Assert failed: (ev? 0)")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(ev? 0)").(string)}, ``)}))
 				}
 				if cljs_core.Truth_(ev_QMARK_.X_invoke_Arity1(float64(10))) {
 				} else {
-					panic((&js.Error{("Assert failed: (ev? 10)")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(ev? 10)").(string)}, ``)}))
 				}
 				if cljs_core.Not.Arity1IB(ev_QMARK_.X_invoke_Arity1(float64(1))) {
 				} else {
-					panic((&js.Error{("Assert failed: (not (ev? 1))")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(not (ev? 1))").(string)}, ``)}))
 				}
 				if cljs_core.Not.Arity1IB(ev_QMARK_.X_invoke_Arity1(float64(11))) {
 				} else {
-					panic((&js.Error{("Assert failed: (not (ev? 11))")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(not (ev? 11))").(string)}, ``)}))
 				}
 				if cljs_core.Not.Arity1IB(od_QMARK_.X_invoke_Arity1(float64(0))) {
 				} else {
-					panic((&js.Error{("Assert failed: (not (od? 0))")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(not (od? 0))").(string)}, ``)}))
 				}
 				if cljs_core.Not.Arity1IB(od_QMARK_.X_invoke_Arity1(float64(10))) {
 				} else {
-					panic((&js.Error{("Assert failed: (not (od? 10))")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(not (od? 10))").(string)}, ``)}))
 				}
 				if cljs_core.Truth_(od_QMARK_.X_invoke_Arity1(float64(1))) {
 				} else {
-					panic((&js.Error{("Assert failed: (od? 1)")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(od? 1)").(string)}, ``)}))
 				}
 				if cljs_core.Truth_(od_QMARK_.X_invoke_Arity1(float64(11))) {
 					return nil
 				} else {
-					panic((&js.Error{("Assert failed: (od? 11)")}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(od? 11)").(string)}, ``)}))
 				}
 			}
 		})

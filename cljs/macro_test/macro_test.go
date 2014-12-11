@@ -1,9 +1,10 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.macro-test
 
 package macro_test
 
 import (
+	"strings"
 	"testing"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
@@ -17,7 +18,7 @@ func init() {
 			if cljs_core.X_EQ_.Arity2IIB((float64(1) + float64(1)), float64(2)) {
 				return nil
 			} else {
-				panic((&js.Error{("Assert failed: (= (== 1 1) 2)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= (== 1 1) 2)").(string)}, ``)}))
 			}
 		})
 	}(&cljs_core.AFn{})

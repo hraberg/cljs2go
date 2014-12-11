@@ -92,3 +92,15 @@ func IsBreakingWhitespace(str string) bool {
 func Contains(str, subString string) bool {
 	return strings.Contains(str, subString)
 }
+
+func BuildString(var_args ...interface{}) string {
+	ss := make([]string, len(var_args))
+	for i, v := range var_args {
+		if v == nil {
+			ss[i] = ``
+		} else {
+			ss[i] = fmt.Sprint(v)
+		}
+	}
+	return strings.Join(ss, ``)
+}

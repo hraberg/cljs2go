@@ -998,6 +998,14 @@
     ([x y & r] [:three r]))
   (assert (= [:three '(2)] (apply apply-multi-test [0 1 2])))
 
+
+  ;; CLJS-469, helpful exception message on bad dispatch
+  (defmulti no-dispatch-value :test)
+  (try
+    (no-dispatch-value {:test :test})
+    (catch js/Error e
+      (assert (not= -1 (.indexOf (.-message e) "cljs.core-test/no-dispatch-value")))))
+
   ;; custom hierarchy tests
   (def my-map-hierarchy (atom (-> (make-hierarchy)
                                   ;; (derive (type (obj-map)) ::map)
@@ -2438,6 +2446,71 @@
           (recur (dissoc! m x) (next xs))
           (throw (ex-info "CLJS-849 regression!"
                    {:m (persistent! m) :xs xs}))))))
+
+
+  ;; CLJS-
+  (let [m (array-map 0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15)]
+    ;; FAILURE
+    ;; (assert (instance? PersistentArrayMap m))
+    (assert (= (seq m) [[0 0] [1 1] [2 2] [3 3] [4 4] [5 5] [6 6] [7 7] [8 8] [9 9] [10 10] [11 11] [12 12] [13 13] [14 14] [15 15]])))
+
+  ;; CLJS-716
+  (def test-map
+    {:a 1
+     :b 2
+     #inst "2013-12-19T05:00:00.000-00:00" 3
+     :d 4
+     :e 5
+     #inst "2013-12-06T05:00:00.000-00:00" 6
+     :g 7
+     :h 8
+     :i 9
+     :j 10})
+
+  (assert (= (test-map #inst "2013-12-19T05:00:00.000-00:00") 3))
+  (assert (= (test-map #inst "2013-12-06T05:00:00.000-00:00") 6))
+
+  ;; CLJS-853
+
+  (assert (= {:foo true} (meta ^:foo (fn []))))
+
+  ;; CLJS-807
+  (assert (= -1 -1N))
+  (assert (= 9.007199254740996E15 9007199254740995N))
+  (assert (= 1.5 1.5M))
+  (assert (= 4.9E-324 5E-324M))
+
+  ;; vars
+
+  (defn var-test
+    "A docstring"
+    [a b]
+    (+ a b))
+
+  ;; FAILURE - need to deal with .cljs$lang$test and .cljs$lang$body
+  ;; (def var-meta (meta #'var-test))
+
+  ;; (assert (= (:doc var-meta) "A docstring"))
+  ;; (assert (= (:arglists var-meta) '([a b])))
+
+  (defn var-test-test
+    "A docstring"
+    {:test (fn [] :cool)}
+    [a b]
+    (+ a b))
+
+  ;; FAILURE - need to deal with .cljs$lang$test and .cljs$lang$body
+  ;; (assert (= ((:test (meta #'var-test-test))) :cool))
+
+  (defn var-test-self-call
+    "A docstring"
+    {:test (fn bar ([] (bar 1)) ([n] n))}
+    [a b]
+    (+ a b))
+
+  ;; FAILURE - need to deal with .cljs$lang$test and .cljs$lang$body
+  ;; (assert (= (.cljs$lang$test var-test-self-call) 1))
+  ;; (assert (= (.cljs$lang$test var-test-self-call 2) 2))
 
   :ok)
 

@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // clojure.data
 
 // Go overrides.
@@ -6,6 +6,7 @@ package data
 
 import (
 	"reflect"
+	"strings"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 	"github.com/hraberg/cljs2go/js"
@@ -80,7 +81,7 @@ func init() {
 					return Atom_diff
 
 				default:
-					panic((&js.Error{("No matching clause: " + cljs_core.Str.X_invoke_Arity1(Ep.X_invoke_Arity1(a).(*cljs_core.CljsCoreKeyword)).(string))}))
+					panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("No matching clause: ").(string), cljs_core.Str.X_invoke_Arity1(Ep.X_invoke_Arity1(a).(*cljs_core.CljsCoreKeyword)).(string)}, ``)}))
 
 				}
 			}().(cljs_core.CljsCoreIFn).X_invoke_Arity2(a, b)

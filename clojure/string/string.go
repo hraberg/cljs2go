@@ -1,9 +1,11 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // clojure.string
 
 package string
 
 import (
+	"strings"
+
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 	goog_string "github.com/hraberg/cljs2go/goog/string"
 	"github.com/hraberg/cljs2go/js"
@@ -16,9 +18,11 @@ func init() {
 		})
 	}(&cljs_core.AFn{})
 
+	Re_surrogate_pair = (&js.RegExp{"([\\uD800-\\uDBFF])([\\uDC00-\\uDFFF])", "g"})
+
 	Reverse = func(reverse *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(reverse, 1, func(s interface{}) interface{} {
-			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Split", []interface{}{""}), "Reverse", []interface{}{}), "Join", []interface{}{""})
+			return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{Re_surrogate_pair, "$2$1"}), "Split", []interface{}{""}), "Reverse", []interface{}{}), "Join", []interface{}{""})
 		})
 	}(&cljs_core.AFn{})
 
@@ -47,7 +51,7 @@ func init() {
 			if cljs_core.Count.X_invoke_Arity1(s).(float64) < float64(2) {
 				return Upper_case.X_invoke_Arity1(s)
 			} else {
-				return (`` + cljs_core.Str.X_invoke_Arity1(Upper_case.X_invoke_Arity1(cljs_core.Subs.X_invoke_Arity3(s, float64(0), float64(1)))).(string) + cljs_core.Str.X_invoke_Arity1(Lower_case.X_invoke_Arity1(cljs_core.Subs.X_invoke_Arity2(s, float64(1)))).(string))
+				return strings.Join([]string{cljs_core.Str.X_invoke_Arity1(Upper_case.X_invoke_Arity1(cljs_core.Subs.X_invoke_Arity3(s, float64(0), float64(1)))).(string), cljs_core.Str.X_invoke_Arity1(Lower_case.X_invoke_Arity1(cljs_core.Subs.X_invoke_Arity2(s, float64(1)))).(string)}, ``)
 			}
 		})
 	}(&cljs_core.AFn{})
@@ -121,12 +125,12 @@ func init() {
 			return split.X_invoke_Arity3(s, re, float64(0))
 		}, func(s interface{}, re interface{}, limit interface{}) interface{} {
 			return Discard_trailing_if_needed.X_invoke_Arity2(limit, func() interface{} {
-				if cljs_core.X_EQ_.Arity2IIB((`` + cljs_core.Str.X_invoke_Arity1(re).(string)), "/(?:)/") {
+				if cljs_core.X_EQ_.Arity2IIB(strings.Join([]string{cljs_core.Str.X_invoke_Arity1(re).(string)}, ``), "/(?:)/") {
 					return Split_with_empty_regex.X_invoke_Arity2(s, limit)
 				} else {
 					return func() interface{} {
 						if limit.(float64) < float64(1) {
-							return cljs_core.Vec.X_invoke_Arity1(js.JSString_((`` + cljs_core.Str.X_invoke_Arity1(s).(string))).Split(re))
+							return cljs_core.Vec.X_invoke_Arity1(js.JSString_(strings.Join([]string{cljs_core.Str.X_invoke_Arity1(s).(string)}, ``)).Split(re))
 						} else {
 							return func() interface{} {
 								var s___1 interface{} = s
@@ -259,7 +263,7 @@ func init() {
 										{
 											var replacement_29 = temp__4386__auto___28
 											_ = replacement_29
-											buffer.Append((`` + cljs_core.Str.X_invoke_Arity1(replacement_29).(string)))
+											buffer.Append(strings.Join([]string{cljs_core.Str.X_invoke_Arity1(replacement_29).(string)}, ``))
 										}
 									} else {
 										buffer.Append(ch)
@@ -278,6 +282,8 @@ func init() {
 }
 
 var Seq_reverse *cljs_core.AFn
+
+var Re_surrogate_pair *js.RegExp
 
 // Returns s with its characters reversed.
 var Reverse *cljs_core.AFn

@@ -133,6 +133,7 @@
      cljs.core/js->clj
      cljs.core/key->js
      cljs.core/clj->js
+     cljs.core/test
      cljs.reader/read-2-chars
      cljs.reader/read-4-chars
      cljs.reader/read-token
@@ -394,6 +395,8 @@
 (defmethod emit-constant Long [x] (emits "float64(" x ")"))
 (defmethod emit-constant Integer [x] (emits "float64(" x ")")) ; reader puts Integers in metadata
 (defmethod emit-constant Double [x] (emits x))
+(defmethod emit-constant BigDecimal [x] (emits (.doubleValue ^BigDecimal x)))
+(defmethod emit-constant clojure.lang.BigInt [x] (emits (.doubleValue ^clojure.lang.BigInt x)))
 (defmethod emit-constant String [x]
   (emits (wrap-in-double-quotes (escape-string x))))
 (defmethod emit-constant Boolean [x] (emits (if x "true" "false")))
@@ -518,6 +521,21 @@
                                        ns
                                        (update-in info [:name] #(str ns "." (-> % name munge go-public)))
                                        :else info)))))))))
+
+(defmethod emit* :var-special
+  [{:keys [env var sym meta] :as arg}]
+  (emit-wrap env
+    (emits "(&" (go-core "CljsCoreVar") "{")
+    (emits "Val: ")
+    (emit var)
+    (emits ",")
+    (emits "Sym: ")
+    (emit sym)
+    (emits ",")
+    (emits "X_meta: ")
+    (emit meta)
+    (emits "})")))
+
 (defmethod emit* :meta
   [{:keys [expr meta env]}]
   (emit-wrap env
@@ -716,7 +734,13 @@
         ;; NOTE: JavaScriptCore does not like this under advanced compilation
         ;; this change was primarily for REPL interactions - David
                                         ;(emits " = (typeof " mname " != 'undefined') ? " mname " : undefined")
-        (when-not (= :expr (:context env)) (emitln))))))
+        (when-not (= :expr (:context env)) (emitln))
+        ;; TODO: deal with tests
+        ;; (when (and ana/*load-tests* (:test var))
+        ;;   (when (= :expr (:context env))
+        ;;     (emitln ";"))
+        ;;   (emits var ".cljs$lang$test = " (:test var)))
+        ))))
 
 (defn typed-params [params native-string?]
   (for [param params]
@@ -844,7 +868,9 @@
                     (munge name) " != nil {" catch "}}()")))
         (emits "{" try "}")
         (emits "}()"))
-      (emits try))))
+      (emits try))
+    (when (= :statement context)
+      (emitln ""))))
 
 (defn emit-let
   [{:keys [bindings expr env tag]} is-loop]
@@ -964,7 +990,7 @@
                  (or (and ana/*cljs-static-fns* protocol (= tag 'not-native))
                      (and
                        (or ana/*cljs-static-fns*
-                           (:protocol-inline env))
+                           (:cljs.analyzer/protocol-inline env))
                        (or (= protocol tag)
                            ;; ignore new type hints for now - David
                            (and (not (set? tag))

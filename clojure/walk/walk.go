@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // clojure.walk
 
 // This file defines a generic tree walker for Clojure data

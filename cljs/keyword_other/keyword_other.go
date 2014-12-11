@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.keyword-other
 
 package keyword_other

@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // clojure.string
 
 // Go overrides.
@@ -6,6 +6,7 @@ package string
 
 import (
 	"reflect"
+	"strings"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 	goog_string "github.com/hraberg/cljs2go/goog/string"
@@ -23,7 +24,7 @@ func init() {
 				}(), "g"}), replacement})
 			} else {
 				if cljs_core.Value_(match).Type().AssignableTo(reflect.TypeOf((**js.RegExp)(nil)).Elem()) {
-					return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Pattern"), (`` + cljs_core.Str.X_invoke_Arity1(cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Flags")).(string) + "g")}), func() interface{} {
+					return cljs_core.Native_invoke_instance_method.X_invoke_Arity3(s, "Replace", []interface{}{(&js.RegExp{cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Pattern"), strings.Join([]string{cljs_core.Str.X_invoke_Arity1(cljs_core.Native_get_instance_field.X_invoke_Arity2(match, "Flags")).(string), cljs_core.Str.X_invoke_Arity1("g").(string)}, ``)}), func() interface{} {
 						if cljs_core.Fn_QMARK_.Arity1IB(replacement) {
 							return func(x interface{}) interface{} { return replacement.(cljs_core.CljsCoreIFn).X_invoke_Arity1(x) }
 						} else {
@@ -31,7 +32,7 @@ func init() {
 						}
 					}()})
 				} else {
-					panic(("Invalid match arg: " + cljs_core.Str.X_invoke_Arity1(match).(string)))
+					panic(strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Invalid match arg: ").(string), cljs_core.Str.X_invoke_Arity1(match).(string)}, ``))
 
 				}
 			}

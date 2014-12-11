@@ -1,4 +1,4 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.reader
 
 // Go overrides.
@@ -6,6 +6,7 @@ package reader
 
 import (
 	"reflect"
+	"strings"
 
 	cljs_core "github.com/hraberg/cljs2go/cljs/core"
 	goog_string "github.com/hraberg/cljs2go/goog/string"
@@ -15,13 +16,13 @@ import (
 func init() {
 	Read_2_chars = func(read_2_chars *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(read_2_chars, 1, func(reader interface{}) interface{} {
-			return (`` + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string) + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string))
+			return strings.Join([]string{cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string), cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string)}, ``)
 		})
 	}(&cljs_core.AFn{})
 
 	Read_4_chars = func(read_4_chars *cljs_core.AFn) *cljs_core.AFn {
 		return cljs_core.Fn(read_4_chars, 1, func(reader interface{}) interface{} {
-			return (`` + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string) + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string) + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string) + cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string))
+			return strings.Join([]string{cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string), cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string), cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string), cljs_core.Str.X_invoke_Arity1(cljs_core.Decorate_(reader).(CljsReaderPushbackReader).Read_char_Arity1()).(string)}, ``)
 		})
 	}(&cljs_core.AFn{})
 
@@ -159,7 +160,7 @@ func init() {
 						return (&js.Date{ts})
 					}
 				} else {
-					return Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{("Unrecognized date/time syntax: " + cljs_core.Str.X_invoke_Arity1(ts).(string))}))
+					return Reader_error.X_invoke_ArityVariadic(nil, cljs_core.Array_seq.X_invoke_Arity1([]interface{}{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Unrecognized date/time syntax: ").(string), cljs_core.Str.X_invoke_Arity1(ts).(string)}, ``)}))
 				}
 			}
 		})

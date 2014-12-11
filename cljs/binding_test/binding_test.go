@@ -1,9 +1,10 @@
-// Compiled by ClojureScript to Go 0.0-2371
+// Compiled by ClojureScript to Go 0.0-2411
 // cljs.binding-test
 
 package binding_test
 
 import (
+	"strings"
 	"testing"
 
 	cljs_binding_test_other_ns "github.com/hraberg/cljs2go/cljs/binding_test_other_ns"
@@ -28,7 +29,7 @@ func init() {
 
 						if cljs_core.X_EQ_.Arity2IIB(cljs_binding_test_other_ns.X_STAR_foo_STAR_, float64(2)) {
 						} else {
-							panic((&js.Error{("Assert failed: (= o/*foo* 2)")}))
+							panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= o/*foo* 2)").(string)}, ``)}))
 						}
 					}
 				}()
@@ -36,7 +37,7 @@ func init() {
 			if cljs_core.X_EQ_.Arity2IIB(cljs_binding_test_other_ns.X_STAR_foo_STAR_, float64(1)) {
 				return nil
 			} else {
-				panic((&js.Error{("Assert failed: (= o/*foo* 1)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= o/*foo* 1)").(string)}, ``)}))
 			}
 		})
 	}(&cljs_core.AFn{})
@@ -56,7 +57,7 @@ func init() {
 
 						if cljs_core.X_EQ_.Arity2IIB(cljs_binding_test_other_ns.Bar, float64(2)) {
 						} else {
-							panic((&js.Error{("Assert failed: (= o/bar 2)")}))
+							panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= o/bar 2)").(string)}, ``)}))
 						}
 					}
 				}()
@@ -64,7 +65,7 @@ func init() {
 			if cljs_core.X_EQ_.Arity2IIB(cljs_binding_test_other_ns.Bar, float64(10)) {
 				return nil
 			} else {
-				panic((&js.Error{("Assert failed: (= o/bar 10)")}))
+				panic((&js.Error{strings.Join([]string{cljs_core.Str.X_invoke_Arity1("Assert failed: ").(string), cljs_core.Str.X_invoke_Arity1("(= o/bar 10)").(string)}, ``)}))
 			}
 		})
 	}(&cljs_core.AFn{})

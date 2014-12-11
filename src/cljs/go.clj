@@ -180,7 +180,8 @@
   ([] (compile-clojurescript
        "."
        '[cljs.core
-         cljs.reader ;; doesn't work yet, some ns / import issue.
+         cljs.reader
+         ;; cljs.test ;; issue with .cljs$lang$test and .cljs$lang$body
          ;; clojure.core.reducers ;; fails to macroexpand a destructure during analyzing.
          clojure.set clojure.data clojure.string clojure.walk clojure.zip]))
   ([target-dir namespaces]

@@ -36,7 +36,7 @@
 
                             cond-> cond->> as-> some-> some->>
 
-                            if-some when-some])
+                            if-some when-some test ns-interns var])
   (:require clojure.walk
             clojure.set
             [cljs.go.compiler :as cljs.compiler]
@@ -72,10 +72,6 @@
 (defmacro declare [& names]
   (core/doseq [n names]
     (swap! env/*compiler* assoc-in [:cljs.analyzer/namespaces ana/*cljs-ns* :defs n :declared-var] true)))
-
-;; var resolves to their symbols, hack for setMacro
-(defmacro var [x]
-  `(do '~(symbol (core/str ana/*cljs-ns*) (core/str x))))
 
 (defmacro defonce [x init]
   `(when-not (exists? ~x)
@@ -191,31 +187,11 @@
                  ~@body)))))))
 
 (defmacro str [& xs]
-  ;; Eagerly stringify any string or char literals.
-  (let [clean-xs (reduce (fn [acc x]
-                     (core/cond
-                       (core/or (core/string? x) (core/char? x))
-                       (if (core/string? (peek acc))
-                         (conj (pop acc) (core/str (peek acc) x))
-                         (conj acc (core/str x)))
-                       (core/nil? x) acc
-                       :else (conj acc x)))
-                   [] xs)
-        ;; clean-xs now has no nils, chars, or string-adjoining-string. bools,
-        ;; ints and floats will be emitted literally to allow JS string coersion.
-        strs (->> clean-xs
-                  (map #(if (core/string? %)
-                            "~{}"
-                            (core/str (cljs.compiler/go-core "Str") ".X_invoke_Arity1(~{}).(string)")))
-                  (interpose "+")
-                  (apply core/str))]
-    ;; Google closure advanced compile will stringify and concat strings and
-    ;; numbers at compilation time.
-    (with-meta
-     (list* 'js* (core/str (if (core/string? (first clean-xs)) "(" "(``+")
-                           strs ")")
-            clean-xs)
-     {:tag 'string})))
+  (let [strs (->> (repeat (count xs) (core/str (cljs.compiler/go-core "Str") ".X_invoke_Arity1(~{}).(string)"))
+               (interpose ",")
+               (apply core/str))]
+    (-> (list* 'js* (core/str "strings.Join([]string{" strs "}, ``)") xs)
+        (vary-meta assoc :tag 'string))))
 
 (defn bool-expr [e]
   (vary-meta e assoc :tag 'boolean))
@@ -634,7 +610,7 @@
          ~'IMeta
          (~'-meta [~this-sym] ~meta-sym)
          ~@impls)
-       (new ~t ~@locals nil))))
+       (new ~t ~@locals ~(meta &form)))))
 
 (defmacro specify! [expr & impls]
   (let [x (with-meta (gensym "x") {:extend :instance})]
@@ -818,7 +794,7 @@
                               [type base-assign-impls]
                               [(resolve type-sym) proto-assign-impls])
         fq-type-sym (symbol type)
-        extending-existing-type? (not (some (comp :protocol-impl meta) impls))
+        extending-existing-type? (not (some (comp :cljs.analyzer/protocol-impl meta) impls))
         real-type-in-current-ns? (= ana/*cljs-ns* (some-> fq-type-sym namespace symbol))
         impls (if (and extending-existing-type? real-type-in-current-ns?)
                 ;; we need to enrich here, but JS ClojureScript doesn't.
@@ -843,15 +819,15 @@
     (dt->et type specs fields false))
   ([type specs fields inline]
     (let [annots {:cljs.analyzer/type type
-                  :protocol-impl true
-                  :protocol-inline inline}
+                  :cljs.analyzer/protocol-impl true
+                  :cljs.analyzer/protocol-inline inline}
           protocols (group-by (comp symbol name) (:protocols (meta type)))]
       (loop [ret [] specs specs]
         (if (seq specs)
           (let [p (first specs)
                 ret (-> (conj ret p)
                         (into (reduce (partial annotate-specs
-                                               (assoc annots :protocol-impl
+                                               (assoc annots :cljs.analyzer/protocol-impl
                                                       (first (protocols p)))) []
                               (group-by first (take-while seq? (next specs))))))
                 specs (drop-while seq? (next specs))]
@@ -992,6 +968,9 @@
         object? (= 'cljs.core/Object p)
         go-psym (symbol (cljs.compiler/go-type fq-psym))
         methods (if (core/string? (first doc+methods)) (next doc+methods) doc+methods)
+        _ (core/doseq [[mname & arities] methods]
+            (when (some #{0} (map count arities))
+              (throw (Exception. (core/str "Invalid protocol, " psym " defines method " mname " with arity 0")))))
         expand-sig (fn [fname sig]
                      `(~sig
                        ;; this should really just be a protocol call emitted by :invoke,
@@ -1539,6 +1518,7 @@
         m           (if (meta mm-name)
                       (conj (meta mm-name) m)
                       m)
+        mm-ns (-> &env :ns :name core/str)
         m (assoc m :tag 'cljs.core/MultiFn)]
     (when (= (count options) 1)
       (throw (Exception. "The syntax for defmulti has changed. Example: (defmulti name dispatch-fn :default dispatch-value)")))
@@ -1551,7 +1531,7 @@
                method-cache# (atom {})
                cached-hierarchy# (atom {})
                hierarchy# (get ~options :hierarchy (cljs.core/get-global-hierarchy))]
-           (cljs.core/MultiFn. ~(name mm-name) ~dispatch-fn ~default hierarchy#
+           (cljs.core/MultiFn. (cljs.core/symbol ~mm-ns ~(name mm-name)) ~dispatch-fn ~default hierarchy#
                                method-table# prefer-table# method-cache# cached-hierarchy#))))))
 
 (defmacro defmethod
@@ -1616,3 +1596,13 @@
 
 (defmacro clojurescript-version []
   (cljs.compiler/clojurescript-to-go-version))
+
+(defmacro ns-interns
+  "Returns a map of the intern mappings for the namespace."
+  [[quote ns]]
+  (core/assert (core/and (= quote 'quote) (core/symbol? ns))
+    "Argument to ns-interns must be a quoted symbol")
+  `(into {}
+     [~@(map
+          (fn [[sym _]] `[(symbol ~(name sym)) (var ~sym)])
+          (get-in @env/*compiler* [:cljs.analyzer/namespaces ns :defs]))]))

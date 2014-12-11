@@ -77,4 +77,9 @@ func Test_Goog(t *testing.T) {
 
 	assert.False(t, goog_string.Contains("Hello", "foo"))
 	assert.True(t, goog_string.Contains("Hello", "ello"))
+
+	assert.Equal(t, ``, goog_string.BuildString())
+	assert.Equal(t, ``, goog_string.BuildString(``))
+	assert.Equal(t, ``, goog_string.BuildString(nil))
+	assert.Equal(t, `HelloWorld`, goog_string.BuildString(`Hello`, `World`))
 }
