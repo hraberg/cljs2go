@@ -138,7 +138,7 @@ Hello World
 
 ### Other potential targets
 
-* http://nimrod-lang.org
+* http://nim-lang.org/
 * http://www.gnu.org/software/libjit/
 * http://www.rust-lang.org/
 * http://julialang.org/
