@@ -2,6 +2,7 @@
 
 *Way to Go!* -- [Siobhan Sharpe](http://londonist.com/2012/07/did-boris-write-twenty-twelve-way-to-go-gag.php)
 
+**[2015-08-01] Was based on ClojureScript 0.0-2411 in 2014, and passes (most of) the tests, though the compiler is JVM based. Should be redone on top of self hosted [ClojureScript 1.7](http://swannodette.github.io/2015/07/29/clojurescript-17/) at some point.**
 
 **ClojureScript to Go**. Implemented as an overlay onto ClojureScript, instead of a fork. Go is emitted from `cljs.go.compiler`, which is a patched version of `cljs.compiler`. At run time, a thin JS compatibility is provided to avoid having to touch `cljs.core`, these `js` and `goog` packages aren't intended for end-user usage.
 
