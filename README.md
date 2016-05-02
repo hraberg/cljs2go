@@ -37,7 +37,6 @@ $ go get github.com/hraberg/cljs2go
 $ cd $GOPATH/src/github.com/hraberg/cljs2go
 
 # go test, for Go tests checked into git, both generated and handwritten ones:
-# Uses [testify](https://github.com/stretchr/testify) partially forked from [da775f0](https://github.com/stretchr/testify/tree/da775f0337260efbac0fce9764cee5bd3e8c85b8), living under [vendor](https://golang.org/cmd/go/#hdr-Vendor_Directories).
 $ go test -v ./...
 # To re-generate the tests from ClojureScript (this might dirty the repo):
 $ lein test
@@ -46,6 +45,8 @@ $ lein test
 # To re-generate the Go for ClojureScript itself:
 $ go generate
 ```
+
+The tests use [testify](https://github.com/stretchr/testify) partially forked from [da775f0](https://github.com/stretchr/testify/tree/da775f0337260efbac0fce9764cee5bd3e8c85b8), living under [vendor](https://golang.org/cmd/go/#hdr-Vendor_Directories).
 
 While the compiler more or less works, and passes most of ClojureScript's test suite, it's not packaged for actual use, as I first intend to compile it to Go. If you want to play with it, it's easiest to fire up a REPL and look at the `cljs.go` namespace.
 
