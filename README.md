@@ -28,7 +28,7 @@ When compiling, the unaltered `cljs.analyzer` from ClojureScript is used to buil
 
 *Not ready yet.*
 
-Ensure you have [Go 1.4.x](https://golang.org/dl/) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
+Ensure you have [Go 1.6.x](https://golang.org/dl/) installed and `GOPATH` setup properly, see [How to Write Go Code](https://golang.org/doc/code.html). Then clone this repo like this:
 
 ```bash
 # Clone and build the Go packages:
@@ -37,6 +37,7 @@ $ go get github.com/hraberg/cljs2go
 $ cd $GOPATH/src/github.com/hraberg/cljs2go
 
 # go test, for Go tests checked into git, both generated and handwritten ones:
+# Uses [testify](https://github.com/stretchr/testify) partially forked from [da775f0](https://github.com/stretchr/testify/tree/da775f0337260efbac0fce9764cee5bd3e8c85b8), living under [vendor](https://golang.org/cmd/go/#hdr-Vendor_Directories).
 $ go test -v ./...
 # To re-generate the tests from ClojureScript (this might dirty the repo):
 $ lein test
